@@ -1,5 +1,8 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays. 
 
+This course is currently under construction. All materials are work-in-progress.
+
+
 ## Introduction
 
 **wip**
