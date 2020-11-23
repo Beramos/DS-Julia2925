@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.10
+# v0.12.4
 
 using Markdown
 using InteractiveUtils
@@ -59,7 +59,7 @@ Write a function newton_sqrt(x) which implements the above algorithm."
 
 # ╔═╡ 4896bf0c-e754-11ea-19dc-1380bb356ab6
 function newton_sqrt(x, error_margin=0.01, a=x / 2) # a=x/2 is the default value of `a`
-	return sqrt(x) # this is wrong, write your code here!
+	return missing # this is wrong, write your code here!
 end
 
 # ╔═╡ 7a01a508-e78a-11ea-11da-999d38785348
