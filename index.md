@@ -9,22 +9,22 @@ This two-day course gives an in-depth introduction to the Julia programming lang
 We mainly cater to PhD students in sciences and engineering, especially those who have a computing aspect in their research (large or small). The course is relevant to researchers who need to write complex high-level code that has to be performant. Importantly, this course is *not* meant as a first introduction to programming. Participants are expected to have basic experience in at least one high-level programming language such as Python, R, Matlab, or Perl. We aim to start gentle enough so that novice programmers can get acquainted with the language while following a learning curve that will keep serious hackers interested. At the end of the course, you will have learned the tools to write fairly sophisticated Julia programs.
 
 ## Date and venue
-The course will take place on the **4th** and the **5th of February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we cannot meet on-site, the course will be taught online with maximal interactivity.
+The course will take place on the **4th** and the **5th of February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
 
 ## Registration and fees
-Registration can be via the following link: ADD LINK.
+Registration can be done via the following link: *to be determined*.
 
 Admission prices are:
-- **for UGent doctoral school members**: EUR 50 (paid by the DS);
+- **for UGent doctoral school members**: EUR 50 (paid by the Doctoral School program);
 - **external members**: EUR 250.
 
-We also provide a limited number of free slots for master students. Please contact the organizers if you want to join.
+We also provide a limited number of free slots for *master students*. Please contact the [organizers](mailto:michiel.stock@ugent.be) if you want to join.
 
 ## Organizer information
 This course is organized by [Michiel Stock](https://github.com/MichielStock/), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren), and [Bram De Jaegher](https://github.com/Beramos), three researchers of the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education.  
 
 ## Contact
-More information? Unsure if this course is relevant to you? Reach out to the [organizers](michiel.stock@ugent.be)!
+More information? Unsure if this course is relevant to you? Reach out to the [organizers](mailto:michiel.stock@ugent.be)!
 
 <img src="img/logo_flanders+richtingmorgen.png" width="79%"> 
 <img src="img/doctoralschoolsprofiel_hq_rgb_web.png" width="20%"> 
