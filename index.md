@@ -9,7 +9,7 @@ This two-day course gives an in-depth introduction to the Julia programming lang
 We mainly cater to PhD students in sciences and engineering, especially those who have a computing aspect in their research (large or small). The course is relevant to researchers who need to write complex high-level code that has to be performant. Importantly, this course is *not* meant as a first introduction to programming. Participants are expected to have basic experience in at least one high-level programming language such as Python, R, Matlab, or Perl. We aim to start gentle enough so that novice programmers can get acquainted with the language while following a learning curve that will keep serious hackers interested. At the end of the course, you will have learned the tools to write fairly sophisticated Julia programs.
 
 ## Date and venue
-The course will take place on **4 and 5 February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at Campus Coupure. If we cannot meet on-site, the course will be taught online with maximal interactivity.
+The course will take place on the **4th** and the **5th of February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we cannot meet on-site, the course will be taught online with maximal interactivity.
 
 ## Registration and fees
 Registration can be via the following link: ADD LINK.
