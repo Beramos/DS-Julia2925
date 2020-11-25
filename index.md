@@ -1,7 +1,7 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays
 
 ## Introduction
-The [Julia language](https://julialang.org/) has taken the scientific computing community by storm. In Julia, the user can write high-level code that is also blazingly fast. Its type-based dispatch system allows creating versatile code in few lines of code elegantly. It has gained enormous popularity in numerical computing, statistics, machine learning, etc.
+The [Julia language](https://julialang.org/) has taken the scientific computing community by storm. In Julia, the user can write high-level code that is easy to write but also blazingly fast. Its type-based dispatch system allows creating versatile code in a few lines of elegant code. It has gained enormous popularity in numerical computing, statistics, machine learning, etc.
 
 This two-day course gives an in-depth introduction to the Julia programming language. The first day will introduce Julia programming's essential elements (variables, printing, plotting, looping, collections, etc.) and an early peek into the type system. On the second day, we will cover the type system comprehensively. We discuss its relation to multiple dispatch and illustrate how this translates into extensible and user-friendly programs. We cover the subject matter interactively in interactive notebooks. Each day, we make a larger synthesis project in the afternoon.
 
