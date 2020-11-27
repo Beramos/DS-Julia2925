@@ -1,4 +1,4 @@
 #!/bin/bash
-julia -e "import Pkg; Pkg.rm(\"Pluto\"); Pkg.add(\"https://github.com/Beramos/Pluto.jl#DS-Julia-2925\")"
+julia -e "import Pkg; Pkg.rm(\"Pluto\"); Pkg.add(url=\"https://github.com/Beramos/Pluto.jl#DS-Julia-2925\")"
 
 
