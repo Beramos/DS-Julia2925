@@ -15,4 +15,4 @@ setuptools.setup(
 
 # because this is a demo of Pluto, we add some popular packages to the global package env and precompile
 import os
-os.system('julia -e "import Pkg; Pkg.add([\\"DataFrames\\", \\"CSV\\", \\"Plots\\"]); Pkg.precompile()"')
+os.system('julia -e "import Pkg; Pkg.add([\\"DataFrames\\", \\"CSV\\", \\"Plots\\", \\"https://github.com/Beramos/Pluto.jl#DS-Julia-2925\\"]); Pkg.precompile()"')
