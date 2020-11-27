@@ -1,5 +1,4 @@
 #!/bin/bash
-mkdir /srv/julia/dev
-git clone -b DS-Julia-2925 git@github.com:Beramos/Pluto.jl.git /srv/julia/dev/.
+julia -e "import Pkg; add https://github.com/Beramos/Pluto.jl#DS-Julia-2925"
 
 
