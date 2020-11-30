@@ -2,7 +2,7 @@
 
 This course is currently under construction. All materials are work-in-progress.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Beramos/DS-Julia2925/binder_pluto_server)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/beramos/DS-Julia2925/binder_pluto_server?urlpath=pluto)
 
 ## Introduction
 
