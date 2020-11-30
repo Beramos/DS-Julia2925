@@ -23,7 +23,7 @@ Pkg.instantiate()
 ```
 to install the dependencies.
 
-### Opening the noteboos
+### Opening the notebooks
 Open the Julia REPL
 
 ```julia
