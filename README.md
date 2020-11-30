@@ -2,12 +2,11 @@
 
 This course is currently under construction. All materials are work-in-progress.
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Beramos/DS-Julia2925/binder_pluto_server)
 
 ## Introduction
 
-**wip**
-
-In case you do not want to install julia and jump straight in the course material, use **binder WIP** instead. 
+In case you do not want to install julia and jump straight in the course material, use binder instead. However, we do not recommend doing so since saving progress is tricky. 
 
 ## Getting started
 ### Installing Julia
