@@ -16,7 +16,7 @@ Registration can be done via the following link: *to be determined*.
 
 Admission prices are:
 - **for UGent doctoral school members**: EUR 50 (paid by the Doctoral School program);
-- **external members**: EUR 250.
+- **external members**: EUR 250 (priority of participation will be given to PhD students of Ghent University).
 
 We also provide a limited number of free slots for *master students*. Please contact the [organizers](mailto:michiel.stock@ugent.be) if you want to join.
 
