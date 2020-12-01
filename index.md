@@ -15,7 +15,8 @@ The course will take place on the **4th** and the **5th of February 2020** (duri
 Registration can be done via the following link: *to be determined*.
 
 Admission prices are:
-- **for UGent doctoral school members**: free of charge;
+- **for UGent Doctoral School members**: free of charge;
+- **UGent members (not member of the Doctoral School)**: EUR 50;
 - **external members**: EUR 250 (priority of participation will be given to PhD students of Ghent University).
 
 We also provide a limited number of free slots for *master students*. Please contact the [organisers](mailto:michiel.stock@ugent.be) if you want to join.
