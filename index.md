@@ -20,7 +20,7 @@ Admission prices are:
 
 We also provide a limited number of free slots for *master students*. Please contact the [organizers](mailto:michiel.stock@ugent.be) if you want to join.
 
-10% of the profit will be donated to [Julia computing](https://juliacomputing.com/).
+10% of the profit will donated to [Julia computing](https://juliacomputing.com/) who ensure the continuous development of this language.
 
 ![Julia computing logo](img/logojulcom.svg)
 
