@@ -20,6 +20,10 @@ Admission prices are:
 
 We also provide a limited number of free slots for *master students*. Please contact the [organizers](mailto:michiel.stock@ugent.be) if you want to join.
 
+10% of the profit will be donated to [Julia computing](https://juliacomputing.com/).
+
+![Julia computing logo](img/logojulcom.svg)
+
 ## Organizer information
 This course is organized by [Michiel Stock](https://github.com/MichielStock/), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren), and [Bram De Jaegher](https://github.com/Beramos), three researchers of the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education.  
 
