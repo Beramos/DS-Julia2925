@@ -15,16 +15,26 @@ The course will take place on the **4th** and the **5th of February 2020** (duri
 Registration can be done via the following link: *to be determined*.
 
 Admission prices are:
-- **for UGent doctoral school members**: EUR 50 (paid by the Doctoral School program);
-- **external members**: EUR 250.
+- **for UGent Doctoral School members**: free of charge;
+- **UGent members (not member of the Doctoral School)**: EUR 50;
+- **external members**: EUR 250 (priority of participation will be given to PhD students of Ghent University).
 
-We also provide a limited number of free slots for *master students*. Please contact the [organizers](mailto:michiel.stock@ugent.be) if you want to join.
+We also provide a limited number of free slots for *master students*. Please contact the [organisers](mailto:michiel.stock@ugent.be) if you want to join.
+
+10% of the profit will donated to [Julia computing](https://juliacomputing.com/) who ensure the continuous development of this language.
+
+![Julia computing logo](img/logojulcom.svg)
+
+**Enrolling** is easy, [click here to enroll](https://webappsx.ugent.be/eventManager/events/JuliaDS).
+
+For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
+
 
 ## Organizer information
 This course is organized by [Michiel Stock](https://github.com/MichielStock/), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren), and [Bram De Jaegher](https://github.com/Beramos), three researchers of the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education.  
 
 ## Contact
-More information? Unsure if this course is relevant to you? Reach out to the [organizers](mailto:michiel.stock@ugent.be)!
+More information? Unsure if this course is relevant to you? Reach out to the [organisers](mailto:michiel.stock@ugent.be)!
 
 <img src="img/logo_flanders+richtingmorgen.png" width="79%"> 
 <img src="img/doctoralschoolsprofiel_hq_rgb_web.png" width="20%"> 
