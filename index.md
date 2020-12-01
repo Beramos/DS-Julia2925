@@ -24,7 +24,7 @@ We also provide a limited number of free slots for *master students*. Please con
 
 ![Julia computing logo](img/logojulcom.svg)
 
-**Enrolling** is easy, [click here to enroll](https://webappsx.ugent.be/eventManager/events/JuliaDS)
+**Enrolling** is easy, [click here to enroll](https://webappsx.ugent.be/eventManager/events/JuliaDS).
 
 For external members, master students or in case of a broken link, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
 
