@@ -26,7 +26,8 @@ We also provide a limited number of free slots for *master students*. Please con
 
 **Enrolling** is easy, [click here to enroll](https://webappsx.ugent.be/eventManager/events/JuliaDS).
 
-For external members, master students or in case of a broken link, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
+For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
+
 
 ## Organizer information
 This course is organized by [Michiel Stock](https://github.com/MichielStock/), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren), and [Bram De Jaegher](https://github.com/Beramos), three researchers of the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education.  
