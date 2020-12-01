@@ -12,7 +12,7 @@ We mainly cater to PhD students in sciences and engineering, especially those wh
 The course will take place on the **4th** and the **5th of February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
 
 ## Registration and fees
-Registration can be done via the following link: *to be determined*.
+Registration can be done via the following link: [https://webappsx.ugent.be/eventManager/events/JuliaDS](https://webappsx.ugent.be/eventManager/events/JuliaDS). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
 
 Admission prices are:
 - **for UGent Doctoral School members**: free of charge;
@@ -24,11 +24,6 @@ We also provide a limited number of free slots for *master students*. Please con
 10% of the profit will donated to [Julia computing](https://juliacomputing.com/) who ensure the continuous development of this language.
 
 ![Julia computing logo](img/logojulcom.svg)
-
-**Enrolling** is easy, [click here to enroll](https://webappsx.ugent.be/eventManager/events/JuliaDS).
-
-For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
-
 
 ## Organizer information
 This course is organized by [Michiel Stock](https://github.com/MichielStock/), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren), and [Bram De Jaegher](https://github.com/Beramos), three researchers of the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education.  
