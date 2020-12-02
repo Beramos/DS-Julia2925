@@ -12,7 +12,7 @@ We mainly cater to PhD students in sciences and engineering, especially those wh
 The course will take place on the **4th** and the **5th of February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
 
 ## Registration and fees
-Registration can be done via the following link: [to be determined](). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
+Registration can be done via the following link: [here](https://webappsx.ugent.be/eventManager/events/juliaprogr). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
 
 Admission prices are:
 - **for UGent Doctoral School members**: free of charge;
