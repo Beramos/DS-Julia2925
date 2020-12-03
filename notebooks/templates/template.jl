@@ -4,6 +4,19 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ d056c964-3597-11eb-01ad-ab46ca2c1864
+let
+	using Pkg;
+	Pkg.activate(".");
+	Pkg.add(PackageSpec(url="https://github.com/Beramos/DS-Julia2925", rev="update_admonition"))
+end
+
+# ╔═╡ 6c54a3c6-358a-11eb-3529-05cec9ffa342
+begin
+	include("../../src/DS-Julia2925.jl")
+	
+end
+
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
 
@@ -33,12 +46,6 @@ First of all, **_welcome to the course!_**
 
 # ╔═╡ 79728490-3582-11eb-1c73-eb6c3d13fd7c
 md"### Types of admonition"
-
-# ╔═╡ 6c54a3c6-358a-11eb-3529-05cec9ffa342
-begin
-	ingredients("../../src/DS-Julia2925.jl")
-	
-end
 
 # ╔═╡ 78c3aede-3582-11eb-1de3-27b420b17f46
 hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text])); 
@@ -195,6 +202,7 @@ md"""
 """
 
 # ╔═╡ Cell order:
+# ╠═d056c964-3597-11eb-01ad-ab46ca2c1864
 # ╟─cdff6730-e785-11ea-2546-4969521b33a7
 # ╠═7308bc54-e6cd-11ea-0eab-83f7535edf25
 # ╠═a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
