@@ -12,10 +12,7 @@ let
 end
 
 # ╔═╡ 6c54a3c6-358a-11eb-3529-05cec9ffa342
-begin
-	include("../../src/DS-Julia2925.jl")
-	
-end
+using teachingTools
 
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
@@ -46,9 +43,6 @@ First of all, **_welcome to the course!_**
 
 # ╔═╡ 79728490-3582-11eb-1c73-eb6c3d13fd7c
 md"### Types of admonition"
-
-# ╔═╡ 78c3aede-3582-11eb-1de3-27b420b17f46
-hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text])); 
 
 # ╔═╡ d84b371e-3582-11eb-3176-7faf85f87aea
 hint(md"This is a hint admonition")
@@ -209,7 +203,6 @@ md"""
 # ╟─31a8fbf8-e6ce-11ea-2c66-4b4d02b41995
 # ╠═79728490-3582-11eb-1c73-eb6c3d13fd7c
 # ╠═6c54a3c6-358a-11eb-3529-05cec9ffa342
-# ╠═78c3aede-3582-11eb-1de3-27b420b17f46
 # ╠═d84b371e-3582-11eb-3176-7faf85f87aea
 # ╠═44664a2e-3583-11eb-0f41-970201b67453
 # ╠═80fc23f0-3583-11eb-3dae-a5263b2005f7
