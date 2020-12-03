@@ -1,0 +1,6 @@
+name = "TeachingTools"
+uuid = "52a36ae6-b042-44a7-b1ae-8e210fe21337"
+version = "0.1.0"
+authors = ["Bram De Jaegher <bram.de.jaegher@gmail.com>", "Michiel Stock <michielfmstock@gmail.com>", "Daan Van Hauwermeiren <daan.van.hauwermeiren@gmail.com>"]
+
+[deps]

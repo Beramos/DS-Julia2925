@@ -12,7 +12,7 @@ let
 end
 
 # ╔═╡ 6c54a3c6-358a-11eb-3529-05cec9ffa342
-using teachingTools
+using TeachingTools
 
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
