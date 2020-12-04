@@ -1,4 +1,9 @@
 name = "DSJulia"
+uuid = "36755c37-737e-4b39-b6ef-e2f953844095"
+authors = ["Michiel Stock <michielfmstock@gmail.com>",
+            "Bram De Jaegher <bram.dejaegher@ugent.be",
+            "Daan Van Hauwermeiren <Daan.VanHauwermeiren@UGent.be>"]
+version = "0.1.0"
 
 [deps]
 Markdown = "d6f4376e-aef5-505a-96c1-9c027394607a"
