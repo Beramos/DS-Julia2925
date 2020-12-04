@@ -1,6 +1,7 @@
 module DSJulia
 
-    export kupo     
+    include("grading.jl")
+    export check_answer, still_missing, keep_working, correct, not_defined, hint, fyi  
 
-    kupo(n=1) = println("kupo "^n)
+
 end
