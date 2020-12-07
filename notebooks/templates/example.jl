@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.4
+# v0.12.12
 
 using Markdown
 using InteractiveUtils
@@ -61,7 +61,7 @@ validate(myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0)
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
 # ╠═87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 # ╠═4d059920-2dac-11eb-2177-574ca39f3399
-# ╠═542d5fa6-2da9-11eb-1037-3b35a5b22bd5
+# ╟─542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╠═51df9352-2dab-11eb-2d71-bb09b24a94ef
 # ╠═62aaf320-2dab-11eb-38e6-5bbb3c0994b0
 # ╠═6e08751c-2dab-11eb-3c25-e9735d364519
