@@ -14,6 +14,9 @@ The course will take place on the **4th** and the **5th of February 2020** (duri
 ## Registration and fees
 Registration can be done via the following link: [here](https://webappsx.ugent.be/eventManager/events/juliaprogr). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
 
+**Update:** Registration for Doctoral schools members appears full but doctoral School members **can still register** in other slots, provided that they mention "DOCTORAL SCHOOLS" in the student id field.
+
+
 Admission prices are:
 - **for UGent Doctoral School members**: free of charge;
 - **UGent members (not member of the Doctoral School)**: EUR 50;
