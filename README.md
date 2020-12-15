@@ -27,11 +27,7 @@ to install the dependencies.
 Open the Julia REPL
 
 ```julia
-import Pkg
-Pkg.activate(".")
-
-using Pluto
-Pluto.run()
+julia launcher.jl
 ```
 
 This should open a browser window with the Pluto notebooks.
