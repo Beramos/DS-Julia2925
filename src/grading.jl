@@ -23,7 +23,7 @@ struct ProgressTracker
 	total::Int
 	name::String
 	email::String
-	ProgressTracker() = new(0, 0, name, email)
+	ProgressTracker(name, email) = return new(0, 0, name, email)
 end
 
 addQuestion!(t::ProgressTracker) = t.total += 1
