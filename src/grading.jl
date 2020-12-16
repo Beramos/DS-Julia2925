@@ -49,7 +49,7 @@ function check_answer(statements..., t::QuestionTracker)
 	all_valid = all(statements)
 	ismissing(all_valid) && return still_missing()
 	some_valid = any(statements)
-	some_valid && !all_valid && return keep_working(MD"You are not quite there, but getting warmer!")
+	some_valid && !all_valid && return keep_working(MD("You are not quite there, but getting warmer!"))
 	!all_valid && return keep_working()
 	if all_valid 
 		accept!(t)

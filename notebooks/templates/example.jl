@@ -1,11 +1,20 @@
 ### A Pluto.jl notebook ###
-# v0.12.12
+# v0.12.17
 
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ cfea9340-3fd6-11eb-26cc-57e76c7353cd
+using DSJulia
+
 # ╔═╡ 4bfec7fc-2da9-11eb-1f36-2d55a5099098
 using Markdown
+
+# ╔═╡ d00b3712-3fd6-11eb-354e-3182c3cb8eb1
+md"""## Some examples on how to use DSJulia"""
+
+# ╔═╡ cf59f7a6-3fd6-11eb-1bb5-05fd29396dd8
+
 
 # ╔═╡ f14d9b62-2da8-11eb-3ae5-776f9a1e53e0
 hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
@@ -55,6 +64,9 @@ end
 validate(myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0) 
 
 # ╔═╡ Cell order:
+# ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
+# ╠═cfea9340-3fd6-11eb-26cc-57e76c7353cd
+# ╠═cf59f7a6-3fd6-11eb-1bb5-05fd29396dd8
 # ╠═4bfec7fc-2da9-11eb-1f36-2d55a5099098
 # ╠═f14d9b62-2da8-11eb-3ae5-776f9a1e53e0
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
