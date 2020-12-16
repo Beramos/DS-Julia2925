@@ -21,7 +21,9 @@ using Markdown: MD, Admonition
 struct ProgressTracker 
 	correct::Int
 	total::Int
-	ProgressTracker() = new(0, 0)
+	name::String
+	email::String
+	ProgressTracker() = new(0, 0, name, email)
 end
 
 addQuestion!(t::ProgressTracker) = t.total += 1
