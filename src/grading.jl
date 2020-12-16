@@ -18,7 +18,7 @@ using Markdown
 using Markdown: MD, Admonition
 
 
-struct ProgressTracker 
+mutable struct ProgressTracker 
 	correct::Int
 	total::Int
 	name::String
