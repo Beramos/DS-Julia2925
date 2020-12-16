@@ -29,22 +29,6 @@ end
 addQuestion!(t::ProgressTracker) = t.total += 1
 accept!(t::ProgressTracker) =	t.correct += 1
 
-
-# --- Admonition options --- #
-still_missing(text=MD("Replace `missing` with your answer.")) = MD(Admonition("warning", "Here we go!", [text]))
-
-hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
-
-keep_working(text=MD("The answer is not quite right.")) = MD(Admonition("danger", "Keep working on it!", [text]))
-
-yays = [MD("Great!"), MD("Yay ❤"), MD("Great! 🎉"), MD("Well done!"),
-        MD("Keep it up!"), MD("Good job!"), MD("Awesome!"), MD("You got the right answer!"),
-				MD("Let's move on to the next section.")]
-				
-correct(text=rand(yays)) = MD(Admonition("correct", "Got it!", [text]))
-
-not_defined(variable_name) = MD(Admonition("danger", "Oopsie!", [MD("Make sure that you define a variable called **$(Markdown.Code(string(variable_name)))**")]))
-
 # --- Autograder function --- #
 """
 	Validates answer statements and updates question tracker
@@ -62,6 +46,22 @@ function check_answer(t::ProgressTracker, statements...)
 	end 
 end
 
+
+
+# --- Admonition options --- #
+still_missing(text=md"Replace `missing` with your answer.") = MD(Admonition("warning", "Here we go!", [text]))
+
+hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
+
+keep_working(text=md"The answer is not quite right.") = MD(Admonition("danger", "Keep working on it!", [text]))
+
+yays = [md"Great!", md"Yay ❤", md"Great! 🎉", md"Well done!",
+        md"Keep it up!", md"Good job!", md"Awesome!", md"You got the right answer!",
+				md"Let's move on to the next section."]
+				
+correct(text=rand(yays)) = MD(Admonition("correct", "Got it!", [text]))
+
+not_defined(variable_name) = MD(Admonition("danger", "Oopsie!", [md"Make sure that you define a variable called **$(Markdown.Code(string(variable_name)))**"]))
 
 # --- Non-checking admonitions --- #
 fyi(text) = Markdown.MD(
