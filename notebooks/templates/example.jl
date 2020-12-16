@@ -23,7 +23,7 @@ md"Next step is to initialise the tracker"
 tracker = ProgressTracker(student.name, student.email);
 
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
-md"------"
+md"-----"
 
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## Example exercise"
@@ -35,7 +35,7 @@ Open assignments always return `missing`.
 """
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = missing
+myclamp(x) = max(0,min(1,x))
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)
@@ -59,6 +59,12 @@ md"**FYI's:**"
 # ╔═╡ 3cd3e814-3fdf-11eb-1918-75993ba2e121
 fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squirrels?")
 
+# ╔═╡ c88d70ba-3fe3-11eb-044d-1533f8a48ced
+check_answer(tracker, false)
+
+# ╔═╡ c5bb0b86-3fe3-11eb-1cfe-3dd91c2053cb
+tracker
+
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
 # ╠═cfea9340-3fd6-11eb-26cc-57e76c7353cd
@@ -77,3 +83,5 @@ fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squi
 # ╠═542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╟─2e7109a0-3fdf-11eb-28af-0d99a01c5066
 # ╠═3cd3e814-3fdf-11eb-1918-75993ba2e121
+# ╠═c88d70ba-3fe3-11eb-044d-1533f8a48ced
+# ╟─c5bb0b86-3fe3-11eb-1cfe-3dd91c2053cb

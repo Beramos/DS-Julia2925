@@ -18,6 +18,10 @@ using Markdown
 using Markdown: MD, Admonition
 
 
+mutable struct QuestionIdentifier
+
+end
+
 mutable struct ProgressTracker 
 	correct::Int
 	total::Int
@@ -28,12 +32,13 @@ end
 
 addQuestion!(t::ProgressTracker) = t.total += 1
 accept!(t::ProgressTracker) =	t.correct += 1
-Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of $(t.name) with a completion of $(t.correct) out of $(t.total) question(s).")
+Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of **$(t.name)** with a completion of **$(t.correct) out of $(t.total)** question(s).")
 
 # --- Autograder function --- #
 """
 	Validates answer statements and updates question tracker
 """
+
 function check_answer(t::ProgressTracker, statements...)
 	addQuestion!(t)
 	all_valid = all(statements)
