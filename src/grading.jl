@@ -41,19 +41,15 @@ correct(text=rand(yays)) = MD(Admonition("correct", "Got it!", [text]))
 not_defined(variable_name) = MD(Admonition("danger", "Oopsie!", [MD("Make sure that you define a variable called **$(Markdown.Code(string(variable_name)))**")]))
 
 # --- Autograder function --- #
-""""
+"""
 	Validates answer statements and updates question tracker
 """
-function check_answer(statements..., t::QuestionTracker)
+function check_answer(t::QuestionTracker, statements...)
 	addQuestion!(t)
 	all_valid = all(statements)
 	ismissing(all_valid) && return still_missing()
 	some_valid = any(statements)
-<<<<<<< HEAD
 	some_valid && !all_valid && return keep_working(MD("You are not quite there, but getting warmer!"))
-=======
-	some_valid && !all_valid && return keep_working(MD"You are not quite there, but getting warmer!")
->>>>>>> 4fbeb89384fefd22c2348191a0a48b6da524ae86
 	!all_valid && return keep_working()
 	if all_valid 
 		accept!(t)
@@ -61,14 +57,15 @@ function check_answer(statements..., t::QuestionTracker)
 	end 
 end
 
-""""
+
+"""
 	Function to validate answers
 """
 function check_answer(statements...)
 	all_valid = all(statements)
 	ismissing(all_valid) && return still_missing()
 	some_valid = any(statements)
-	some_valid && !all_valid && return keep_working(MD"You are not quite there, but getting warmer!")
+	some_valid && !all_valid && return keep_working(MD("You are not quite there, but getting warmer!"))
 	!all_valid && return keep_working()
 	all_valid && return correct()
 end
