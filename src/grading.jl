@@ -28,6 +28,7 @@ end
 
 addQuestion!(t::ProgressTracker) = t.total += 1
 accept!(t::ProgressTracker) =	t.correct += 1
+Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of $(t.name) with a completion of $(t.correct) out of $(t.total) question(s).")
 
 # --- Autograder function --- #
 """
