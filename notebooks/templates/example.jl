@@ -7,17 +7,14 @@ using InteractiveUtils
 # ╔═╡ cfea9340-3fd6-11eb-26cc-57e76c7353cd
 using DSJulia
 
-# ╔═╡ 4bfec7fc-2da9-11eb-1f36-2d55a5099098
-using Markdown
-
 # ╔═╡ d00b3712-3fd6-11eb-354e-3182c3cb8eb1
 md"""## Some examples on how to use DSJulia"""
 
-# ╔═╡ cf59f7a6-3fd6-11eb-1bb5-05fd29396dd8
+# ╔═╡ 4e4c000e-3fda-11eb-3b32-8fad55386401
+md"At the start of the notebook we need the name and email of the students"
 
-
-# ╔═╡ f14d9b62-2da8-11eb-3ae5-776f9a1e53e0
-hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
+# ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
+md"**Example exercise**"
 
 # ╔═╡ 854891dc-2dab-11eb-2b4b-e129081aacca
 md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
@@ -30,6 +27,9 @@ myclamp(x) = missing
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)
+
+# ╔═╡ 49106a9e-3fda-11eb-18a6-ef46bcda208f
+
 
 # ╔═╡ 542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 hint(md"Did you think of this?")
@@ -66,13 +66,13 @@ validate(myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0)
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
 # ╠═cfea9340-3fd6-11eb-26cc-57e76c7353cd
-# ╠═cf59f7a6-3fd6-11eb-1bb5-05fd29396dd8
-# ╠═4bfec7fc-2da9-11eb-1f36-2d55a5099098
-# ╠═f14d9b62-2da8-11eb-3ae5-776f9a1e53e0
-# ╠═854891dc-2dab-11eb-2b4b-e129081aacca
+# ╠═4e4c000e-3fda-11eb-3b32-8fad55386401
+# ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
+# ╟─854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
 # ╠═87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 # ╠═4d059920-2dac-11eb-2177-574ca39f3399
+# ╠═49106a9e-3fda-11eb-18a6-ef46bcda208f
 # ╟─542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╠═51df9352-2dab-11eb-2d71-bb09b24a94ef
 # ╠═62aaf320-2dab-11eb-38e6-5bbb3c0994b0
