@@ -17,14 +17,15 @@ https://computationalthinking.mit.edu/Fall20/installation/
 using Markdown
 using Markdown: MD, Admonition
 
-struct QuestionTracker 
+
+struct ProgressTracker 
 	correct::Int
 	total::Int
-	QuestionTracker() = new(0, 0)
+	ProgressTracker() = new(0, 0)
 end
 
-addQuestion!(t::QuestionTracker) = t.total += 1
-accept!(t::QuestionTracker) =	t.correct += 1
+addQuestion!(t::ProgressTracker) = t.total += 1
+accept!(t::ProgressTracker) =	t.correct += 1
 
 
 # --- Admonition options --- #
@@ -44,7 +45,7 @@ not_defined(variable_name) = MD(Admonition("danger", "Oopsie!", [MD("Make sure t
 """
 	Validates answer statements and updates question tracker
 """
-function check_answer(t::QuestionTracker, statements...)
+function check_answer(t::ProgressTracker, statements...)
 	addQuestion!(t)
 	all_valid = all(statements)
 	ismissing(all_valid) && return still_missing()
