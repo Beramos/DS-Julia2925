@@ -33,6 +33,8 @@ accept!(t::ProgressTracker) =	t.correct += 1
 # --- Admonition options --- #
 still_missing(text=MD("Replace `missing` with your answer.")) = MD(Admonition("warning", "Here we go!", [text]))
 
+hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
+
 keep_working(text=MD("The answer is not quite right.")) = MD(Admonition("danger", "Keep working on it!", [text]))
 
 yays = [MD("Great!"), MD("Yay ❤"), MD("Great! 🎉"), MD("Well done!"),
