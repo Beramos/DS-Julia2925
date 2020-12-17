@@ -18,10 +18,6 @@ using Markdown
 using Markdown: MD, Admonition
 
 
-mutable struct QuestionIdentifier
-
-end
-
 mutable struct ProgressTracker 
 	correct::Int
 	total::Int
@@ -52,6 +48,13 @@ function check_answer(t::ProgressTracker, statements...)
 	end 
 end
 
+function grade(fn)
+	open(fn, "a") do f
+    write(f, "\ntracker\n")
+	end
+	include(fn)
+	return tracker
+end
 
 
 # --- Admonition options --- #
