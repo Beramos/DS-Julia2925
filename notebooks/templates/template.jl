@@ -4,20 +4,10 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 05e5c50c-388c-11eb-094a-c537ee96afca
-let
-	using Pkg
-	Pkg.activate(".")
-	Pkg.add(PackageSpec(url="https://github.com/Beramos/DS-Julia2925"))
-end
-
-# ╔═╡ 04b74a0c-388c-11eb-36dd-5360189440cd
-
-
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
 
-student = (name = "Jan Janssen", UGent_username = "JaJansse")
+student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -26,10 +16,14 @@ student = (name = "Jan Janssen", UGent_username = "JaJansse")
 # scroll down the page to see what's up
 
 # ╔═╡ cdff6730-e785-11ea-2546-4969521b33a7
-md"""
+begin 
+	using DSJulia;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
 
-Submission by: **_$(student.name)_**
-"""
+	Submission by: **_$(student.name)_**
+	"""
+end
 
 # ╔═╡ a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
 md"""
@@ -75,32 +69,8 @@ end
 # ╔═╡ 7a01a508-e78a-11ea-11da-999d38785348
 newton_sqrt(2)
 
-# ╔═╡ 682db9f8-e7b1-11ea-3949-6b683ca8b47b
-let
-	result = newton_sqrt(2, 0.01)
-	if !(result isa Number)
-		md"""
-!!! warning "Not a number"
-    `newton_sqrt` did not return a number. Did you forget to write `return`?
-		"""
-	elseif abs(result - sqrt(2)) < 0.01
-		md"""
-!!! correct
-    Well done!
-		"""
-	else
-		md"""
-!!! warning "Incorrect"
-    Keep working on it!
-		"""
-	end
-end
-
-# ╔═╡ 088cc652-e7a8-11ea-0ca7-f744f6f3afdd
-md"""
-!!! hint
-    `abs(r - s)` is the distance between `r` and `s`
-"""
+# ╔═╡ 35ba98ae-4087-11eb-2dbc-77a0ba9de854
+check_answer(tracker, newton_sqrt(4.0)==2.0)
 
 # ╔═╡ c18dce7a-e7a7-11ea-0a1a-f944d46754e5
 md"""
@@ -111,11 +81,9 @@ md"""
 """
 
 # ╔═╡ Cell order:
-# ╠═05e5c50c-388c-11eb-094a-c537ee96afca
 # ╟─cdff6730-e785-11ea-2546-4969521b33a7
-# ╠═04b74a0c-388c-11eb-36dd-5360189440cd
-# ╟─7308bc54-e6cd-11ea-0eab-83f7535edf25
-# ╠═a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
+# ╠═7308bc54-e6cd-11ea-0eab-83f7535edf25
+# ╟─a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
 # ╟─094e39c8-e6ce-11ea-131b-07c4a1199edf
 # ╟─31a8fbf8-e6ce-11ea-2c66-4b4d02b41995
 # ╟─56866718-e6ce-11ea-0804-d108af4e5653
@@ -124,6 +92,5 @@ md"""
 # ╟─d62f223c-e754-11ea-2470-e72a605a9d7e
 # ╠═4896bf0c-e754-11ea-19dc-1380bb356ab6
 # ╠═7a01a508-e78a-11ea-11da-999d38785348
-# ╠═682db9f8-e7b1-11ea-3949-6b683ca8b47b
-# ╠═088cc652-e7a8-11ea-0ca7-f744f6f3afdd
+# ╠═35ba98ae-4087-11eb-2dbc-77a0ba9de854
 # ╟─c18dce7a-e7a7-11ea-0a1a-f944d46754e5

@@ -35,7 +35,7 @@ Open assignments always return `missing`.
 """
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = max(0,min(1,x))
+myclamp(x) = missing
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)
@@ -72,7 +72,7 @@ tracker
 # ╠═eb3259ee-3fdb-11eb-39d1-6d8b2f5a29ed
 # ╠═28e74fe2-3fdc-11eb-28b5-1fc8d35e65cf
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
-# ╟─4707f4ae-3fdc-11eb-3ebd-2b483041d459
+# ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╟─854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
