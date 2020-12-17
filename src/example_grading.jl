@@ -1,3 +1,5 @@
+using DSJulia
+
 pn = "../submissions/Day1/Basic/"
 
 fns = readdir(pn)
