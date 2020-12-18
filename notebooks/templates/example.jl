@@ -25,8 +25,31 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
+# ╔═╡ 3f4bc2d0-416d-11eb-1d39-25214ad5410d
+html"""
+
+
+
+<div class="admonition warning"><p class="admonition-title">Here we go!</p><p>
+
+<div class="admonition warning"><p class="admonition-title">Here we go!</p><p>Replace <code>missing</code> with your answer.</p>
+
+</p>
+
+</div>
+
+
+
+"""
+
+# ╔═╡ 03e518bc-4170-11eb-03cc-ff22efa64538
+HTML{String}("\$(html(q.title))\n\n\$(html(q.description))\n")
+
+# ╔═╡ 53ee9072-416e-11eb-1f56-0b4ee6967a56
+html(still_missing())
+
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
-md"## Example exercise"
+md"## 1. Example simple exercise"
 
 # ╔═╡ 854891dc-2dab-11eb-2b4b-e129081aacca
 md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
@@ -41,7 +64,7 @@ myclamp(x) = missing
 myclamp(1.1)
 
 # ╔═╡ e05ee714-3fde-11eb-0209-e30f44655997
-md"The answer checking happens in the second argument of `check_answer()` and by passing the tracker-instance in the first argument the state of the question (correct/incorrec) is tracked"
+md"The answer checking happens in the second argument of `check_answer()` and by passing the tracker-instance in the first argument the state of the question (correct/incorrect) is tracked"
 
 # ╔═╡ 4d059920-2dac-11eb-2177-574ca39f3399
 # hand in one or serveral examples that should all evaluate to `true`.
@@ -62,8 +85,11 @@ fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squi
 # ╔═╡ c88d70ba-3fe3-11eb-044d-1533f8a48ced
 check_answer(tracker, false)
 
-# ╔═╡ c5bb0b86-3fe3-11eb-1cfe-3dd91c2053cb
-tracker
+# ╔═╡ 84cf3be2-4146-11eb-0aaa-85254c027a70
+md" ## Multistage exercise"
+
+# ╔═╡ 859babe6-4146-11eb-1a1d-4bcc8aa88015
+typeof(md"a")
 
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
@@ -73,8 +99,11 @@ tracker
 # ╠═28e74fe2-3fdc-11eb-28b5-1fc8d35e65cf
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
+# ╠═3f4bc2d0-416d-11eb-1d39-25214ad5410d
+# ╠═03e518bc-4170-11eb-03cc-ff22efa64538
+# ╠═53ee9072-416e-11eb-1f56-0b4ee6967a56
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
-# ╟─854891dc-2dab-11eb-2b4b-e129081aacca
+# ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
 # ╠═87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 # ╟─e05ee714-3fde-11eb-0209-e30f44655997
@@ -84,4 +113,5 @@ tracker
 # ╟─2e7109a0-3fdf-11eb-28af-0d99a01c5066
 # ╠═3cd3e814-3fdf-11eb-1918-75993ba2e121
 # ╠═c88d70ba-3fe3-11eb-044d-1533f8a48ced
-# ╟─c5bb0b86-3fe3-11eb-1cfe-3dd91c2053cb
+# ╟─84cf3be2-4146-11eb-0aaa-85254c027a70
+# ╠═859babe6-4146-11eb-1a1d-4bcc8aa88015

@@ -17,6 +17,7 @@ https://computationalthinking.mit.edu/Fall20/installation/
 using Markdown
 using Markdown: MD, Admonition
 
+abstract type AbstractQuestion end
 
 mutable struct ProgressTracker 
 	correct::Int
@@ -29,6 +30,41 @@ end
 addQuestion!(t::ProgressTracker) = t.total += 1
 accept!(t::ProgressTracker) =	t.correct += 1
 Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of **$(t.name)** with a completion of **$(t.correct) out of $(t.total)** question(s).")
+
+# --- Advanced Questions --- #
+still_missing(text=md"Replace `missing` with your answer.") = MD(Admonition("warning", "Here we go!", [text]))
+title_default = Markdown.MD("### Question X: *insert title here")
+description_default = Markdown.MD("""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+Open assignments always return `missing`.
+""")
+validators_default = missing
+hints_default = Markdown.MD[]
+status_default = [still_missing()]
+
+mutable struct Question <:AbstractQuestion
+	title::Markdown.MD
+	description::Markdown.MD
+	validators::Any
+	hints::Array{Markdown.MD}
+
+	status::Array{Markdown.MD}
+
+	Question(;title=title_default,
+						description=description_default,
+						validators=validators_default,
+						hints = hints_default) = return new(title, description, validators, hints, status_default)
+end
+
+Base.show(io::IO, q::AbstractQuestion) = print(io::IO, html(q))
+
+function html(q::Question)
+	out = html"""
+	$(html(q.title))
+
+	$(html(q.description))
+	"""
+	return out
+end
 
 # --- Autograder function --- #
 """
@@ -55,7 +91,6 @@ function grade(fn)
 	include(fn)
 	return tracker
 end
-
 
 # --- Admonition options --- #
 still_missing(text=md"Replace `missing` with your answer.") = MD(Admonition("warning", "Here we go!", [text]))
