@@ -55,16 +55,15 @@ mutable struct Question <:AbstractQuestion
 						hints = hints_default) = return new(title, description, validators, hints, status_default)
 end
 
-Base.show(io::IO, q::AbstractQuestion) = print(io::IO, html(q))
+Base.show(io::IO, ::MIME"text/html" q::AbstractQuestion) = print(io::IO, tohtml(q))
 
-function html(q::Question)
-	out = html"""
-	$(html(q.title))
-
+function tohtml(q::Question)
+	out = "	$(html(q.title))
 	$(html(q.description))
-	"""
+	"
 	return out
 end
+
 
 # --- Autograder function --- #
 """
