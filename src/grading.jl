@@ -60,7 +60,7 @@ function tohtml(q::Question)
 	hint_br = ""
 
 	if length(q.hints) > 0
-		hint_br = "<br> <p>Hints:</p>"
+		hint_br = "<br> <p><b>Hints:</b></p>"
 	end
 
 	out = """

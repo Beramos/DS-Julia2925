@@ -26,36 +26,14 @@ tracker = ProgressTracker(student.name, student.email);
 md"-----"
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
-Question()
+Question(;
+title=md"### Question 1.0: What a crazy exercise",
+description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 
-# ╔═╡ c19ed95c-4174-11eb-0d6a-898407834f2e
-Markdown.MD(md"### Question X: *insert title here")
-
-# ╔═╡ d864e488-4175-11eb-2eee-b7e691c889d4
-begin
-	Base.show(io::IO, ::MIME"text/html", q::Question) = print(io::IO, tohtml(q))
-	
-	function tohtml(q::Question)
-		hint_br = ""
-	
-		if length(q.hints) > 0
-			hint_br = "<br> <p>Hints:</p>"
-		end
-	
-		out = """
-		$(html(q.title))
-		<p> $(html(q.description)) </p>
-		<p> $(html(q.status)) </p>
-		$(hint_br)
-		$(reduce(*,["<p>" * html(hint) * "</p>" for hint in q.hints]))
-		"""
-		return out
-	end
-	
-end
-
-# ╔═╡ 737c8b50-4174-11eb-063f-ef52ddc9afc6
-HTML(tohtml(q))
+Open assignments always return `missing`.
+""",
+hints=[hint(md"Have you tried this?"),hint(md"Have you tried switching it on and off again?")]
+)
 
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
@@ -109,9 +87,6 @@ typeof(md"a")
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
-# ╠═737c8b50-4174-11eb-063f-ef52ddc9afc6
-# ╠═c19ed95c-4174-11eb-0d6a-898407834f2e
-# ╠═d864e488-4175-11eb-2eee-b7e691c889d4
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
