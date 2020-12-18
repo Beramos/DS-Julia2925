@@ -46,28 +46,38 @@ html"""
 HTML(html(still_missing()))
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
-q = Question()
-
-# ╔═╡ 737c8b50-4174-11eb-063f-ef52ddc9afc6
-Markdown.MD(q.title)
+Question(hints=[hint(md"Uw Moeder"), hint(md"heeft visked gebakken")])
 
 # ╔═╡ c19ed95c-4174-11eb-0d6a-898407834f2e
 Markdown.MD(md"### Question X: *insert title here")
 
-# ╔═╡ a469429a-4173-11eb-07f6-0b20f0443bca
+# ╔═╡ d864e488-4175-11eb-2eee-b7e691c889d4
+begin
+	Base.show(io::IO, ::MIME"text/html", q::Question) = print(io::IO, tohtml(q))
+	
 function tohtml(q::Question)
-	out = "$(html(q.title))
+	hint_br = ""
+
+	if length(q.hints) > 0
+		hint_br = "<br>"
+	end
+
+	out = """
+	$(html(q.title))
 	$(html(q.description))
-	"
+	$(hint_br)
+	$(reduce(*,["<p>" * html(hint) * "</p>" for hint in q.hints]))
+	"""
 	return out
 end
-
+	
+end
 
 # ╔═╡ 03e518bc-4170-11eb-03cc-ff22efa64538
 tohtml(Question())
 
-# ╔═╡ 9311a438-4173-11eb-2786-cf0041fb2cf3
-Base.show(io::IO, ::MIME"text/html", q::Question) = print(io::IO, HTML(tohtml(q)))
+# ╔═╡ 737c8b50-4174-11eb-063f-ef52ddc9afc6
+HTML(tohtml(q))
 
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
@@ -126,8 +136,7 @@ typeof(md"a")
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
 # ╠═737c8b50-4174-11eb-063f-ef52ddc9afc6
 # ╠═c19ed95c-4174-11eb-0d6a-898407834f2e
-# ╠═9311a438-4173-11eb-2786-cf0041fb2cf3
-# ╠═a469429a-4173-11eb-07f6-0b20f0443bca
+# ╠═d864e488-4175-11eb-2eee-b7e691c889d4
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b

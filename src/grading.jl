@@ -33,7 +33,7 @@ Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of **$(t.name)** wit
 
 # --- Advanced Questions --- #
 still_missing(text=md"Replace `missing` with your answer.") = MD(Admonition("warning", "Here we go!", [text]))
-title_default = Markdown.MD(md"### Question X: *insert title here")
+title_default = Markdown.MD(md"### Question 0.: /insert title here/")
 description_default = Markdown.MD(md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 Open assignments always return `missing`.
 """)
@@ -46,8 +46,7 @@ mutable struct Question <:AbstractQuestion
 	description::Markdown.MD
 	validators::Any
 	hints::Array{Markdown.MD}
-
-	status::Array{Markdown.MD}
+	status::Markdown.MD
 
 	Question(;title=title_default,
 						description=description_default,
@@ -55,13 +54,40 @@ mutable struct Question <:AbstractQuestion
 						hints = hints_default) = return new(title, description, validators, hints, status_default)
 end
 
-Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, HTML(tohtml(q)))
+Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml(q))
 
 function tohtml(q::Question)
-	out = "$(html(q.title))
-	$(html(q.description))
-	"
+	hint_br = ""
+
+	if length(q.hints) > 0
+		hint_br = "<br> <p>Hints:</p>"
+	end
+
+	out = """
+	$(html(q.title))
+	<p> $(html(q.description)) </p>
+	<p> $(html(q.status)) </p>
+	$(hint_br)
+	$(reduce(*,["<p>" * html(hint) * "</p>" for hint in q.hints]))
+	"""
 	return out
+end
+
+function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
+	addQuestion!(t)
+	all_valid = all(statements)
+	some_valid = any(statements)
+	if ismissing(all_valid) 
+		q.status = still_missing()
+	elseif some_valid && !all_valid
+		q.status = keep_working(MD("You are not quite there, but getting warmer!"))
+	elseif !all_valid
+		q.status = keep_working()
+	elseif all_valid 
+		accept!(t)
+		q.status = correct()
+		return q
+	end 
 end
 
 
