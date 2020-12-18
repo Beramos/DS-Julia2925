@@ -39,7 +39,7 @@ Open assignments always return `missing`.
 """)
 validators_default = missing
 hints_default = Markdown.MD[]
-status_default = [still_missing()]
+status_default = still_missing()
 
 mutable struct Question <:AbstractQuestion
 	title::Markdown.MD

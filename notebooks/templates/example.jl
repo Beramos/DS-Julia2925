@@ -25,28 +25,8 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
-# ╔═╡ 3f4bc2d0-416d-11eb-1d39-25214ad5410d
-html"""
-
-
-
-<div class="admonition warning"><p class="admonition-title">Here we go!</p><p>
-
-<div class="admonition warning"><p class="admonition-title">Here we go!</p><p>Replace <code>missing</code> with your answer.</p>
-
-</p>
-
-</div>
-
-
-
-"""
-
-# ╔═╡ 53ee9072-416e-11eb-1f56-0b4ee6967a56
-HTML(html(still_missing()))
-
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
-Question(hints=[hint(md"Uw Moeder"), hint(md"heeft visked gebakken")])
+Question()
 
 # ╔═╡ c19ed95c-4174-11eb-0d6a-898407834f2e
 Markdown.MD(md"### Question X: *insert title here")
@@ -55,26 +35,24 @@ Markdown.MD(md"### Question X: *insert title here")
 begin
 	Base.show(io::IO, ::MIME"text/html", q::Question) = print(io::IO, tohtml(q))
 	
-function tohtml(q::Question)
-	hint_br = ""
-
-	if length(q.hints) > 0
-		hint_br = "<br>"
+	function tohtml(q::Question)
+		hint_br = ""
+	
+		if length(q.hints) > 0
+			hint_br = "<br> <p>Hints:</p>"
+		end
+	
+		out = """
+		$(html(q.title))
+		<p> $(html(q.description)) </p>
+		<p> $(html(q.status)) </p>
+		$(hint_br)
+		$(reduce(*,["<p>" * html(hint) * "</p>" for hint in q.hints]))
+		"""
+		return out
 	end
-
-	out = """
-	$(html(q.title))
-	$(html(q.description))
-	$(hint_br)
-	$(reduce(*,["<p>" * html(hint) * "</p>" for hint in q.hints]))
-	"""
-	return out
-end
 	
 end
-
-# ╔═╡ 03e518bc-4170-11eb-03cc-ff22efa64538
-tohtml(Question())
 
 # ╔═╡ 737c8b50-4174-11eb-063f-ef52ddc9afc6
 HTML(tohtml(q))
@@ -130,9 +108,6 @@ typeof(md"a")
 # ╠═28e74fe2-3fdc-11eb-28b5-1fc8d35e65cf
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
-# ╠═3f4bc2d0-416d-11eb-1d39-25214ad5410d
-# ╠═03e518bc-4170-11eb-03cc-ff22efa64538
-# ╠═53ee9072-416e-11eb-1f56-0b4ee6967a56
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
 # ╠═737c8b50-4174-11eb-063f-ef52ddc9afc6
 # ╠═c19ed95c-4174-11eb-0d6a-898407834f2e
