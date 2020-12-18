@@ -33,8 +33,8 @@ Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of **$(t.name)** wit
 
 # --- Advanced Questions --- #
 still_missing(text=md"Replace `missing` with your answer.") = MD(Admonition("warning", "Here we go!", [text]))
-title_default = Markdown.MD("### Question X: *insert title here")
-description_default = Markdown.MD("""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+title_default = Markdown.MD(md"### Question X: *insert title here")
+description_default = Markdown.MD(md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 Open assignments always return `missing`.
 """)
 validators_default = missing
@@ -55,10 +55,10 @@ mutable struct Question <:AbstractQuestion
 						hints = hints_default) = return new(title, description, validators, hints, status_default)
 end
 
-Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml(q))
+Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, HTML(tohtml(q)))
 
 function tohtml(q::Question)
-	out = "	$(html(q.title))
+	out = "$(html(q.title))
 	$(html(q.description))
 	"
 	return out

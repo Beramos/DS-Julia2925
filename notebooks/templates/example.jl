@@ -42,14 +42,32 @@ html"""
 
 """
 
-# ╔═╡ 03e518bc-4170-11eb-03cc-ff22efa64538
-HTML{String}("\$(html(q.title))\n\n\$(html(q.description))\n")
-
 # ╔═╡ 53ee9072-416e-11eb-1f56-0b4ee6967a56
-html(still_missing())
+HTML(html(still_missing()))
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
-Question()
+q = Question()
+
+# ╔═╡ 737c8b50-4174-11eb-063f-ef52ddc9afc6
+Markdown.MD(q.title)
+
+# ╔═╡ c19ed95c-4174-11eb-0d6a-898407834f2e
+Markdown.MD(md"### Question X: *insert title here")
+
+# ╔═╡ a469429a-4173-11eb-07f6-0b20f0443bca
+function tohtml(q::Question)
+	out = "$(html(q.title))
+	$(html(q.description))
+	"
+	return out
+end
+
+
+# ╔═╡ 03e518bc-4170-11eb-03cc-ff22efa64538
+tohtml(Question())
+
+# ╔═╡ 9311a438-4173-11eb-2786-cf0041fb2cf3
+Base.show(io::IO, ::MIME"text/html", q::Question) = print(io::IO, HTML(tohtml(q)))
 
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
@@ -106,6 +124,10 @@ typeof(md"a")
 # ╠═03e518bc-4170-11eb-03cc-ff22efa64538
 # ╠═53ee9072-416e-11eb-1f56-0b4ee6967a56
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═737c8b50-4174-11eb-063f-ef52ddc9afc6
+# ╠═c19ed95c-4174-11eb-0d6a-898407834f2e
+# ╠═9311a438-4173-11eb-2786-cf0041fb2cf3
+# ╠═a469429a-4173-11eb-07f6-0b20f0443bca
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
