@@ -55,7 +55,7 @@ mutable struct Question <:AbstractQuestion
 						hints = hints_default) = return new(title, description, validators, hints, status_default)
 end
 
-Base.show(io::IO, ::MIME"text/html" q::AbstractQuestion) = print(io::IO, tohtml(q))
+Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml(q))
 
 function tohtml(q::Question)
 	out = "	$(html(q.title))
