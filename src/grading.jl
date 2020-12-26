@@ -64,6 +64,7 @@ Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml
 
 function tohtml(q::Question)
 	
+	hint_string = ""
 	if length(q.hints) > 0
 		hint_string = "<br> <p><b>Hints:</b></p>"
 		for hint in q.hints
@@ -76,6 +77,7 @@ function tohtml(q::Question)
 		state_string *=	"<p> $(html(status)) </p>"
 	end
 
+	opt_state_string = ""
 	if !isempty(q.opt_statuses)
 		opt_state_string = "<p> <b> Optional: <b> </p>"
 		for status in q.opt_statuses
