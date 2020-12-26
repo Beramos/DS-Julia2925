@@ -80,12 +80,6 @@ md"**FYI's:**"
 # ╔═╡ 3cd3e814-3fdf-11eb-1918-75993ba2e121
 fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squirrels?")
 
-# ╔═╡ 84cf3be2-4146-11eb-0aaa-85254c027a70
-md" ## Multistage exercise"
-
-# ╔═╡ 859babe6-4146-11eb-1a1d-4bcc8aa88015
-typeof(md"a")
-
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
 # ╠═cfea9340-3fd6-11eb-26cc-57e76c7353cd
@@ -104,5 +98,3 @@ typeof(md"a")
 # ╠═542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╟─2e7109a0-3fdf-11eb-28af-0d99a01c5066
 # ╠═3cd3e814-3fdf-11eb-1918-75993ba2e121
-# ╟─84cf3be2-4146-11eb-0aaa-85254c027a70
-# ╠═859babe6-4146-11eb-1a1d-4bcc8aa88015

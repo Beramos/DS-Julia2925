@@ -28,7 +28,7 @@ still_missing(text=md"Replace `missing` with your answer.") = MD(Admonition("war
 fyi(text) = Markdown.MD(
 	Markdown.Admonition("info",
 		"Additional info",
-		[html"$fyi_css",
+		[html(fyi_css),
 			text
 		]
 	)

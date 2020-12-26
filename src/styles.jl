@@ -11,7 +11,7 @@ div.question {
 }
 </style>"""
 
-fyi_css = """
+fyi_css = html"""
 <style> pluto-output div.admonition.info .admonition-title {
         background: rgb(161, 161, 161);
       } 
@@ -22,7 +22,7 @@ fyi_css = """
       }
 </style>"""
 
-bomb_css = """
+bomb_css = html"""
 <style> pluto-output div.admonition.bomb .admonition-title {
 						background: rgb(226, 157, 148);
 						animation:blinkingBox 1.5s infinite;
