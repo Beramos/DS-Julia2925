@@ -62,17 +62,7 @@ function tohtml(q::Question)
 			$opt_state_string
 			$hint_string
 		</div>
-		<style>
-			div.question {
-				padding-left: 20px;
-				padding-right: 20px;
-				padding-top: 10px;
-				padding-bottom: 10px;
-				border: 3px dotted lightgrey;
-				border-radius: 15px;
-				background: #F8F8F8;
-			}
-			</style>			
+		$question_css		
 	"""
 	return out
 end

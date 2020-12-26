@@ -22,6 +22,7 @@ module DSJulia
     export Question, validate
     export @safe
 
+    include("styles.jl")
     include("admonition.jl")
     include("question.jl")
     include("grading.jl")
