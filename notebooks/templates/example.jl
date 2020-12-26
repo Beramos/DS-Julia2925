@@ -25,17 +25,6 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
-# ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
-q₁ = Question(;
-title=md"### Question 1.0: What a crazy exercise",
-description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-
-Open assignments always return `missing`.
-""",
-hints=[	hint(md"Have you tried this?"),
-		hint(md"Have you tried switching it on and off again?")]
-)
-
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
 
@@ -47,6 +36,21 @@ Open assignments always return `missing`.
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
 myclamp(x) = 1.0
+
+# ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
+q₁ = Question(;
+title=md"### Question 1.0: What a crazy exercise",
+description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+
+Open assignments always return `missing`.
+""",
+validators=[ myclamp(-1)==0],
+hints=[	hint(md"Have you tried this?"),
+		hint(md"Have you tried switching it on and off again?")]
+)
+
+# ╔═╡ 5324da7c-47b1-11eb-2028-950e301089b9
+fill(still_missing(), length(q₁.validators))
 
 # ╔═╡ f76d6114-4789-11eb-3555-2df4aee96034
 validate(q₁, tracker, myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0)
@@ -90,7 +94,8 @@ typeof(md"a")
 # ╠═28e74fe2-3fdc-11eb-28b5-1fc8d35e65cf
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
-# ╟─9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═5324da7c-47b1-11eb-2028-950e301089b9
 # ╠═f76d6114-4789-11eb-3555-2df4aee96034
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca

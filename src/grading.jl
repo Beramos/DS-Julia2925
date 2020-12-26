@@ -54,6 +54,7 @@ mutable struct Question <: AbstractQuestion
 						hints = Markdown.MD[]) = return new(title, 
 																				description, 
 																				validators, 
+																				opt_validators, 
 																				hints, 
 																				fill(still_missing(), length(validators)),
 																				fill(still_missing(), length(opt_validators)))
