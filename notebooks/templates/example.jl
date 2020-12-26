@@ -35,7 +35,7 @@ Open assignments always return `missing`.
 """
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = max.(0, min.(x,1))
+myclamp(x) = max(0, min(x,1))
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
 begin
@@ -47,10 +47,10 @@ begin
 	Open assignments always return `missing`. For the optional question try to make the clamping also work for arrays.
 	""",
 		
-	validators= [myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0],
+	validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0],
 		
 	opt_validators= Dict(
-			"easy" => [myclamp([2.0, 0.3])==[1.0, 0.3]],
+			"easy" => @safe[myclamp([2.0, 0.3])==[1.0, 0.3]],
 			"intermediate" => [false],
 			
 			),

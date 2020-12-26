@@ -3,5 +3,5 @@ module DSJulia
     export check_answer, still_missing, keep_working, correct, not_defined, hint, fyi  
     export ProgressTracker, grade
     export Question, validate
-    export safe
+    export @safe
 end
