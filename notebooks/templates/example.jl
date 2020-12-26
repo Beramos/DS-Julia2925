@@ -44,13 +44,10 @@ description=md"""Complete the function `myclamp(x)` that clamps a number `x` bet
 
 Open assignments always return `missing`.
 """,
-validators=[ myclamp(-1)==0],
+validators=[ myclamp(-1)==0] ,
 hints=[	hint(md"Have you tried this?"),
 		hint(md"Have you tried switching it on and off again?")]
 )
-
-# ╔═╡ 5324da7c-47b1-11eb-2028-950e301089b9
-fill(still_missing(), length(q₁.validators))
 
 # ╔═╡ f76d6114-4789-11eb-3555-2df4aee96034
 validate(q₁, tracker, myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0)
@@ -95,7 +92,6 @@ typeof(md"a")
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
-# ╠═5324da7c-47b1-11eb-2028-950e301089b9
 # ╠═f76d6114-4789-11eb-3555-2df4aee96034
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca

@@ -109,7 +109,7 @@ function tohtml(q::Question)
 end
 
 function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
-	for status in q.statuses
+	for (index,status) in enumerate(q.statuses)
 		addQuestion!(t)
 		all_valid = all(statements)
 		some_valid = any(statements)
@@ -123,9 +123,10 @@ function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
 			accept!(t)
 			status = correct()
 		end 
+		q.statuses[index] = status
 	end
 
-	for status in q.opt_statuses
+	for (index,status) in enumerate(q.opt_statuses)
 		all_valid = all(statements)
 		some_valid = any(statements)
 		if ismissing(all_valid) 
@@ -137,6 +138,7 @@ function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
 		elseif all_valid 
 			status = correct()
 		end 
+		q.opt_statuses[index] = status
 	end
 	return q
 end
