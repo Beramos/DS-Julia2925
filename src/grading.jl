@@ -44,7 +44,7 @@ mutable struct Question <: AbstractQuestion
 	validators::Any
 	opt_validators::Dict{String,Any}
 	hints::Array{Markdown.MD}
-	statuses::Array{Markdown.MD}
+	status::Markdown.MD
 	opt_statuses::Dict{String, Markdown.MD}
 
 	Question(;title=title_default,
@@ -56,7 +56,7 @@ mutable struct Question <: AbstractQuestion
 																				validators, 
 																				opt_validators, 
 																				hints, 
-																				fill(still_missing(), length(validators)),
+																				still_missing(),
 																				Dict(key=>still_missing() for (key, value) in opt_validators))
 end
 
@@ -72,10 +72,7 @@ function tohtml(q::Question)
 		end
 	end
 
-	state_string = ""
-	for status in q.statuses
-		state_string *=	"<p> $(html(status)) </p>"
-	end
+	state_string *=	"<p> $(html(q.status)) </p>"
 
 	opt_state_string = ""
 	if !isempty(q.opt_statuses)
@@ -108,22 +105,21 @@ function tohtml(q::Question)
 end
 
 function validate(q::AbstractQuestion, t::ProgressTracker)
-	for (index, status) in enumerate(q.statuses)
-		addQuestion!(t)
-		all_valid = all(q.validators)
-		some_valid = any(q.validators)
-		if ismissing(all_valid) 
-			status = still_missing()
-		elseif some_valid && !all_valid
-			status = keep_working()
-		elseif !all_valid
-			status = keep_working()
-		elseif all_valid 
-			accept!(t)
-			status = correct()
-		end 
-		q.statuses[index] = status
+
+	addQuestion!(t)
+	all_valid = all(q.validators)
+	some_valid = any(q.validators)
+	if ismissing(all_valid) 
+		status = still_missing()
+	elseif some_valid && !all_valid
+		status = keep_working()
+	elseif !all_valid
+		status = keep_working()
+	elseif all_valid 
+		accept!(t)
+		status = correct()
 	end
+	q.statuses = status
 
 	for (key, status) in q.opt_statuses
 		all_valid = all(q.opt_validators[key])
