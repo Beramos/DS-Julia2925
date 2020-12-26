@@ -107,11 +107,11 @@ function tohtml(q::Question)
 	return out
 end
 
-function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
-	for (index,status) in enumerate(q.statuses)
+function validate(q::AbstractQuestion, t::ProgressTracker)
+	for (index, status) in enumerate(q.statuses)
 		addQuestion!(t)
-		all_valid = all(statements)
-		some_valid = any(statements)
+		all_valid = all(q.validators)
+		some_valid = any(q.validators)
 		if ismissing(all_valid) 
 			status = still_missing()
 		elseif some_valid && !all_valid
@@ -125,9 +125,9 @@ function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
 		q.statuses[index] = status
 	end
 
-	for (index,status) in enumerate(q.opt_statuses)
-		all_valid = all(statements)
-		some_valid = any(statements)
+	for (key, status) in q.opt_statuses
+		all_valid = all(q.opt_validators[key])
+		some_valid = any(q.opt_validators[key])
 		if ismissing(all_valid) 
 			status = still_missing()
 		elseif some_valid && !all_valid
@@ -137,7 +137,7 @@ function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
 		elseif all_valid 
 			status = correct()
 		end 
-		q.opt_statuses[index] = status
+		q.opt_statuses[key] = status
 	end
 	return q
 end
