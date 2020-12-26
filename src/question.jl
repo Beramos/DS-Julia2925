@@ -103,7 +103,7 @@ macro safe(ex)
 			false
 		end
 	end
-	return eval(safe_ex)
+	return safe_ex
 end
 
 # --- Validation --- #
