@@ -110,16 +110,15 @@ function validate(q::AbstractQuestion, t::ProgressTracker)
 	all_valid = all(q.validators)
 	some_valid = any(q.validators)
 	if ismissing(all_valid) 
-		status = still_missing()
+		q.status = still_missing()
 	elseif some_valid && !all_valid
-		status = keep_working()
+		q.status = keep_working()
 	elseif !all_valid
-		status = keep_working()
+		q.status = keep_working()
 	elseif all_valid 
 		accept!(t)
-		status = correct()
+		q.status = correct()
 	end
-	q.statuses = status
 
 	for (key, status) in q.opt_statuses
 		all_valid = all(q.opt_validators[key])
