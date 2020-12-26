@@ -25,6 +25,17 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
+# ╔═╡ 2cf1362a-47c0-11eb-1e49-d39d17f3b53d
+macro safe(ex)
+	safe_ex = quote
+		try $ex
+		catch e 
+			false
+		end
+	end
+	return eval(safe_ex)
+end
+
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
 
@@ -35,7 +46,7 @@ Open assignments always return `missing`.
 """
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = max(0, min(x,1))
+myclamp(x) = max.(0, min.(x,1))
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
 begin
@@ -102,6 +113,7 @@ typeof(md"a")
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═2cf1362a-47c0-11eb-1e49-d39d17f3b53d
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b

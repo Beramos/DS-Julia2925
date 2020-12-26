@@ -144,7 +144,7 @@ macro safe(ex)
 			false
 		end
 	end
-	return safe_ex
+	return eval(safe_ex)
 end
 
 # --- Autograder function --- #
