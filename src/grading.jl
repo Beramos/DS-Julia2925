@@ -104,8 +104,8 @@ function tohtml(q::Question)
 	return out
 end
 
-function validate(q::AbstractQuestion, t::ProgressTracker)
 
+function validate(q::AbstractQuestion, t::ProgressTracker)
 	addQuestion!(t)
 	all_valid = all(q.validators)
 	some_valid = any(q.validators)
@@ -137,12 +137,20 @@ function validate(q::AbstractQuestion, t::ProgressTracker)
 	return q
 end
 
+macro safe(ex)
+	safe_ex = quote
+		try $ex
+		catch e 
+			false
+		end
+	end
+	return safe_ex
+end
 
 # --- Autograder function --- #
 """
 	Validates answer statements and updates question tracker
 """
-
 function check_answer(t::ProgressTracker, statements...)
 	addQuestion!(t)
 	all_valid = all(statements)
