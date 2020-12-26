@@ -37,57 +37,105 @@ title_default = Markdown.MD(md"### Question 0.: /insert title here/")
 description_default = Markdown.MD(md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 Open assignments always return `missing`.
 """)
-validators_default = missing
-hints_default = Markdown.MD[]
-status_default = still_missing()
 
-mutable struct Question <:AbstractQuestion
+mutable struct Question <: AbstractQuestion
 	title::Markdown.MD
 	description::Markdown.MD
 	validators::Any
+	opt_validators::Any
 	hints::Array{Markdown.MD}
-	status::Markdown.MD
+	statuses::Array{Markdown.MD}
+	opt_statuses::Array{Markdown.MD}
 
 	Question(;title=title_default,
 						description=description_default,
-						validators=validators_default,
-						hints = hints_default) = return new(title, description, validators, hints, status_default)
+						validators=[missing],
+						opt_validators=[],
+						hints = Markdown.MD[]) = return new(title, 
+																				description, 
+																				validators, 
+																				hints, 
+																				fill(still_missing(), length(validators)),
+																				fill(still_missing(), length(opt_validators)))
 end
 
 Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml(q))
 
 function tohtml(q::Question)
-	hint_br = ""
-
+	
 	if length(q.hints) > 0
-		hint_br = "<br> <p><b>Hints:</b></p>"
+		hint_string = "<br> <p><b>Hints:</b></p>"
+		for hint in q.hints
+			hint_string *= "<p>" * html(hint) * "</p>"
+		end
+	end
+
+	state_string = ""
+	for status in q.statuses
+		state_string *=	"<p> $(html(status)) </p>"
+	end
+
+	if !empty(q.opt_statuses)
+		opt_state_string = "<p> <b> Optional: <b> </p>"
+		for status in q.opt_statuses
+			opt_state_string *=	"<p> $(html(status)) </p>"
+		end
 	end
 
 	out = """
-	$(html(q.title))
-	<p> $(html(q.description)) </p>
-	<p> $(html(q.status)) </p>
-	$(hint_br)
-	$(reduce(*,["<p>" * html(hint) * "</p>" for hint in q.hints]))
+		<div class="question">
+			$(html(q.title))
+			<p> $(html(q.description)) </p>
+			$state_string
+			$opt_state_string
+			$hint_string
+		</div>
+		<style>
+			div.question {
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				border: 3px dotted lightgrey;
+				border-radius: 15px;
+				background: #F8F8F8;
+			}
+			</style>			
 	"""
 	return out
 end
 
 function validate(q::AbstractQuestion, t::ProgressTracker, statements...)
-	addQuestion!(t)
-	all_valid = all(statements)
-	some_valid = any(statements)
-	if ismissing(all_valid) 
-		q.status = still_missing()
-	elseif some_valid && !all_valid
-		q.status = keep_working(MD("You are not quite there, but getting warmer!"))
-	elseif !all_valid
-		q.status = keep_working()
-	elseif all_valid 
-		accept!(t)
-		q.status = correct()
-		return q
-	end 
+	for status in q.statuses
+		addQuestion!(t)
+		all_valid = all(statements)
+		some_valid = any(statements)
+		if ismissing(all_valid) 
+			status = still_missing()
+		elseif some_valid && !all_valid
+			status = keep_working()
+		elseif !all_valid
+			status = keep_working()
+		elseif all_valid 
+			accept!(t)
+			status = correct()
+		end 
+	end
+
+	for status in q.opt_statuses
+		all_valid = all(statements)
+		some_valid = any(statements)
+		if ismissing(all_valid) 
+			status = still_missing()
+		elseif some_valid && !all_valid
+			status = keep_working()
+		elseif !all_valid
+			status = keep_working()
+		elseif all_valid 
+			status = correct()
+		end 
+	end
+	return q
 end
 
 
