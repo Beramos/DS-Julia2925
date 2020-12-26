@@ -25,6 +25,9 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
+# ╔═╡ f76d6114-4789-11eb-3555-2df4aee96034
+
+
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
 
@@ -35,22 +38,24 @@ Open assignments always return `missing`.
 """
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = 1.0
+myclamp(x) = missing
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
-q₁ = Question(;
-title=md"### Question 1.0: What a crazy exercise",
-description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+begin
+	q = Question(;
+	title=md"### Question 1.0: What a crazy exercise",
+	description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 
-Open assignments always return `missing`.
-""",
-validators=[ myclamp(-1)==0] ,
-hints=[	hint(md"Have you tried this?"),
-		hint(md"Have you tried switching it on and off again?")]
-)
-
-# ╔═╡ f76d6114-4789-11eb-3555-2df4aee96034
-validate(q₁, tracker, myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0)
+	Open assignments always return `missing`.
+	""",
+	validators=[myclamp(-1)==0],
+	opt_validators= [myclamp(0.3)==0.3],
+	hints=[	hint(md"Have you tried this?"),
+			hint(md"Have you tried switching it on and off again?")]
+	);
+	
+	validate(q, tracker, myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0)
+end
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)

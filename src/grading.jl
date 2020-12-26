@@ -79,7 +79,7 @@ function tohtml(q::Question)
 
 	opt_state_string = ""
 	if !isempty(q.opt_statuses)
-		opt_state_string = "<p> <b> Optional: <b> </p>"
+		opt_state_string = "<p> <b> Optional: </b> </p>"
 		for status in q.opt_statuses
 			opt_state_string *=	"<p> $(html(status)) </p>"
 		end
