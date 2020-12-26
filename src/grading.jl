@@ -42,22 +42,22 @@ mutable struct Question <: AbstractQuestion
 	title::Markdown.MD
 	description::Markdown.MD
 	validators::Any
-	opt_validators::Any
+	opt_validators::Dict{String,Any}
 	hints::Array{Markdown.MD}
 	statuses::Array{Markdown.MD}
-	opt_statuses::Array{Markdown.MD}
+	opt_statuses::Dict{String, Markdown.MD}
 
 	Question(;title=title_default,
 						description=description_default,
 						validators=[missing],
-						opt_validators=[],
+						opt_validators=Dict{String,Array{Markdown.MD}}(),
 						hints = Markdown.MD[]) = return new(title, 
 																				description, 
 																				validators, 
 																				opt_validators, 
 																				hints, 
 																				fill(still_missing(), length(validators)),
-																				fill(still_missing(), length(opt_validators)))
+																				Dict(key=>still_missing() for (key, value) in opt_validators))
 end
 
 Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml(q))
@@ -79,9 +79,8 @@ function tohtml(q::Question)
 
 	opt_state_string = ""
 	if !isempty(q.opt_statuses)
-		opt_state_string = "<p> <b> Optional: </b> </p>"
-		for status in q.opt_statuses
-			opt_state_string *=	"<p> $(html(status)) </p>"
+		for (difficulty, status) in q.opt_statuses
+			opt_state_string *= "<p> <b> Optional ($difficulty): </b> </p> <p> $(html(status)) </p>"
 		end
 	end
 
