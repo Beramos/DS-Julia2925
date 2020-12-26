@@ -98,7 +98,7 @@ Usage:
 """
 macro safe(ex)
 	safe_ex = quote
-		try $ex
+		try $(esc(ex))
 		catch e 
 			false
 		end

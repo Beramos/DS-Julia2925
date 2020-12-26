@@ -25,16 +25,8 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
-# ╔═╡ 2cf1362a-47c0-11eb-1e49-d39d17f3b53d
-macro safe(ex)
-	safe_ex = quote
-		try $ex
-		catch e 
-			false
-		end
-	end
-	return eval(safe_ex)
-end
+# ╔═╡ d219fcb0-47c3-11eb-140e-15500b3c3d49
+@safe
 
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
@@ -79,10 +71,6 @@ myclamp(1.1)
 # ╔═╡ e05ee714-3fde-11eb-0209-e30f44655997
 md"The answer checking happens in the second argument of `check_answer()` and by passing the tracker-instance in the first argument the state of the question (correct/incorrect) is tracked"
 
-# ╔═╡ 4d059920-2dac-11eb-2177-574ca39f3399
-# hand in one or serveral examples that should all evaluate to `true`.
-check_answer(tracker, myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0) 
-
 # ╔═╡ 221b27f8-3fdf-11eb-06c1-f97060a68bca
 md"**Hints:**"
 
@@ -94,9 +82,6 @@ md"**FYI's:**"
 
 # ╔═╡ 3cd3e814-3fdf-11eb-1918-75993ba2e121
 fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squirrels?")
-
-# ╔═╡ c88d70ba-3fe3-11eb-044d-1533f8a48ced
-check_answer(tracker, false)
 
 # ╔═╡ 84cf3be2-4146-11eb-0aaa-85254c027a70
 md" ## Multistage exercise"
@@ -113,17 +98,15 @@ typeof(md"a")
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╟─9bbee332-4170-11eb-05a6-4998f14d307e
-# ╠═2cf1362a-47c0-11eb-1e49-d39d17f3b53d
+# ╠═d219fcb0-47c3-11eb-140e-15500b3c3d49
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
 # ╠═87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 # ╟─e05ee714-3fde-11eb-0209-e30f44655997
-# ╠═4d059920-2dac-11eb-2177-574ca39f3399
 # ╟─221b27f8-3fdf-11eb-06c1-f97060a68bca
 # ╠═542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╟─2e7109a0-3fdf-11eb-28af-0d99a01c5066
 # ╠═3cd3e814-3fdf-11eb-1918-75993ba2e121
-# ╠═c88d70ba-3fe3-11eb-044d-1533f8a48ced
 # ╟─84cf3be2-4146-11eb-0aaa-85254c027a70
 # ╠═859babe6-4146-11eb-1a1d-4bcc8aa88015
