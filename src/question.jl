@@ -11,6 +11,7 @@ bram.de.jaegher@gmail.com
 
 abstract type AbstractQuestion end
 abstract type AbstractDifficulty end
+abstract type AbstractQuestionBlock end
 struct NoDiff <: AbstractDifficulty end
 struct Easy <: AbstractDifficulty end
 struct Intermediate <: AbstractDifficulty end
