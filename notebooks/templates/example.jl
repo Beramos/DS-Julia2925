@@ -53,11 +53,18 @@ begin
 		validators= @safe[false]
 	)
 	
+	q₄ = QuestionOptional{Intermediate}(;
+		description=md"""
+		This is an intermediate question
+		""",
+		validators= @safe[false]
+	)
+	
 
    qb = QuestionBlock(;
 	title=md"### Question 1.0: What a crazy exercise",
 	description=md" Some additional general kind off description and all.",
-	questions = [q₁, q₂, q₃],
+	questions = [q₁, q₂, q₃, q₄],
 	hints=[	hint(md"Have you tried this?"),
 			hint(md"Have you tried switching it on and off again?")]
 	);
@@ -84,7 +91,7 @@ md"**FYI's:**"
 fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squirrels?")
 
 # ╔═╡ 1befa358-485a-11eb-1195-f3f53e48020b
-bomb()
+bomb("")
 
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
