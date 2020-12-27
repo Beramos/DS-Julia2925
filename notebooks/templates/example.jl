@@ -25,6 +25,9 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
+# ╔═╡ fe2bf14e-4851-11eb-220a-79156c32c6d9
+QuestionOptional{Easy}(;)
+
 # ╔═╡ 2c2acce2-4851-11eb-117c-9193cee78d69
 
 
@@ -46,9 +49,6 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 									hints = Markdown.MD[],
 									questions = [Question()]) = new(title, description, hints, questions) 
 end
-
-# ╔═╡ fe2bf14e-4851-11eb-220a-79156c32c6d9
-QuestionBlock
 
 # ╔═╡ 0b9c7596-4851-11eb-0c77-d147836a8372
 #= 	opt_validators= Dict(
@@ -76,18 +76,26 @@ myclamp(x) = max(0, min(x,1))
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
 begin
 	q₁ = Question(;
-		description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+		description=md"""
+		Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 
-		Open assignments always return `missing`. For the optional question try to make the clamping also work for arrays.
+		Open assignments always return `missing`. 
 		""",
 		validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0]
+	)
+	
+	q₂ = QuestionOptional{Easy}(;
+		description=md"""
+		Try to make the clamping also work for arrays.
+		""",
+		validators= @safe[myclamp([2.0, 0.3])==[1.0, 0.3]]
 	)
 	
 
    qb = QuestionBlock(;
 	title=md"### Question 1.0: What a crazy exercise",
 	description=md"",
-	questions = [q₁],
+	questions = [q₁, q₂],
 
 		
 	hints=[	hint(md"Have you tried this?"),

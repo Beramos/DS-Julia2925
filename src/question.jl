@@ -31,7 +31,7 @@ mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion
 	validators::Any
 	status::Markdown.MD
 	difficulty::T
-	Question(;description=description_default, 
+	QuestionOptional(;description=description_default, 
 						validators=[missing], 
 						status=still_missing(), difficulty = NoDiff()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, difficulty::T)
 end
