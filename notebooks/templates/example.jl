@@ -46,24 +46,31 @@ begin
 		validators= @safe[myclamp([2.0, 0.3])==[1.0, 0.3]]
 	)
 	
-	q₃ = QuestionOptional{Hard}(;
+	q₃ = QuestionOptional{Intermediate}(;
 		description=md"""
-		This is an almost impossible question
+		This is an intermediate question. Surely you can complete this
+		""",
+		validators= @safe[true]
+	)
+	
+	q₄ = QuestionOptional{Hard}(;
+		description=md"""
+		I admit, this one is definitely harder
 		""",
 		validators= @safe[false]
 	)
 	
-	q₄ = QuestionOptional{Intermediate}(;
-		description=md"""
-		This is an intermediate question
-		""",
-		validators= @safe[false]
-	)
 	
-
    qb = QuestionBlock(;
 	title=md"### Question 1.0: What a crazy exercise",
-	description=md" Some additional general kind off description and all.",
+	description=md"""
+		Some additional general kind off description and all.
+		You can even add other admonitions. 
+		$(fyi(md"I'm here!"))
+		
+		Anything markdowny. Just make sure to use the triple accolades `\"\"\"`.
+		
+		""",
 	questions = [q₁, q₂, q₃, q₄],
 	hints=[	hint(md"Have you tried this?"),
 			hint(md"Have you tried switching it on and off again?")]
@@ -88,7 +95,7 @@ hint(md"Did you think of this?")
 md"**FYI's:**"
 
 # ╔═╡ 3cd3e814-3fdf-11eb-1918-75993ba2e121
-fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squirrels?")
+fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels? $(fyi("a"))""")
 
 # ╔═╡ 1befa358-485a-11eb-1195-f3f53e48020b
 bomb("")
