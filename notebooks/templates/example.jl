@@ -26,13 +26,13 @@ tracker = ProgressTracker(student.name, student.email);
 md"-----"
 
 # ╔═╡ 2c2acce2-4851-11eb-117c-9193cee78d69
-abstract type AbstractQuestion end
+
 
 # ╔═╡ 2f7a46d4-4851-11eb-3154-25e7522fbc30
-abstract type AbstractDifficulty end
+
 
 # ╔═╡ 24ca0562-4851-11eb-20fd-bd04c7b49b98
-abstract type AbstractQuestionBlock end
+
 
 # ╔═╡ 1fbb7d80-4851-11eb-2412-8949395ed30f
 mutable struct QuestionBlock <: AbstractQuestionBlock
@@ -121,9 +121,9 @@ fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squi
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
-# ╠═2c2acce2-4851-11eb-117c-9193cee78d69
-# ╠═2f7a46d4-4851-11eb-3154-25e7522fbc30
-# ╠═24ca0562-4851-11eb-20fd-bd04c7b49b98
+# ╟─2c2acce2-4851-11eb-117c-9193cee78d69
+# ╟─2f7a46d4-4851-11eb-3154-25e7522fbc30
+# ╟─24ca0562-4851-11eb-20fd-bd04c7b49b98
 # ╠═1fbb7d80-4851-11eb-2412-8949395ed30f
 # ╠═0b9c7596-4851-11eb-0c77-d147836a8372
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137

@@ -41,7 +41,7 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 	title::Markdown.MD
 	description::Markdown.MD
 	hints::Array{Markdown.MD}
-	questions::Array{T} where T {<:AbstractQuestion}
+	questions::Array{T} where {T<:AbstractQuestion}
 
 	QuestionBlock(;title=title_default,
 									description=description_default,
