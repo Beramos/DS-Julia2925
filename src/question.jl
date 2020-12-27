@@ -72,7 +72,7 @@ function tohtml(q::QuestionBlock)
 	if length(q.questions) > 1
 		for opt_question in q.questions[2:end]
 			if opt_question.difficulty !== ""
-			opt_state_string *= "<p> <b> Optional ($(split(string(typeof(opt_question.difficulty), "."))[2])): </b> </p>"
+			opt_state_string *= "<p> <b> Optional ($(split(string(typeof(opt_question.difficulty)), ".")[2])): </b> </p>"
 			else
 			opt_state_string *= "<p> <b> Optional: </b> </p>"
 			end
