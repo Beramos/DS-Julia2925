@@ -18,6 +18,7 @@ module DSJulia
     using Markdown: MD, Admonition
 
     export check_answer, still_missing, keep_working, correct, not_defined, hint, fyi  
+    export NoDiff, Easy, Intermediate, Hard
     export ProgressTracker, grade
     export Question, validate
     export @safe

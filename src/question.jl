@@ -1,3 +1,4 @@
+
 #=
 Created on Saturday 26 December 2020
 Last update: -
@@ -9,33 +10,48 @@ bram.de.jaegher@gmail.com
 # --- Types --- #
 
 abstract type AbstractQuestion end
+abstract type AbstractDifficulty end
+struct NoDiff <: AbstractDifficulty end
+struct Easy <: AbstractDifficulty end
+struct Intermediate <: AbstractDifficulty end
+struct Hard <: AbstractDifficulty end
 
 mutable struct Question <: AbstractQuestion
-	title::Markdown.MD
 	description::Markdown.MD
 	validators::Any
-	opt_validators::Dict{String,Any}
-	hints::Array{Markdown.MD}
 	status::Markdown.MD
-	opt_statuses::Dict{String, Markdown.MD}
+	Question(;description=description_default, 
+						validators=[missing], 
+						status=still_missing()) = new(description, validators, status)
+end
 
-	Question(;title=title_default,
-						description=description_default,
-						validators=[missing],
-						opt_validators=Dict{String,Array{Markdown.MD}}(),
-						hints = Markdown.MD[]) = return new(title, 
-																				description, 
-																				validators, 
-																				opt_validators, 
-																				hints, 
-																				still_missing(),
-																				Dict(key=>still_missing() for (key, value) in opt_validators))
+mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion 
+	description::Markdown.MD
+	validators::Any
+	status::Markdown.MD
+	difficulty::T
+	Question(;description=description_default, 
+						validators=[missing], 
+						status=still_missing(), difficulty = NoDiff()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, difficulty::T)
+end
+
+
+mutable struct QuestionBlock <: AbstractQuestionBlock
+	title::Markdown.MD
+	description::Markdown.MD
+	hints::Array{Markdown.MD}
+	questions::Array{AbstractQuestion}
+
+	QuestionBlock(;title=title_default,
+									description=description_default,
+									hints = Markdown.MD[],
+									questions = [Question()]) = new(title, description, hints, questions) 
 end
 
 # --- Rendering --- # 
-Base.show(io::IO, ::MIME"text/html", q::AbstractQuestion) = print(io::IO, tohtml(q))
+Base.show(io::IO, ::MIME"text/html", q::AbstractQuestionBlock) = print(io::IO, tohtml(q))
 
-function tohtml(q::Question)
+function tohtml(q::QuestionBlock)
 	
 	hint_string = ""
 	if length(q.hints) > 0
@@ -45,12 +61,17 @@ function tohtml(q::Question)
 		end
 	end
 
-	state_string = "<p> $(html(q.status)) </p>"
+	state_string = "<p> $(html(q.questions[1].status)) </p>"
 
 	opt_state_string = ""
-	if !isempty(q.opt_statuses)
-		for (difficulty, status) in q.opt_statuses
-			opt_state_string *= "<p> <b> Optional ($difficulty): </b> </p> <p> $(html(status)) </p>"
+	if q.questions > 1
+		for opt_question in q.questions[2:end]
+			if opt_question.difficulty !== ""
+			opt_state_string *= "<p> <b> Optional ($(opt_question.difficulty)): </b> </p>"
+			else
+			opt_state_string *= "<p> <b> Optional: </b> </p>"
+			end
+			opt_state_string *= "<p> $(html(opt_question.status)) </p>"
 		end
 	end
 
@@ -112,11 +133,13 @@ function check_answer(validators)
 	return status
 end
 
-function validate(q::AbstractQuestion)
-	q.status = check_answer(q.validators)
+function validate(q::QuestionBlock)
+	q.questions[1].status = check_answer(q.questions[1].validators)
 	
-	for (key, status) in q.opt_statuses
-		q.opt_statuses[key] = check_answer(q.opt_validators[key])
+	if q.questions > 1
+		for (index, opt_question) in enumerate(q.questions[2:end])
+			q.questions[index+1] = check_answer(opt_question.validators)
+		end
 	end
 	return q
 end
