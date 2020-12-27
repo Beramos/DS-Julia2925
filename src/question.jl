@@ -41,7 +41,7 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 	title::Markdown.MD
 	description::Markdown.MD
 	hints::Array{Markdown.MD}
-	questions::Array{AbstractQuestion}
+	questions::Array{T} where T {<:AbstractQuestion}
 
 	QuestionBlock(;title=title_default,
 									description=description_default,
@@ -72,6 +72,7 @@ function tohtml(q::QuestionBlock)
 			else
 			opt_state_string *= "<p> <b> Optional: </b> </p>"
 			end
+			opt_state_string
 			opt_state_string *= "<p> $(html(opt_question.status)) </p>"
 		end
 	end

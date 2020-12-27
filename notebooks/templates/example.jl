@@ -25,6 +25,39 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
+# ╔═╡ 2c2acce2-4851-11eb-117c-9193cee78d69
+abstract type AbstractQuestion end
+
+# ╔═╡ 2f7a46d4-4851-11eb-3154-25e7522fbc30
+abstract type AbstractDifficulty end
+
+# ╔═╡ 24ca0562-4851-11eb-20fd-bd04c7b49b98
+abstract type AbstractQuestionBlock end
+
+# ╔═╡ 1fbb7d80-4851-11eb-2412-8949395ed30f
+mutable struct QuestionBlock <: AbstractQuestionBlock
+	title::Markdown.MD
+	description::Markdown.MD
+	hints::Array{Markdown.MD}
+	questions::Array{AbstractQuestion}
+
+	QuestionBlock(;title=title_default,
+									description=description_default,
+									hints = Markdown.MD[],
+									questions = [Question()]) = new(title, description, hints, questions) 
+end
+
+# ╔═╡ 0b9c7596-4851-11eb-0c77-d147836a8372
+#= 	opt_validators= Dict(
+			"easy" => @safe[myclamp([2.0, 0.3])==[1.0, 0.3]],
+			"intermediate" => [false],
+			
+			), 
+
+	validate(q, tracker)
+
+=#
+
 # ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
 md"## 1. Example simple exercise"
 
@@ -39,28 +72,27 @@ myclamp(x) = max(0, min(x,1))
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
 begin
-	q = Question(;
-	title=md"### Question 1.0: What a crazy exercise",
-		
-	description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+	q₁ = Question(;
+		description=md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
 
-	Open assignments always return `missing`. For the optional question try to make the clamping also work for arrays.
-	""",
-		
-	validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0],
-		
-	opt_validators= Dict(
-			"easy" => @safe[myclamp([2.0, 0.3])==[1.0, 0.3]],
-			"intermediate" => [false],
-			
-			),
+		Open assignments always return `missing`. For the optional question try to make the clamping also work for arrays.
+		""",
+		validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0],
+	
+	)
+	
+
+   qb = QuestionBlock(;
+	title=md"### Question 1.0: What a crazy exercise",
+	description=md"",
+	
+
 		
 	hints=[	hint(md"Have you tried this?"),
 			hint(md"Have you tried switching it on and off again?")]
 	);
 	
-	validate(q, tracker)
-end
+end 
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)
@@ -88,7 +120,12 @@ fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squi
 # ╠═28e74fe2-3fdc-11eb-28b5-1fc8d35e65cf
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
-# ╟─9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═2c2acce2-4851-11eb-117c-9193cee78d69
+# ╠═2f7a46d4-4851-11eb-3154-25e7522fbc30
+# ╠═24ca0562-4851-11eb-20fd-bd04c7b49b98
+# ╠═1fbb7d80-4851-11eb-2412-8949395ed30f
+# ╠═0b9c7596-4851-11eb-0c77-d147836a8372
 # ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
 # ╠═854891dc-2dab-11eb-2b4b-e129081aacca
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
