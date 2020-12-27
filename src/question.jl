@@ -44,7 +44,7 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 	questions::Array{T} where {T<:AbstractQuestion}
 
 	QuestionBlock(;title=title_default,
-									description="",
+									description=md"",
 									hints = Markdown.MD[],
 									questions = [Question()]) = new(title, description, hints, questions) 
 end
