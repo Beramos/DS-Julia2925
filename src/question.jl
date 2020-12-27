@@ -31,9 +31,9 @@ mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion
 	validators::Any
 	status::Markdown.MD
 	difficulty::T
-	QuestionOptional(;description=description_default, 
+	QuestionOptional{T}(;description=description_default, 
 						validators=[missing], 
-						status=still_missing(), difficulty = NoDiff()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, difficulty::T)
+						status=still_missing()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
 end
 
 
@@ -68,7 +68,7 @@ function tohtml(q::QuestionBlock)
 	if length(q.questions) > 1
 		for opt_question in q.questions[2:end]
 			if opt_question.difficulty !== ""
-			opt_state_string *= "<p> <b> Optional ($(opt_question.difficulty)): </b> </p>"
+			opt_state_string *= "<p> <b> Optional ($(typeof(opt_question.difficulty))): </b> </p>"
 			else
 			opt_state_string *= "<p> <b> Optional: </b> </p>"
 			end

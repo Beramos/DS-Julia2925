@@ -25,8 +25,17 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
+# ╔═╡ 9a2009fc-4853-11eb-1027-01ce1341484b
+
+
+# ╔═╡ b43ffbb4-4853-11eb-183c-25481868684a
+
+
+# ╔═╡ b83f06a4-4853-11eb-0178-736ad7c329c5
+supertype(Easy) 
+
 # ╔═╡ fe2bf14e-4851-11eb-220a-79156c32c6d9
-QuestionOptional{Easy}(;)
+QuestionOptional{Easy}()
 
 # ╔═╡ 2c2acce2-4851-11eb-117c-9193cee78d69
 
@@ -131,6 +140,9 @@ fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squi
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
+# ╠═9a2009fc-4853-11eb-1027-01ce1341484b
+# ╠═b43ffbb4-4853-11eb-183c-25481868684a
+# ╠═b83f06a4-4853-11eb-0178-736ad7c329c5
 # ╠═fe2bf14e-4851-11eb-220a-79156c32c6d9
 # ╟─2c2acce2-4851-11eb-117c-9193cee78d69
 # ╟─2f7a46d4-4851-11eb-3154-25e7522fbc30
