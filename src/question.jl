@@ -65,7 +65,7 @@ function tohtml(q::QuestionBlock)
 	state_string = "<p> $(html(q.questions[1].status)) </p>"
 
 	opt_state_string = ""
-	if q.questions > 1
+	if length(q.questions) > 1
 		for opt_question in q.questions[2:end]
 			if opt_question.difficulty !== ""
 			opt_state_string *= "<p> <b> Optional ($(opt_question.difficulty)): </b> </p>"
@@ -138,7 +138,7 @@ end
 function validate(q::QuestionBlock)
 	q.questions[1].status = check_answer(q.questions[1].validators)
 	
-	if q.questions > 1
+	if length(q.questions) > 1
 		for (index, opt_question) in enumerate(q.questions[2:end])
 			q.questions[index+1] = check_answer(opt_question.validators)
 		end
