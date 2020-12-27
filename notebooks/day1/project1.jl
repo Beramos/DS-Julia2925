@@ -4,6 +4,18 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
+# ╔═╡ cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
+using PlutoUI
+
 # ╔═╡ c962de82-3c9e-11eb-13df-d5dec37bb2c0
 using CSV, DataFrames, Dates
 
@@ -103,7 +115,19 @@ md"Note that:"
 sum(wx)
 
 # ╔═╡ 8b4c6880-4837-11eb-0ff7-573dd18a9664
+md"""
+A one-dimensional convolution is given by:
 
+$$y_i = \sum_{k=-m}^{m} x_{i + k} w_{m+k+1}\,,$$
+
+a vector $\mathbf{x}$ of length $n$ is transformed in a convolved vector $\mathbf{y}$ (also length $n$). The convolution is determined by a **kernel** or **filter** $\mathbf{w}$ of length $2m+1$ (chosen such that it has an odd length). You can see element $y_i$ as a weighted mean of the elements $x_{i-m}, x_{i-m+1},\ldots, x_{i+m-1}, x_{i+m}$.
+
+When computing convolutions (or in numerical computing in general) one has to be careful with the **boundary conditions**. We cannot compute the sum at the ends since the sum would exceed the vector $\mathbf{x}$. There are many sensible ways to resolve this, we will choose the simplest solution of using fixed boundaries by setting $y_i = x_i$ when $i< m$ or $i>n-m$.
+"""
+
+# ╔═╡ ff3241be-4861-11eb-0c1c-2bd093e3cbe9
+md"""
+As an example, let us try to process the number of COVID cases that were reported in Belgium since the beginning of the measurements. These can easily be downloaded from [Sciensano](https://epistat.sciensano.be/Data/)."""
 
 # ╔═╡ 31e39938-3c9f-11eb-0341-53670c2e93e1
 begin
@@ -121,11 +145,14 @@ covid_dates = [Date(d, "yyyy-mm-dd") for d in covid_data[1:end-1,1]]
 # ╔═╡ 8a996336-2bde-11eb-10a3-cb0046ed5de9
 plot(covid_dates, covid_cases, label="measured COVID cases in Belgium")
 
+# ╔═╡ 696e252a-4862-11eb-2752-9d7bbd0a4b7d
+md"You can see that the plot is very noisy, let us use convolution to smooth things out!"
+
 # ╔═╡ a1f75f4c-2bde-11eb-37e7-2dc342c7032a
 function convolve_1d(x::Vector, w::Vector)
 	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
 	n = length(x)
-	m = div(length(w), 2)
+	m = length(w) ÷ 2
 	out = zeros(n)
 
 	fill!(out, 0.0)
@@ -137,6 +164,12 @@ function convolve_1d(x::Vector, w::Vector)
 	end
 	return out
 end
+
+# ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
+md"""Let us generate some weight vectors, several options seem reasonable:
+- **uniform**: all values of $\mathbf{w}$ are the same;
+- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $t=m+1$ and linarly decreasing from $i=m+1$ till $2m+1$;
+"""
 
 # ╔═╡ ef84b6fe-2bef-11eb-0943-034b8b90c4c4
 function uniform_weights(m)
@@ -154,8 +187,11 @@ function triangle_weigths(m)
 	return w
 end	
 
+# ╔═╡ c596227e-4862-11eb-3fe4-151218778dba
+@bind m Slider(1:2:25, default=5)
+
 # ╔═╡ fa911a76-2be3-11eb-1c85-3df313eb0fcb
-w = triangle_weigths(9)
+w = triangle_weigths(m)
 
 # ╔═╡ 20c46656-2bf0-11eb-2dc4-af2cc2161f6a
 scatter(w, xlabel="j", ylabel="weight")
@@ -166,26 +202,8 @@ signal_c = convolve_1d(covid_cases, w)
 # ╔═╡ eb5f8062-2be1-11eb-1e96-1f89be62f3b0
 plot(covid_dates, signal_c)
 
-# ╔═╡ af33214a-2be7-11eb-34f5-0d046c9db735
-function generalized_convolve_1d!(x, out, m, f)
-	n = length(x)
-	@assert n == length(out) "`x` and `out` have to be of the same length!"
-	fill!(out, 0.0)
-	for (i, xj) in enumerate(x)
-		if  m < i < n - m
-			out[i] = f(x[(i-m):(i+m)])
-		else
-			out[i] = 0#x[i]
-		end
-	end
-	return out
-end
-
-# ╔═╡ 4263e920-2bf1-11eb-1db1-ed644a480a2d
-
-
-# ╔═╡ 21ce0552-2be9-11eb-2359-152a7c75cc2e
-vec_conv(x_s) = sum(x_s .* w)
+# ╔═╡ 2a5e7ec8-4864-11eb-3161-35a51a74145f
+m
 
 # ╔═╡ b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 md"""
@@ -230,13 +248,6 @@ zscales3 = Dict(A=>z[3] for (A, z) in zdict)
 # ╔═╡ c924a5f6-2bf1-11eb-3d37-bb63635624e9
 spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT"
 
-# ╔═╡ c02be52e-301a-11eb-37f6-2fa27211a76e
-function chou_fasman(sequence, windowsize, pars)
-	f_cf(subseq) = mean((pars[s] for s in subseq))
-	out = zeros(length(sequence))
-	return generalized_convolve_1d!(sequence, out, windowsize, f_cf)
-end
-
 # ╔═╡ c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 protein_z_scale1 = [zscales1[AA] for AA in spike_sars2]
 
@@ -246,6 +257,9 @@ plot(convolve_1d(protein_z_scale1, w))
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 md"""
 ### Elementary cellular automata
+
+To conclude our 
+![](https://mathworld.wolfram.com/images/eps-gif/ElementaryCARules_900.gif)
 """
 
 # ╔═╡ b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
@@ -255,7 +269,10 @@ rule = 110 |> UInt8
 bitstring(rule)
 
 # ╔═╡ b43157fa-482e-11eb-3169-cf4989528800
+getbinarydigit(number, i) = number & 2^(i-1) != 0
 
+# ╔═╡ 96df10b6-4865-11eb-2c7a-cd64bca6e1e6
+getbinarydigit(rule, 5)
 
 # ╔═╡ 625c4e1e-2bf3-11eb-2c03-193f7d013fbe
 begin
@@ -505,6 +522,7 @@ end
 
 # ╔═╡ Cell order:
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
+# ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 # ╠═14bb9c3a-34b5-11eb-0f20-75a14b584e0c
 # ╠═2712ade2-34b5-11eb-0242-57f37f6607a3
 # ╠═3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
@@ -521,35 +539,37 @@ end
 # ╠═52706c6a-4836-11eb-09a8-53549f16f5c2
 # ╠═4dc28cdc-4836-11eb-316f-43c04639da2a
 # ╠═8b4c6880-4837-11eb-0ff7-573dd18a9664
+# ╠═ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 # ╠═c962de82-3c9e-11eb-13df-d5dec37bb2c0
 # ╠═31e39938-3c9f-11eb-0341-53670c2e93e1
 # ╠═caef0432-3c9f-11eb-2006-8ff54211b2b3
 # ╠═b3ec8362-482d-11eb-2df4-2343ee17444a
 # ╠═8a996336-2bde-11eb-10a3-cb0046ed5de9
+# ╠═696e252a-4862-11eb-2752-9d7bbd0a4b7d
 # ╠═485292d8-2bde-11eb-0a97-6b44d54596dd
 # ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
+# ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
+# ╠═ef84b6fe-2bef-11eb-0943-034b8b90c4c4
+# ╠═294140a4-2bf0-11eb-22f5-858969a4640d
 # ╠═fa911a76-2be3-11eb-1c85-3df313eb0fcb
 # ╠═20c46656-2bf0-11eb-2dc4-af2cc2161f6a
 # ╠═cb5f4a20-2be8-11eb-0000-c59f23a024ef
 # ╠═eb5f8062-2be1-11eb-1e96-1f89be62f3b0
-# ╠═ef84b6fe-2bef-11eb-0943-034b8b90c4c4
-# ╠═294140a4-2bf0-11eb-22f5-858969a4640d
-# ╠═af33214a-2be7-11eb-34f5-0d046c9db735
-# ╠═4263e920-2bf1-11eb-1db1-ed644a480a2d
-# ╠═21ce0552-2be9-11eb-2359-152a7c75cc2e
+# ╟─c596227e-4862-11eb-3fe4-151218778dba
+# ╠═2a5e7ec8-4864-11eb-3161-35a51a74145f
 # ╠═b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 # ╠═5c20f87e-3ca1-11eb-3a21-27790a167ca5
 # ╠═87610484-3ca1-11eb-0e74-8574e946dd9f
 # ╠═9c82d5ea-3ca1-11eb-3575-f1893df8f129
 # ╠═a4ccb496-3ca1-11eb-0e7a-87620596eec1
 # ╠═c924a5f6-2bf1-11eb-3d37-bb63635624e9
-# ╠═c02be52e-301a-11eb-37f6-2fa27211a76e
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 # ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
 # ╠═a6e7441a-482e-11eb-1edb-6bd1daa00390
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
+# ╠═96df10b6-4865-11eb-2c7a-cd64bca6e1e6
 # ╠═625c4e1e-2bf3-11eb-2c03-193f7d013fbe
 # ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
