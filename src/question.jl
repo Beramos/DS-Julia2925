@@ -146,7 +146,7 @@ function validate(q::QuestionBlock)
 	
 	if length(q.questions) > 1
 		for (index, opt_question) in enumerate(q.questions[2:end])
-			q.questions[index+1] = check_answer(opt_question.validators)
+			q.questions[index+1].status = check_answer(opt_question.validators)
 		end
 	end
 	return q

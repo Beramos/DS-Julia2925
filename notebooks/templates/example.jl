@@ -28,9 +28,6 @@ md"-----"
 # ╔═╡ 9a2009fc-4853-11eb-1027-01ce1341484b
 NoDiff
 
-# ╔═╡ b43ffbb4-4853-11eb-183c-25481868684a
-
-
 # ╔═╡ b83f06a4-4853-11eb-0178-736ad7c329c5
 supertype(Easy) 
 
@@ -104,13 +101,19 @@ begin
    qb = QuestionBlock(;
 	title=md"### Question 1.0: What a crazy exercise",
 	description=md"",
-	questions = [q₁, q₂],
+	questions = [q₁],
 	hints=[	hint(md"Have you tried this?"),
 			hint(md"Have you tried switching it on and off again?")]
 	);
 	
-	validate(qb, tracker)
+	validate(qb)
 end 
+
+# ╔═╡ b43ffbb4-4853-11eb-183c-25481868684a
+check_answer(qb.questions[1].validators)
+
+# ╔═╡ 9ff92926-4855-11eb-3db0-1758c995e82c
+qb.questions[1].status = check_answer(qb.questions[1].validators)
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)
@@ -141,6 +144,7 @@ fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squi
 # ╠═9bbee332-4170-11eb-05a6-4998f14d307e
 # ╠═9a2009fc-4853-11eb-1027-01ce1341484b
 # ╠═b43ffbb4-4853-11eb-183c-25481868684a
+# ╠═9ff92926-4855-11eb-3db0-1758c995e82c
 # ╠═b83f06a4-4853-11eb-0178-736ad7c329c5
 # ╠═fe2bf14e-4851-11eb-220a-79156c32c6d9
 # ╟─2c2acce2-4851-11eb-117c-9193cee78d69

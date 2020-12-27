@@ -44,11 +44,13 @@ function check_answer(validators,  t::ProgressTracker)
 	return status
 end
 
-function validate(q::AbstractQuestion, t::ProgressTracker)
-	q.status = check_answer(q.validators, t)
+function validate(q::QuestionBlock, t::ProgressTracker)
+	q.questions[1].status = check_answer(q.questions[1].validators, t)
 	
-	for (key, status) in q.opt_statuses
-		q.opt_statuses[key] = check_answer(q.opt_validators[key])
+	if length(q.questions) > 1
+		for (index, opt_question) in enumerate(q.questions[2:end])
+			q.questions[index+1].status = check_answer(opt_question.validators)
+		end
 	end
 	return q
 end
