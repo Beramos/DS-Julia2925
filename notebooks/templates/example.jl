@@ -26,7 +26,7 @@ tracker = ProgressTracker(student.name, student.email);
 md"-----"
 
 # ╔═╡ 9a2009fc-4853-11eb-1027-01ce1341484b
-
+NoDiff
 
 # ╔═╡ b43ffbb4-4853-11eb-183c-25481868684a
 
@@ -105,12 +105,11 @@ begin
 	title=md"### Question 1.0: What a crazy exercise",
 	description=md"",
 	questions = [q₁, q₂],
-
-		
 	hints=[	hint(md"Have you tried this?"),
 			hint(md"Have you tried switching it on and off again?")]
 	);
 	
+	validate(qb, tracker)
 end 
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
