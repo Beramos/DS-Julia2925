@@ -109,7 +109,7 @@ q₄ = QuestionOptional{Hard}(;
 title=md"### Question 1.0: What a crazy exercise",
 description=md\"\"\"
 	Some additional general kind off description and all.
-	Anything markdowny. Just make sure to use the triple accolades `\"\"\"`.
+	Anything markdowny. Just make sure to use the triple accolades.
 	
 	\"\"\",
 questions = [q₁, q₂, q₃, q₄],
