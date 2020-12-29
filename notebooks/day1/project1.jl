@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.17
+# v0.12.18
 
 using Markdown
 using InteractiveUtils
@@ -168,7 +168,10 @@ end
 # ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
 md"""Let us generate some weight vectors, several options seem reasonable:
 - **uniform**: all values of $\mathbf{w}$ are the same;
-- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $t=m+1$ and linarly decreasing from $i=m+1$ till $2m+1$;
+- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $i=m+1$ and linarly decreasing from $i=m+1$ to $2m+1$;
+- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
+
+For this purpose, make sure that they are all normalized, either by design or by divididing the vector by its total sum at the end.
 """
 
 # ╔═╡ ef84b6fe-2bef-11eb-0943-034b8b90c4c4
@@ -187,11 +190,17 @@ function triangle_weigths(m)
 	return w
 end	
 
+# ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
+function gaussian_weigths(m; σ=4)
+	w = exp.(-(-m:m).^2 / σ^2)
+	return w ./ sum(w)
+end
+
 # ╔═╡ c596227e-4862-11eb-3fe4-151218778dba
 @bind m Slider(1:2:25, default=5)
 
 # ╔═╡ fa911a76-2be3-11eb-1c85-3df313eb0fcb
-w = triangle_weigths(m)
+w = gaussian_weigths(m)
 
 # ╔═╡ 20c46656-2bf0-11eb-2dc4-af2cc2161f6a
 scatter(w, xlabel="j", ylabel="weight")
@@ -207,58 +216,129 @@ m
 
 # ╔═╡ b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 md"""
-### Sliding window: secundary structure prediction
+### Sliding window: protein analysis
 
-Chou-Fasman method
+A protein is a sequence of amino acids, small molecules with unique physicochemical properties that largely determine the protein structure and function. In bioinformatics, the 20 common amino acids are denoted by 20 capital letters, `A` for alanina, `C` for cysteine, etc. Many interesting local properties can be computed by looking at local properties of amino acids. For example, the (now largely outdated) **Chou-Fasman method** for secondary structure prediction uses a sliding window to check if regions are enriched for amino acids associated with $\alpha$-helices or $\beta$-sheets.
+
+We will study a protein using a sliding window analysis by making use of the **amino acid z-scales**. These are three properties computed on amino acids based on a PCA analysis on the physicochemical properties of the amino acides. In order, they quantify:
+1. lipophiliciy: the degree whether the amino acide chain is lipidloving (and hence hydrophopic) and hence fan form Van der Waals forces;
+2. steric properties: how large and flexible the side chains are;
+3. electronic properties, such as positive or negative charges.
+
+The three zscales are given below in dictionaries.
 """
 
-# ╔═╡ 5c20f87e-3ca1-11eb-3a21-27790a167ca5
-zdict = Dict(
-		'A' => [0.24,  -2.32,  0.60, -0.14,  1.30], # A
-		'C' => [0.84,  -1.67,  3.71,  0.18, -2.65], # C
-		'D' => [3.98,   0.93,  1.93, -2.46,  0.75], # D
-		'E' => [3.11,   0.26, -0.11, -0.34, -0.25], # E
-		'F' => [-4.22,  1.94,  1.06,  0.54, -0.62], # F
-		'G' => [2.05,  -4.06,  0.36, -0.82, -0.38], # G
-		'H' => [2.47,   1.95,  0.26,  3.90,  0.09], # H
-		'I' => [-3.89, -1.73, -1.71, -0.84,  0.26], # I
-		'K' => [2.29,   0.89, -2.49,  1.49,  0.31], # K
-		'L' => [-4.28, -1.30, -1.49, -0.72,  0.84], # L
-		'M' => [-2.85, -0.22,  0.47,  1.94, -0.98], # M
-		'N' => [3.05,   1.62,  1.04, -1.15,  1.61], # N
-		'P' => [-1.66,  0.27,  1.84,  0.70,  2.00], # P
-		'Q' => [1.75,   0.50, -1.44, -1.34,  0.66], # Q
-		'R' => [3.52,   2.50, -3.50,  1.99, -0.17], # R
-		'S' => [2.39,  -1.07,  1.15, -1.39,  0.67], # S
-		'T' => [0.75,  -2.18, -1.12, -1.46, -0.40], # T
-		'V' => [-2.59, -2.64, -1.54, -0.85, -0.02], # V
-		'W' => [-4.36,  3.94,  0.59,  3.44, -1.59], # W
-		'Y' => [-2.54,  2.44,  0.43,  0.04, -1.47], # Y
-	)
-
 # ╔═╡ 87610484-3ca1-11eb-0e74-8574e946dd9f
-zscales1 = Dict(A=>z[1] for (A, z) in zdict)
+# quantifies lipophilicity
+zscales1 = Dict(
+  'E' => 3.11,
+  'C' => 0.84,
+  'D' => 3.98,
+  'A' => 0.24,
+  'R' => 3.52,
+  'G' => 2.05,
+  'N' => 3.05,
+  'F' => -4.22,
+  'M' => -2.85,
+  'K' => 2.29,
+  'P' => -1.66,
+  'Q' => 1.75,
+  'I' => -3.89,
+  'H' => 2.47,
+  'W' => -4.36,
+  'S' => 2.39,
+  'T' => 0.75,
+  'L' => -4.28,
+  'Y' => -2.54,
+  'V' => -2.59,)
 
 # ╔═╡ 9c82d5ea-3ca1-11eb-3575-f1893df8f129
-zscales2 = Dict(A=>z[2] for (A, z) in zdict)
+# quantifies steric properties (Steric bulk/Polarizability)
+zscales2 = Dict(
+	'E' => 0.26,
+  'C' => -1.67,
+  'D' => 0.93,
+  'A' => -2.32,
+  'R' => 2.5,
+  'G' => -4.06,
+  'N' => 1.62,
+  'F' => 1.94,
+  'M' => -0.22,
+  'K' => 0.89,
+  'P' => 0.27,
+  'Q' => 0.5,
+  'I' => -1.73,
+  'H' => 1.95,
+  'W' => 3.94,
+  'S' => -1.07,
+  'T' => -2.18,
+  'L' => -1.3,
+  'Y' => 2.44,
+  'V' => -2.64,)
 
 # ╔═╡ a4ccb496-3ca1-11eb-0e7a-87620596eec1
-zscales3 = Dict(A=>z[3] for (A, z) in zdict)
+# quantifies electronic properties such as polarity and charge
+zscales3 = Dict(
+	'E' => -0.11,
+  'C' => 3.71,
+  'D' => 1.93,
+  'A' => 0.6,
+  'R' => -3.5,
+  'G' => 0.36,
+  'N' => 1.04,
+  'F' => 1.06,
+  'M' => 0.47,
+  'K' => -2.49,
+  'P' => 1.84,
+  'Q' => -1.44,
+  'I' => -1.71,
+  'H' => 0.26,
+  'W' => 0.59,
+  'S' => 1.15,
+  'T' => -1.12,
+  'L' => -1.49,
+  'Y' => 0.43,
+  'V' => -1.54,)
+
+# ╔═╡ 9f62891c-49c2-11eb-3bc8-47f5d2e008cc
+md"""
+So, we will compute a sliding window of length $2m+1$ on a protein sequence $s$:
+
+$$y_i = \frac{1}{2m+1} \sum_{k=-m}^m z_{s_{i-k}}\,,$$
+
+where $z_{s_{i}}$ is the amino acid property ascociated with amino acid $s_i$.
+"""
+
+# ╔═╡ 328385ca-49c3-11eb-0977-c79b31a6caaf
+md"To be topical, let us try it on the tail spike protein of the SARS-CoV-2 virus. (a baby step towards a new vaccin!)"
 
 # ╔═╡ c924a5f6-2bf1-11eb-3d37-bb63635624e9
 spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT"
 
 # ╔═╡ c23ff59c-3ca1-11eb-1a31-2dd522b9d239
-protein_z_scale1 = [zscales1[AA] for AA in spike_sars2]
+function protein_sliding_window(sequence, m, zscales)
+	n = length(sequence)
+	y = zeros(n)
+	for i in (m+1):(n-m)
+		for k in -m:m
+			y[i] += zscales[sequence[i+k]]
+		end
+	end
+	return y / (2m + 1)
+end
+
+# ╔═╡ 17e7750e-49c4-11eb-2106-65d47b16308c
+proteinsw = protein_sliding_window(spike_sars2, m, zscales1)
 
 # ╔═╡ dce6ec82-3ca1-11eb-1d87-1727b0e692df
-plot(convolve_1d(protein_z_scale1, w))
+plot(proteinsw)
 
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 md"""
 ### Elementary cellular automata
 
 To conclude our 
+
 ![](https://mathworld.wolfram.com/images/eps-gif/ElementaryCARules_900.gif)
 """
 
@@ -514,11 +594,13 @@ new_grid = zero(grid)
 (next_gol!(grid, new_grid) for i in 1:1000)
 
 # ╔═╡ 54e78bb0-34c8-11eb-0cf9-a1a2b398e107
+#=
 @gif for i ∈ 1:100
 		next_gol!(grid, new_grid)
 		#grid, new_grid = new_grid, grid
 		plot(show_ca(grid))
 end
+=#
 
 # ╔═╡ Cell order:
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
@@ -551,6 +633,7 @@ end
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═ef84b6fe-2bef-11eb-0943-034b8b90c4c4
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
+# ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
 # ╠═fa911a76-2be3-11eb-1c85-3df313eb0fcb
 # ╠═20c46656-2bf0-11eb-2dc4-af2cc2161f6a
 # ╠═cb5f4a20-2be8-11eb-0000-c59f23a024ef
@@ -558,12 +641,14 @@ end
 # ╟─c596227e-4862-11eb-3fe4-151218778dba
 # ╠═2a5e7ec8-4864-11eb-3161-35a51a74145f
 # ╠═b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
-# ╠═5c20f87e-3ca1-11eb-3a21-27790a167ca5
 # ╠═87610484-3ca1-11eb-0e74-8574e946dd9f
 # ╠═9c82d5ea-3ca1-11eb-3575-f1893df8f129
 # ╠═a4ccb496-3ca1-11eb-0e7a-87620596eec1
+# ╠═9f62891c-49c2-11eb-3bc8-47f5d2e008cc
+# ╠═328385ca-49c3-11eb-0977-c79b31a6caaf
 # ╠═c924a5f6-2bf1-11eb-3d37-bb63635624e9
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
+# ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
