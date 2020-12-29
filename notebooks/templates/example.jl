@@ -103,7 +103,6 @@ md"**Recursive FYI's**"
 # ╔═╡ d25f6fac-49bc-11eb-2379-5fff9c50e09b
 fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels? $(fyi(md"OK, this is a pretty funny accidental feature."))""")
 
-
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
 # ╠═cfea9340-3fd6-11eb-26cc-57e76c7353cd
