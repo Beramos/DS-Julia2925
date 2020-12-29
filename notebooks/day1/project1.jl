@@ -22,9 +22,6 @@ using CSV, DataFrames, Dates
 # ╔═╡ 485292d8-2bde-11eb-0a97-6b44d54596dd
 using Plots
 
-# ╔═╡ fc8ff7b8-2be1-11eb-0c9c-b9d2ee7c2880
-using Markdown, Images
-
 # ╔═╡ 2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 md"""
 # Project 1: images and cellular automata
@@ -337,13 +334,24 @@ plot(proteinsw)
 md"""
 ### Elementary cellular automata
 
-To conclude our 
+To conclude our adventures in 1D, let us consider **elementary cellular automata**. These are more or less the simplest dynamical systems one can study. Cellular automata are descrete spatiotemporal systems: both the space time and states are discrete. The state of an elementary cellular automaton is determined by an $n$-dimensional binary vector, meaning that there are only two states 0 or 1 (`true` or `false`). The state transistion of a cell is determined by:
+- its own state;
+- the states of its two neighbors.
+Logically, one can show that there are only $2^8=256$ possible rules one can apply. Some of them are depicted below.
 
 ![](https://mathworld.wolfram.com/images/eps-gif/ElementaryCARules_900.gif)
+
+So each of these rules can be represented by an 8-bit integer. Let us try to explore them all.
 """
+
+# ╔═╡ b0bd61f0-49f9-11eb-0e6b-69539bc34be8
+md"First we choose a rule, we can represent is as a `UInt8`."
 
 # ╔═╡ b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
 rule = 110 |> UInt8
+
+# ╔═╡ c61755a6-49f9-11eb-05a0-01d914d305f3
+md"Getting the bitstring is easy, getting the $i$-th digit is a bit more tricky to do  efficiently."
 
 # ╔═╡ a6e7441a-482e-11eb-1edb-6bd1daa00390
 bitstring(rule)
@@ -354,16 +362,22 @@ getbinarydigit(number, i) = number & 2^(i-1) != 0
 # ╔═╡ 96df10b6-4865-11eb-2c7a-cd64bca6e1e6
 getbinarydigit(rule, 5)
 
+# ╔═╡ 1bc99bce-49fa-11eb-2e11-2ff541a82919
+md"Given a state `s` and the states of its left (`l`) and right (`r`) neighbors, can you determine the next state under a `rule`?"
+
 # ╔═╡ 625c4e1e-2bf3-11eb-2c03-193f7d013fbe
 begin
 	
 nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
 
 function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
-	bitstring(rule)[8-(4r+2s+1r)] == '1';
+	return getbinarydigit(rule, 8-(4r+2s+1r))
 end
 	
 end
+
+# ╔═╡ 38e6a67c-49fa-11eb-287f-91a836f5752c
+nextstate(true, false, true, rule)
 
 # ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 Dict(Gray.([l, s, r]) => Gray(nextstate(l, s, r, rule))
@@ -374,15 +388,18 @@ Dict(Gray.([l, s, r]) => Gray(nextstate(l, s, r, rule))
 										
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
-Dict((l, s, r) => nextstate(l, s, r, rule)
+Dict((l=l, s=s, r=r) => nextstate(l, s, r, rule)
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
 				)
 					
 
+# ╔═╡ f0532aee-49fa-11eb-02aa-99c2e1b6d39d
+
+
 # ╔═╡ 924461c0-2bf3-11eb-2390-71bad2541463
-function update1dca!(xnew, x, rule::UInt8)
+function update1dca!(xnew, x, rule::Integer)
 	n = length(x)
 	xnew[1] = nextstate(x[end], x[1], x[2], rule)
 	xnew[end] = nextstate(x[end-1], x[end], x[1], rule)
@@ -393,10 +410,10 @@ function update1dca!(xnew, x, rule::UInt8)
 end
 
 # ╔═╡ 21440956-2bf5-11eb-0860-11127d727282
-next1dca(x, rule::UInt8) = update1dca!(similar(x), x, rule::UInt8)
+next1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
 
 # ╔═╡ 405a1036-2bf5-11eb-11f9-a1a714dbf7e1
-x0_ca = rand(Bool, 500)
+x0_ca = rand(Bool, 100)
 
 # ╔═╡ 6405f574-2bf5-11eb-3656-d7b9c94f145a
 next1dca(x0_ca, rule)
@@ -421,25 +438,16 @@ function simulate(x0, rule::UInt8; nsteps=100)
 end
 
 # ╔═╡ e1dd7abc-2bf5-11eb-1f5a-0f46c7405dd5
-X = simulate(x0_ca, rule; nsteps=200)
+X = simulate(x0_ca, rule; nsteps=100)
 
 # ╔═╡ 9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 show_ca(X) = Gray.(X)
 
 # ╔═╡ fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
-plot(show_ca(X))
+plot(show_ca(X), size=(1000, 1000))
 
 # ╔═╡ 4810a052-2bf6-11eb-2e9f-7f9389116950
 all_cas = Dict(rule=>show_ca(simulate(x0_ca, rule; nsteps=500)) for rule in UInt8(0):UInt8(251))
-
-# ╔═╡ 47e3c2f8-2bf6-11eb-1fbf-d5f3fc899056
-all_cas[3] |> plot
-
-# ╔═╡ aea84d6c-2be3-11eb-2fe7-63e0d0c28507
-keep_working(text=md"The answer is not quite right.") = Markdown.MD(Markdown.Admonition("correct", "Keep working on it!", [text]))
-
-# ╔═╡ dc2230ac-2be3-11eb-24d7-f980be57d697
-keep_working()
 
 # ╔═╡ 41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
 philip_file = download("https://i.imgur.com/VGPeJ6s.jpg")
@@ -651,13 +659,18 @@ end
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
+# ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
+# ╠═c61755a6-49f9-11eb-05a0-01d914d305f3
 # ╠═a6e7441a-482e-11eb-1edb-6bd1daa00390
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
 # ╠═96df10b6-4865-11eb-2c7a-cd64bca6e1e6
+# ╠═1bc99bce-49fa-11eb-2e11-2ff541a82919
 # ╠═625c4e1e-2bf3-11eb-2c03-193f7d013fbe
+# ╠═38e6a67c-49fa-11eb-287f-91a836f5752c
 # ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
+# ╠═f0532aee-49fa-11eb-02aa-99c2e1b6d39d
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
 # ╠═405a1036-2bf5-11eb-11f9-a1a714dbf7e1
@@ -667,10 +680,6 @@ end
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 # ╠═fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 # ╠═4810a052-2bf6-11eb-2e9f-7f9389116950
-# ╠═47e3c2f8-2bf6-11eb-1fbf-d5f3fc899056
-# ╠═fc8ff7b8-2be1-11eb-0c9c-b9d2ee7c2880
-# ╠═aea84d6c-2be3-11eb-2fe7-63e0d0c28507
-# ╠═dc2230ac-2be3-11eb-24d7-f980be57d697
 # ╠═41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
 # ╠═4c9d2e0e-2be4-11eb-2fb3-377f29141076
 # ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
