@@ -42,14 +42,14 @@ Defines an optional question.
 
 # Arguments
 
-- description (md_str): a markdown string to be displayed above the validators
-- validators (Array{Bool}): an array of booleans with the tests the answer to the question should solve.
-- status (md_str): a markdown string used to change/display the question state (correct, missing, incorrect).
+- `description` (md_str): a markdown string to be displayed above the validators
+- `validators` (Array{Bool}): an array of booleans with the tests the answer to the question should solve.
+- `status` (md_str): a markdown string used to change/display the question state (correct, missing, incorrect).
 	the default value is missing and should probably not be changed.
 
 Difficulty types
 ------
-- T ∈ [NoDiff, Easy, Intermediate, Hard] 
+- `T ∈ [NoDiff, Easy, Intermediate, Hard]` 
 - At this point purely easthetic since the difficulty is only used as display
 """
 mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion 
@@ -67,10 +67,10 @@ end
 Defines a Question block.
 
 # Arguments
-- title (md_str): a markdown string to be displayed as title
-- description (md_str): the general descriptions, this is diplayed directly below the title.
-- hints (Array{md_str}): an array of markdown strings for hint admonitions but this can me any markdown and will be displayed in the \"hints\" section.
-- questions (Array{AbstractQuestion}): an array of questions. Currently exactly one mandatory question is expected but 0-∞ optional questions can be defined.
+- `title` (md_str): a markdown string to be displayed as title
+- `description` (md_str): the general descriptions, this is diplayed directly below the title.
+- `hints` (Array{md_str}): an array of markdown strings for hint admonitions but this can me any markdown and will be displayed in the \"hints\" section.
+- `questions` (Array{AbstractQuestion}): an array of questions. Currently exactly one mandatory question is expected but 0-∞ optional questions can be defined.
 
 # Examples
 ```julia
