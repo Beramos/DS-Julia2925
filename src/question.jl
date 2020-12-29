@@ -17,114 +17,113 @@ struct Easy <: AbstractDifficulty end
 struct Intermediate <: AbstractDifficulty end
 struct Hard <: AbstractDifficulty end
 
+"""
+Defines a mandatory question.
+
+# Arguments
+
+- description (md_str): a markdown string to be displayed above the validators
+- validators (Array{Bool}): an array of booleans with the tests the answer to the question should solve.
+- status (md_str): a markdown string used to change/display the question state (correct, missing, incorrect).
+	the default value is missing and should probably not be changed.
+"""
 mutable struct Question <: AbstractQuestion
 	description::Markdown.MD
 	validators::Any
 	status::Markdown.MD
 
-	"""
-		Defines a mandatory question.
-
-		# Arguments
-		
-		- description (md_str): a markdown string to be displayed above the validators
-		- validators (Array{Bool}): an array of booleans with the tests the answer to the question should solve.
-		- status (md_str): a markdown string used to change/display the question state (correct, missing, incorrect).
-			the default value is missing and should probably not be changed.
-	"""
 	Question(;description=description_default, 
 						validators=[missing], 
 						status=still_missing()) = new(description, validators, status)
 end
 
+"""
+Defines an optional question.
+
+# Arguments
+
+- description (md_str): a markdown string to be displayed above the validators
+- validators (Array{Bool}): an array of booleans with the tests the answer to the question should solve.
+- status (md_str): a markdown string used to change/display the question state (correct, missing, incorrect).
+	the default value is missing and should probably not be changed.
+
+Difficulty types
+------
+- T ∈ [NoDiff, Easy, Intermediate, Hard] 
+- At this point purely easthetic since the difficulty is only used as display
+"""
 mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion 
 	description::Markdown.MD
 	validators::Any
 	status::Markdown.MD
 	difficulty::T
 
-	"""
-	Defines an optional question.
-
-	# Arguments
-	
-	- description (md_str): a markdown string to be displayed above the validators
-	- validators (Array{Bool}): an array of booleans with the tests the answer to the question should solve.
-	- status (md_str): a markdown string used to change/display the question state (correct, missing, incorrect).
-		the default value is missing and should probably not be changed.
-
-	Difficulty types
-	------
-	- T ∈ [NoDiff, Easy, Intermediate, Hard] 
-	- At this point purely easthetic since the difficulty is only used as display
-"""
 	QuestionOptional{T}(;description=description_default, 
 						validators=[missing], 
 						status=still_missing()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
 end
 
+"""
+Defines a Question block.
 
+# Arguments
+- title (md_str): a markdown string to be displayed as title
+- description (md_str): the general descriptions, this is diplayed directly below the title.
+- hints (Array{md_str}): an array of markdown strings for hint admonitions but this can me any markdown and will be displayed in the \"hints\" section.
+- questions (Array{AbstractQuestion}): an array of questions. Currently exactly one mandatory question is expected but 0-∞ optional questions can be defined.
+
+# Examples
+```julia
+q₁ = Question(;
+	description=md\"\"\"
+	Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+
+	Open assignments always return `missing`. 
+	\"\"\",
+	validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0]
+)
+
+q₂ = QuestionOptional{Easy}(;
+	description=md\"\"\"
+	Try to make the clamping also work for arrays.
+	\"\"\",
+	validators= @safe[myclamp([2.0, 0.3])==[1.0, 0.3]]
+)
+
+q₃ = QuestionOptional{Intermediate}(;
+	description=md\"\"\"
+	This is an intermediate question. Surely you can complete this
+	\"\"\",
+	validators= @safe[true]
+)
+
+q₄ = QuestionOptional{Hard}(;
+	description=md\"\"\"
+	I admit, this one is definitely harder
+	\"\"\",
+	validators= @safe[false]
+)
+
+
+ qb = QuestionBlock(;
+title=md"### Question 1.0: What a crazy exercise",
+description=md\"\"\"
+	Some additional general kind off description and all.
+	Anything markdowny. Just make sure to use the triple accolades `\"\"\"`.
+	
+	\"\"\",
+questions = [q₁, q₂, q₃, q₄],
+hints=[	hint(md"Have you tried this?"),
+		hint(md"Have you tried switching it on and off again?")]
+);
+```
+"""
 mutable struct QuestionBlock <: AbstractQuestionBlock
 	title::Markdown.MD
 	description::Markdown.MD
 	hints::Array{Markdown.MD}
 	questions::Array{T} where {T<:AbstractQuestion}
 
-	"""
-	Defines a Question block.
-
-	# Arguments
-	- title (md_str): a markdown string to be displayed as title
-	- description (md_str): the general descriptions, this is diplayed directly below the title.
-	- hints (Array{md_str}): an array of markdown strings for hint admonitions but this can me any markdown and will be displayed in the \"hints\" section.
-	- questions (Array{AbstractQuestion}): an array of questions. Currently exactly one mandatory question is expected but 0-∞ optional questions can be defined.
-	
-	# Examples
-	```julia
-	q₁ = Question(;
-		description=md\"\"\"
-		Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-
-		Open assignments always return `missing`. 
-		\"\"\",
-		validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0]
-	)
-	
-	q₂ = QuestionOptional{Easy}(;
-		description=md\"\"\"
-		Try to make the clamping also work for arrays.
-		\"\"\",
-		validators= @safe[myclamp([2.0, 0.3])==[1.0, 0.3]]
-	)
-	
-	q₃ = QuestionOptional{Intermediate}(;
-		description=md\"\"\"
-		This is an intermediate question. Surely you can complete this
-		\"\"\",
-		validators= @safe[true]
-	)
-	
-	q₄ = QuestionOptional{Hard}(;
-		description=md\"\"\"
-		I admit, this one is definitely harder
-		\"\"\",
-		validators= @safe[false]
-	)
-	
-	
-   qb = QuestionBlock(;
-	title=md"### Question 1.0: What a crazy exercise",
-	description=md\"\"\"
-		Some additional general kind off description and all.
-		Anything markdowny. Just make sure to use the triple accolades `\"\"\"`.
-		
-		\"\"\",
-	questions = [q₁, q₂, q₃, q₄],
-	hints=[	hint(md"Have you tried this?"),
-			hint(md"Have you tried switching it on and off again?")]
-	);
-	```
-	"""
 	QuestionBlock(;title=title_default,
 									description=md"",
 									hints = Markdown.MD[],
