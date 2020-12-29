@@ -95,10 +95,14 @@ hint(md"Did you think of this?")
 md"**FYI's:**"
 
 # ╔═╡ 3cd3e814-3fdf-11eb-1918-75993ba2e121
-fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels? $(fyi("a"))""")
+fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels?""")
 
-# ╔═╡ 1befa358-485a-11eb-1195-f3f53e48020b
-bomb("")
+# ╔═╡ c64b613a-49bc-11eb-3689-93a41d001eb1
+md"**Recursive FYI's**"
+
+# ╔═╡ d25f6fac-49bc-11eb-2379-5fff9c50e09b
+fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels? $(fyi(md"OK, this is a pretty funny accidental feature."))""")
+
 
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
@@ -116,4 +120,5 @@ bomb("")
 # ╠═542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╟─2e7109a0-3fdf-11eb-28af-0d99a01c5066
 # ╠═3cd3e814-3fdf-11eb-1918-75993ba2e121
-# ╠═1befa358-485a-11eb-1195-f3f53e48020b
+# ╟─c64b613a-49bc-11eb-3689-93a41d001eb1
+# ╠═d25f6fac-49bc-11eb-2379-5fff9c50e09b
