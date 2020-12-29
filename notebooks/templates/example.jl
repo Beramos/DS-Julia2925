@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.17
+# v0.12.18
 
 using Markdown
 using InteractiveUtils
@@ -26,7 +26,7 @@ tracker = ProgressTracker(student.name, student.email);
 md"-----"
 
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = max.(0, min.(x,1))
+myclamp(x) = max.(0.0, min.(x, 1.0))
 
 # ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
 begin
@@ -43,7 +43,7 @@ begin
 		description=md"""
 		Try to make the clamping also work for arrays.
 		""",
-		validators= @safe[myclamp([2.0, 0.3])==[1.0, 0.3]]
+		validators= @safe[myclamp([2.0, 0.3, -10])==[1.0, 0.3, 0.0]]
 	)
 	
 	q₃ = QuestionOptional{Intermediate}(;
