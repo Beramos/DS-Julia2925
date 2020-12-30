@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.17
+# v0.12.18
 
 using Markdown
 using InteractiveUtils
@@ -25,27 +25,65 @@ tracker = ProgressTracker(student.name, student.email);
 # ╔═╡ 4707f4ae-3fdc-11eb-3ebd-2b483041d459
 md"-----"
 
-# ╔═╡ 2f51df02-3fda-11eb-0f9c-9b5bea842137
-md"## Example exercise"
-
-# ╔═╡ 854891dc-2dab-11eb-2b4b-e129081aacca
-md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-
-Open assignments always return `missing`.
-"""
-
 # ╔═╡ e27e6aa0-2dab-11eb-3ccc-43c68f37114b
-myclamp(x) = missing
+myclamp(x) = max.(0.0, min.(x, 1.0))
+
+# ╔═╡ 9bbee332-4170-11eb-05a6-4998f14d307e
+begin
+	q₁ = Question(;
+		description=md"""
+		Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
+
+		Open assignments always return `missing`. 
+		""",
+		validators= @safe[myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0]
+	)
+	
+	q₂ = QuestionOptional{Easy}(;
+		description=md"""
+		Try to make the clamping also work for arrays.
+		""",
+		validators= @safe[myclamp([2.0, 0.3, -10])==[1.0, 0.3, 0.0]]
+	)
+	
+	q₃ = QuestionOptional{Intermediate}(;
+		description=md"""
+		This is an intermediate question. Surely you can complete this
+		""",
+		validators= @safe[true]
+	)
+	
+	q₄ = QuestionOptional{Hard}(;
+		description=md"""
+		I admit, this one is definitely harder
+		""",
+		validators= @safe[false]
+	)
+	
+	
+   qb = QuestionBlock(;
+	title=md"### Question 1.0: What a crazy exercise",
+	description=md"""
+		Some additional general kind off description and all.
+		You can even add other admonitions. 
+		$(fyi(md"I'm here!"))
+		
+		Anything markdowny. Just make sure to use the triple accolades `\"\"\"`.
+		
+		""",
+	questions = [q₁, q₂, q₃, q₄],
+	hints=[	hint(md"Have you tried this?"),
+			hint(md"Have you tried switching it on and off again?")]
+	);
+	
+	validate(qb)
+end
 
 # ╔═╡ 87e6c2a8-2dac-11eb-33d3-77a35fc13d71
 myclamp(1.1)
 
 # ╔═╡ e05ee714-3fde-11eb-0209-e30f44655997
-md"The answer checking happens in the second argument of `check_answer()` and by passing the tracker-instance in the first argument the state of the question (correct/incorrec) is tracked"
-
-# ╔═╡ 4d059920-2dac-11eb-2177-574ca39f3399
-# hand in one or serveral examples that should all evaluate to `true`.
-check_answer(tracker, myclamp(-1)==0, myclamp(0.3)==0.3, myclamp(1.1)==1.0) 
+md"The automatic grading happens in the second argument of `validate()` and by passing the tracker-instance in the first argument the state of the question (correct/incorrect) is tracked"
 
 # ╔═╡ 221b27f8-3fdf-11eb-06c1-f97060a68bca
 md"**Hints:**"
@@ -57,13 +95,13 @@ hint(md"Did you think of this?")
 md"**FYI's:**"
 
 # ╔═╡ 3cd3e814-3fdf-11eb-1918-75993ba2e121
-fyi(md"Did you know that scientists recently discovered pink UV-fluorescent squirrels?")
+fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels?""")
 
-# ╔═╡ c88d70ba-3fe3-11eb-044d-1533f8a48ced
-check_answer(tracker, false)
+# ╔═╡ c64b613a-49bc-11eb-3689-93a41d001eb1
+md"**Recursive FYI's**"
 
-# ╔═╡ c5bb0b86-3fe3-11eb-1cfe-3dd91c2053cb
-tracker
+# ╔═╡ d25f6fac-49bc-11eb-2379-5fff9c50e09b
+fyi(md"""Did you know that scientists recently discovered pink UV-fluorescent squirrels? $(fyi(md"OK, this is a pretty funny accidental feature."))""")
 
 # ╔═╡ Cell order:
 # ╟─d00b3712-3fd6-11eb-354e-3182c3cb8eb1
@@ -73,15 +111,13 @@ tracker
 # ╠═28e74fe2-3fdc-11eb-28b5-1fc8d35e65cf
 # ╠═1a6a2844-3fdd-11eb-2931-dd7fca88e484
 # ╠═4707f4ae-3fdc-11eb-3ebd-2b483041d459
-# ╟─2f51df02-3fda-11eb-0f9c-9b5bea842137
-# ╟─854891dc-2dab-11eb-2b4b-e129081aacca
+# ╠═9bbee332-4170-11eb-05a6-4998f14d307e
 # ╠═e27e6aa0-2dab-11eb-3ccc-43c68f37114b
 # ╠═87e6c2a8-2dac-11eb-33d3-77a35fc13d71
-# ╟─e05ee714-3fde-11eb-0209-e30f44655997
-# ╠═4d059920-2dac-11eb-2177-574ca39f3399
+# ╠═e05ee714-3fde-11eb-0209-e30f44655997
 # ╟─221b27f8-3fdf-11eb-06c1-f97060a68bca
 # ╠═542d5fa6-2da9-11eb-1037-3b35a5b22bd5
 # ╟─2e7109a0-3fdf-11eb-28af-0d99a01c5066
 # ╠═3cd3e814-3fdf-11eb-1918-75993ba2e121
-# ╠═c88d70ba-3fe3-11eb-044d-1533f8a48ced
-# ╟─c5bb0b86-3fe3-11eb-1cfe-3dd91c2053cb
+# ╟─c64b613a-49bc-11eb-3689-93a41d001eb1
+# ╠═d25f6fac-49bc-11eb-2379-5fff9c50e09b
