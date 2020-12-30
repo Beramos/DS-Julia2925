@@ -142,16 +142,19 @@ function tohtml(q::QuestionBlock)
 			hint_string *= "<p>" * html(hint) * "</p>"
 		end
 	end
-
 	
-	state_string = "<p> $(html(q.questions[1].status)) </p>"
-	if q.questions[1].description !== ""
-		state_string = "<p> $(html(q.questions[1].description)) </p>" * state_string
+	N_mandatory = sum(isa.(q.questions,Question))
+	state_string = ""
+	for index in 1:N_mandatory
+		state_string *= "<p> $(html(q.questions[index].status)) </p>"
+		if q.questions[index].description !== ""
+			state_string = "<p> $(html(q.questions[index].description)) </p>" * state_string
+		end
 	end
 
 	opt_state_string = ""
 	if length(q.questions) > 1
-		for opt_question in q.questions[2:end]
+		for opt_question in q.questions[N_mandatory+1:end]
 			if opt_question.difficulty !== ""
 			opt_state_string *= "<p> <b> Optional ($(split(string(typeof(opt_question.difficulty)), ".")[2])): </b> </p>"
 			else
@@ -207,7 +210,8 @@ macro safe(ex)
 end
 
 # --- Validation --- #
-function check_answer(validators)
+function check_answer(q::AbstractQuestion)
+	validators = q.validators
 	all_valid = all(validators)
 	some_valid = any(validators)
 	if ismissing(all_valid) 
@@ -223,12 +227,8 @@ function check_answer(validators)
 end
 
 function validate(q::QuestionBlock)
-	q.questions[1].status = check_answer(q.questions[1].validators)
-	
-	if length(q.questions) > 1
-		for (index, opt_question) in enumerate(q.questions[2:end])
-			q.questions[index+1].status = check_answer(opt_question.validators)
-		end
+	for (index, question) in enumerate(q.questions)
+		q.questions[index].status = check_answer(question)
 	end
 	return q
 end
