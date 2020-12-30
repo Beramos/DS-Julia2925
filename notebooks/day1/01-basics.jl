@@ -692,13 +692,13 @@ q7 = Question(;
 	validators = []		
 )
 	
-q8 = QuestionOptional{NoDiff}(;
+q8 = Question(;
 	description=md"""
 2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
 	validators = []		
 )
 	
-q9 = QuestionOptional{NoDiff}(;
+q9 = QuestionOptional{Easy}(;
 	description=md"""
 3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?""",
 	validators = []		
