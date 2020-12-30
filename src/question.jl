@@ -146,10 +146,10 @@ function tohtml(q::QuestionBlock)
 	N_mandatory = sum(isa.(q.questions,Question))
 	state_string = ""
 	for index in 1:N_mandatory
-		state_string *= "<p> $(html(q.questions[index].status)) </p>"
 		if q.questions[index].description !== ""
-			state_string = "<p> $(html(q.questions[index].description)) </p>" * state_string
+			state_string *= "<p> $(html(q.questions[index].description)) </p>"
 		end
+		state_string *= "<p> $(html(q.questions[index].status)) </p>"
 	end
 
 	opt_state_string = ""
