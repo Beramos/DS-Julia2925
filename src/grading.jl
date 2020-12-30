@@ -27,8 +27,9 @@ addQuestion!(t::ProgressTracker) = t.total += 1
 accept!(t::ProgressTracker) =	t.correct += 1
 Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of **$(t.name)** with a completion of **$(t.correct) out of $(t.total)** question(s).")
 
-function check_answer(validators,  t::ProgressTracker)
+function check_answer(q::Question,  t::ProgressTracker)
 	addQuestion!(t)
+	validators = q.validators
 	all_valid = all(validators)
 	some_valid = any(validators)
 	if ismissing(all_valid) 
@@ -44,13 +45,13 @@ function check_answer(validators,  t::ProgressTracker)
 	return status
 end
 
+function check_answer(q::QuestionOptional,  t::ProgressTracker)
+	return check_answer(q)
+end
+
 function validate(q::QuestionBlock, t::ProgressTracker)
-	q.questions[1].status = check_answer(q.questions[1].validators, t)
-	
-	if length(q.questions) > 1
-		for (index, opt_question) in enumerate(q.questions[2:end])
-			q.questions[index+1].status = check_answer(opt_question.validators)
-		end
+	for (index, question) in enumerate(q.questions)
+		q.questions[index].status = check_answer(question, t::ProgressTracker)
 	end
 	return q
 end
