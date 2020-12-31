@@ -22,6 +22,9 @@ using CSV, DataFrames, Dates
 # ╔═╡ 485292d8-2bde-11eb-0a97-6b44d54596dd
 using Plots
 
+# ╔═╡ 87c5bb72-4aa7-11eb-3897-a523011703c5
+using Images
+
 # ╔═╡ 2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 md"""
 # Project 1: images and cellular automata
@@ -166,7 +169,7 @@ end
 md"""Let us generate some weight vectors, several options seem reasonable:
 - **uniform**: all values of $\mathbf{w}$ are the same;
 - **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $i=m+1$ and linarly decreasing from $i=m+1$ to $2m+1$;
-- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
+- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{2\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
 
 For this purpose, make sure that they are all normalized, either by design or by divididing the vector by its total sum at the end.
 """
@@ -189,7 +192,7 @@ end
 
 # ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
 function gaussian_weigths(m; σ=4)
-	w = exp.(-(-m:m).^2 / σ^2)
+	w = exp.(-(-m:m).^2 / 2σ^2)
 	return w ./ sum(w)
 end
 
@@ -441,13 +444,97 @@ end
 X = simulate(x0_ca, rule; nsteps=100)
 
 # ╔═╡ 9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
-show_ca(X) = Gray.(X)
+ca_image(X) = Gray.(X)
 
 # ╔═╡ fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
-plot(show_ca(X), size=(1000, 1000))
+plot(ca_image(X), size=(1000, 1000))
 
 # ╔═╡ 4810a052-2bf6-11eb-2e9f-7f9389116950
-all_cas = Dict(rule=>show_ca(simulate(x0_ca, rule; nsteps=500)) for rule in UInt8(0):UInt8(251))
+all_cas = Dict(rule=>ca_image(simulate(x0_ca, rule; nsteps=500)) for rule in UInt8(0):UInt8(251))
+
+# ╔═╡ 49145bd6-4aa7-11eb-3c93-d90a36903d1a
+md"""
+
+## 2-D operations
+
+Let us move from 1-D operations to 2-D operatations. This will be a nice opportunity to learn something about image processing in Julia!
+
+
+"""
+
+# ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
+md"""
+### What is an image?
+
+An image is generally just a matrix of pixels. What is a pixel? Usually this corresponds to just a particular color (or grayscale). So let us play around with colors first.
+
+There are many ways to encode colors. For our purposes, we can just work with the good old RGB scheme, where each color is described by three values, respectively the red, green and blue fraction.
+"""
+
+# ╔═╡ 90c3c542-4aa8-11eb-03fb-e70579c8e4f3
+daanbeardred = RGB(100/255, 11/255, 13/255)
+
+# ╔═╡ 57074882-4aa9-11eb-0ad5-a5ebadc22550
+md"We can extract the red, green, and blue components using the obvious functions."
+
+# ╔═╡ 3ee9cbbc-4aa9-11eb-1cb6-c37d007839e8
+red(daanbeardred), green(daanbeardred), blue(daanbeardred)
+
+# ╔═╡ 7af6568e-4aa9-11eb-3fd5-97fa8401696a
+md"Turning a color in grayscale is also easy."
+
+# ╔═╡ 6e51e25e-4aa9-11eb-116f-09bad1bf0041
+Gray(daanbeardred)
+
+# ╔═╡ 8ac8761c-4aa9-11eb-25d2-ed4c0f15bd66
+md"An image is a matrix of colors, nothing more!"
+
+# ╔═╡ 95942566-4aa9-11eb-318f-09cada65a5f7
+mini_image = [RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1);
+				RGB(0.2, 0.8, 0.9) RGB(0.8, 0.2, 0.2) RGB(0.2, 0.8, 0.9);
+				RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1)]
+
+# ╔═╡ fbc9ceee-4aa9-11eb-308e-613f2a5f3646
+mini_image[2, 2]
+
+# ╔═╡ c8c58ce4-4aaa-11eb-1558-59028a05aba6
+size(mini_image)
+
+# ╔═╡ 0a47f23e-4aaa-11eb-020a-d5a6c4104aa9
+red.(mini_image), green.(mini_image), blue.(mini_image)
+
+# ╔═╡ 1c327406-4aaa-11eb-3212-9d6d00c9c35d
+Gray.(mini_image)
+
+# ╔═╡ 470ef5c8-4aaa-11eb-0bab-ff6a21471bcc
+function redimage(image)
+	return RGB.(red.(image), 0, 0)
+end
+
+# ╔═╡ 78bd5fa6-4aaa-11eb-11f9-bd6f571fdf8c
+function greenimage(image)
+	return RGB.(0, green.(image), 0)
+end
+
+# ╔═╡ 7aae8510-4aaa-11eb-1622-a113684f9a7d
+function blueimage(image)
+	return RGB.(0, 0, blue.(image))
+end
+
+# ╔═╡ 991bcfe4-4aaa-11eb-22e8-935938437b51
+redimage(mini_image), greenimage(mini_image), blueimage(mini_image)
+
+# ╔═╡ 41297876-4aab-11eb-3e41-294b06cd19f2
+md"""
+### 2-D convolutions on images
+
+Just like we did in 1-D, we can define a convolution on matrices and images:
+
+$$Y_{i,j} = \sum_{k=-m}^{m}\sum_{l=-m}^{m} X_{i + k, j+l} K_{m+k+1, m+l+1}\,.$$
+
+This looks more complex but still amounts to the same thing as the one-dimensional case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
+
+"""
 
 # ╔═╡ 41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
 philip_file = download("https://i.imgur.com/VGPeJ6s.jpg")
@@ -460,6 +547,9 @@ philip = let
 	original = Images.load(philip_file)
 	decimate(original, 8)
 end
+
+# ╔═╡ eeeee44e-4b5c-11eb-159e-773457e1247f
+size(philip)
 
 # ╔═╡ 608e930e-2bfc-11eb-09f2-29600cfba1e6
 function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
@@ -478,24 +568,45 @@ function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
 	return out
 end
 
+# ╔═╡ 1e98e96a-4b5d-11eb-2d9b-797cdd1e3978
+md"""
+Remember the 1-D Gaussian kernel? Its 2-D analogue is given by
+
+$$K_{i,j} = \exp\left(-\frac{(i-m - 1)^2 +(j-m-1)^2}{2\sigma^2}\right)\,.$$
+
+Using this kernel results in a smoothing operation, often refered to as a Gaussian blur. This kernel is frequently used to remove noise, but it will also remove some edges of the image. Gaussian kernel convolution gives a blurring effect making the image appearing to be viewed through a translucent screen, giving a slight [otherworldly effect](https://tvtropes.org/pmwiki/pmwiki.php/Main/GaussianGirl).
+
+
+Let us implement the Gaussian kernel.
+"""
+
 # ╔═╡ 245deb30-2bfe-11eb-3e47-6b7bd5d73ccf
 function gaussian_kernel(m; σ)
-	K = [exp(-(x^2 + y^2) / σ^2) for x in -m:m, y in -m:m]
+	K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
 	K ./= sum(K)
 	return K
 end
 
 # ╔═╡ 6278ae28-2bfe-11eb-3c36-9bf8cc703a3a
-K = gaussian_kernel(2, σ=10)
+K_gaussian = gaussian_kernel(3, σ=2)
 
 # ╔═╡ 6c40b89c-2bfe-11eb-3593-9d9ef6f45b80
-heatmap(K)
+heatmap(K_gaussian)
+
+# ╔═╡ b05d0bdc-4b5e-11eb-14f6-6bf4e3b24949
+function pepper_salt_noise(image; fraction=0.01)
+	noisy_image = copy(image)
+	mask = rand(size(image)...) .< fraction
+	n_corrupted = sum(mask)
+	noisy_image[mask] = rand([RGB(0, 0, 0), RGB(1, 1, 1)], n_corrupted)
+	return noisy_image
+end
+
+# ╔═╡ 22285b5e-4b5f-11eb-197a-e39e5c525c8d
+salt_and_pepper_philip = pepper_salt_noise(philip)
 
 # ╔═╡ 73c3869a-2bfd-11eb-0597-29cd6c1c90db
 convolve_2d(M, K) = convolve_2d!(M, similar(M), K) 
-
-# ╔═╡ a34f1e4c-2bfd-11eb-127e-295a7039c301
-convolve_2d(randn(1000, 1000), K)
 
 # ╔═╡ c80e4362-2bfe-11eb-2055-5fbf167be551
 K_sharpen = [0 -1 0;
@@ -510,6 +621,12 @@ function convolve_image(M, K)
 	return RGB.(Mred, Mgreen, Mblue)
 end
 
+# ╔═╡ e1f23724-2bfd-11eb-1063-1d59909bcacc
+convolve_image(philip, K_gaussian)
+
+# ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
+convolve_image(salt_and_pepper_philip, K_gaussian)
+
 # ╔═╡ 8c62855a-2bff-11eb-00f5-3702e142f76f
 const Gx = [1 0 -1;
 		   2 0 -2;
@@ -520,26 +637,23 @@ const Gy = [1 2 1;
 		    0 0 0;
 		   -1 -2 -1]
 
+# ╔═╡ 3aba6b10-4b5c-11eb-0e4f-81b47568937a
+convolve_2d(Gray.(philip) .|> Float64, Gx) .|> Gray
+
+# ╔═╡ b5bf307a-4b5c-11eb-32eb-614b3193d8cb
+convolve_2d(Gray.(philip) .|> Float64, Gy) .|> Gray
+
 # ╔═╡ 746d3578-2bff-11eb-121a-f3d17397a49e
 function edge_detection(M)
-	M = Gray.(M) .|> Float64
+	M = M .|> Gray .|> Float64
 	return convolve_2d(M, Gx).^2 + convolve_2d(M, Gy).^2 .|> Gray
 end
 
 # ╔═╡ f41919a4-2bff-11eb-276f-a5edd5b374ac
 edge_detection(philip)
 
-# ╔═╡ e1f23724-2bfd-11eb-1063-1d59909bcacc
-convolve_image(philip, K)
-
 # ╔═╡ 55bfb46a-2be5-11eb-2be6-1bc153db11ac
 RGB.(red.(philip), green.(philip), blue.(philip))
-
-# ╔═╡ 04f3c460-2bed-11eb-1039-238bfb3ec445
-images = [rand([RGB(0, 0, 1),RGB(1, 0, 0)], 50, 100) for i in 1:100]
-
-# ╔═╡ b3eed0e0-2bed-11eb-21d3-19323b600edf
-images[1]
 
 # ╔═╡ d523e4c6-301b-11eb-040a-f7a214cb785b
 function count_neighbors((i, j), grid::Matrix{Bool})
@@ -680,25 +794,48 @@ end
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 # ╠═fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 # ╠═4810a052-2bf6-11eb-2e9f-7f9389116950
+# ╠═49145bd6-4aa7-11eb-3c93-d90a36903d1a
+# ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
+# ╠═90c3c542-4aa8-11eb-03fb-e70579c8e4f3
+# ╠═57074882-4aa9-11eb-0ad5-a5ebadc22550
+# ╠═3ee9cbbc-4aa9-11eb-1cb6-c37d007839e8
+# ╠═7af6568e-4aa9-11eb-3fd5-97fa8401696a
+# ╠═6e51e25e-4aa9-11eb-116f-09bad1bf0041
+# ╠═87c5bb72-4aa7-11eb-3897-a523011703c5
+# ╠═8ac8761c-4aa9-11eb-25d2-ed4c0f15bd66
+# ╠═95942566-4aa9-11eb-318f-09cada65a5f7
+# ╠═fbc9ceee-4aa9-11eb-308e-613f2a5f3646
+# ╠═c8c58ce4-4aaa-11eb-1558-59028a05aba6
+# ╠═0a47f23e-4aaa-11eb-020a-d5a6c4104aa9
+# ╠═1c327406-4aaa-11eb-3212-9d6d00c9c35d
+# ╠═470ef5c8-4aaa-11eb-0bab-ff6a21471bcc
+# ╠═78bd5fa6-4aaa-11eb-11f9-bd6f571fdf8c
+# ╠═7aae8510-4aaa-11eb-1622-a113684f9a7d
+# ╠═991bcfe4-4aaa-11eb-22e8-935938437b51
+# ╠═41297876-4aab-11eb-3e41-294b06cd19f2
 # ╠═41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
 # ╠═4c9d2e0e-2be4-11eb-2fb3-377f29141076
+# ╠═eeeee44e-4b5c-11eb-159e-773457e1247f
 # ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
 # ╠═608e930e-2bfc-11eb-09f2-29600cfba1e6
+# ╠═1e98e96a-4b5d-11eb-2d9b-797cdd1e3978
 # ╠═245deb30-2bfe-11eb-3e47-6b7bd5d73ccf
 # ╠═6278ae28-2bfe-11eb-3c36-9bf8cc703a3a
 # ╠═6c40b89c-2bfe-11eb-3593-9d9ef6f45b80
+# ╠═e1f23724-2bfd-11eb-1063-1d59909bcacc
+# ╠═b05d0bdc-4b5e-11eb-14f6-6bf4e3b24949
+# ╠═22285b5e-4b5f-11eb-197a-e39e5c525c8d
+# ╠═39eae5c2-4b5f-11eb-151a-b76db57f04b8
 # ╠═73c3869a-2bfd-11eb-0597-29cd6c1c90db
-# ╠═a34f1e4c-2bfd-11eb-127e-295a7039c301
 # ╠═c80e4362-2bfe-11eb-2055-5fbf167be551
 # ╠═84880dfc-2bfd-11eb-32b7-47750e1c696b
 # ╠═8c62855a-2bff-11eb-00f5-3702e142f76f
 # ╠═ae8d6258-2bff-11eb-0182-afc33d9d4efc
+# ╠═3aba6b10-4b5c-11eb-0e4f-81b47568937a
+# ╠═b5bf307a-4b5c-11eb-32eb-614b3193d8cb
 # ╠═746d3578-2bff-11eb-121a-f3d17397a49e
 # ╠═f41919a4-2bff-11eb-276f-a5edd5b374ac
-# ╠═e1f23724-2bfd-11eb-1063-1d59909bcacc
 # ╠═55bfb46a-2be5-11eb-2be6-1bc153db11ac
-# ╠═04f3c460-2bed-11eb-1039-238bfb3ec445
-# ╠═b3eed0e0-2bed-11eb-21d3-19323b600edf
 # ╠═d523e4c6-301b-11eb-040a-f7a214cb785b
 # ╠═fafc7e74-34c6-11eb-0ce1-8fe2e3215739
 # ╠═0f7f9156-34c7-11eb-01dd-db5b3e1b0eca
