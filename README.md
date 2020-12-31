@@ -10,7 +10,7 @@ In case you do not want to install julia and jump straight in the course materia
 
 ## Getting started
 ### Installing Julia
-1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Long-term support release, v1.0.5
+1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.5.3.
 2. Yes, it is that simple :zap:
 
 ### First time running 
