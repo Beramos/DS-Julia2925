@@ -4,6 +4,90 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ 69dc67fa-4cff-11eb-331e-25ffdced4323
+let 
+	using LinearAlgebra
+	using Plots
+
+	blue = "#8DC0FF"
+	red = "#FFAEA6"
+
+	t = collect(0:10:3040)
+	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+	ϵ₂ = randn(length(t))*20     # noise on Human IQ
+
+	Y₁ = dolphinsIQ = t/12 + ϵ₁
+	Y₂ = humanIQ = t/20 + ϵ₂
+
+	sc = scatter(t,Y₁; label="Dolphins", color=blue,
+	  ylabel="IQ (-)", xlabel ="Time (year BC)", legend=:topleft)
+	sc = scatter!(sc, t,Y₂; label="Humans", color=red)
+	
+	λₛ = 0.01
+	
+qb3 = QuestionBlock(;
+	title=md"**Question 3: Ridge Regression**",
+	description = md"""
+Ridge regression can be seen as an extension of ordinary least squares regression,
+
+$\beta X =b\, ,$
+
+where a matrix $\beta$ is sought which minimizes the sum of squared residuals between the model and the observations,
+
+$SSE(\beta) = (y - \beta X)^T (y - \beta X)$
+
+In some cases it is adviceable to add a regularisation term to this objective function,
+
+$SSE(\beta) = (y - \beta X)^T (y - \beta X) + \lambda \left\lVert X \right\rVert^2_2 \, ,$
+
+this is known as ridge regression. The matrix $\beta$ that minimises the objective function can be computed analytically.
+
+$\beta = \left(X^T X + \lambda I \right)^{-1}X^T y$
+
+Let us look at an example. We found some data on the evolution of human and dolphin intelligence.
+
+```julia
+using Plots
+
+blue = "#8DC0FF"
+red = "#FFAEA6"
+
+t = collect(0:10:3040)
+ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+ϵ₂ = randn(length(t))*20     # noise on Human IQ
+
+Y₁ = dolphinsIQ = t/12 + ϵ₁
+Y₂ = humanIQ = t/20 + ϵ₂
+
+sc = scatter(t,Y₁; label="Dolphins", color=blue,
+  ylabel="IQ (-)", xlabel ="Time (year BC)", legend=:topleft)
+sc = scatter!(sc, t,Y₂; label="Humans", color=red)		
+```
+		
+$(sc)
+
+> "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much - the wheel, New York, wars and so on - whilst all the dolphins had ever  done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man - for precisely the same reasons."
+>
+> ~ *Hitchhikers guide to the galaxy* ~
+
+Plot the trend of human vs. dolphin intelligence by implementing the analytical solution for ridge regression. For this, you need the uniform scaling operator `I`, found in the `LinearAlgebra` package. Use a lambda of 0.01.
+		
+""",
+	questions = [Question(;description=md"",validators=Bool[], status=md"")]
+)
+end
+
+# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+begin
+	using LinearAlgebra
+	t = collect(0:10:3040)
+	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+	ϵ₂ = randn(length(t))*20     # noise on Human IQ
+
+	Y₁ = dolphinsIQ = t/12 + ϵ₁
+	Y₂ = humanIQ = t/20 + ϵ₂
+end;
+
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
 
@@ -173,9 +257,6 @@ md"Comprehensions are a concise and powerful way to construct arrays and are ver
 
 # ╔═╡ 3da23eb8-4c22-11eb-1ec4-c350d615322f
 Z = [1, 2, 3, 4, 5, 6, 8, 9, 8, 6, 5, 4, 3, 2, 1]
-
-# ╔═╡ 3f52eece-4c22-11eb-0364-a35da00209a2
-t = 0.1
 
 # ╔═╡ 3f5436d2-4c22-11eb-342a-35b7a29ef146
 dZ = [Z[i-1] - 2*Z[i] + Z[i+1] for i=2:length(Z)-1] # central difference
@@ -509,140 +590,30 @@ qb2 = QuestionBlock(;
 	validate(qb2, tracker)
 end
 
-# ╔═╡ 69dc67fa-4cff-11eb-331e-25ffdced4323
-let 
-	using LinearAlgebra
-	M₁ = [1 2; 3 4]
-	M₂ = rand(10, 10)
-
-	
-q2 = Question(;
-	description=md"""
-Write a function `mydet` to compute the determinant of a 2x2 square matrix. Remember, for a $2 \times 2$ matrix, the determinant is computed as
-
-${\displaystyle|A|={\begin{vmatrix}a&b\\c&d\end{vmatrix}}=ad-bc.}$
-""",
-	validators = [det(M₁) == mydet(M₁)]
-)
-	
-q3 = Question(;
-	description=md"""For larger matrices, there is a recursive way of computing the determinant based on the minors, i.e. the determinants of the submatrices. See [http://mathworld.wolfram.com/Determinant.html](http://mathworld.wolfram.com/Determinant.html).
-
-Update `mydet` to compute the determinant of a general square matrix.
-""",
-	validators = [det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
-)
-		
-qb2 = QuestionBlock(;
-	title=md"**Question 3: Ridge Regression**",
-	description = md"""
-	""",
-	questions = [q2, q3]
-)
-	validate(qb2, tracker)
-end
-
 # ╔═╡ 85fb018e-4c1d-11eb-2519-a5abe100748e
+begin 
+	β₁ = missing    # replace with the correct way to compute β
+	β₂ = missing    # replace with the correct way to compute β
+
+	Yₚ₁ = β₁.*t      # Dolphin IQ
+	Yₚ₂ = β₂.*t      # Human IQ
+end;
+
+# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
 
 
-## Ridge regression
+# ╔═╡ 2e7973b6-4d0f-11eb-107c-cdaf349428c0
+md""" ## 5. References
 
-Ridge regression can be seen as an extension of ordinary least squares regression,
-
-$$\beta X =b\, ,$$
-
-where a matrix $\beta$ is sought which minimizes the sum of squared residuals between the model and the observations,
-
-$$SSE(\beta) = (y - \beta X)^T (y - \beta X)$$
-
-In some cases it is adviceable to add a regularisation term to this objective function,
-
-$$SSE(\beta) = (y - \beta X)^T (y - \beta X) + \lambda \left\lVert X \right\rVert^2_2 \, , $$
-
-this is known as ridge regression. The matrix $\beta$ that minimises the objective function can be computed analytically.
-
-$$\beta = \left(X^T X + \lambda I \right)^{-1}X^T y$$
-
-Let us look at an example. We found some data on the evolution of human and dolphin intelligence.
-
-using Plots
-
-blue = "#8DC0FF"
-red = "#FFAEA6"
-
-t = collect(0:10:3040)
-ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
-ϵ₂ = randn(length(t))*20     # noise on Human IQ
-
-Y₁ = dolphinsIQ = t/12 + ϵ₁
-Y₂ = humanIQ = t/20 + ϵ₂
-
-scatter(t,Y₁; label="Dolphins", color=blue,
-  ylabel="IQ (-)", xlabel ="Time (year BC)", legend=:topleft)
-scatter!(t,Y₂; label="Humans", color=red)
-
-
-> "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much - the wheel, New York, wars and so on - whilst all the dolphins had ever  done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man - for precisely the same reasons."
->
-> *Hitchhikers guide to the galaxy*
-
-**Assignment:** Plot the trend of human vs. dolphin intelligence by implementing the analytical solution for ridge regression. For this, you need the uniform scaling operator `I`, found in the `LinearAlgebra` package. Use $\lambda=0.01$.
-
-
-using LinearAlgebra
-
-β₁ = #...
-β₂ = #...
-
-Y₁ = β₁*t
-Y₂ = β₂*t
-
-
-# References
 - [Julia Documentation](https://juliadocs.github.io/Julia-Cheat-Sheet/)
 - [Introduction to Julia UCI data science initiative](http://ucidatascienceinitiative.github.io/IntroToJulia/)
 - [Month of Julia](https://github.com/DataWookie/MonthOfJulia)
 - [Why I love Julia, Next Journal](https://nextjournal.com/kolia/why-i-love-julia)
 
+"""
 
-# ╔═╡ e7abd366-e7a6-11ea-30d7-1b6194614d0a
-if !(@isdefined ex_1_1)
-	md"""Do not change the name of the variable - write you answer as `ex_1_1 = "..."`"""
-end
-
-# ╔═╡ 4896bf0c-e754-11ea-19dc-1380bb356ab6
-function newton_sqrt(x, error_margin=0.01, a=x / 2) # a=x/2 is the default value of `a`
-	return missing # this is wrong, write your code here!
-end
-
-# ╔═╡ 56996b1a-49bd-11eb-32b5-cffd5c4d0b82
-begin
-	q₁ = Question(;
-		description=md"""
-		Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-
-		Open assignments always return `missing`. 
-		""",
-		validators= @safe[newton_sqrt(4.0)==2.0]
-	)
-	
-   qb = QuestionBlock(;
-	title=md"### 1.0 | Question with validation and hints",
-	description=md"""
-		Write a function newton_sqrt(x) which implements the above algorithm.
-		""",
-	questions = [q₁],
-	hints = [hint(md"""If you're stuck, feel free to cheat, this is homework 0 after all 🙃
-
-    Julia has a function called `sqrt`""")]
-	);
-	
-	validate(qb,tracker)
-end
-
-# ╔═╡ 082fb612-4c4b-11eb-3715-dd3286f9f7db
-Y = [10 10 10; 20 20 20]
-Y.^2
+# ╔═╡ 1af4e3ca-4d17-11eb-1356-11d6c31a1e0a
+?Question()
 
 # ╔═╡ Cell order:
 # ╠═cdff6730-e785-11ea-2546-4969521b33a7
@@ -690,7 +661,6 @@ Y.^2
 # ╠═27b18866-4c22-11eb-22da-656ca8a4c01d
 # ╠═387c3e70-4c22-11eb-37e4-bb6c36600074
 # ╠═3da23eb8-4c22-11eb-1ec4-c350d615322f
-# ╠═3f52eece-4c22-11eb-0364-a35da00209a2
 # ╠═3f5436d2-4c22-11eb-342a-35b7a29ef146
 # ╠═63fea2f6-4c22-11eb-0802-37fd7653cdb5
 # ╠═a5f17ccc-4c22-11eb-2cb8-7b130e1e811f
@@ -773,8 +743,8 @@ Y.^2
 # ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 # ╠═69dc67fa-4cff-11eb-331e-25ffdced4323
+# ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
-# ╟─e7abd366-e7a6-11ea-30d7-1b6194614d0a
-# ╟─56996b1a-49bd-11eb-32b5-cffd5c4d0b82
-# ╠═4896bf0c-e754-11ea-19dc-1380bb356ab6
-# ╠═082fb612-4c4b-11eb-3715-dd3286f9f7db
+# ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
+# ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
+# ╠═1af4e3ca-4d17-11eb-1356-11d6c31a1e0a
