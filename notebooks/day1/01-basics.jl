@@ -191,7 +191,8 @@ QuestionBlock(;
 	"apples" < "pears"
 	"apples" < "Pears"
 	```
-	"""
+	""",
+	questions = [Question(;description=md"", validators = Bool[], status=md"")]
 )
 
 # ╔═╡ a69ead46-4abc-11eb-3d1d-eb1c73f65150
