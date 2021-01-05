@@ -111,7 +111,7 @@ end
 
 # ╔═╡ a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
 md"""
-# Notebook 2: Collections
+# Notebook 3: Collections
 """
 
 # ╔═╡ 2222fe0c-4c1d-11eb-1e63-f1dbc90a813c
