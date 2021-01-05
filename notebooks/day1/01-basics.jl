@@ -546,6 +546,57 @@ square(4.)
 # ╔═╡ 3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
 md"More about types in the next section !"
 
+# ╔═╡ a777f624-4f2f-11eb-0595-432ea5115a2d
+md"## Intermezzo: Types"
+
+# ╔═╡ abb7bf4e-4f2f-11eb-1dde-abf1cb0fb8b4
+ md"""All Julia objects, both those already defined as well as those you might make yourself, have a type. The type system is the secret sauce, allowing Julia to be fast because code can be specialized for a particular combination of types. It is also supremely useful in conjunction with *multiple dispatch*, in which functions work differently depending on which types you feed into them. In one of the exercises at the end of this notebook you will get a taster of how multiple dispatch can be used. A function behaviour changes depending on the type of the arguments. Day 2 will mainly focus on the type system, so in what follows, a concise introduction is given to types."""
+
+# ╔═╡ b63533e8-4f2f-11eb-3811-5f43fcaa2a9e
+begin
+	number = 42
+	str = "mice"
+	n = 0.9
+	A = [1 2; 3 4]
+end;
+
+# ╔═╡ b730b7b8-4f2f-11eb-3216-613c6100fb9c
+typeof(number)
+
+# ╔═╡ b99eb16c-4f2f-11eb-0f1e-5d2b1244689f
+typeof(str)
+
+# ╔═╡ bc67fc50-4f2f-11eb-2209-bf35df0e8c27
+typeof(n)
+
+# ╔═╡ bf40274a-4f2f-11eb-0086-d3502f67161b
+typeof(A)
+
+# ╔═╡ c48e035c-4f2f-11eb-12c7-576aadca7511
+md"**multiple dispatch**"
+
+# ╔═╡ c8435740-4f2f-11eb-3046-3d45d5e0e805
+ md"multiple dispatch is a concept where the behaviour of a function can be specified differently according to the type of the input arguments. Let's us look at an example,"
+
+# ╔═╡ cacb7254-4f2f-11eb-1daa-1bc04678835c
+begin 
+	translate(xy::Array) = xy .+ [1 3]
+	translate(s::String) = Markdown.parse("[Ctrl + click here](https://translate.google.com/?sl=en&tl=nl&text=$(s)&op=translate)")
+	translate(anything::Any) = "I'm lost in translation..."
+end
+
+# ╔═╡ cc48bc9a-4f2f-11eb-134c-71bd8a944943
+translate(1.0)
+
+# ╔═╡ d9f28c04-4f2f-11eb-0255-1965fb8f07b5
+translate([0.0 0.0])
+
+# ╔═╡ dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
+translate("Hi how are you?")
+
+# ╔═╡ de48a3f6-4f2f-11eb-314b-493546c37a21
+ md"A great deal of time will be spend on the julia's time system in day 2. So do not worry if this still feels vague. Just **remember** that all objects have a type and the behaviour of a function can vary depending on the type of the input arguments."
+
 # ╔═╡ 6da71180-4ac2-11eb-1cac-410bd1cce70c
 md"""## 6. Macros
 Macros provide a method to include generated code in the final body of a program. It is a way of generating a new output expression, given an unevaluated input expression. When your Julia program runs, it first parses and evaluates the macro, and the processed code produced by the macro is eventually evaluated like an ordinary expression.
@@ -853,6 +904,20 @@ end
 # ╠═1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
 # ╠═226417c2-4ac2-11eb-2914-196461e2b40e
 # ╠═3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
+# ╠═a777f624-4f2f-11eb-0595-432ea5115a2d
+# ╠═abb7bf4e-4f2f-11eb-1dde-abf1cb0fb8b4
+# ╠═b63533e8-4f2f-11eb-3811-5f43fcaa2a9e
+# ╠═b730b7b8-4f2f-11eb-3216-613c6100fb9c
+# ╠═b99eb16c-4f2f-11eb-0f1e-5d2b1244689f
+# ╠═bc67fc50-4f2f-11eb-2209-bf35df0e8c27
+# ╠═bf40274a-4f2f-11eb-0086-d3502f67161b
+# ╠═c48e035c-4f2f-11eb-12c7-576aadca7511
+# ╠═c8435740-4f2f-11eb-3046-3d45d5e0e805
+# ╠═cacb7254-4f2f-11eb-1daa-1bc04678835c
+# ╠═cc48bc9a-4f2f-11eb-134c-71bd8a944943
+# ╠═d9f28c04-4f2f-11eb-0255-1965fb8f07b5
+# ╠═dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
+# ╠═de48a3f6-4f2f-11eb-314b-493546c37a21
 # ╠═6da71180-4ac2-11eb-1cac-410bd1cce70c
 # ╠═85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
 # ╠═a11c2898-4ac2-11eb-24d3-6f8060b5fd65
