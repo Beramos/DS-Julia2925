@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.17
+# v0.12.18
 
 using Markdown
 using InteractiveUtils
@@ -32,7 +32,7 @@ end
 md"""
 # Notebook 1: Getting up and running
 
-First of all, **_welcome to the course!_**
+First of all, **_welcome to the course, $(student[:name])!_**
 """
 
 # ╔═╡ 0f47f5b2-4aba-11eb-2e5a-b10407e3f928
@@ -53,6 +53,9 @@ Let's get started with the basics. Some mathematical operations, """
 # ╔═╡ 83306610-4ab7-11eb-3eb5-55a465e0abb9
 1.0 + 2.0   # adding floats
 
+# ╔═╡ 3fa0a15c-5008-11eb-13b5-a91b02c1eb2d
+1 + 2.0     # adding a float to an integer...
+
 # ╔═╡ 83311b8a-4ab7-11eb-0067-e57ceabdfe9d
 2 / 4       # standard division
 
@@ -60,7 +63,7 @@ Let's get started with the basics. Some mathematical operations, """
 div(2, 4)   # Computes 2/4 truncated to an integer
 
 # ╔═╡ 8342c042-4ab7-11eb-2136-497fc9e1b9c4
-2 ÷ 4
+2 ÷ 4       # looks nices but exactly the same!
 
 # ╔═╡ 834d4cbc-4ab7-11eb-1f1a-df05b0c00d66
 7 % 3       # get the remainder of the integer division
@@ -69,7 +72,7 @@ div(2, 4)   # Computes 2/4 truncated to an integer
 35 \ 7      # inverse division
 
 # ╔═╡ 8365cb3e-4ab7-11eb-05c0-85f51cc9b018
-1 // 3      # fractions
+1 // 3      # fractions, gives result as a rational
 
 # ╔═╡ 8370eaf0-4ab7-11eb-1cd3-dfeec9341c4b
 1//2 + 1//4
@@ -208,9 +211,11 @@ end
 # ╔═╡ 07b103ae-4abd-11eb-311b-278d1e033642
 md"Similarly to Matlab, when using the REPL, Julia will print the result of every statement by default. To suppress this behavious, just end the statement with a semicolon."
 
-
 # ╔═╡ 15f8b7fe-4abd-11eb-2777-8fc8bf9d342e
-a = 10;  # not printed
+a = 10;  # not printed...
+
+# ╔═╡ efae58fa-5008-11eb-32fe-c3ae588d14f2
+a  # ...but still defined
 
 # ╔═╡ 18f99e46-4abd-11eb-20a8-859cb1b12fe3
 b = 20
@@ -223,7 +228,13 @@ md"""## 2. Logical statements
 
 
 # ╔═╡ 8b17d538-4abd-11eb-0543-ab95c9548d6f
-md"**Boolean operators**"
+md"""**Boolean operators**
+
+Julia uses `true` and `false` for Boolean variables.
+"""
+
+# ╔═╡ 29d34e64-5009-11eb-3301-f729150e17b2
+I💖Julia = true 
 
 # ╔═╡ 91a9d1a0-4abd-11eb-3337-71983f32b6ae
 !true
@@ -290,6 +301,18 @@ true ⊻ false
 # ╔═╡ b0ccc252-4abd-11eb-048b-4bec3750bbf1
 true ⊻ true
 
+# ╔═╡ 60b066d8-5009-11eb-3b4c-8b8fa2f4831d
+md"""
+Chaining logic operators is frequently done in Julia as a short alternative for an `if` statement. The idea is if you use an `&&` statement, the second part is only evaluated if the first part is true! The inverse is true for `||`, where the second part is only evaluated if the first part is false."""
+
+# ╔═╡ b8b7c0f6-5009-11eb-1eb7-0be723a88863
+let
+	x = 12
+	(x > 10) && (x -= 5)  # I am evaluated!
+	(x > 4) || (x *= 2)   # I am not... 
+	x
+end
+
 # ╔═╡ 1c5975ec-4abe-11eb-0ff0-bfb2f03a520b
 statements = [ missing,   #first statement
 				missing,  # second statement
@@ -323,15 +346,15 @@ end
 md"## 3. Control flow"
 
 # ╔═╡ 37086212-4abf-11eb-3ec9-7f8dae57121e
-md"The `if`, `else`, `elseif`-statement is instrumental to any programming language,"
+md"The `if`, `else`, `elseif`-statement is instrumental to any programming language./ Note that control flow is ended with an `end` statement. In constrast to Python, tabs are only for clarity but do not impact functionality."
 
 # ╔═╡ 489421d8-4abf-11eb-0d5e-fd779cc918a1
 if 4 > 3
-  "A"
+  'A'
 elseif 3 > 4
-  "B"
+  'B'
 else
-  "C"
+  'C'
 end
 
 # ╔═╡ 6736dafe-4abf-11eb-1fce-0716d2b7f4a8
@@ -354,10 +377,13 @@ begin
 
 			Open assignments always return `missing`. 
 			""",
-			validators= @safe[clip(-1)==0, clip(0.3)==0.3, clip(1.1)==1.0]
-		)
+			validators= @safe[clip(-1)==0, clip(0.3)==0.3, clip(1.1)==1.0],
+			#hints = [hint(md"You might need to compartment your code using brackets.")]
+		),
+		
 			
 		],
+		
 	);
 	
 	validate(qb2, tracker)
@@ -397,16 +423,16 @@ md"Strings can also be looped"
 getme = "a shrubbery"
 
 # ╔═╡ ac35b796-4ac0-11eb-3bc5-5ff4350d5452
-for letter ∈ getme
+for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
   println("$letter")
 end
 
 # ╔═╡ b18e55ae-4ac0-11eb-1455-21b83b7c61d5
 let 
-	n = 1675767616;
+	n = 16757676187786;
 	while n > 1
 	  println(n)
-	  if n % 2 == 0
+	  if iseven(n)
 		n = div(n, 2)
 	  else
 		n = 3n + 1
@@ -416,6 +442,31 @@ end
 
 # ╔═╡ ec4190a8-4ac0-11eb-0421-398f063775bb
 md"(Mathematical note: [they got closer to cracking this one](https://www.quantamagazine.org/mathematician-terence-tao-and-the-collatz-conjecture-20191211/?mc_cid=a3adbffb9f&mc_eid=41ed2fca13).)"
+
+# ╔═╡ 7dce10be-500c-11eb-12cf-43f6989aae91
+md"A useful trick when working with loops is using `break` and `continue` statements. If a `break` is encountered, the loop will immediately be exited. A `continue` statement will only skip the rest of the current iteration but will not halt the loop."
+
+# ╔═╡ bafbe0ea-500c-11eb-10be-75d1738d42a2
+let
+	i = 1
+	while true  # infinite loop
+		if i^2 ≥ 231
+			break
+		end
+		i += 1
+	end
+	i  # first integer with a square larger than 231
+end
+
+# ╔═╡ 2033383e-500d-11eb-3aea-cdc1e90dad2c
+let
+	s = 0
+	for i in 1:100
+		!isodd(i) && continue
+		s += i
+	end
+	s # sum of all odd numbers between 1 and 100
+end
 
 # ╔═╡ fdb67aba-4ac0-11eb-1d4a-c354de54baa9
 md"""## 5. Functions
@@ -513,6 +564,31 @@ sort!(my_unsorted_list)
 
 # ╔═╡ fa9d43b2-4ac1-11eb-33fc-a37503cedabf
 my_unsorted_list
+
+# ╔═╡ 0dbe0c34-500e-11eb-2633-67d8dc6b24c8
+md"""
+Functions are first-class and work just like any other variable! For example, you can give a function as an input in another function. 
+
+In some cases, you might want to define an **anonymous function**, without given them a name:"""
+
+# ╔═╡ 900da226-500e-11eb-3f1c-5582ed0cf749
+afun = x -> 2x^2 - 2x + 4
+
+# ╔═╡ b24bee9a-500e-11eb-2130-45b78bbebdec
+afun(4)  # can be used as a regular function
+
+# ╔═╡ c8cf6520-500e-11eb-2dd3-4507a3994a83
+md"""
+A particular powerful tool is creating a **pipeline**, i.e., using the output of a previous function as input of the next one. This can be done using the `|>` syntax."""
+
+# ╔═╡ 19402512-500f-11eb-3ea7-c3d1c52025d6
+π/4 |> sin |> inv 
+
+# ╔═╡ 6dc0eaae-500f-11eb-3051-37d870366201
+md"The `.` syntax also works here and it is often useful to combiny with anonymous functions."
+
+# ╔═╡ 8b57c506-500f-11eb-3114-55785eb593a7
+1:100 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
 
 # ╔═╡ fd171e0e-4ac1-11eb-09ea-337d17500149
 md"Specific functions can be generated if you have more information on the input type.
@@ -613,6 +689,9 @@ md"""The `@show` macro is often useful for debugging purposes. It displays both 
 
 # ╔═╡ a686e67e-4ac2-11eb-228e-23524a3ddc59
 @show 1 + 1
+
+# ╔═╡ d50cced2-500d-11eb-2dcc-21fc50825f43
+md"We will provide more examples tomorrow!"
 
 # ╔═╡ ad156892-4ac2-11eb-3634-a3783231e5a1
 md"""## 7. Plotting
@@ -783,6 +862,7 @@ end
 # ╠═62c3b076-4ab7-11eb-0cf2-25cdf7d2540d
 # ╠═7bf5bdbe-4ab7-11eb-0d4b-c116e02cb9d9
 # ╠═83306610-4ab7-11eb-3eb5-55a465e0abb9
+# ╠═3fa0a15c-5008-11eb-13b5-a91b02c1eb2d
 # ╠═83311b8a-4ab7-11eb-0067-e57ceabdfe9d
 # ╠═833dbc66-4ab7-11eb-216d-f9900f95deb8
 # ╠═8342c042-4ab7-11eb-2136-497fc9e1b9c4
@@ -826,9 +906,11 @@ end
 # ╠═b482b998-4abc-11eb-36da-379010485bfa
 # ╠═07b103ae-4abd-11eb-311b-278d1e033642
 # ╠═15f8b7fe-4abd-11eb-2777-8fc8bf9d342e
+# ╠═efae58fa-5008-11eb-32fe-c3ae588d14f2
 # ╠═18f99e46-4abd-11eb-20a8-859cb1b12fe3
 # ╠═3a7954da-4abd-11eb-3c5b-858054b4d06b
 # ╠═8b17d538-4abd-11eb-0543-ab95c9548d6f
+# ╠═29d34e64-5009-11eb-3301-f729150e17b2
 # ╠═91a9d1a0-4abd-11eb-3337-71983f32b6ae
 # ╠═942d4202-4abd-11eb-1f01-dfe3df40a5b7
 # ╠═942dae0e-4abd-11eb-20a2-37d9c9882ba8
@@ -850,6 +932,8 @@ end
 # ╠═b0a8dfe0-4abd-11eb-167d-2fc3974c7c92
 # ╠═b0a97e00-4abd-11eb-371c-e138aea17bb6
 # ╠═b0ccc252-4abd-11eb-048b-4bec3750bbf1
+# ╠═60b066d8-5009-11eb-3b4c-8b8fa2f4831d
+# ╠═b8b7c0f6-5009-11eb-1eb7-0be723a88863
 # ╠═bd446c42-4abd-11eb-0465-d9a61c48ff48
 # ╠═1c5975ec-4abe-11eb-0ff0-bfb2f03a520b
 # ╠═1c22b880-4abf-11eb-3f18-756c1198ccad
@@ -870,6 +954,9 @@ end
 # ╠═ac35b796-4ac0-11eb-3bc5-5ff4350d5452
 # ╠═b18e55ae-4ac0-11eb-1455-21b83b7c61d5
 # ╠═ec4190a8-4ac0-11eb-0421-398f063775bb
+# ╠═7dce10be-500c-11eb-12cf-43f6989aae91
+# ╠═bafbe0ea-500c-11eb-10be-75d1738d42a2
+# ╠═2033383e-500d-11eb-3aea-cdc1e90dad2c
 # ╠═fdb67aba-4ac0-11eb-1d4a-c354de54baa9
 # ╠═28f47a24-4ac1-11eb-271f-6b4de7311db3
 # ╠═3e433ab4-4ac1-11eb-2178-53b7220fa9ab
@@ -900,6 +987,13 @@ end
 # ╠═fa7ba458-4ac1-11eb-2ca1-59ff3c032b26
 # ╠═fa9b3266-4ac1-11eb-153a-87c6a1124890
 # ╠═fa9d43b2-4ac1-11eb-33fc-a37503cedabf
+# ╠═0dbe0c34-500e-11eb-2633-67d8dc6b24c8
+# ╠═900da226-500e-11eb-3f1c-5582ed0cf749
+# ╠═b24bee9a-500e-11eb-2130-45b78bbebdec
+# ╠═c8cf6520-500e-11eb-2dd3-4507a3994a83
+# ╠═19402512-500f-11eb-3ea7-c3d1c52025d6
+# ╠═6dc0eaae-500f-11eb-3051-37d870366201
+# ╠═8b57c506-500f-11eb-3114-55785eb593a7
 # ╠═fd171e0e-4ac1-11eb-09ea-337d17500149
 # ╠═10e71260-4ac2-11eb-1069-55613ee7df0a
 # ╠═1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
@@ -923,6 +1017,7 @@ end
 # ╠═85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
 # ╠═a11c2898-4ac2-11eb-24d3-6f8060b5fd65
 # ╠═a686e67e-4ac2-11eb-228e-23524a3ddc59
+# ╠═d50cced2-500d-11eb-2dcc-21fc50825f43
 # ╠═ad156892-4ac2-11eb-3634-a3783231e5a1
 # ╠═bf1385da-4ac2-11eb-3992-41abac921370
 # ╠═d779956a-4ac2-11eb-39de-4b3cecace452
