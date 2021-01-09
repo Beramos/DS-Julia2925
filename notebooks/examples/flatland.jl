@@ -1,6 +1,6 @@
 #=
 Created on 05/01/2021 20:52:11
-Last update: -
+Last update: 8/01/2020
 
 @author: Michiel Stock
 michielfmstock@gmail.com
@@ -27,6 +27,12 @@ Rectangle((x, y), l, w=l) = Rectangle(x, y, l, w)
 area(shape::Rectangle) = shape.l * shape.w
 ncorners(::Rectangle) = 4
 center(shape::Shape) = shape.x, shape.y
+
+function scale!(shape::Rectangle, a)
+    @assert a > 0
+    shape.l *= a
+    shape.w *= a
+end
 
 function corners(shape::Rectangle)
     x, y = center(shape)
@@ -89,6 +95,11 @@ area(shape::Circle) = shape.R^2 * π
 function xycoords(shape::Circle; n=50)
     θs = range(0, 2π, length=n)
     return shape.x .+ shape.R * cos.(θs), shape.y .+ shape.R * sin.(θs)
+end
+
+function scale!(shape::Union{Circle,Polygon}, a)
+    shape.R *= a
+    shape
 end
 
 # TRIANGLE
