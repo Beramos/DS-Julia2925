@@ -10,13 +10,13 @@ Integrating for dummies. Compute the Riemann sum **without** making use of a for
 Compute the area of a circle.
 =#
 
-function riemann(f, a, b; n=100)
+function riemannsum(f, a, b; n=100)
     dx = (b - a) / n
     return sum(f.(a:dx:b)) * dx
 end
 
-riemann(sin, 0, 2pi)
+riemannsum(sin, 0, 2pi)
 
-riemann(x->x*sin(x), 0, 2pi)
+riemannsum(x->x*sin(x), 0, 2pi)
 
-4riemann(x->(sqrt(1-x^2)), 0, 1, n=1000)
+4riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
