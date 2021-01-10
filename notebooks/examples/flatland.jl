@@ -154,8 +154,8 @@ using RecipesBase
     label --> ""
     aspect_ratio := :equal
     seriestype := :shape
-    y, y = xycoords(s)
-    return y, y
+    x, y = xycoords(s)
+    return x, y
 end
 
 using Plots
