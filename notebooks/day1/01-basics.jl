@@ -727,6 +727,66 @@ contour(-5:0.1:5, -10:0.1:10, (x, y) -> 3x^2-4y^2 + x*y/6)
 # ╔═╡ 0e63d722-4ac3-11eb-3740-d31b47a77912
 md"""### 8. Exercises"""
 
+# ╔═╡ c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
+begin 
+qb6 = QuestionBlock(;
+	title=md"**Question 6: time is relative**",
+	description = md"""
+The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
+Write a script that reads the current time and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
+	""",
+	questions = [Question(validators = [], description = md"")]
+)
+	validate(qb6, tracker)
+end
+
+# ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
+function since_epoch()
+	return days, hours, minutes, seconds
+end
+
+# ╔═╡ e99d6b96-4ad5-11eb-2144-f97a97e71ae4
+begin 
+	
+q7 = Question(;
+	description=md"""
+1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, "Holy smokes, Fermat was wrong!" Otherwise the program should print, "No, that doesn’t work.""",
+	validators = []		
+)
+	
+q8 = Question(;
+	description=md"""
+2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
+	validators = []		
+)
+	
+q9 = QuestionOptional{Easy}(;
+	description=md"""
+3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?""",
+	validators = []		
+)
+	
+	
+	
+qb7 = QuestionBlock(;
+	title=md"**Question 7: Fermat's Last Theorem**",
+	description = md"""
+Fermat’s Last Theorem says that there are no positive integers $a$, $b$, and $c$ such that
+
+$a^n + b^n = c^n$
+
+for any value of $n$ greater than 2.""",
+	questions = [q7, q8, q9],
+	hints=[
+			hint(md"check the functions `readline` and `parse`."),
+			hint(md"You can write multiple function with the same name but with a different number of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat`. This mechanism is called multiple dispatch, more on this further in the course.")
+			])
+	validate(qb7, tracker)
+end
+
+# ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
+md"""### 9. Extra exercises"""
+
 # ╔═╡ 42f24f58-4ac3-11eb-06b5-ebc015c17520
 begin 
 qb3 = QuestionBlock(;
@@ -794,63 +854,6 @@ qb4 = QuestionBlock(;
 			]
 	)
 	validate(qb4, tracker)
-end
-
-# ╔═╡ c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
-begin 
-qb6 = QuestionBlock(;
-	title=md"**Question 6: time is relative**",
-	description = md"""
-The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
-Write a script that reads the current time and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
-	""",
-	questions = [Question(validators = [], description = md"")]
-)
-	validate(qb6, tracker)
-end
-
-# ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-function since_epoch()
-	return days, hours, minutes, seconds
-end
-
-# ╔═╡ e99d6b96-4ad5-11eb-2144-f97a97e71ae4
-begin 
-	
-q7 = Question(;
-	description=md"""
-1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, "Holy smokes, Fermat was wrong!" Otherwise the program should print, "No, that doesn’t work.""",
-	validators = []		
-)
-	
-q8 = Question(;
-	description=md"""
-2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
-	validators = []		
-)
-	
-q9 = QuestionOptional{Easy}(;
-	description=md"""
-3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?""",
-	validators = []		
-)
-	
-	
-	
-qb7 = QuestionBlock(;
-	title=md"**Question 7: Fermat's Last Theorem**",
-	description = md"""
-Fermat’s Last Theorem says that there are no positive integers $a$, $b$, and $c$ such that
-
-$a^n + b^n = c^n$
-
-for any value of $n$ greater than 2.""",
-	questions = [q7, q8, q9],
-	hints=[
-			hint(md"check the functions `readline` and `parse`."),
-			hint(md"You can write multiple function with the same name but with a different number of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat`. This mechanism is called multiple dispatch, more on this further in the course.")
-			])
-	validate(qb7, tracker)
 end
 
 # ╔═╡ Cell order:
@@ -1026,11 +1029,12 @@ end
 # ╠═d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
 # ╠═19e74adc-4ac3-11eb-239f-7b0132287466
 # ╠═0e63d722-4ac3-11eb-3740-d31b47a77912
+# ╠═c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
+# ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
+# ╠═e99d6b96-4ad5-11eb-2144-f97a97e71ae4
+# ╠═f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╠═42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
 # ╠═01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207
-# ╠═c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
-# ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-# ╠═e99d6b96-4ad5-11eb-2144-f97a97e71ae4
