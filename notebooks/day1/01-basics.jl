@@ -756,7 +756,15 @@ begin
 			Question(
 				validators = [abs(stirling(5)-factorial(5))<10, 
 					abs(stirling(10)-factorial(10))<1e5], 
-				description = md"")
+				description = md""),
+			
+			QuestionOptional{Easy}(;
+				description=md"""
+				How accurate is this approximation?
+				Plot the true factorial function (scatter) on top of the approximation for n ∈ [0, 10]. 
+				""",
+				validators = Bool[]		
+			)
 		]
 	)
 	

@@ -687,15 +687,6 @@ begin
 	validate(qb70, tracker)
 end
 
-# ╔═╡ d59cdb62-5800-11eb-3bbe-b555bbe4c008
-md"""
-To add
-
-* rieman
-* information entropy
-
-"""
-
 # ╔═╡ 7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 vandermonde(α, n) = missing
 
@@ -737,6 +728,31 @@ qb2 = QuestionBlock(;
 	questions = [q2, q3]
 )
 	validate(qb2, tracker)
+end
+
+# ╔═╡ cb20fffe-58cf-11eb-1b65-49699f2d3699
+function estimatepi(n)
+	missing
+end
+
+# ╔═╡ cee388d2-58cf-11eb-3b88-971b4b85e957
+function estimatepi2(n)
+	missing
+end
+
+# ╔═╡ c6e16d7a-58cf-11eb-32a4-3372939066e3
+begin 
+qb90 = QuestionBlock(;
+	title=md"**Question 6: It is Pi 'o clock**",
+	description = md"""
+	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit square. Complete the function `estimatepi` below.
+	""",
+	questions = [
+		Question(validators = [abs(estimatepi(100) - π) < 1.0, abs(estimatepi(100000) - π) < 1e-2], description = md""),
+		QuestionOptional{Easy}(validators = [abs(estimatepi2(100) - π) < 1.0, abs(estimatepi2(100000) - π) < 1e-2], description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
+	]
+)
+	validate(qb90, tracker)
 end
 
 # ╔═╡ 85fb018e-4c1d-11eb-2519-a5abe100748e
@@ -932,12 +948,14 @@ md""" ## 5. References
 # ╠═3aa37510-58bb-11eb-2ecb-37ce4428269c
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
-# ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
+# ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
-# ╠═d59cdb62-5800-11eb-3bbe-b555bbe4c008
 # ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 # ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
+# ╠═c6e16d7a-58cf-11eb-32a4-3372939066e3
+# ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
+# ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
 # ╠═69dc67fa-4cff-11eb-331e-25ffdced4323
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
