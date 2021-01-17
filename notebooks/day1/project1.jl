@@ -25,9 +25,6 @@ using Plots
 # ╔═╡ 87c5bb72-4aa7-11eb-3897-a523011703c5
 using Images
 
-# ╔═╡ 981758aa-58e9-11eb-282c-89131d9317b4
-
-
 # ╔═╡ 2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 md"""
 # Project 1: images and cellular automata
@@ -131,9 +128,6 @@ a vector $\mathbf{x}$ of length $n$ is transformed in a convolved vector $\mathb
 
 When computing convolutions (or in numerical computing in general) one has to be careful with the **boundary conditions**. We cannot compute the sum at the ends since the sum would exceed the vector $\mathbf{x}$. There are many sensible ways to resolve this, we will choose the simplest solution of using fixed boundaries by setting $y_i = x_i$ when $i< m$ or $i>n-m$.
 """
-
-# ╔═╡ 93cbfff8-58e9-11eb-1d96-5d8f41951b99
-
 
 # ╔═╡ ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 md"""
@@ -735,7 +729,6 @@ end
 =#
 
 # ╔═╡ Cell order:
-# ╠═981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 # ╠═14bb9c3a-34b5-11eb-0f20-75a14b584e0c
@@ -755,7 +748,6 @@ end
 # ╠═52706c6a-4836-11eb-09a8-53549f16f5c2
 # ╠═4dc28cdc-4836-11eb-316f-43c04639da2a
 # ╠═8b4c6880-4837-11eb-0ff7-573dd18a9664
-# ╠═93cbfff8-58e9-11eb-1d96-5d8f41951b99
 # ╠═ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 # ╠═c962de82-3c9e-11eb-13df-d5dec37bb2c0
 # ╠═31e39938-3c9f-11eb-0341-53670c2e93e1
