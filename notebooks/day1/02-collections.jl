@@ -19,6 +19,17 @@ using Colors: RGB
 # ╔═╡ 486457d8-4f37-11eb-306c-57d650508136
 using Images
 
+# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+begin
+	using LinearAlgebra
+	t = collect(0:10:3040)
+	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+	ϵ₂ = randn(length(t))*20     # noise on Human IQ
+
+	Y₁ = dolphinsIQ = t/12 + ϵ₁
+	Y₂ = humanIQ = t/20 + ϵ₂
+end;
+
 # ╔═╡ 69dc67fa-4cff-11eb-331e-25ffdced4323
 let 
 	using LinearAlgebra
@@ -42,7 +53,7 @@ let
 	λₛ = 0.01
 	
 qb3 = QuestionBlock(;
-	title=md"**Question 3: Ridge Regression**",
+	title=md"**Question 5: Ridge Regression**",
 	description = md"""
 Ridge regression can be seen as an extension of ordinary least squares regression,
 
@@ -92,17 +103,6 @@ Plot the trend of human vs. dolphin intelligence by implementing the analytical 
 	questions = [Question(;description=md"",validators=Bool[], status=md"")]
 )
 end
-
-# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
-begin
-	using LinearAlgebra
-	t = collect(0:10:3040)
-	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
-	ϵ₂ = randn(length(t))*20     # noise on Human IQ
-
-	Y₁ = dolphinsIQ = t/12 + ϵ₁
-	Y₂ = humanIQ = t/20 + ϵ₂
-end;
 
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
@@ -584,8 +584,23 @@ end;
 
 # ╔═╡ 3aa37510-58bb-11eb-2ecb-37ce4428269c
 begin 
-qb60 = QuestionBlock(;
-	title=md"**Question 6: time is relative**",
+	
+	q1 = Question(validators = [
+					riemannsum(sin, 0, 2pi) == 2.8774915108571216e-17,
+					riemannsum(x->x*sin(x), 0, 2pi) == -6.281118086046032,
+					riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 0.7858888667277568
+					],
+				description = md"")
+			
+	q2 = Question(validators = [integral1 == -6.281118086046032], 
+		description = md" **Integral 1:**  $ \int_0^{2\pi} x\,sin(x)\,dx$ (n=100)")
+			
+	q3 = Question(validators = [integral2 == 0.7858888667277568], 
+		description = md" **Integral 2:**  $ \int_0^1 \sqrt{1-x^2}\,dx$ (n=1000)")
+	
+	
+qb1 = QuestionBlock(;
+	title=md"**Question 6: do you still remember how to integrate?**",
 	description = md"""
 Integrating for dummies. Compute the Riemann sum **without** making use of a for loop.
 
@@ -600,21 +615,9 @@ $$\Delta x = \cfrac{(b-a)}{n}$$
 Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.		
 
 	""",
-	questions = [
-		Question(validators = [
-					riemannsum(sin, 0, 2pi) == 2.8774915108571216e-17,
-					riemannsum(x->x*sin(x), 0, 2pi) == -6.281118086046032,
-					riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 0.7858888667277568
-					],
-				description = md""),
-			
-		Question(validators = [integral1 == -6.281118086046032], description = md" **Integral 1:**  $ \int_0^{2\pi} x\,sin(x)\,dx$ (n=100)"),
-			
-		Question(validators = [integral2 == 0.7858888667277568], description = md" **Integral 2:**  $ \int_0^1 \sqrt{1-x^2}\,dx$ (n=1000)"),
-			
-	]
+	questions = [q1, q2, q3]
 )
-	validate(qb60, tracker)
+	validate(qb1, tracker)
 end
 
 # ╔═╡ 75d14674-58ba-11eb-3868-172fc00a0eb8
@@ -628,7 +631,7 @@ begin
 
 	
 	qb70 = QuestionBlock(;
-		title=md"**Question 7: Markdown tables**",
+		title=md"**Question 2: markdown tables**",
 		description = md"""
 	Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that tables generation is a tedious process... Write a small julia package (read function) that generates a markdown table that takes a an array of strings for the header and a n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function
 
@@ -722,7 +725,7 @@ Update `mydet` to compute the determinant of a general square matrix.
 )
 		
 qb2 = QuestionBlock(;
-	title=md"**Question 2: Determinant**",
+	title=md"**Question 3: determinining the determinant**",
 	description = md"""
 	""",
 	questions = [q2, q3]
@@ -743,7 +746,7 @@ end
 # ╔═╡ c6e16d7a-58cf-11eb-32a4-3372939066e3
 begin 
 qb90 = QuestionBlock(;
-	title=md"**Question 6: It is Pi 'o clock**",
+	title=md"**Question 4: it is pi 'o clock**",
 	description = md"""
 	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit square. Complete the function `estimatepi` below.
 	""",
@@ -783,7 +786,7 @@ Write a one-liner function `vandermonde` to generate this matrix. This function 
 )
 		
 qb1 = QuestionBlock(;
-	title=md"**Question 1: Vandermonde matrix**",
+	title=md"**Question 6: Vandermonde matrix**",
 	description = md"""Write a function to generate an $n \times m$ [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) for a given vector $\alpha=[\alpha_1,\alpha_2,\ldots,\alpha_m]^T$. This matrix is defined as follows
 
 ${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$
@@ -948,7 +951,7 @@ md""" ## 5. References
 # ╠═3aa37510-58bb-11eb-2ecb-37ce4428269c
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
-# ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
+# ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
 # ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 # ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
@@ -956,10 +959,10 @@ md""" ## 5. References
 # ╠═c6e16d7a-58cf-11eb-32a4-3372939066e3
 # ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
-# ╠═69dc67fa-4cff-11eb-331e-25ffdced4323
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
 # ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
+# ╠═69dc67fa-4cff-11eb-331e-25ffdced4323
 # ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
