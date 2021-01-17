@@ -84,7 +84,10 @@ mean(x)
 # ╔═╡ 8b220aea-4834-11eb-12bb-3b91414fe30a
 md"""
 So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
+"""
 
+# ╔═╡ 9aa12b9a-58e0-11eb-1364-39c58cc1a169
+md"""
 In general, the weighted mean is computed as:
 
 $$\sum_{i=1}^n w_ix_i\,,$$
@@ -117,7 +120,7 @@ sum(wx)
 
 # ╔═╡ 8b4c6880-4837-11eb-0ff7-573dd18a9664
 md"""
-A one-dimensional convolution is given by:
+Now back to our one-dimensional convolution,
 
 $$y_i = \sum_{k=-m}^{m} x_{i + k} w_{m+k+1}\,,$$
 
@@ -132,9 +135,9 @@ As an example, let us try to process the number of COVID cases that were reporte
 
 # ╔═╡ 31e39938-3c9f-11eb-0341-53670c2e93e1
 begin
-download("https://epistat.sciensano.be/Data/COVID19BE_CASES_AGESEX.csv", "COVID19BE_CASES_AGESEX.csv")
-covid_data = CSV.read("COVID19BE_CASES_AGESEX.csv")
-covid_data = combine(groupby(covid_data, :DATE), :CASES=>sum)
+	download("https://epistat.sciensano.be/Data/COVID19BE_CASES_AGESEX.csv", "COVID19BE_CASES_AGESEX.csv")
+	covid_data = CSV.read("COVID19BE_CASES_AGESEX.csv", DataFrame)
+	covid_data = combine(groupby(covid_data, :DATE), :CASES=>sum)
 end
 
 # ╔═╡ caef0432-3c9f-11eb-2006-8ff54211b2b3
@@ -736,6 +739,7 @@ end
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
 # ╠═8b220aea-4834-11eb-12bb-3b91414fe30a
+# ╠═9aa12b9a-58e0-11eb-1364-39c58cc1a169
 # ╠═62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
 # ╠═a657c556-4835-11eb-12c3-398890e70105
