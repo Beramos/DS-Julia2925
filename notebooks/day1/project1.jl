@@ -45,28 +45,24 @@ C = CartesianIndices(matrix)
 
 # ╔═╡ 3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
 md"""
-## 1-D operations
+## 1-Dimensional operations
 
-We will start with local operations in 1-D, i.e., processing a vector to obtain a new vector. Such operations are important in signal processing, for example, if we want to smoothen a noisy signal but are also used in bioinformatics and complex systems. 
+We will start with local operations in 1-D, i.e., processing a vector to obtain a new vector. Such operations are important in signal processing if we want to smoothen a noisy signal for example but the operations are also used in bioinformatics and complex systems. 
 """
 
 # ╔═╡ e1147d4e-2bee-11eb-0150-d7af1f51f842
 md"""
-### 1-D convolution
+### Convolution
 
-Convolution:
+A one-dimensional convolution is defined as follows,
 
 $$y_i = \sum_{k=-m}^{m} x_{i + k} w_{m+k+1}$$
 
-Boundary effects.
-"""
-
-# ╔═╡ 3df9e7dc-4833-11eb-2794-35241b41c93f
-md"""A one-dimensional convolution can be seen as a *local weighted average* of a vector:
+and can be seen as a *local weighted average* of a vector:
 - local means that, for each element of the output, we only consider a small subregion of our input vector;
 - weighted average means that within this region, we might not give every element an equal importance.
 
-Let us first consider the vanilla mean:
+Let us first consider the regular mean:
 
 $$\frac{1}{n}\sum_{i=1}^n x_i\,.$$
 
@@ -87,14 +83,19 @@ mean(x)
 
 # ╔═╡ 8b220aea-4834-11eb-12bb-3b91414fe30a
 md"""
-So, in this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the measurement error and might given a weigth inversly proportional to the error. The weigted mean is computed as:
+So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
+
+In general, the weighted mean is computed as:
 
 $$\sum_{i=1}^n w_ix_i\,,$$
 
-were, $w_i$ are the weights. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
+were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
 
 Implement the weighted mean.
 """
+
+# ╔═╡ 62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
+
 
 # ╔═╡ 88c10640-4835-11eb-14b0-abba18da058f
 weighted_mean(x, w) = sum(x .* w)
@@ -731,11 +732,11 @@ end
 # ╠═2712ade2-34b5-11eb-0242-57f37f6607a3
 # ╠═3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
 # ╠═e1147d4e-2bee-11eb-0150-d7af1f51f842
-# ╠═3df9e7dc-4833-11eb-2794-35241b41c93f
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
 # ╠═8b220aea-4834-11eb-12bb-3b91414fe30a
+# ╠═62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
 # ╠═a657c556-4835-11eb-12c3-398890e70105
 # ╠═181c4246-4836-11eb-0368-61b2998f5424
