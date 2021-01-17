@@ -571,6 +571,52 @@ scores["humans"]
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
 md"## 4. Exercises"
 
+# ╔═╡ 3de1f1aa-58bd-11eb-2ffc-0de292b13840
+function riemannsum(f, a, b; n=100)
+    missing
+end
+
+# ╔═╡ 5f47cdf0-58be-11eb-1bca-a3d0941b9bea
+begin 
+	integral1 = missing #...
+	integral2 = missing #...
+end;
+
+# ╔═╡ 3aa37510-58bb-11eb-2ecb-37ce4428269c
+begin 
+qb60 = QuestionBlock(;
+	title=md"**Question 6: time is relative**",
+	description = md"""
+Integrating for dummies. Compute the Riemann sum **without** making use of a for loop.
+
+Riemann approximates the integration of a function in the interval [a, b],
+		
+$$\int_a^b f(x)\, dx \approx \sum_{i=1}^n f(x_i) \,\Delta x$$
+
+which is the sum of the function $f(x)$ evaluated over an array of x-values in the interval [a,b] multiplied by the $\Delta x$ which is,
+		
+$$\Delta x = \cfrac{(b-a)}{n}$$
+
+Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.		
+
+	""",
+	questions = [
+		Question(validators = [
+					riemannsum(sin, 0, 2pi) == 2.8774915108571216e-17,
+					riemannsum(x->x*sin(x), 0, 2pi) == -6.281118086046032,
+					riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 0.7858888667277568
+					],
+				description = md""),
+			
+		Question(validators = [integral1 == -6.281118086046032], description = md" **Integral 1:**  $ \int_0^{2\pi} x\,sin(x)\,dx$ (n=100)"),
+			
+		Question(validators = [integral2 == 0.7858888667277568], description = md" **Integral 2:**  $ \int_0^1 \sqrt{1-x^2}\,dx$ (n=1000)"),
+			
+	]
+)
+	validate(qb60, tracker)
+end
+
 # ╔═╡ 75d14674-58ba-11eb-3868-172fc00a0eb8
 function markdowntable(table, header)
 	missing
@@ -746,12 +792,6 @@ md""" ## 5. References
 
 """
 
-# ╔═╡ debff6fc-58b9-11eb-0d39-07303f1c4444
-"| A | B | C | D |\n| :--|:--|:--|:--|\n| 6 | 7 | 5 | 3 |\n| 9 | 5 | 2 | 10 |\n| 9 | 3 | 5 | 5 |\n| 6 | 2 | 1 | 8 |\n| 6 | 1 | 6 | 3 |\n| 1 | 3 | 7 | 5 |\n| 2 | 7 | 9 | 6 |\n| 1 | 5 | 2 | 9 |\n"
-
-# ╔═╡ f0e9d7a8-58b9-11eb-1749-2fc3dea83c20
-"| A | B | C | D |\n| :--|:--|:--|:--|\n| 6 | 7 | 5 | 3 |\n| 9 | 5 | 2 | 10 |\n| 9 | 3 | 5 | 5 |\n| 6 | 2 | 1 | 8 |\n| 6 | 1 | 6 | 3 |\n| 1 | 3 | 7 | 5 |\n| 2 | 7 | 9 | 6 |\n| 1 | 5 | 2 | 9 |\n"
-
 # ╔═╡ Cell order:
 # ╠═cdff6730-e785-11ea-2546-4969521b33a7
 # ╠═7308bc54-e6cd-11ea-0eab-83f7535edf25
@@ -889,6 +929,9 @@ md""" ## 5. References
 # ╠═3253ab74-4c58-11eb-178e-83ea8aba9c8f
 # ╠═32593936-4c58-11eb-174c-0bb20d93dde5
 # ╠═ebb09172-4c58-11eb-1cc9-91193c57677d
+# ╠═3aa37510-58bb-11eb-2ecb-37ce4428269c
+# ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
+# ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
 # ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
 # ╠═d59cdb62-5800-11eb-3bbe-b555bbe4c008
@@ -902,5 +945,3 @@ md""" ## 5. References
 # ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
 # ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
-# ╠═debff6fc-58b9-11eb-0d39-07303f1c4444
-# ╠═f0e9d7a8-58b9-11eb-1749-2fc3dea83c20
