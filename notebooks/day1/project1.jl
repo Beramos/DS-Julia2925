@@ -28,7 +28,7 @@ md"""
 
 We wrap up the day by exploring convolutions and similar operations on 1-D and 2-D (or even n-D!) matrices. Departing from some basic building blocks we will cover signal processing, image processing and cellular automata!
 
-Learning goals:
+**Learning goals:**
 - code reuse;
 - speed and performance (including optimizations);
 - learning to plot and make animations.
