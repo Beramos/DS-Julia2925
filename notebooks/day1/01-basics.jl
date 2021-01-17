@@ -32,7 +32,7 @@ end
 md"""
 # Notebook 1: Getting up and running
 
-First of all, **_welcome to the course, $(student[:name])!_**
+First of all, _welcome to the course, **$(student[:name])**!
 """
 
 # ╔═╡ 0f47f5b2-4aba-11eb-2e5a-b10407e3f928
@@ -151,7 +151,7 @@ breakfast * abetterbreakfast^3 * breakfast
 
 # ╔═╡ 046133a8-4ab9-11eb-0591-9de27d85bbca
 md"""
-Lots of handy ´String`-operations are available in the standard library of Julia:
+Lots of handy `String`-operations are available in the standard library of Julia:
 """
 
 # ╔═╡ 0c8bc7f0-4ab9-11eb-1c73-b7ec002c4155
@@ -174,7 +174,7 @@ md"Unlike `Strings`, a `Char` value represents a single character and is surroun
 
 # ╔═╡ 39a0a328-4ab9-11eb-0f37-6717095b56aa
 md"
-The operator `∈` (\in TAB) is a boolean operator that takes a character and a string and returns true if the first appears in the second:"
+The operator `∈` (\in [TAB]) is a boolean operator that takes a character and a string and returns `true` if the first appears in the second:"
 
 # ╔═╡ 4749f268-4ab9-11eb-15a7-579437e0bd20
 'a' ∈ "banana"
@@ -197,6 +197,9 @@ QuestionBlock(;
 	""",
 	questions = [Question(;description=md"", validators = Bool[], status=md"")]
 )
+
+# ╔═╡ 77c5280c-58d0-11eb-19ad-83ec82b6d7c7
+
 
 # ╔═╡ a69ead46-4abc-11eb-3d1d-eb1c73f65150
 md"All binary arithmetic and bitwise operators have an updating version that assigns the result of the operation back into the left operand. The updating version of the binary operator is formed by placing a, `=`, immediately after the operator."
@@ -314,9 +317,11 @@ let
 end
 
 # ╔═╡ 1c5975ec-4abe-11eb-0ff0-bfb2f03a520b
-statements = [ missing,   #first statement
-				missing,  # second statement
-				missing]  # third statement
+statements = [ 
+	missing,  # first statement
+	missing,  # second statement
+	missing   # third statement
+]
 
 # ╔═╡ bd446c42-4abd-11eb-0465-d9a61c48ff48
 begin
@@ -368,22 +373,18 @@ clip(x) = missing
 
 # ╔═╡ 8933033a-4abf-11eb-1156-a53a5ee9152c
 begin
-   qb2 = QuestionBlock(;
-	title=md"**Question 3: clipping exercise**",
-	questions = [
-		Question(;
+   q2 = Question(;
 			description=md"""
 			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, without making use of the functions `min` and `max`.
 
 			Open assignments always return `missing`. 
 			""",
 			validators= @safe[clip(-1)==0, clip(0.3)==0.3, clip(1.1)==1.0],
-			#hints = [hint(md"You might need to compartment your code using brackets.")]
-		),
-		
-			
-		],
-		
+		)
+	
+   qb2 = QuestionBlock(;
+	title=md"**Question 3: clipping exercise**",
+	questions = [q2],
 	);
 	
 	validate(qb2, tracker)
@@ -471,8 +472,6 @@ end
 # ╔═╡ fdb67aba-4ac0-11eb-1d4a-c354de54baa9
 md"""## 5. Functions
 Julia puts the fun in functions. User-defined functions can be declared as follows,
-
-
 """
 
 # ╔═╡ 28f47a24-4ac1-11eb-271f-6b4de7311db3
@@ -488,7 +487,7 @@ md"A more condensed version of of `square(x)`."
 s(x) = x * x
 
 # ╔═╡ 52bfff04-4ac1-11eb-1216-25eedd9184c3
-md"Passing an array to a function that takes a single element as argument takes a special syntax. By putting a `.` before the brackets, the function is executed on all the elements of the Array. More on this in **Part2: collections**."
+md"Passing an array to a function that takes a single element as argument takes a special syntax. By putting a `.` before the brackets, the function is executed on all the elements of the Array. More on this in **part2: collections**."
 
 # ╔═╡ 61846dae-4ac1-11eb-389a-4fbe3f6145b1
 s([1, 2, 3, 4, 5])   # Multiplication is not defined for Arrays
@@ -585,7 +584,7 @@ A particular powerful tool is creating a **pipeline**, i.e., using the output of
 π/4 |> sin |> inv 
 
 # ╔═╡ 6dc0eaae-500f-11eb-3051-37d870366201
-md"The `.` syntax also works here and it is often useful to combiny with anonymous functions."
+md"The `.` syntax also works here and it is often useful to combine with anonymous functions."
 
 # ╔═╡ 8b57c506-500f-11eb-3114-55785eb593a7
 1:100 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
@@ -724,64 +723,58 @@ contour(-5:0.1:5, -10:0.1:10, (x, y) -> 3x^2-4y^2 + x*y/6)
 # ╔═╡ 0e63d722-4ac3-11eb-3740-d31b47a77912
 md"""### 8. Exercises"""
 
-# ╔═╡ 699bd100-5800-11eb-2824-7b0535ec282a
-md"""
-**To add**
-
-* printmarkdown table
-* estimate pi
-
-"""
-
 # ╔═╡ a3969292-57ff-11eb-059b-e9e931a30dc1
 stirling(n) = missing
 
 # ╔═╡ a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 begin 	
-	qb6 = QuestionBlock(;
+	q4 = Question(
+			validators = [
+				abs(stirling(5)-factorial(5))<10, 
+				abs(stirling(10)-factorial(10))<1e5
+				], 
+			description = md""
+		)
+			
+	qo4 = QuestionOptional{Easy}(
+			description=md"""
+				How accurate is this approximation?
+				Plot the true factorial function (scatter) on top of the approximation 					for n ∈ [0, 10]. 
+				""",
+				validators = Bool[]		
+			)
+	
+	qb4 = QuestionBlock(;
 		title=md"**Question 6: Stirling's approximation for factorials**",
 		description = md"""
 	The factorial function,
 
 	$${\displaystyle n!=1\cdot 2\cdot 3\cdots (n-2)\cdot (n-1)\cdot n,}$$
 
-	is often used in combinatorics but also other mathematical areas. Especially for large number it can get quite inefficient to compute. Stirling's approximation is an approximation for factorials,
+	is often used in combinatorics but also other mathematical areas. Especially for large numbers it can get quite inefficient to compute. Stirling's approximation is an approximation for factorials,
 
 	$${\displaystyle n!\sim {\sqrt {2\pi n}}\left({\frac {n}{e}}\right)^{n},}$$
 		
 	Complete the function `stirling()` by implementing Stirling's approximation.
 
 		""",
-		questions = [
-			Question(
-				validators = [abs(stirling(5)-factorial(5))<10, 
-					abs(stirling(10)-factorial(10))<1e5], 
-				description = md""),
-			
-			QuestionOptional{Easy}(;
-				description=md"""
-				How accurate is this approximation?
-				Plot the true factorial function (scatter) on top of the approximation for n ∈ [0, 10]. 
-				""",
-				validators = Bool[]		
-			)
-		]
+		questions = [q4, qo4]
 	)
 	
-	validate(qb6, tracker)
+	validate(qb4, tracker)
 end
 
 # ╔═╡ c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 begin 
-qb60 = QuestionBlock(;
-	title=md"**Question 6: time is relative**",
+qb5 = QuestionBlock(;
+	title=md"**Question 5: time is relative**",
 	description = md"""
 The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
 Write a script that reads the current time and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
 	""",
 	questions = [Question(validators = [], description = md"")]
 )
-	validate(qb60, tracker)
+	validate(qb5, tracker)
 end
 
 # ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
@@ -792,40 +785,38 @@ end
 # ╔═╡ e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 begin 
 	
-q70 = Question(;
+q6 = Question(;
 	description=md"""
 1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, "Holy smokes, Fermat was wrong!" Otherwise the program should print, "No, that doesn’t work.""",
 	validators = []		
 )
 	
-q80 = Question(;
+q7 = Question(;
 	description=md"""
 2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
 	validators = []		
 )
 	
-q90 = QuestionOptional{Easy}(;
+oq8 = QuestionOptional{Easy}(;
 	description=md"""
 3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?""",
 	validators = []		
 )
-	
-	
-	
-qb70 = QuestionBlock(;
-	title=md"**Question 7: Fermat's Last Theorem**",
+		
+qb6 = QuestionBlock(;
+	title=md"**Question 6: Fermat's Last Theorem**",
 	description = md"""
 Fermat’s Last Theorem says that there are no positive integers $a$, $b$, and $c$ such that
 
 $a^n + b^n = c^n$
 
 for any value of $n$ greater than 2.""",
-	questions = [q70, q80, q90],
+	questions = [q6, q7, oq8],
 	hints=[
 			hint(md"check the functions `readline` and `parse`."),
-			hint(md"You can write multiple function with the same name but with a different number of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat`. This mechanism is called multiple dispatch, more on this further in the course.")
+			hint(md"You can write multiple functions with the same name but with a different number or type of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat` Remember that this construct is called multiple dispatch.")
 			])
-	validate(qb70, tracker)
+	validate(qb6, tracker)
 end
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
@@ -833,8 +824,8 @@ md"""### 9. Extra exercises"""
 
 # ╔═╡ 42f24f58-4ac3-11eb-06b5-ebc015c17520
 begin 
-qb3 = QuestionBlock(;
-	title=md"**Question 4: can you justify this?**",
+qb7 = QuestionBlock(;
+	title=md"**Question 7: can you justify this?**",
 	description = md"""
 	
 	Write a function named `rightjustify` that takes a string named `s` as a parameter and prints the string with enough leading spaces so that the last letter of the string is in column 70 of the display.
@@ -842,9 +833,8 @@ qb3 = QuestionBlock(;
 	Use string concatenation and repetition. Also, Julia provides a built-in function called `length`. Check what it does!
 
 	""",
-	questions = [Question(validators = statements, description = md"")]
+	questions = [Question(validators = Bool[], description = md"", status=md"")]
 )
-	validate(qb3, tracker)
 end
 
 # ╔═╡ 87871f34-4ad1-11eb-3903-93e3f63ea14a
@@ -864,14 +854,14 @@ end
 
 # ╔═╡ 01eb4816-4ad2-11eb-3991-af76de0110c5
 begin 
-q4 = Question(validators = [print_grid() == "+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |\n+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |\n+ - - - - + - - - - +"], 
+q9 = Question(validators = [print_grid() == "+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |\n+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |\n+ - - - - + - - - - +"], 
 		description = md"")
 
-oq1 = QuestionOptional{Easy}(validators = [print_big_grid() == "+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +"], 
+oq9 = QuestionOptional{Easy}(validators = [print_big_grid() == "+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +"], 
 		description = md"Write a function that draws a similar grid with four rows and four columns.")
 	
-qb4 = QuestionBlock(;
-	title=md"**Question 5: grid print**",
+qb8 = QuestionBlock(;
+	title=md"**Question 8: grid print**",
 	description = md"""
 	Complete the function `printgrid` that draws a grid like the following:
 	```
@@ -888,7 +878,7 @@ qb4 = QuestionBlock(;
 	+ - - - - + - - - - +
 	```
 
-	""", questions = [q4, oq1], 
+	""", questions = [q9, oq9], 
 		hints=[
 				hint(md"""The function `print` does not advance to the next line."""),
 				hint(md"""To print more than one value on a line, you can print a comma-separated sequence of values:
@@ -897,7 +887,7 @@ qb4 = QuestionBlock(;
 """)
 			]
 	)
-	validate(qb4, tracker)
+	validate(qb8)
 end
 
 # ╔═╡ Cell order:
@@ -947,8 +937,9 @@ end
 # ╠═34a18900-4ab9-11eb-17a0-1168dd9d06f9
 # ╠═39a0a328-4ab9-11eb-0f37-6717095b56aa
 # ╠═4749f268-4ab9-11eb-15a7-579437e0bd20
-# ╠═5a9bbbe6-4aba-11eb-3652-43eb7891f437
+# ╟─5a9bbbe6-4aba-11eb-3652-43eb7891f437
 # ╠═6bdc8a5e-4aba-11eb-263c-df3af7afa517
+# ╠═77c5280c-58d0-11eb-19ad-83ec82b6d7c7
 # ╠═a69ead46-4abc-11eb-3d1d-eb1c73f65150
 # ╠═b482b998-4abc-11eb-36da-379010485bfa
 # ╠═07b103ae-4abd-11eb-311b-278d1e033642
@@ -1011,7 +1002,7 @@ end
 # ╠═461489fa-4ac1-11eb-0596-1d3bedb61778
 # ╠═47338c78-4ac1-11eb-04d6-35c2361eaea6
 # ╠═463689b0-4ac1-11eb-1b0f-b7a239011c5c
-# ╟─52bfff04-4ac1-11eb-1216-25eedd9184c3
+# ╠═52bfff04-4ac1-11eb-1216-25eedd9184c3
 # ╠═61846dae-4ac1-11eb-389a-4fbe3f6145b1
 # ╠═6321ae1a-4ac1-11eb-04cb-33e939694874
 # ╠═7b874424-4ac1-11eb-2d4e-0b4607559b8f
@@ -1072,7 +1063,6 @@ end
 # ╠═cf35b2b2-4ac2-11eb-1ae6-5d3c108210df
 # ╠═d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
 # ╠═0e63d722-4ac3-11eb-3740-d31b47a77912
-# ╠═699bd100-5800-11eb-2824-7b0535ec282a
 # ╠═a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 # ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
 # ╠═c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
