@@ -728,7 +728,6 @@ md"""### 8. Exercises"""
 md"""
 **To add**
 
-* Stirling
 * printmarkdown table
 * estimate pi
 
@@ -785,19 +784,19 @@ end
 # ╔═╡ e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 begin 
 	
-q7 = Question(;
+q70 = Question(;
 	description=md"""
 1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, "Holy smokes, Fermat was wrong!" Otherwise the program should print, "No, that doesn’t work.""",
 	validators = []		
 )
 	
-q8 = Question(;
+q80 = Question(;
 	description=md"""
 2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
 	validators = []		
 )
 	
-q9 = QuestionOptional{Easy}(;
+q90 = QuestionOptional{Easy}(;
 	description=md"""
 3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?""",
 	validators = []		
@@ -805,7 +804,7 @@ q9 = QuestionOptional{Easy}(;
 	
 	
 	
-qb7 = QuestionBlock(;
+qb70 = QuestionBlock(;
 	title=md"**Question 7: Fermat's Last Theorem**",
 	description = md"""
 Fermat’s Last Theorem says that there are no positive integers $a$, $b$, and $c$ such that
@@ -813,12 +812,12 @@ Fermat’s Last Theorem says that there are no positive integers $a$, $b$, and $
 $a^n + b^n = c^n$
 
 for any value of $n$ greater than 2.""",
-	questions = [q7, q8, q9],
+	questions = [q70, q80, q90],
 	hints=[
 			hint(md"check the functions `readline` and `parse`."),
 			hint(md"You can write multiple function with the same name but with a different number of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat`. This mechanism is called multiple dispatch, more on this further in the course.")
 			])
-	validate(qb7, tracker)
+	validate(qb70, tracker)
 end
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39

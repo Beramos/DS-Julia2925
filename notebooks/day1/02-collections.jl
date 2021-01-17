@@ -571,12 +571,81 @@ scores["humans"]
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
 md"## 4. Exercises"
 
+# ╔═╡ 75d14674-58ba-11eb-3868-172fc00a0eb8
+function markdowntable(table, header)
+	missing
+end
+
+# ╔═╡ 0c91ce30-58b9-11eb-3617-4d87682831dd
+begin
+	ex1 = "| A | B | C | D |\n| :--|:--|:--|:--|\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n"
+
+	
+	qb70 = QuestionBlock(;
+		title=md"**Question 7: Markdown tables**",
+		description = md"""
+	Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that tables generation is a tedious process... Write a small julia package (read function) that generates a markdown table that takes a an array of strings for the header and a n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function
+
+		```MD
+			# Header 1
+			## Header 2
+			### Header 3
+
+			**This text is bold** and *this is italic*.
+
+			* This
+			* is 
+			* a 
+			* list.
+
+			| This | is | a | table |
+			| :--|:--|:--|:--| 
+			| 5 | 10 | 10 | 3 |
+			| 9 | 3 | 1 | 5 |
+			| 8 | 4 | 7 | 6 |
+		```
+	# Header 1
+	## Header 2
+	### Header 3
+
+	**This text is bold** and *this is italic*.
+
+	* This
+	* is 
+	* a 
+	* list.
+
+	| This | is | a | table |
+	| :--|:--|:--|:--| 
+	| 5 | 10 | 10 | 3 |
+	| 9 | 3 | 1 | 5 |
+	| 8 | 4 | 7 | 6 |
+		
+	-----------------
+		
+
+		""",
+		questions = [
+			Question(
+				validators = [
+					markdowntable(ones(8, 4), ["A", "B", "C", "D"])==ex1
+					], 
+				description = md"")
+		],
+		hints = [
+			hint(md""" The `join()` and `repeat` functions might come in handy """)
+		]
+		
+	)
+	
+	validate(qb70, tracker)
+end
+
 # ╔═╡ d59cdb62-5800-11eb-3bbe-b555bbe4c008
 md"""
 To add
 
 * rieman
-* stirling plotting against the actial factorial
 * information entropy
 
 """
@@ -673,6 +742,12 @@ md""" ## 5. References
 - [Why I love Julia, Next Journal](https://nextjournal.com/kolia/why-i-love-julia)
 
 """
+
+# ╔═╡ debff6fc-58b9-11eb-0d39-07303f1c4444
+"| A | B | C | D |\n| :--|:--|:--|:--|\n| 6 | 7 | 5 | 3 |\n| 9 | 5 | 2 | 10 |\n| 9 | 3 | 5 | 5 |\n| 6 | 2 | 1 | 8 |\n| 6 | 1 | 6 | 3 |\n| 1 | 3 | 7 | 5 |\n| 2 | 7 | 9 | 6 |\n| 1 | 5 | 2 | 9 |\n"
+
+# ╔═╡ f0e9d7a8-58b9-11eb-1749-2fc3dea83c20
+"| A | B | C | D |\n| :--|:--|:--|:--|\n| 6 | 7 | 5 | 3 |\n| 9 | 5 | 2 | 10 |\n| 9 | 3 | 5 | 5 |\n| 6 | 2 | 1 | 8 |\n| 6 | 1 | 6 | 3 |\n| 1 | 3 | 7 | 5 |\n| 2 | 7 | 9 | 6 |\n| 1 | 5 | 2 | 9 |\n"
 
 # ╔═╡ Cell order:
 # ╠═cdff6730-e785-11ea-2546-4969521b33a7
@@ -811,6 +886,8 @@ md""" ## 5. References
 # ╠═3253ab74-4c58-11eb-178e-83ea8aba9c8f
 # ╠═32593936-4c58-11eb-174c-0bb20d93dde5
 # ╠═ebb09172-4c58-11eb-1cc9-91193c57677d
+# ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
+# ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
 # ╠═d59cdb62-5800-11eb-3bbe-b555bbe4c008
 # ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
@@ -821,3 +898,5 @@ md""" ## 5. References
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
+# ╠═debff6fc-58b9-11eb-0d39-07303f1c4444
+# ╠═f0e9d7a8-58b9-11eb-1749-2fc3dea83c20
