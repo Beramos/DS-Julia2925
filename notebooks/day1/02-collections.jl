@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.17
+# v0.12.18
 
 using Markdown
 using InteractiveUtils
@@ -23,6 +23,7 @@ using Images
 let 
 	using LinearAlgebra
 	using Plots
+	using DSJulia
 
 	blue = "#8DC0FF"
 	red = "#FFAEA6"
@@ -570,6 +571,16 @@ scores["humans"]
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
 md"## 4. Exercises"
 
+# ╔═╡ d59cdb62-5800-11eb-3bbe-b555bbe4c008
+md"""
+To add
+
+* rieman
+* stirling plotting against the actial factorial
+* information entropy
+
+"""
+
 # ╔═╡ 7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 vandermonde(α, n) = missing
 
@@ -662,9 +673,6 @@ md""" ## 5. References
 - [Why I love Julia, Next Journal](https://nextjournal.com/kolia/why-i-love-julia)
 
 """
-
-# ╔═╡ 1af4e3ca-4d17-11eb-1356-11d6c31a1e0a
-?Question()
 
 # ╔═╡ Cell order:
 # ╠═cdff6730-e785-11ea-2546-4969521b33a7
@@ -803,6 +811,7 @@ md""" ## 5. References
 # ╠═3253ab74-4c58-11eb-178e-83ea8aba9c8f
 # ╠═32593936-4c58-11eb-174c-0bb20d93dde5
 # ╠═ebb09172-4c58-11eb-1cc9-91193c57677d
+# ╠═d59cdb62-5800-11eb-3bbe-b555bbe4c008
 # ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 # ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
@@ -812,4 +821,3 @@ md""" ## 5. References
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
-# ╠═1af4e3ca-4d17-11eb-1356-11d6c31a1e0a

@@ -721,15 +721,52 @@ plot(0:0.1:10, x -> sin(x) / x, xlabel="x", ylabel="sin(x)/x", color=:red, marke
 # ╔═╡ d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
 contour(-5:0.1:5, -10:0.1:10, (x, y) -> 3x^2-4y^2 + x*y/6)
 
-# ╔═╡ 19e74adc-4ac3-11eb-239f-7b0132287466
-
-
 # ╔═╡ 0e63d722-4ac3-11eb-3740-d31b47a77912
 md"""### 8. Exercises"""
 
+# ╔═╡ 699bd100-5800-11eb-2824-7b0535ec282a
+md"""
+**To add**
+
+* Stirling
+* printmarkdown table
+* estimate pi
+
+"""
+
+# ╔═╡ a3969292-57ff-11eb-059b-e9e931a30dc1
+stirling(n) = missing
+
+# ╔═╡ a48be23a-57ff-11eb-1bc3-3d3e046ea67c
+begin 	
+	qb6 = QuestionBlock(;
+		title=md"**Question 6: Stirling's approximation for factorials**",
+		description = md"""
+	The factorial function,
+
+	$${\displaystyle n!=1\cdot 2\cdot 3\cdots (n-2)\cdot (n-1)\cdot n,}$$
+
+	is often used in combinatorics but also other mathematical areas. Especially for large number it can get quite inefficient to compute. Stirling's approximation is an approximation for factorials,
+
+	$${\displaystyle n!\sim {\sqrt {2\pi n}}\left({\frac {n}{e}}\right)^{n},}$$
+		
+	Complete the function `stirling()` by implementing Stirling's approximation.
+
+		""",
+		questions = [
+			Question(
+				validators = [abs(stirling(5)-factorial(5))<10, 
+					abs(stirling(10)-factorial(10))<1e5], 
+				description = md"")
+		]
+	)
+	
+	validate(qb6, tracker)
+end
+
 # ╔═╡ c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 begin 
-qb6 = QuestionBlock(;
+qb60 = QuestionBlock(;
 	title=md"**Question 6: time is relative**",
 	description = md"""
 The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
@@ -737,7 +774,7 @@ Write a script that reads the current time and converts it to a time of day in h
 	""",
 	questions = [Question(validators = [], description = md"")]
 )
-	validate(qb6, tracker)
+	validate(qb60, tracker)
 end
 
 # ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
@@ -1027,8 +1064,10 @@ end
 # ╠═c7d2a048-4ac2-11eb-3902-b7c8505096ae
 # ╠═cf35b2b2-4ac2-11eb-1ae6-5d3c108210df
 # ╠═d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
-# ╠═19e74adc-4ac3-11eb-239f-7b0132287466
 # ╠═0e63d722-4ac3-11eb-3740-d31b47a77912
+# ╠═699bd100-5800-11eb-2824-7b0535ec282a
+# ╠═a48be23a-57ff-11eb-1bc3-3d3e046ea67c
+# ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
 # ╠═c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
 # ╠═e99d6b96-4ad5-11eb-2144-f97a97e71ae4

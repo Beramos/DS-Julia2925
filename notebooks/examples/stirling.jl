@@ -16,3 +16,5 @@ stirling(n) = n * log(n / exp(1)) + 0.5log(2π*n)
 plot(1:10, n->log(factorial(big(n))), m=:circle, label="log-factorial")
 xlabel!("n")
 plot!(stirling, 1:10, m=:circle, label = "Stirling's approximation")
+
+
