@@ -653,34 +653,6 @@ To add
 # ╔═╡ 7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 vandermonde(α, n) = missing
 
-# ╔═╡ b56686ec-4cfa-11eb-2b14-a5d49a137cc5
-let
-	α = 1:20
-	n = 5
-	
-q1 = Question(;
-	description=md"""
-Write a one-liner function `vandermonde` to generate this matrix. This function takes as a vector `α` and `n`, the number of powers to compute.
-""",
-	validators = [vandermonde(α, n) == [αᵢ^j for αᵢ in α, j in 0:n-1]]
-)
-		
-qb1 = QuestionBlock(;
-	title=md"**Question 1: Vandermonde matrix**",
-	description = md"""Write a function to generate an $n \times m$ [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) for a given vector $\alpha=[\alpha_1,\alpha_2,\ldots,\alpha_m]^T$. This matrix is defined as follows
-
-${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$
-
-or
-
-$V = [\alpha_i^{j-1}] .$
-		
-""",
-	questions = [q1]
-)
-	validate(qb1, tracker)
-end
-
 # ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 function mydet(A)
 	size(A,1) != size(A,2) && throw(DimensionMismatch)
@@ -732,6 +704,37 @@ end;
 
 # ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
 
+
+# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
+md"## 5. Extra exercises"
+
+# ╔═╡ b56686ec-4cfa-11eb-2b14-a5d49a137cc5
+let
+	α = 1:20
+	n = 5
+	
+q1 = Question(;
+	description=md"""
+Write a one-liner function `vandermonde` to generate this matrix. This function takes as a vector `α` and `n`, the number of powers to compute.
+""",
+	validators = [vandermonde(α, n) == [αᵢ^j for αᵢ in α, j in 0:n-1]]
+)
+		
+qb1 = QuestionBlock(;
+	title=md"**Question 1: Vandermonde matrix**",
+	description = md"""Write a function to generate an $n \times m$ [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) for a given vector $\alpha=[\alpha_1,\alpha_2,\ldots,\alpha_m]^T$. This matrix is defined as follows
+
+${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$
+
+or
+
+$V = [\alpha_i^{j-1}] .$
+		
+""",
+	questions = [q1]
+)
+	validate(qb1)
+end
 
 # ╔═╡ 2e7973b6-4d0f-11eb-107c-cdaf349428c0
 md""" ## 5. References
@@ -889,7 +892,6 @@ md""" ## 5. References
 # ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
 # ╠═d59cdb62-5800-11eb-3bbe-b555bbe4c008
-# ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 # ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
@@ -897,6 +899,8 @@ md""" ## 5. References
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
+# ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
+# ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
 # ╠═debff6fc-58b9-11eb-0d39-07303f1c4444
 # ╠═f0e9d7a8-58b9-11eb-1749-2fc3dea83c20
