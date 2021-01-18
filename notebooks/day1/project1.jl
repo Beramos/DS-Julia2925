@@ -549,17 +549,17 @@ proteinsw = protein_sliding_window(spike_sars2, m, zscales1)
 plot(proteinsw, xlabel="Index of Amino acid in the tail-spike", label="", ylabel="local properties")
 
 # ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
-keep_working(md"@Michiel can you provide an outro here? Not sure what to do with this. This ends rather anti-climactic")
+keep_working(md"**@Michiel** can you provide an outro here? Not sure what to do with this. This ends rather anti-climactic")
 
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 md"""
 ### Application 3: Elementary cellular automata
 
 To conclude our adventures in 1D, let us consider **elementary cellular automata**. These are more or less the simplest dynamical systems one can study. Cellular automata are discrete spatio temporal systems: both the space time and states are discrete. The state of an elementary cellular automaton is determined by an $n$-dimensional binary vector, meaning that there are only two states 0 or 1 (`true` or `false`). The state transistion of a cell is determined by:
-- its own state;
-- the states of its two neighbors.
+- its own state `s`;
+- the states of its two neighbors, left `l` and right `r`.
 
-Logically, one can show that there are only $2^8=256$ possible rules one can apply. Some of them are depicted below.
+As you can see in the figure below, each rule corresponds to the 8 possible situations given the states of the two neighbouring cells and it's own state. Logically, one can show that there are only $2^8=256$ possible rules one can apply. Some of them are depicted below.
 
 ![](https://mathworld.wolfram.com/images/eps-gif/ElementaryCARules_900.gif)
 
@@ -567,57 +567,137 @@ So each of these rules can be represented by an 8-bit integer. Let us try to exp
 """
 
 # ╔═╡ b0bd61f0-49f9-11eb-0e6b-69539bc34be8
-md"First we choose a rule, we can represent is as a `UInt8`."
+md"The rules can be represented as a unsigned integer `UInt8` which takes a value between 0 and 255."
 
 # ╔═╡ b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
 rule = 110 |> UInt8
 
+# ╔═╡ fabce6b2-59cc-11eb-2181-43fe08fcbab9
+println(rule) # check command line
+
+# ╔═╡ 05973498-59cd-11eb-2d56-7dd28db4b8e5
+
+
 # ╔═╡ c61755a6-49f9-11eb-05a0-01d914d305f3
-md"Getting the bitstring is easy, getting the $i$-th digit is a bit more tricky to do  efficiently."
+md"Getting the bitstring is easy"
 
 # ╔═╡ a6e7441a-482e-11eb-1edb-6bd1daa00390
 bitstring(rule)
 
+# ╔═╡ bec6e3d2-59c8-11eb-0ddb-79795043942d
+md"This bitstring represents the transitions of the middle cell to the 8 possible situations of `l`, `r` and `s`. You can verify this by checking the state transitions for rule 110 in de figure above."
+
+# ╔═╡ 6e184088-59c9-11eb-22db-a5858eab786d
+md"The challenge with bitstrings is that the separate bits cannot be efficiently accessed so getting the $i$-th digit is a bit more tricky."
+
+# ╔═╡ 1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
+
+
 # ╔═╡ b43157fa-482e-11eb-3169-cf4989528800
-getbinarydigit(number, i) = number & 2^(i-1) != 0
+#getbinarydigit(rule, i) = missing
 
-# ╔═╡ 96df10b6-4865-11eb-2c7a-cd64bca6e1e6
-getbinarydigit(rule, 5)
+# ╔═╡ 1266818c-59d3-11eb-0b7d-d7253621762e
+getbinarydigit(rule, i) = rule & 2^(i-1) != 0
 
-# ╔═╡ 1bc99bce-49fa-11eb-2e11-2ff541a82919
-md"Given a state `s` and the states of its left (`l`) and right (`r`) neighbors, can you determine the next state under a `rule`?"
+# ╔═╡ 2d4e9afe-59cc-11eb-3033-05d9b684b399
+begin 	
+	qb5 = QuestionBlock(
+		title=md"**Optional question (hard)**",
+		description = md"""
+		Can you think of a way to get the transitioned state given a rule  and a position of a bit in the bitstring? Complete the function `getbinarydigit(rule, i)`.
+		It is possible to do this in a single line. Don't worry if you don't get this, this is bitstring manipulation and not usually part of a scientific programming curriculum.
+		""",
+		questions = [
+			Question(;description=md"", 
+				validators = @safe[
+					getbinarydigit(UInt8(110), 5) == (UInt8(110) & 2^4 != 0) 
+					])
+		],
+		hints = [
+			hint(md"The solution is hidden in the next hint."), 
+			hint(md""" 
+				```julia
+				getbinarydigit(rule, i) = rule & 2^(i-1) != 0
+				```""")	
+		]
+	)
+	validate(qb5)
+end
+
+# ╔═╡ 781d38a8-59d4-11eb-28f9-9358f132782c
+getbinarydigit(rule, 1) 
+
+# ╔═╡ 1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
+begin 	
+	q61 = Question(
+			description=md" Complete `nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)`", 
+			validators = @safe[])
+	
+	q62 = QuestionOptional{Intermediate}(
+			description=md"Using multiple dispatch, write a second function `nextstate(l::Bool, s::Bool, r::Bool, rule::Int)`  so that the rule can be provided as any Integer.", 
+			validators = @safe[])
+	
+	qb6 = QuestionBlock(
+		title=md"**Question: transitioning the states**",
+		description = md"""
+		Now for the next step, given a state `s` and the states of its left (`l`) and right (`r`) neighbours, can you determine the next state under a `rule` (UInt8)?
+
+		""",
+		questions = [q61, q62],
+		hints = [
+			hint(md"Do not forget you have just implemented `getbinarydigit(rule, i)`."),
+			hint(md"In the example of the rules displayed above, all 8 possible combinations of (`l`, `s`, `r`) always refer to the same position in the bitstring"),
+			
+			hint(md"8-(4l+2s+1r)"),
+		]
+	)
+	validate(qb6, tracker)
+end
 
 # ╔═╡ 625c4e1e-2bf3-11eb-2c03-193f7d013fbe
-begin
-	
-nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+#nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8) = missing
 
-function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
-	return getbinarydigit(rule, 8-(4r+2s+1r))
-end
+# ╔═╡ 00f6e42c-59d4-11eb-31c7-d5aa0105e7cf
+getbinarydigit(rule, 4true+2true+1true+1)
+
+# ╔═╡ d2e5787c-59d2-11eb-1bbd-d79672ab8f1b
+begin
+	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+		
+	function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
+		return getbinarydigit(rule, 8-(4l+2s+1r))
+	end
 	
 end
 
 # ╔═╡ 38e6a67c-49fa-11eb-287f-91a836f5752c
-nextstate(true, false, true, rule)
+nextstate(true, true, true, rule)
 
-# ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
-Dict(Gray.([l, s, r]) => Gray(nextstate(l, s, r, rule))
-	for l in [true, false]
-	for s in [true, false]
-	for r in [true, false]
-				)
-										
+# ╔═╡ 511661de-59d5-11eb-16f5-4dbdf4e93ab2
+md"Now that we have this working it is easy to generate and visualise the transitions for each rule. This is not an easy line of code try to really understand these comprehensions before moving on. hint: expand the output for a prettier overview of the rules."
+
+# ╔═╡ be013232-59d4-11eb-360e-e97b6c388991
+@bind rule_number Slider(1:256, default=110)
+
+# ╔═╡ 428af062-59d5-11eb-3cf7-99533810e83c
+md"Rule: $rule_number"
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
-Dict((l=l, s=s, r=r) => nextstate(l, s, r, rule)
+Dict((l=l, s=s, r=r) => nextstate(l, s, r, rule_number)
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
-				)
+	)
 					
 
-# ╔═╡ f0532aee-49fa-11eb-02aa-99c2e1b6d39d
+# ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
+Dict(Gray.([l, s, r]) => [Gray(1), Gray(nextstate(l, s, r, rule_number)), Gray(1)]
+	for l in [true, false]
+	for s in [true, false]
+	for r in [true, false]
+				)									
+
+# ╔═╡ e68101ca-59d5-11eb-18c2-351e9a68421a
 
 
 # ╔═╡ 924461c0-2bf3-11eb-2390-71bad2541463
@@ -740,16 +820,28 @@ url = "https://i.imgur.com/BJWoNPg.jpg"
 download(url, "aprettybird.jpg") # download to a local file
 
 # ╔═╡ c9d085bc-59a5-11eb-0d76-a9f8d1e0fbb9
-img = load("bluebird.jpg")
+bird_original = load("aprettybird.jpg")
 
 # ╔═╡ d72cd460-59a5-11eb-2e09-1f7acb30035c
-typeof(img)
+typeof(bird_original)
 
 # ╔═╡ dc7750c4-59a5-11eb-0095-83af6f5fa6a9
-eltype(img)
+eltype(bird_original)
 
 # ╔═╡ f54749c4-59a5-11eb-1629-99738fb7247c
 md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array. and because of the type system, a lot of interesting feature work out of the box."
+
+# ╔═╡ 5dfd937c-59a8-11eb-1c4b-2fecfcc2b07e
+md"Lets the define a function to reduce the size of the image"
+
+# ╔═╡ 473c581c-2be5-11eb-1ddc-2d30a3468c8a
+decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
+
+# ╔═╡ 79bde78a-59a8-11eb-0082-cb29383b0e8f
+keep_working(md"Conver this to exercise")
+
+# ╔═╡ 6ff6f622-59a8-11eb-2f12-2f44e7e35113
+bird = decimate(bird_original, 6)
 
 # ╔═╡ 0d32820e-59a6-11eb-284b-afe07cec30f5
 md"""
@@ -762,7 +854,7 @@ $(@bind brightness Slider(0:0.01:3, default=1.5))
 brightness
 
 # ╔═╡ 14f5b260-59a6-11eb-23a0-9d1a62ac10bb
-img./brightness
+bird./brightness
 
 # ╔═╡ 572369a2-59a6-11eb-2afa-bf64b27cc145
 md"This is just a simple element-wise division of a matrix."
@@ -777,30 +869,24 @@ Let us move from 1-D operations to 2-D operations. This will be a nice opportuni
 
 # ╔═╡ 41297876-4aab-11eb-3e41-294b06cd19f2
 md"""
-### 2-D convolutions on images
+### Two-dimensional convolutions on images
 
-Just like we did in 1-D, we can define a convolution on matrices and images:
+Just like we did in 1D, we can define a convolution on matrices and images:
 
 $$Y_{i,j} = \sum_{k=-m}^{m} \, \sum_{l=-m}^{m} X_{i + k,\, j+l}\, K_{m+(k+1),\, m+(l+1)}\,.$$
 
-This looks more complex but still amounts to the same thing as the one-dimensional case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
+This looks more complex but still amounts to the same thing as the 1D case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
 
 """
 
-# ╔═╡ 41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
-philip_file = download("https://i.imgur.com/VGPeJ6s.jpg")
+# ╔═╡ d4b6271e-59a7-11eb-3c7f-335c61564d0d
+md"Let's fetch our bird,"
 
-# ╔═╡ 473c581c-2be5-11eb-1ddc-2d30a3468c8a
-decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
-
-# ╔═╡ 4c9d2e0e-2be4-11eb-2fb3-377f29141076
-philip = let
-	original = Images.load(philip_file)
-	decimate(original, 8)
-end
+# ╔═╡ 35991636-59a8-11eb-2bb4-55b01255e94a
+bird
 
 # ╔═╡ eeeee44e-4b5c-11eb-159e-773457e1247f
-size(philip)
+size(bird)
 
 # ╔═╡ 608e930e-2bfc-11eb-09f2-29600cfba1e6
 function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
@@ -854,7 +940,7 @@ function pepper_salt_noise(image; fraction=0.01)
 end
 
 # ╔═╡ 22285b5e-4b5f-11eb-197a-e39e5c525c8d
-salt_and_pepper_philip = pepper_salt_noise(philip)
+salt_and_pepper_philip = pepper_salt_noise(bird)
 
 # ╔═╡ 73c3869a-2bfd-11eb-0597-29cd6c1c90db
 convolve_2d(M, K) = convolve_2d!(M, similar(M), K) 
@@ -873,7 +959,7 @@ function convolve_image(M, K)
 end
 
 # ╔═╡ e1f23724-2bfd-11eb-1063-1d59909bcacc
-convolve_image(philip, K_gaussian)
+convolve_image(bird, K_gaussian)
 
 # ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
 convolve_image(salt_and_pepper_philip, K_gaussian)
@@ -889,10 +975,10 @@ const Gy = [1 2 1;
 		   -1 -2 -1]
 
 # ╔═╡ 3aba6b10-4b5c-11eb-0e4f-81b47568937a
-convolve_2d(Gray.(philip) .|> Float64, Gx) .|> Gray
+convolve_2d(Gray.(bird) .|> Float64, Gx) .|> Gray
 
 # ╔═╡ b5bf307a-4b5c-11eb-32eb-614b3193d8cb
-convolve_2d(Gray.(philip) .|> Float64, Gy) .|> Gray
+convolve_2d(Gray.(bird) .|> Float64, Gy) .|> Gray
 
 # ╔═╡ 746d3578-2bff-11eb-121a-f3d17397a49e
 function edge_detection(M)
@@ -901,10 +987,10 @@ function edge_detection(M)
 end
 
 # ╔═╡ f41919a4-2bff-11eb-276f-a5edd5b374ac
-edge_detection(philip)
+edge_detection(bird)
 
 # ╔═╡ 55bfb46a-2be5-11eb-2be6-1bc153db11ac
-RGB.(red.(philip), green.(philip), blue.(philip))
+RGB.(red.(bird), green.(bird), blue.(bird))
 
 # ╔═╡ d523e4c6-301b-11eb-040a-f7a214cb785b
 function count_neighbors((i, j), grid::Matrix{Bool})
@@ -1037,16 +1123,28 @@ end
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
+# ╠═fabce6b2-59cc-11eb-2181-43fe08fcbab9
+# ╠═05973498-59cd-11eb-2d56-7dd28db4b8e5
 # ╠═c61755a6-49f9-11eb-05a0-01d914d305f3
 # ╠═a6e7441a-482e-11eb-1edb-6bd1daa00390
+# ╠═bec6e3d2-59c8-11eb-0ddb-79795043942d
+# ╠═6e184088-59c9-11eb-22db-a5858eab786d
+# ╠═1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
+# ╠═2d4e9afe-59cc-11eb-3033-05d9b684b399
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
-# ╠═96df10b6-4865-11eb-2c7a-cd64bca6e1e6
-# ╠═1bc99bce-49fa-11eb-2e11-2ff541a82919
+# ╠═781d38a8-59d4-11eb-28f9-9358f132782c
+# ╠═1266818c-59d3-11eb-0b7d-d7253621762e
+# ╠═1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
 # ╠═625c4e1e-2bf3-11eb-2c03-193f7d013fbe
+# ╠═00f6e42c-59d4-11eb-31c7-d5aa0105e7cf
+# ╠═d2e5787c-59d2-11eb-1bbd-d79672ab8f1b
 # ╠═38e6a67c-49fa-11eb-287f-91a836f5752c
-# ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
+# ╠═511661de-59d5-11eb-16f5-4dbdf4e93ab2
+# ╟─428af062-59d5-11eb-3cf7-99533810e83c
+# ╟─be013232-59d4-11eb-360e-e97b6c388991
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
-# ╠═f0532aee-49fa-11eb-02aa-99c2e1b6d39d
+# ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
+# ╠═e68101ca-59d5-11eb-18c2-351e9a68421a
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
 # ╠═405a1036-2bf5-11eb-11f9-a1a714dbf7e1
@@ -1079,16 +1177,19 @@ end
 # ╠═d72cd460-59a5-11eb-2e09-1f7acb30035c
 # ╠═dc7750c4-59a5-11eb-0095-83af6f5fa6a9
 # ╠═f54749c4-59a5-11eb-1629-99738fb7247c
+# ╠═5dfd937c-59a8-11eb-1c4b-2fecfcc2b07e
+# ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
+# ╠═79bde78a-59a8-11eb-0082-cb29383b0e8f
+# ╠═6ff6f622-59a8-11eb-2f12-2f44e7e35113
 # ╟─0d32820e-59a6-11eb-284b-afe07cec30f5
 # ╠═fc2bb5d0-59a6-11eb-0af2-37897d8351b0
 # ╠═14f5b260-59a6-11eb-23a0-9d1a62ac10bb
 # ╠═572369a2-59a6-11eb-2afa-bf64b27cc145
 # ╠═49145bd6-4aa7-11eb-3c93-d90a36903d1a
 # ╠═41297876-4aab-11eb-3e41-294b06cd19f2
-# ╠═41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
-# ╠═4c9d2e0e-2be4-11eb-2fb3-377f29141076
+# ╠═d4b6271e-59a7-11eb-3c7f-335c61564d0d
+# ╠═35991636-59a8-11eb-2bb4-55b01255e94a
 # ╠═eeeee44e-4b5c-11eb-159e-773457e1247f
-# ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
 # ╠═608e930e-2bfc-11eb-09f2-29600cfba1e6
 # ╠═1e98e96a-4b5d-11eb-2d9b-797cdd1e3978
 # ╠═245deb30-2bfe-11eb-3e47-6b7bd5d73ccf

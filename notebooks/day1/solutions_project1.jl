@@ -39,3 +39,11 @@ function gaussian_weigths(m; σ=4)
 	w = exp.(-(-m:m).^2 / 2σ^2)
 	return w ./ sum(w)
 end
+
+getbinarydigit(rule, i) = rule & 2^(i-1) != 0
+
+nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+	
+function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
+	return getbinarydigit(rule, 8-(4l+2s+1r))
+end
