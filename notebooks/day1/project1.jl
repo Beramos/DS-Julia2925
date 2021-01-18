@@ -217,15 +217,65 @@ begin
 	validate(qb2, tracker)
 end
 
+# ╔═╡ 6e95d126-598d-11eb-22a9-f3b895578acd
+function sol_convolve_1d(x::Vector, w::Vector)
+	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
+	n = length(x)
+	m = length(w) ÷ 2
+	out = zeros(n)
+
+	fill!(out, 0.0)
+	for (i, xj) in enumerate(x)
+		for (j, wj) in enumerate(w)
+			k = clamp(i + j - m, 1, n)
+			out[i] += w[j] * x[k]
+		end
+	end
+	return out
+end
+
+# ╔═╡ 7945ed1c-598c-11eb-17da-af9a36c6a68c
+md"""
+Let's try this out on an example, consider a noisy signal,
+"""
+
+# ╔═╡ 546beebe-598d-11eb-1717-c9687801e647
+noisy_signal(tᵢ) = 5tᵢ+5sin(tᵢ)+10*rand();
+
+# ╔═╡ f39d88f6-5994-11eb-041c-012af6d3bae6
+md"We use the convolution function we defined to construct a moving_average function,"
+
+# ╔═╡ f94e2e6c-598e-11eb-041a-0b6a068e464c
+moving_average(f::Function, t, w) = sol_convolve_1d(f.(t), ones(w).*1/w);
+
+# ╔═╡ 4e45e43e-598f-11eb-0a0a-2fa636748f7c
+@bind wₑ Slider(1:2:43, default=3)
+
+# ╔═╡ 0563fba2-5994-11eb-2d81-f70d10092ad7
+md"Number of weights (w) : $wₑ"
+
+# ╔═╡ 8e53f108-598d-11eb-127f-ddd5be0ec899
+begin 
+	t = 0:0.01:10
+	plot(t, noisy_signal.(t), label="Noisy", ylabel="Signal (-)", xlabel="time(s)")
+	plot!(t, moving_average(noisy_signal, t, wₑ), label="Filtered", lw = 2)
+end
+
+# ╔═╡ 99a7e070-5995-11eb-0c53-51fc82db2e93
+
+
+# ╔═╡ 22261bf2-5995-11eb-2d52-932589333c47
+QuestionBlock(;
+	title=md"**Task:**",
+	description = md"""
+	Explore this filtering technique by changing the number of weights. Try to understand the how the `moving_average` function works
+	""",
+	questions = [Question(;description=md"", validators = Bool[], status=md"")]
+)
+
 # ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
 function uniform_weights(m)
 	return ones(2m+1) / (2m+1)
-end
-
-# ╔═╡ ef84b6fe-2bef-11eb-0943-034b8b90c4c4
-function uniform_weights2(m)
-	w = missing
-	return w
 end
 
 # ╔═╡ 294140a4-2bf0-11eb-22f5-858969a4640d
@@ -248,9 +298,12 @@ end
 # ╔═╡ 64bf7f3a-58f0-11eb-1782-0d33a2b615e0
 begin 
 	m₁ = 3
-	Wu = uniform_weights(m₁)
-	Wt = triangle_weigths(m₁)
-	Wg = gaussian_weigths(m₁)
+	try
+		global Wu = uniform_weights(m₁)
+		global Wt = triangle_weigths(m₁)
+		global Wg = gaussian_weigths(m₁)
+	catch e 
+	end
 	
 	fs = (600, 280)
 	
@@ -318,6 +371,9 @@ begin
 	
 	validate(qb3, tracker)
 end
+
+# ╔═╡ 2b07134c-598c-11eb-155a-6b28a98e76ca
+md"### A relevant example"
 
 # ╔═╡ ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 md"""
@@ -893,11 +949,21 @@ end
 # ╠═8b4c6880-4837-11eb-0ff7-573dd18a9664
 # ╠═b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
 # ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
+# ╠═6e95d126-598d-11eb-22a9-f3b895578acd
+# ╠═7945ed1c-598c-11eb-17da-af9a36c6a68c
+# ╠═546beebe-598d-11eb-1717-c9687801e647
+# ╠═f39d88f6-5994-11eb-041c-012af6d3bae6
+# ╠═f94e2e6c-598e-11eb-041a-0b6a068e464c
+# ╟─0563fba2-5994-11eb-2d81-f70d10092ad7
+# ╠═4e45e43e-598f-11eb-0a0a-2fa636748f7c
+# ╠═8e53f108-598d-11eb-127f-ddd5be0ec899
+# ╟─99a7e070-5995-11eb-0c53-51fc82db2e93
+# ╠═22261bf2-5995-11eb-2d52-932589333c47
 # ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
-# ╠═ef84b6fe-2bef-11eb-0943-034b8b90c4c4
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
 # ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
+# ╠═2b07134c-598c-11eb-155a-6b28a98e76ca
 # ╠═ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 # ╠═c962de82-3c9e-11eb-13df-d5dec37bb2c0
 # ╠═31e39938-3c9f-11eb-0341-53670c2e93e1
