@@ -379,7 +379,10 @@ begin
 
 			Open assignments always return `missing`. 
 			""",
-			validators= @safe[clip(-1)==0, clip(0.3)==0.3, clip(1.1)==1.0],
+			validators= @safe[
+			clip(-1)==Solutions.clip(-1), 
+			clip(0.3)==Solutions.clip(0.3), 
+			clip(1.1)==Solutions.clip(1.1)],
 		)
 	
    qb2 = QuestionBlock(;
