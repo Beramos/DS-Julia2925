@@ -19,9 +19,6 @@ using PlutoUI
 # ╔═╡ c962de82-3c9e-11eb-13df-d5dec37bb2c0
 using CSV, DataFrames, Dates
 
-# ╔═╡ 485292d8-2bde-11eb-0a97-6b44d54596dd
-using Plots
-
 # ╔═╡ 87c5bb72-4aa7-11eb-3897-a523011703c5
 using Images
 
@@ -373,7 +370,7 @@ begin
 end
 
 # ╔═╡ 2b07134c-598c-11eb-155a-6b28a98e76ca
-md"### A relevant example"
+md"### Application 1: pandemic processing"
 
 # ╔═╡ ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 md"""
@@ -395,30 +392,36 @@ covid_dates = [Date(d, "yyyy-mm-dd") for d in covid_data[1:end-1,1]]
 # ╔═╡ 8a996336-2bde-11eb-10a3-cb0046ed5de9
 plot(covid_dates, covid_cases, label="measured COVID cases in Belgium")
 
+# ╔═╡ cb9945f6-5995-11eb-3b10-937cde05fa31
+begin 	
+	qb4 = QuestionBlock(
+		title=md"**Question 4: processing COVID data**",
+		description = md"""
+		You can see that the plot is very noisy use convolution to smooth things out!
+		
+		Explore both the triangle and Gaussian kernels,
+		
+		1. What is the effect of the number of weights?
+		2. What is the effect of σ of in the Gaussian kernel?
+		3. Is there a problem with a high number of weights?
+		""",
+		questions = [Question(;description=md"", validators = Bool[], status=md"")],
+		hints = [
+			hint(md" Subquestion 3 refers to the weekend effect.")	
+		]
+	)
+
+end
+
 # ╔═╡ 696e252a-4862-11eb-2752-9d7bbd0a4b7d
-md"You can see that the plot is very noisy, let us use convolution to smooth things out!"
 
-# ╔═╡ c596227e-4862-11eb-3fe4-151218778dba
-@bind m Slider(1:2:25, default=5)
 
-# ╔═╡ fa911a76-2be3-11eb-1c85-3df313eb0fcb
-w = gaussian_weigths(m)
+# ╔═╡ d2321a9c-5996-11eb-0380-47aa8ec777af
 
-# ╔═╡ 20c46656-2bf0-11eb-2dc4-af2cc2161f6a
-scatter(w, xlabel="j", ylabel="weight")
-
-# ╔═╡ cb5f4a20-2be8-11eb-0000-c59f23a024ef
-signal_c = convolve_1d(covid_cases, w)
-
-# ╔═╡ eb5f8062-2be1-11eb-1e96-1f89be62f3b0
-plot(covid_dates, signal_c)
-
-# ╔═╡ 2a5e7ec8-4864-11eb-3161-35a51a74145f
-m
 
 # ╔═╡ b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 md"""
-### Sliding window: protein analysis
+### Application 2: protein analysis
 
 A protein is a sequence of amino acids, small molecules with unique physicochemical properties that largely determine the protein structure and function. In bioinformatics, the 20 common amino acids are denoted by 20 capital letters, `A` for alanina, `C` for cysteine, etc. Many interesting local properties can be computed by looking at local properties of amino acids. For example, the (now largely outdated) **Chou-Fasman method** for secondary structure prediction uses a sliding window to check if regions are enriched for amino acids associated with $\alpha$-helices or $\beta$-sheets.
 
@@ -970,14 +973,9 @@ end
 # ╠═caef0432-3c9f-11eb-2006-8ff54211b2b3
 # ╠═b3ec8362-482d-11eb-2df4-2343ee17444a
 # ╠═8a996336-2bde-11eb-10a3-cb0046ed5de9
+# ╠═cb9945f6-5995-11eb-3b10-937cde05fa31
 # ╠═696e252a-4862-11eb-2752-9d7bbd0a4b7d
-# ╠═485292d8-2bde-11eb-0a97-6b44d54596dd
-# ╠═fa911a76-2be3-11eb-1c85-3df313eb0fcb
-# ╠═20c46656-2bf0-11eb-2dc4-af2cc2161f6a
-# ╠═cb5f4a20-2be8-11eb-0000-c59f23a024ef
-# ╠═eb5f8062-2be1-11eb-1e96-1f89be62f3b0
-# ╠═c596227e-4862-11eb-3fe4-151218778dba
-# ╠═2a5e7ec8-4864-11eb-3161-35a51a74145f
+# ╠═d2321a9c-5996-11eb-0380-47aa8ec777af
 # ╠═b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 # ╠═87610484-3ca1-11eb-0e74-8574e946dd9f
 # ╠═9c82d5ea-3ca1-11eb-3575-f1893df8f129
