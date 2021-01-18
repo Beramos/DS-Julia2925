@@ -781,7 +781,7 @@ md"""
 
 Just like we did in 1-D, we can define a convolution on matrices and images:
 
-$$Y_{i,j} = \sum_{k=-m}^{m}\sum_{l=-m}^{m} X_{i + k, j+l} K_{m+k+1, m+l+1}\,.$$
+$$Y_{i,j} = \sum_{k=-m}^{m} \, \sum_{l=-m}^{m} X_{i + k,\, j+l}\, K_{m+(k+1),\, m+(l+1)}\,.$$
 
 This looks more complex but still amounts to the same thing as the one-dimensional case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
 
