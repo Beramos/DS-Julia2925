@@ -15,3 +15,7 @@ function clip(x)
   return x
   end
 end
+
+### Stirling
+stirling(n) = sqrt(2*π*n)*(n/exp(1))^n
+
