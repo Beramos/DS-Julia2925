@@ -10,8 +10,8 @@ bram.de.jaegher@gmail.com
 module Solutions
   for (root, dirs, files) in walkdir("../solutions")
     for file in files
-      include(joinpath(root,file))
       println("Found solution file: $file")
+      include(joinpath(root,file))
     end
   end
 end
