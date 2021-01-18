@@ -28,9 +28,6 @@ begin
 	"""
 end
 
-# ╔═╡ e88e641e-59db-11eb-0fd6-33cae5485630
-pwd()
-
 # ╔═╡ fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
 md"""
 # Notebook 1: Getting up and running
@@ -896,7 +893,6 @@ end
 # ╔═╡ Cell order:
 # ╟─f089cbaa-4ab9-11eb-09d1-05f49911487f
 # ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
-# ╠═e88e641e-59db-11eb-0fd6-33cae5485630
 # ╠═fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
 # ╟─0f47f5b2-4aba-11eb-2e5a-b10407e3f928
 # ╠═23d3c9cc-4abd-11eb-0cb0-21673effee6c
