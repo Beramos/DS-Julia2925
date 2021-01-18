@@ -14,7 +14,7 @@ macro bind(def, element)
 end
 
 # ╔═╡ cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
-using PlutoUI
+using PlutoUI, Plots
 
 # ╔═╡ c962de82-3c9e-11eb-13df-d5dec37bb2c0
 using CSV, DataFrames, Dates
@@ -423,14 +423,21 @@ end
 md"""
 ### Application 2: protein analysis
 
-A protein is a sequence of amino acids, small molecules with unique physicochemical properties that largely determine the protein structure and function. In bioinformatics, the 20 common amino acids are denoted by 20 capital letters, `A` for alanina, `C` for cysteine, etc. Many interesting local properties can be computed by looking at local properties of amino acids. For example, the (now largely outdated) **Chou-Fasman method** for secondary structure prediction uses a sliding window to check if regions are enriched for amino acids associated with $\alpha$-helices or $\beta$-sheets.
 
-We will study a protein using a sliding window analysis by making use of the **amino acid z-scales**. These are three properties computed on amino acids based on a PCA analysis on the physicochemical properties of the amino acides. In order, they quantify:
-1. lipophiliciy: the degree whether the amino acide chain is lipidloving (and hence hydrophopic) and hence fan form Van der Waals forces;
-2. steric properties: how large and flexible the side chains are;
-3. electronic properties, such as positive or negative charges.
+A protein (polypeptide chain) is a sequence of amino acids, small molecules with unique physicochemical properties that largely determine the protein structure and function. 
 
-The three zscales are given below in dictionaries.
+![source: technology networks.com](https://cdn.technologynetworks.com/tn/images/thumbs/webp/640_360/essential-amino-acids-chart-abbreviations-and-structure-324357.webp?v=10459598)
+
+In bioinformatics, the 20 common amino acids are denoted by 20 capital letters, `A` for alanina, `C` for cysteine, etc. Many interesting local properties can be computed by looking at local properties of amino acids. For example, the (now largely outdated) **Chou-Fasman method** for the prediction the local three-dimensional shape of a protein ($\alpha$-helix or $\beta$-sheet) uses a sliding window to check if regions are enriched for amino acids associated with $\alpha$-helices or $\beta$-sheets.
+
+We will study a protein using a sliding window analysis by making use of the **amino acid z-scales**. These are three physicochemical properties of an amino acid. 
+
+In order, they quantify:
+1. *lipophilicity*: the degree in which the amino acid chain is lipidloving (and hence hydrophopic);
+2. *steric properties*: how large and flexible the side chains are;
+3. *electric properties*, such as positive or negative charges.
+
+The three z-scales for each of the amino acids is given in dictionaries below.
 """
 
 # ╔═╡ 87610484-3ca1-11eb-0e74-8574e946dd9f
@@ -520,6 +527,9 @@ md"To be topical, let us try it on the tail spike protein of the SARS-CoV-2 viru
 # ╔═╡ c924a5f6-2bf1-11eb-3d37-bb63635624e9
 spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT"
 
+# ╔═╡ 7e96f0d6-5999-11eb-3673-43f7f1fa0113
+m = 5
+
 # ╔═╡ c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 function protein_sliding_window(sequence, m, zscales)
 	n = length(sequence)
@@ -536,15 +546,19 @@ end
 proteinsw = protein_sliding_window(spike_sars2, m, zscales1)
 
 # ╔═╡ dce6ec82-3ca1-11eb-1d87-1727b0e692df
-plot(proteinsw)
+plot(proteinsw, xlabel="Index of Amino acid in the tail-spike", label="", ylabel="local properties")
+
+# ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
+keep_working(md"@Michiel can you provide an outro here? Not sure what to do with this. This ends rather anti-climactic")
 
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 md"""
-### Elementary cellular automata
+### Application 3: Elementary cellular automata
 
-To conclude our adventures in 1D, let us consider **elementary cellular automata**. These are more or less the simplest dynamical systems one can study. Cellular automata are descrete spatiotemporal systems: both the space time and states are discrete. The state of an elementary cellular automaton is determined by an $n$-dimensional binary vector, meaning that there are only two states 0 or 1 (`true` or `false`). The state transistion of a cell is determined by:
+To conclude our adventures in 1D, let us consider **elementary cellular automata**. These are more or less the simplest dynamical systems one can study. Cellular automata are discrete spatio temporal systems: both the space time and states are discrete. The state of an elementary cellular automaton is determined by an $n$-dimensional binary vector, meaning that there are only two states 0 or 1 (`true` or `false`). The state transistion of a cell is determined by:
 - its own state;
 - the states of its two neighbors.
+
 Logically, one can show that there are only $2^8=256$ possible rules one can apply. Some of them are depicted below.
 
 ![](https://mathworld.wolfram.com/images/eps-gif/ElementaryCARules_900.gif)
@@ -662,9 +676,7 @@ md"""
 
 ## 2-D operations
 
-Let us move from 1-D operations to 2-D operatations. This will be a nice opportunity to learn something about image processing in Julia!
-
-
+Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
 """
 
 # ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
@@ -983,9 +995,11 @@ end
 # ╠═9f62891c-49c2-11eb-3bc8-47f5d2e008cc
 # ╠═328385ca-49c3-11eb-0977-c79b31a6caaf
 # ╠═c924a5f6-2bf1-11eb-3d37-bb63635624e9
+# ╠═7e96f0d6-5999-11eb-3673-43f7f1fa0113
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
+# ╠═19a98dd4-599e-11eb-2b1c-172e00137e6c
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
