@@ -671,17 +671,9 @@ plot(ca_image(X), size=(1000, 1000))
 # ╔═╡ 4810a052-2bf6-11eb-2e9f-7f9389116950
 all_cas = Dict(rule=>ca_image(simulate(x0_ca, rule; nsteps=500)) for rule in UInt8(0):UInt8(251))
 
-# ╔═╡ 49145bd6-4aa7-11eb-3c93-d90a36903d1a
-md"""
-
-## 2-D operations
-
-Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
-"""
-
 # ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
 md"""
-### What is an image?
+### Intermezzo: What is an image?
 
 An image is generally just a matrix of pixels. What is a pixel? Usually this corresponds to just a particular color (or grayscale). So let us play around with colors first.
 
@@ -698,7 +690,7 @@ md"We can extract the red, green, and blue components using the obvious function
 red(daanbeardred), green(daanbeardred), blue(daanbeardred)
 
 # ╔═╡ 7af6568e-4aa9-11eb-3fd5-97fa8401696a
-md"Turning a color in grayscale is also easy."
+md"Converting a color to grayscale is also easy."
 
 # ╔═╡ 6e51e25e-4aa9-11eb-116f-09bad1bf0041
 Gray(daanbeardred)
@@ -740,6 +732,48 @@ end
 
 # ╔═╡ 991bcfe4-4aaa-11eb-22e8-935938437b51
 redimage(mini_image), greenimage(mini_image), blueimage(mini_image)
+
+# ╔═╡ a07ab8ba-59a5-11eb-1fa5-39971674843b
+url = "https://i.imgur.com/BJWoNPg.jpg"
+
+# ╔═╡ b8eac080-59a5-11eb-30e1-71c29adc8188
+download(url, "aprettybird.jpg") # download to a local file
+
+# ╔═╡ c9d085bc-59a5-11eb-0d76-a9f8d1e0fbb9
+img = load("bluebird.jpg")
+
+# ╔═╡ d72cd460-59a5-11eb-2e09-1f7acb30035c
+typeof(img)
+
+# ╔═╡ dc7750c4-59a5-11eb-0095-83af6f5fa6a9
+eltype(img)
+
+# ╔═╡ f54749c4-59a5-11eb-1629-99738fb7247c
+md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array. and because of the type system, a lot of interesting feature work out of the box."
+
+# ╔═╡ 0d32820e-59a6-11eb-284b-afe07cec30f5
+md"""
+☼
+$(@bind brightness Slider(0:0.01:3, default=1.5))
+☾
+"""
+
+# ╔═╡ fc2bb5d0-59a6-11eb-0af2-37897d8351b0
+brightness
+
+# ╔═╡ 14f5b260-59a6-11eb-23a0-9d1a62ac10bb
+img./brightness
+
+# ╔═╡ 572369a2-59a6-11eb-2afa-bf64b27cc145
+md"This is just a simple element-wise division of a matrix."
+
+# ╔═╡ 49145bd6-4aa7-11eb-3c93-d90a36903d1a
+md"""
+
+## 2-D operations
+
+Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
+"""
 
 # ╔═╡ 41297876-4aab-11eb-3e41-294b06cd19f2
 md"""
@@ -1022,7 +1056,6 @@ end
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 # ╠═fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 # ╠═4810a052-2bf6-11eb-2e9f-7f9389116950
-# ╠═49145bd6-4aa7-11eb-3c93-d90a36903d1a
 # ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
 # ╠═90c3c542-4aa8-11eb-03fb-e70579c8e4f3
 # ╠═57074882-4aa9-11eb-0ad5-a5ebadc22550
@@ -1040,6 +1073,17 @@ end
 # ╠═78bd5fa6-4aaa-11eb-11f9-bd6f571fdf8c
 # ╠═7aae8510-4aaa-11eb-1622-a113684f9a7d
 # ╠═991bcfe4-4aaa-11eb-22e8-935938437b51
+# ╠═a07ab8ba-59a5-11eb-1fa5-39971674843b
+# ╠═b8eac080-59a5-11eb-30e1-71c29adc8188
+# ╠═c9d085bc-59a5-11eb-0d76-a9f8d1e0fbb9
+# ╠═d72cd460-59a5-11eb-2e09-1f7acb30035c
+# ╠═dc7750c4-59a5-11eb-0095-83af6f5fa6a9
+# ╠═f54749c4-59a5-11eb-1629-99738fb7247c
+# ╟─0d32820e-59a6-11eb-284b-afe07cec30f5
+# ╠═fc2bb5d0-59a6-11eb-0af2-37897d8351b0
+# ╠═14f5b260-59a6-11eb-23a0-9d1a62ac10bb
+# ╠═572369a2-59a6-11eb-2afa-bf64b27cc145
+# ╠═49145bd6-4aa7-11eb-3c93-d90a36903d1a
 # ╠═41297876-4aab-11eb-3e41-294b06cd19f2
 # ╠═41e7ef30-2be4-11eb-1b9a-e7f7eae7a115
 # ╠═4c9d2e0e-2be4-11eb-2fb3-377f29141076

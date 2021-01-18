@@ -4,21 +4,6 @@
 using Markdown
 using InteractiveUtils
 
-# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
-macro bind(def, element)
-    quote
-        local el = $(esc(element))
-        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
-        el
-    end
-end
-
-# ╔═╡ fbde6364-4f30-11eb-1ece-712293996c04
-using Colors: RGB
-
-# ╔═╡ 486457d8-4f37-11eb-306c-57d650508136
-using Images
-
 # ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 begin
 	using LinearAlgebra
@@ -424,54 +409,6 @@ T.^2 .+ cos.(T)
 md"""
 Did you notice that dot-operations are also applicable to functions, even user-defined functions? As programmers, we are by lazy by definition and all these dots are a lot of work. The `@.` macro does this for us.
 """
-
-# ╔═╡ 32351fb8-4c4b-11eb-058b-5bb348e8dfb7
-T.^2 .+ cos.(T) == @. T^2 + cos(T)
-
-# ╔═╡ eed4faca-4c1f-11eb-3e6c-b342b48080eb
-md""" ### Intermezzo: Colors.jl and Images.jl
-
-As has been mentioned before, everything has a type. We also know that functions can behave differently for each type. With this in mind, let us look at two interesting packages. *Colors.jl*
-"""
-
-# ╔═╡ 42254aa6-4f37-11eb-001b-f78d5383e36f
-RGB(0.5,0.2,0.1)
-
-# ╔═╡ 0977a54e-4f31-11eb-148c-1d44be4f6853
-fyi(md"*Colors.jl* provides a wide array of functions for dealing with color. This includes conversion between colorspaces, measuring distance between colors, simulating color blindness, parsing colors, and generating color scales for graphics.")
-
-# ╔═╡ 4c21ed0e-4f37-11eb-0a90-3120e1ee7936
-url = "https://i.imgur.com/BJWoNPg.jpg"
-
-# ╔═╡ 5686c59e-4f37-11eb-21d5-47bdbcf75805
-download(url, "bluebird.jpg") # download to a local file
-
-# ╔═╡ a5dc2904-4f37-11eb-24c1-d7837c8bd487
-img = load("bluebird.jpg")
-
-# ╔═╡ cf3ec91e-4f37-11eb-0706-e9f726532654
-typeof(img)
-
-# ╔═╡ d7d1b940-4f37-11eb-3f74-9dbe02774e54
-eltype(img)
-
-# ╔═╡ f90725be-4f37-11eb-1905-e99a65ad3e07
-size(img)
-
-# ╔═╡ dd781738-4f37-11eb-09fb-b7f3390a49b2
-md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array."
-
-# ╔═╡ ab395348-4f39-11eb-0a3c-1d8af3b6442e
-sqr_img = img[1:1500, 201:1700]
-
-# ╔═╡ 7acaf008-4f3a-11eb-17c2-dfaa1e9f2ce7
-md"Because of this type system, a lot of interesting feature work out of the box."
-
-# ╔═╡ 8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
-@bind brightness html"<input type=range min=0.0 max=300.0>"
-
-# ╔═╡ d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
-img[1:1500, 201:1700]./(brightness/100)
 
 # ╔═╡ 5064c592-4c4b-11eb-0dee-5186caf2b1f6
 md"### Higher dimensional arrays"
@@ -899,23 +836,6 @@ md""" ## 5. References
 # ╠═1ace7720-4c4b-11eb-0338-37e7a7227a68
 # ╠═2146ac4c-4c4b-11eb-288f-edb3eacff0eb
 # ╠═28f5c018-4c4b-11eb-3530-8b592f2abeda
-# ╠═32351fb8-4c4b-11eb-058b-5bb348e8dfb7
-# ╠═eed4faca-4c1f-11eb-3e6c-b342b48080eb
-# ╠═fbde6364-4f30-11eb-1ece-712293996c04
-# ╠═42254aa6-4f37-11eb-001b-f78d5383e36f
-# ╟─0977a54e-4f31-11eb-148c-1d44be4f6853
-# ╠═486457d8-4f37-11eb-306c-57d650508136
-# ╠═4c21ed0e-4f37-11eb-0a90-3120e1ee7936
-# ╠═5686c59e-4f37-11eb-21d5-47bdbcf75805
-# ╠═a5dc2904-4f37-11eb-24c1-d7837c8bd487
-# ╠═cf3ec91e-4f37-11eb-0706-e9f726532654
-# ╠═d7d1b940-4f37-11eb-3f74-9dbe02774e54
-# ╠═f90725be-4f37-11eb-1905-e99a65ad3e07
-# ╠═dd781738-4f37-11eb-09fb-b7f3390a49b2
-# ╠═ab395348-4f39-11eb-0a3c-1d8af3b6442e
-# ╠═7acaf008-4f3a-11eb-17c2-dfaa1e9f2ce7
-# ╠═8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
-# ╠═d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
 # ╠═5064c592-4c4b-11eb-0dee-5186caf2b1f6
 # ╠═598980b8-4c4b-11eb-0c5b-b7064b189e97
 # ╠═5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
