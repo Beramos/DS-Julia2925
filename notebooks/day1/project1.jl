@@ -683,19 +683,20 @@ md"Now that we have this working it is easy to generate and visualise the transi
 md"Rule: $rule_number"
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
-Dict((l=l, s=s, r=r) => nextstate(l, s, r, rule_number)
+Dict(
+	(l=l, s=s, r=r) => nextstate(l, s, r, rule_number)
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
-	)
-					
+)					
 
 # ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
-Dict(Gray.([l, s, r]) => [Gray(1), Gray(nextstate(l, s, r, rule_number)), Gray(1)]
+Dict(
+	Gray.([l, s, r]) => [Gray(1), Gray(nextstate(l, s, r, rule_number)), Gray(1)]
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
-				)									
+)									
 
 # ╔═╡ e68101ca-59d5-11eb-18c2-351e9a68421a
 
