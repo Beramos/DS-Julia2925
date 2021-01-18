@@ -696,7 +696,7 @@ Dict(
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
-)									
+				)									
 
 # ╔═╡ e68101ca-59d5-11eb-18c2-351e9a68421a
 
@@ -741,7 +741,7 @@ function simulate(x0, rule::UInt8; nsteps=100)
 end
 
 # ╔═╡ e1dd7abc-2bf5-11eb-1f5a-0f46c7405dd5
-X = simulate(x0_ca, rule; nsteps=100)
+X = simulate(x0_ca, UInt8(rule_number); nsteps=100)
 
 # ╔═╡ 9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 ca_image(X) = Gray.(X)
@@ -847,7 +847,7 @@ bird = decimate(bird_original, 6)
 # ╔═╡ 0d32820e-59a6-11eb-284b-afe07cec30f5
 md"""
 ☼
-$(@bind brightness Slider(0:0.01:3, default=1.5))
+$(@bind brightness Slider(0:0.01:4, default=1.5))
 ☾
 """
 
@@ -1182,7 +1182,7 @@ end
 # ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
 # ╠═79bde78a-59a8-11eb-0082-cb29383b0e8f
 # ╠═6ff6f622-59a8-11eb-2f12-2f44e7e35113
-# ╟─0d32820e-59a6-11eb-284b-afe07cec30f5
+# ╠═0d32820e-59a6-11eb-284b-afe07cec30f5
 # ╠═fc2bb5d0-59a6-11eb-0af2-37897d8351b0
 # ╠═14f5b260-59a6-11eb-23a0-9d1a62ac10bb
 # ╠═572369a2-59a6-11eb-2afa-bf64b27cc145
