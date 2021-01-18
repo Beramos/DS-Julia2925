@@ -25,8 +25,26 @@ using Plots
 # ╔═╡ 87c5bb72-4aa7-11eb-3897-a523011703c5
 using Images
 
-# ╔═╡ 981758aa-58e9-11eb-282c-89131d9317b4
+# ╔═╡ 786b3780-58ec-11eb-0dfd-41f5af6f6a39
+# edit the code below to set your name and UGent username
 
+student = (name = "Jan Janssen", email = "Jan.Janssen@UGent.be");
+
+# press the ▶ button in the bottom right of this cell to run your edits
+# or use Shift+Enter
+
+# you might need to wait until all other cells in this notebook have completed running. 
+# scroll down the page to see what's up
+
+# ╔═╡ 981758aa-58e9-11eb-282c-89131d9317b4
+begin 
+	using DSJulia;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
+
+	Submission by: **_$(student.name)_**
+	"""
+end
 
 # ╔═╡ 2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 md"""
@@ -89,25 +107,47 @@ md"""
 So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
 """
 
-# ╔═╡ 9aa12b9a-58e0-11eb-1364-39c58cc1a169
-md"""
-In general, the weighted mean is computed as:
-
-$$\sum_{i=1}^n w_ix_i\,,$$
-
-were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
-
-Implement the weighted mean.
-"""
+# ╔═╡ 88c10640-4835-11eb-14b0-abba18da058f
+weighted_mean(x, w) = missing
 
 # ╔═╡ 62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
+begin 	
+	q1 = Question(
+			validators = [
+				weighted_mean(x, collect((1:5) / sum(1:5))) == 4.986666666666666
+			], 
+			description = md""
+		)
+			
 
+	qb1 = QuestionBlock(;
+		title=md"**Question 1: The weighted mean**",
+		description = md"""
+		In general, the weighted mean is computed as:
+		
+		$$\sum_{i=1}^n w_ix_i\,,$$
 
-# ╔═╡ 88c10640-4835-11eb-14b0-abba18da058f
-weighted_mean(x, w) = sum(x .* w)
+		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
+
+		Implement the weighted mean.
+
+		""",
+		questions = @safe[q1]
+	)
+	
+	validate(qb1, tracker)
+end
 
 # ╔═╡ a657c556-4835-11eb-12c3-398890e70105
-md"We compute the mean again, now using the information that the numbers were collected consequently and that we give a weight linearly proportional to the position."
+md"We compute the mean again, now using the information that the numbers were collected consequently and that we give a weight linearly proportional to the position,
+
+$$w_i = \cfrac{i}{\sum_j^n j} \, .$$
+
+Example,
+
+$$[w_1, w_2, w_3] = [1/3, 2/3, 3/3]\, .$$
+
+"
 
 # ╔═╡ 181c4246-4836-11eb-0368-61b2998f5424
 wx = collect((1:5) / sum(1:5))
@@ -132,8 +172,152 @@ a vector $\mathbf{x}$ of length $n$ is transformed in a convolved vector $\mathb
 When computing convolutions (or in numerical computing in general) one has to be careful with the **boundary conditions**. We cannot compute the sum at the ends since the sum would exceed the vector $\mathbf{x}$. There are many sensible ways to resolve this, we will choose the simplest solution of using fixed boundaries by setting $y_i = x_i$ when $i< m$ or $i>n-m$.
 """
 
-# ╔═╡ 93cbfff8-58e9-11eb-1d96-5d8f41951b99
+# ╔═╡ a1f75f4c-2bde-11eb-37e7-2dc342c7032a
+function convolve_1d(x::Vector, w::Vector)
+	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
+	@assert length(w) < length(x) "length of `w` should be smaller than `x`"
+	n = length(x)
+	m = length(w) ÷ 2
+	out = zeros(n)
 
+	# ... complete
+	return missing
+end
+
+# ╔═╡ b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
+begin 	
+	q2 = Question(
+			validators = [	
+				convolve_1d(collect(1:10), [0.5, 0.5, 0.5]) == 
+			[3.0, 4.5, 6.0, 7.5, 9.0, 10.5, 12.0, 13.5, 14.5, 15.0]
+			], 
+			description = md""
+		)
+			
+
+	qb2 = QuestionBlock(;
+		title=md"**Question 2: one-dimensional convolution**",
+		description = md"""
+
+		Implement the one-dimensional convolution,
+		
+		$$y_i = \sum_{k=-m}^{m} x_{i + k} w_{m+k+1}\,,$$
+		
+		by completing the function `convolve_1d(x::Vector, w::Vector).`
+		
+		This function should be able to take any vector x and compute the convolution with any weight vector that matches the specification of a weight vector (see previously). 
+
+		""",
+		questions = @safe[q2],
+		hints = [
+			hint(md"Did you take into account the boundary conditions?")	
+		]
+	)
+	
+	validate(qb2, tracker)
+end
+
+# ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
+function uniform_weights(m)
+	return ones(2m+1) / (2m+1)
+end
+
+# ╔═╡ ef84b6fe-2bef-11eb-0943-034b8b90c4c4
+function uniform_weights2(m)
+	w = missing
+	return w
+end
+
+# ╔═╡ 294140a4-2bf0-11eb-22f5-858969a4640d
+function triangle_weigths(m)
+	w = zeros(2m+1)
+	for i in 1:(m+1)
+		w[i] = i
+		w[end-i+1] = i
+	end
+	w ./= sum(w)
+	return w
+end	
+
+# ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
+function gaussian_weigths(m; σ=4)
+	w = exp.(-(-m:m).^2 / 2σ^2)
+	return w ./ sum(w)
+end
+
+# ╔═╡ 64bf7f3a-58f0-11eb-1782-0d33a2b615e0
+begin 
+	m₁ = 3
+	Wu = uniform_weights(m₁)
+	Wt = triangle_weigths(m₁)
+	Wg = gaussian_weigths(m₁)
+	
+	fs = (600, 280)
+	
+	pl31 = scatter(@safe 1:length(Wu), Wu; label="", xlabel="weights", size=fs,
+	background_color="#F8F8F8")
+	title!("Your result:")
+	
+	pl32 = scatter(@safe 1:length(Wt), Wt; label="", xlabel="weights", size=fs,
+	background_color="#F8F8F8")
+	title!("Your result:")
+	
+	pl33 = scatter(@safe 1:length(Wg), Wg; label="", xlabel="weights", size=fs,
+	background_color="#F8F8F8")
+	title!("Your result:")
+	
+	q31 = Question(
+			validators = [	
+
+			], 
+			description = md"""
+		- **uniform**: all values of $\mathbf{w}$ are the same;
+		
+		$(pl31)
+		"""
+		)
+	
+	q32 = Question(
+		validators = [	
+
+		], 
+		description = md"""
+		- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $i=m+1$ and linearly decreasing from $i=m+1$ to $2m+1$;
+		
+		$(pl32)
+		"""
+		
+	)
+	
+	q33 = Question(
+		validators = [	
+
+		], 
+		description = md"""
+		- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{2\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
+
+		$(pl33)
+		"""
+	)
+
+	qb3 = QuestionBlock(;
+		title=md"**Question 2: some common weight vectors**",
+		description = 
+		md"""
+
+		Let us test some different weight vectors, several options seem reasonable:
+
+		For this purpose, make sure that they are all normalized, either by design or by divididing the vector by the total sum at the end.
+
+		""",
+		questions = @safe[q31, q32, q33],
+		hints = [
+
+		]
+	)
+	
+	validate(qb3, tracker)
+end
 
 # ╔═╡ ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 md"""
@@ -157,54 +341,6 @@ plot(covid_dates, covid_cases, label="measured COVID cases in Belgium")
 
 # ╔═╡ 696e252a-4862-11eb-2752-9d7bbd0a4b7d
 md"You can see that the plot is very noisy, let us use convolution to smooth things out!"
-
-# ╔═╡ a1f75f4c-2bde-11eb-37e7-2dc342c7032a
-function convolve_1d(x::Vector, w::Vector)
-	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
-	n = length(x)
-	m = length(w) ÷ 2
-	out = zeros(n)
-
-	fill!(out, 0.0)
-	for (i, xj) in enumerate(x)
-		for (j, wj) in enumerate(w)
-			k = clamp(i + j - m, 1, n)
-			out[i] += w[j] * x[k]
-		end
-	end
-	return out
-end
-
-# ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
-md"""Let us generate some weight vectors, several options seem reasonable:
-- **uniform**: all values of $\mathbf{w}$ are the same;
-- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $i=m+1$ and linarly decreasing from $i=m+1$ to $2m+1$;
-- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{2\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
-
-For this purpose, make sure that they are all normalized, either by design or by divididing the vector by its total sum at the end.
-"""
-
-# ╔═╡ ef84b6fe-2bef-11eb-0943-034b8b90c4c4
-function uniform_weights(m)
-	return ones(2m+1) / (2m+1)
-end
-
-# ╔═╡ 294140a4-2bf0-11eb-22f5-858969a4640d
-function triangle_weigths(m)
-	w = zeros(2m+1)
-	for i in 1:(m+1)
-		w[i] = i
-		w[end-i+1] = i
-	end
-	w ./= sum(w)
-	return w
-end	
-
-# ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
-function gaussian_weigths(m; σ=4)
-	w = exp.(-(-m:m).^2 / 2σ^2)
-	return w ./ sum(w)
-end
 
 # ╔═╡ c596227e-4862-11eb-3fe4-151218778dba
 @bind m Slider(1:2:25, default=5)
@@ -735,7 +871,8 @@ end
 =#
 
 # ╔═╡ Cell order:
-# ╠═981758aa-58e9-11eb-282c-89131d9317b4
+# ╟─981758aa-58e9-11eb-282c-89131d9317b4
+# ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 # ╠═14bb9c3a-34b5-11eb-0f20-75a14b584e0c
@@ -746,7 +883,6 @@ end
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
 # ╠═8b220aea-4834-11eb-12bb-3b91414fe30a
-# ╠═9aa12b9a-58e0-11eb-1364-39c58cc1a169
 # ╠═62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
 # ╠═a657c556-4835-11eb-12c3-398890e70105
@@ -755,7 +891,13 @@ end
 # ╠═52706c6a-4836-11eb-09a8-53549f16f5c2
 # ╠═4dc28cdc-4836-11eb-316f-43c04639da2a
 # ╠═8b4c6880-4837-11eb-0ff7-573dd18a9664
-# ╠═93cbfff8-58e9-11eb-1d96-5d8f41951b99
+# ╠═b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
+# ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
+# ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
+# ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
+# ╠═ef84b6fe-2bef-11eb-0943-034b8b90c4c4
+# ╠═294140a4-2bf0-11eb-22f5-858969a4640d
+# ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
 # ╠═ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 # ╠═c962de82-3c9e-11eb-13df-d5dec37bb2c0
 # ╠═31e39938-3c9f-11eb-0341-53670c2e93e1
@@ -764,16 +906,11 @@ end
 # ╠═8a996336-2bde-11eb-10a3-cb0046ed5de9
 # ╠═696e252a-4862-11eb-2752-9d7bbd0a4b7d
 # ╠═485292d8-2bde-11eb-0a97-6b44d54596dd
-# ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
-# ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
-# ╠═ef84b6fe-2bef-11eb-0943-034b8b90c4c4
-# ╠═294140a4-2bf0-11eb-22f5-858969a4640d
-# ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
 # ╠═fa911a76-2be3-11eb-1c85-3df313eb0fcb
 # ╠═20c46656-2bf0-11eb-2dc4-af2cc2161f6a
 # ╠═cb5f4a20-2be8-11eb-0000-c59f23a024ef
 # ╠═eb5f8062-2be1-11eb-1e96-1f89be62f3b0
-# ╟─c596227e-4862-11eb-3fe4-151218778dba
+# ╠═c596227e-4862-11eb-3fe4-151218778dba
 # ╠═2a5e7ec8-4864-11eb-3161-35a51a74145f
 # ╠═b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 # ╠═87610484-3ca1-11eb-0e74-8574e946dd9f
