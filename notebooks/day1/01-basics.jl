@@ -733,8 +733,8 @@ stirling(n) = missing
 begin 	
 	q4 = Question(
 			validators = [
-				abs(stirling(5)-factorial(5))<10, 
-				abs(stirling(10)-factorial(10))<1e5
+				stirling(5) == Solutions.stirling(5), 
+				stirling(10) == Solutions.stirling(10)
 				], 
 			description = md""
 		)
