@@ -5,8 +5,3 @@ Last update: -
 @author: Bram De Jaegher
 bram.de.jaegher@gmail.com
 =#
-
-# --- Solutions --- #
-module Solutions
-  include("../solutions/solutions.jl")
-end
