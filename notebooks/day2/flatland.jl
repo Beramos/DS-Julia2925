@@ -7,6 +7,9 @@ using InteractiveUtils
 # ╔═╡ 1982066a-52aa-11eb-03f7-573ec8cfc235
 using Plots, Colors, Random
 
+# ╔═╡ c30f9932-58a3-11eb-31ff-579943584d52
+using Images, ImageIO
+
 # ╔═╡ 382ccf46-52aa-11eb-00f5-796a8f0db617
 using RecipesBase
 
@@ -307,6 +310,18 @@ triangles[1].color
 # ╔═╡ 8ace273a-534b-11eb-2248-9d5d7195a7e7
 mutatecolor(color; σcol=0.2) =  (color.r, color.g, color.b) .|> (x -> x + σcol*randn()) .|> (x-> clamp(x,0.0, 1.0)) |> (c->RGB(c...))
 
+# ╔═╡ d8172b3a-58a3-11eb-03c3-79ea3bf5cabc
+img = Images.load("totoro.jpeg")
+
+# ╔═╡ 6bb9e5b4-58a5-11eb-0247-f168ec99e883
+size(img)
+
+# ╔═╡ 7eaf7bc0-58a5-11eb-3d37-a12c4b725e8a
+shapes = randshapes(Triangle, 100, (1920, 1080))
+
+# ╔═╡ b0f9fd5c-58a6-11eb-3ce0-05bc9511a583
+population = [randshapes(Rectangle, 40, (1920, 1080), 200) for k in 1:200]
+
 # ╔═╡ 75ad5b7c-534c-11eb-04cd-07a8cbf1531b
 begin
 	function mutateshape(s::Shape; σmove=1, σcol=0.2, scale=0.3)
@@ -316,7 +331,7 @@ begin
 		s
 	end
 	
-	function mutateshape(s::Triangle; σcol=0.2, σscale=1)
+	function mutateshape(s::Triangle; σcol=0.2, σscale=3)
 		s.x1 += σscale * randn()
 		s.x2 += σscale * randn()
 		s.x3 += σscale * randn()
@@ -335,18 +350,89 @@ begin
 	end
 end
 
-# ╔═╡ 7160bec2-534e-11eb-01fe-bb03bffd1968
-function evolve_shapes(img, population; k_max=100, n_evals=200)
-	for k in 1:k_max
-		parents = select(img, population, n_evals)
-		population = crossover(population)
-		mutateshape!.(population)
+# ╔═╡ ee1dfc72-58a3-11eb-210e-4d33dc284db2
+function score_image(img, shapes; n_evals)
+	n, m = size(img)
+	diff = 0.0
+	for k in 1:n_evals
+		i, j = rand(1:n), rand(1:m)
+		c_img = img[i,j]
+		# map to x, y
+		x = j
+		y = n - i
+		c_sh = colorin((x,y), shapes)
+		diff += colordiff(c_img, c_sh)
+	end
+	return diff / n_evals
+end
+
+# ╔═╡ 4eb7f65e-58a5-11eb-1c08-dd6a287548d3
+score_image(img, shapes, n_evals=200)
+
+# ╔═╡ 0f5e2c8e-58a6-11eb-0931-3b5d87aae174
+function select(img, population; n_evals)
+	objective = [score_image(img, shapes; n_evals) for shapes in population]
+	new_population = similar(population)
+	n_pop = length(population)
+	for k in 1:n_pop
+		i, j = rand(1:n_pop, 2)
+		if objective[i] < objective[j]
+			new_population[k] = population[i]
+		else
+			new_population[k] = population[j]
+		end
+	end
+	return new_population
+end
+
+# ╔═╡ 12493474-58a7-11eb-252d-7f5d1eb19afc
+function crossover!(population)
+	n_pop = length(population)
+	for i in 1:2:n_pop-1
+		rand() < 0.5 && continue
+		shapes1, shapes2 = population[i], population[i+1]
+		for j in 1:length(shapes1)
+			if rand(Bool)
+				shapes1[j], shapes2[j] = shapes2[j], shapes2[j]
+			end
+		end
 	end
 	return population
 end
 
+# ╔═╡ dfd17c8c-58aa-11eb-11d4-05040300d463
+function mutate!(shapes; pmut)
+	for s in shapes
+		if rand() < pmut
+			mutateshape(s)
+		end
+	end
+	return shapes
+end
+
+# ╔═╡ 7160bec2-534e-11eb-01fe-bb03bffd1968
+function evolve_shapes(img, population; k_max=500, n_evals=250, pmut=0.1)
+	for k in 1:k_max
+		parents = select(img, population; n_evals)
+		population = crossover!(population)
+		population = mutate!.(population; pmut)
+	end
+	obj, best_shapes = maximum((score_image(img, shapes; n_evals), shapes) for shapes in population)
+	return best_shapes
+end
+
+# ╔═╡ 50292230-58ad-11eb-267d-6540b8f0629d
+[(score_image(img, shapes; n_evals=500), shapes) for shapes in population]
+
+# ╔═╡ 3fe9118e-58ab-11eb-1ceb-55cdb5194eaf
+best_shapes = evolve_shapes(img, population)
+
+# ╔═╡ db7eb390-58ab-11eb-3e72-a107724f7972
+plotshapes(best_shapes)
+
 # ╔═╡ Cell order:
 # ╠═1982066a-52aa-11eb-03f7-573ec8cfc235
+# ╠═c30f9932-58a3-11eb-31ff-579943584d52
 # ╠═e310fd66-52a9-11eb-3fd6-0fff013ee966
 # ╠═448524fa-52aa-11eb-2c1a-3bec050967fc
 # ╠═97c58ada-534a-11eb-1f81-ed88a6bf0aad
@@ -392,5 +478,17 @@ end
 # ╠═3990bcea-57fe-11eb-0f7d-11cd11b01d92
 # ╠═0d87454a-57fb-11eb-0289-459ea5c41e31
 # ╠═8ace273a-534b-11eb-2248-9d5d7195a7e7
+# ╠═d8172b3a-58a3-11eb-03c3-79ea3bf5cabc
+# ╠═6bb9e5b4-58a5-11eb-0247-f168ec99e883
+# ╠═7eaf7bc0-58a5-11eb-3d37-a12c4b725e8a
+# ╠═b0f9fd5c-58a6-11eb-3ce0-05bc9511a583
 # ╠═75ad5b7c-534c-11eb-04cd-07a8cbf1531b
+# ╠═ee1dfc72-58a3-11eb-210e-4d33dc284db2
+# ╠═4eb7f65e-58a5-11eb-1c08-dd6a287548d3
+# ╠═0f5e2c8e-58a6-11eb-0931-3b5d87aae174
+# ╠═12493474-58a7-11eb-252d-7f5d1eb19afc
+# ╠═dfd17c8c-58aa-11eb-11d4-05040300d463
 # ╠═7160bec2-534e-11eb-01fe-bb03bffd1968
+# ╠═50292230-58ad-11eb-267d-6540b8f0629d
+# ╠═3fe9118e-58ab-11eb-1ceb-55cdb5194eaf
+# ╠═db7eb390-58ab-11eb-3e72-a107724f7972
