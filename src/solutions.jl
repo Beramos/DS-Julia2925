@@ -1,14 +1,19 @@
 #=
 Created on Monday 18th of January 2021
-Last update: -
+Last update: Tuesday 19th of January 2021
 
 @author: Bram De Jaegher
 bram.de.jaegher@gmail.com
 =#
 
-## Day 1
-### Clipping
+#=______________________
+|                       |
+|         Day 1         |
+|_______________________|
+=#
 
+#= Notebook 1: basics =#
+### Clipping
 function clip(x)
   if x ≤ 0 && return 0.
   elseif x ≥ 1 && return 1.
@@ -61,3 +66,11 @@ function printgrid()
 end
 
 # WIP bigprint
+
+#= Notebook 2: collections =# 
+### Riemann sum
+
+function riemannsum(f, a, b; n=100)
+  dx = (b - a) / n
+  return sum(f.(a:dx:b)) * dx
+end

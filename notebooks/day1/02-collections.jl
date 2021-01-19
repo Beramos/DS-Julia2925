@@ -545,7 +545,7 @@ md"### Tuples"
 tupleware = ("tuple", "ware") # tuples
 
 # ╔═╡ 4f80f0a8-4c58-11eb-3679-c186c61c5a14
-fyi(md"A tuple is an array with a fixed size. It is not possible to perform operations that change the size of the tuple.")
+fyi(md"A tuple is an array with a fixed size. It is not possible to perform operations that change the size of a tuple.")
 
 # ╔═╡ 6d496b44-4c58-11eb-33b6-5b4d6315b6ea
 pop!(tupleware)
@@ -585,24 +585,35 @@ end;
 # ╔═╡ 3aa37510-58bb-11eb-2ecb-37ce4428269c
 begin 
 	
-	q1 = Question(validators = [
-					riemannsum(sin, 0, 2pi) == 2.8774915108571216e-17,
-					riemannsum(x->x*sin(x), 0, 2pi) == -6.281118086046032,
-					riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 0.7858888667277568
-					],
-				description = md"")
+	q1 = Question(
+			validators = @safe[
+				riemannsum(sin, 0, 2pi) == Solutions.riemannsum(sin, 0, 2pi),
 			
-	q2 = Question(validators = [integral1 == -6.281118086046032], 
-		description = md" **Integral 1:**  $ \int_0^{2\pi} x\,sin(x)\,dx$ (n=100)")
+				riemannsum(x->x*sin(x), 0, 2pi) == 
+					Solutions.riemannsum(x->x*sin(x), 0, 2pi),
 			
-	q3 = Question(validators = [integral2 == 0.7858888667277568], 
-		description = md" **Integral 2:**  $ \int_0^1 \sqrt{1-x^2}\,dx$ (n=1000)")
+				riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 
+					Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
+			]
+		)
+			
+	q2 = Question(
+			validators = @safe[
+				integral1 == Solutions.riemannsum(x->x*sin(x), 0, 2pi)
+			], 
+			description = md" **Integral 1:**  $ \int_0^{2\pi} x\,sin(x)\,dx$ (n=100)")
+			
+	q3 = Question(
+			validators = @safe[
+			integral2 == Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
+			], 
+			description = md" **Integral 2:**  $ \int_0^1 \sqrt{1-x^2}\,dx$ (n=1000)")
 	
 	
 qb1 = QuestionBlock(;
-	title=md"**Question 6: do you still remember how to integrate?**",
+	title=md"**Question 1: do you still remember how to integrate?**",
 	description = md"""
-Integrating for dummies. Compute the Riemann sum **without** making use of a for loop.
+Integrating for dummies. Compute the Riemann sum **without** making use of a for-loop.
 
 Riemann approximates the integration of a function in the interval [a, b],
 		
