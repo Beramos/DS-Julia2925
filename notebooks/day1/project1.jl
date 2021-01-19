@@ -813,13 +813,13 @@ end
 
 # ╔═╡ 36786d6e-5a65-11eb-0fa2-81b69989c39e
 begin
-	
-	
-	
 	q91 = Question(
 			description=md""" After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Can you help us?
+		
+		Luckily for us the employees use the same initial bitstring for all products (*3681110060*).
 			
-		Complete the function `scan_barcode` that converts a bitstring (barcode) to the product code?
+		Complete the function `scan_barcode` that reads a bitstring (barcode) and converts it to the product code.
+		
 		
 			""", 
 			validators = @safe[missing])
@@ -946,11 +946,35 @@ md"So an image is basically a two-dimensional array of Colors. Which means it ca
 # ╔═╡ 5dfd937c-59a8-11eb-1c4b-2fecfcc2b07e
 md"Lets the define a function to reduce the size of the image"
 
+# ╔═╡ f3e35522-5a73-11eb-2548-ade99251fd3c
+begin
+	q101 = Question(
+			description=md"""
+			Complete the function `decimate(image, ratio=5)`		
+			""", 
+			validators = @safe[missing])
+	
+	qb10 = QuestionBlock(
+		title=md"**Question: decimate image**",
+		description = md"""
+		To proceed with the course we would like smaller images. Since images are just matrices it should not be too challenging to write a function that takes an `image` and resamples the number of pixels so that it is a `ratio` smaller.
+		""",
+		questions = [q101],
+		hints= [
+			hint(md"`1:n:end` takes every `n`-th index in a matrix")
+			]
+	)
+	validate(qb10, tracker)
+end
+
 # ╔═╡ 473c581c-2be5-11eb-1ddc-2d30a3468c8a
 decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
 
+# ╔═╡ f20ebf34-5a73-11eb-2fe2-e1305b9eafb2
+
+
 # ╔═╡ 79bde78a-59a8-11eb-0082-cb29383b0e8f
-keep_working(md"Conver this to exercise")
+keep_working(md"Convert this to exercise")
 
 # ╔═╡ 6ff6f622-59a8-11eb-2f12-2f44e7e35113
 bird = decimate(bird_original, 6)
@@ -1307,7 +1331,9 @@ q73 = Question(
 # ╠═dc7750c4-59a5-11eb-0095-83af6f5fa6a9
 # ╠═f54749c4-59a5-11eb-1629-99738fb7247c
 # ╠═5dfd937c-59a8-11eb-1c4b-2fecfcc2b07e
+# ╠═f3e35522-5a73-11eb-2548-ade99251fd3c
 # ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
+# ╠═f20ebf34-5a73-11eb-2fe2-e1305b9eafb2
 # ╠═79bde78a-59a8-11eb-0082-cb29383b0e8f
 # ╠═6ff6f622-59a8-11eb-2f12-2f44e7e35113
 # ╠═0d32820e-59a6-11eb-284b-afe07cec30f5
