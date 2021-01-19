@@ -181,7 +181,7 @@ function tohtml(q::QuestionBlock)
 end
 
 
-# --- Macro(s) --- #
+u# --- Macro(s) --- #
 """
 The @safe macro is a hidden try-catch statement to avoid the Markdown admonitions to crash when
 the user introduces an error in the exercise functions.
@@ -207,7 +207,9 @@ function check_answer(q::AbstractQuestion)
 	validators = q.validators
 	all_valid = all(validators)
 	some_valid = any(validators)
-	if ismissing(all_valid) 
+
+	if length(validators) < 1 && return md""
+	elseif ismissing(all_valid) 
 		status = still_missing()
 	elseif some_valid && !all_valid
 		status = keep_working()
