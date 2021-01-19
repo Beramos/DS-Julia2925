@@ -19,7 +19,7 @@ using PlutoUI, Plots
 # ╔═╡ c962de82-3c9e-11eb-13df-d5dec37bb2c0
 using CSV, DataFrames, Dates
 
-# ╔═╡ 87c5bb72-4aa7-11eb-3897-a523011703c5
+# ╔═╡ c41426f8-5a8e-11eb-1d49-11c52375a7a0
 using Images
 
 # ╔═╡ 786b3780-58ec-11eb-0dfd-41f5af6f6a39
@@ -534,6 +534,212 @@ plot(proteinsw, xlabel="Index of Amino acid in the tail-spike", label="", ylabel
 # ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
 keep_working(md"**@Michiel** can you provide an outro here? Not sure what to do with this. This ends rather anti-climactic")
 
+# ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
+md"""
+### Intermezzo: What is an image?
+
+An image is generally just a matrix of pixels. What is a pixel? Usually this corresponds to just a particular color (or grayscale). So let us play around with colors first.
+
+There are many ways to encode colors. For our purposes, we can just work with the good old RGB scheme, where each color is described by three values, respectively the red, green and blue fraction.
+"""
+
+# ╔═╡ e3f4c82a-5a8d-11eb-3d7d-fd30c0e4a134
+daanbeardred = RGB(100/255, 11/255, 13/255)
+
+# ╔═╡ c3a51344-5a8e-11eb-015f-bd9aa28aa6eb
+md"We can extract the red, green, and blue components using the obvious functions."
+
+# ╔═╡ c3ac56e0-5a8e-11eb-3520-279c4ba47034
+red(daanbeardred), green(daanbeardred), blue(daanbeardred)
+
+# ╔═╡ c3dc3798-5a8e-11eb-178d-fb98d87768bf
+md"Converting a color to grayscale is also easy."
+
+# ╔═╡ c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
+Gray(daanbeardred)
+
+# ╔═╡ c41f1cb6-5a8e-11eb-326c-db30e518a702
+md"An image is a matrix of colors, nothing more!"
+
+# ╔═╡ c44eb368-5a8e-11eb-26cd-d9ba694ac760
+mini_image = [RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1);
+				RGB(0.2, 0.8, 0.9) RGB(0.8, 0.2, 0.2) RGB(0.2, 0.8, 0.9);
+				RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1)]
+
+# ╔═╡ c4541a1a-5a8e-11eb-3b09-c3adb3794723
+mini_image[2, 2]
+
+# ╔═╡ c48a7a24-5a8e-11eb-2151-f5b99da0039b
+size(mini_image)
+
+# ╔═╡ c4901d26-5a8e-11eb-1786-571c99fa50e2
+red.(mini_image), green.(mini_image), blue.(mini_image)
+
+# ╔═╡ c4c2df5e-5a8e-11eb-169b-256c7737156a
+Gray.(mini_image)
+
+# ╔═╡ c4dc60a0-5a8e-11eb-3070-3705948c7c93
+function redimage(image)
+	return RGB.(red.(image), 0, 0)
+end
+
+# ╔═╡ c4e02064-5a8e-11eb-29eb-1d9cc2769121
+function greenimage(image)
+	return RGB.(0, green.(image), 0)
+end
+
+# ╔═╡ c512c06e-5a8e-11eb-0f57-250b65d242c3
+function blueimage(image)
+	return RGB.(0, 0, blue.(image))
+end
+
+# ╔═╡ c52bc23a-5a8e-11eb-0e9a-0554ed5c632e
+redimage(mini_image), greenimage(mini_image), blueimage(mini_image)
+
+# ╔═╡ e5ff8880-5a8d-11eb-0c7f-490c48170654
+url = "https://i.imgur.com/BJWoNPg.jpg"
+
+# ╔═╡ 12c363d6-5a8f-11eb-0142-b7a2bee0dad2
+download(url, "aprettybird.jpg") # download to a local file
+
+# ╔═╡ 12c9c136-5a8f-11eb-3d91-5d121b8999d5
+bird_original = load("aprettybird.jpg")
+
+# ╔═╡ 12fd8282-5a8f-11eb-136c-6df77b026bd4
+typeof(bird_original)
+
+# ╔═╡ 13185c4c-5a8f-11eb-1164-cf745ddb0111
+eltype(bird_original)
+
+# ╔═╡ 131c000e-5a8f-11eb-0ab1-d55894321001
+md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array. and because of the type system, a lot of interesting feature work out of the box."
+
+# ╔═╡ 134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
+md"Lets the define a function to reduce the size of the image"
+
+# ╔═╡ 134edde4-5a8f-11eb-117f-455e04acc27d
+begin
+	q101 = Question(
+			description=md"""
+			Complete the function `decimate(image, ratio=5)`		
+			""", 
+			validators = @safe[missing])
+	
+	qb10 = QuestionBlock(
+		title=md"**Question: decimate image**",
+		description = md"""
+		To proceed with the course we would like smaller images. Since images are just matrices it should not be too challenging to write a function that takes an `image` and resamples the number of pixels so that it is a `ratio` smaller.
+		""",
+		questions = [q101],
+		hints= [
+			hint(md"`1:n:end` takes every `n`-th index in a matrix")
+			]
+	)
+	validate(qb10, tracker)
+end
+
+# ╔═╡ 13807912-5a8f-11eb-3ca2-09030ee978ab
+decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
+
+# ╔═╡ aba77250-5a8e-11eb-0db1-9f2d8fc726e9
+bird = decimate(bird_original, 6)
+
+# ╔═╡ 1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
+md"""
+☼
+$(@bind brightness Slider(0:0.01:4, default=1.5))
+☾
+"""
+
+# ╔═╡ 1dfc943e-5a8f-11eb-336b-15b40b9fe412
+brightness
+
+# ╔═╡ 1e2ac624-5a8f-11eb-1372-05ca0cbe828d
+bird./brightness
+
+# ╔═╡ 1e2ebef0-5a8f-11eb-2a6c-2bc3dffc6c73
+md"This is just a simple element-wise division of a matrix."
+
+# ╔═╡ 1e5db70a-5a8f-11eb-0984-6ff8e3030923
+md"""
+
+## 2-D operations
+
+After this colourful break, Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
+"""
+
+# ╔═╡ 1e6213ea-5a8f-11eb-3834-73689c07bca4
+md"""
+### Two-dimensional convolutions on images
+
+Just like we did in 1D, we can define a convolution on matrices and images:
+
+$$Y_{i,j} = \sum_{k=-m}^{m} \, \sum_{l=-m}^{m} X_{i + k,\, j+l}\, K_{m+(k+1),\, m+(l+1)}\,.$$
+
+This looks more complex but still amounts to the same thing as the 1D case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
+
+"""
+
+# ╔═╡ 1e97c530-5a8f-11eb-14b0-47e7e944cba1
+bird
+
+# ╔═╡ 1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
+size(bird)
+
+# ╔═╡ 1ede6d80-5a8f-11eb-1119-ff17ab208a00
+function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
+	n_rows, n_cols = size(M)
+	fill!(out, 0.0)
+	m = div(size(K, 1), 2) 
+	for i in 1:n_rows
+		for j in 1:n_cols
+			for k in -m:m
+				for l in -m:m
+					out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
+				end
+			end
+		end
+	end
+	return out
+end
+
+# ╔═╡ b5af1a5e-5a8f-11eb-1ec3-4d0474407072
+md"""
+Remember the 1-D Gaussian kernel? Its 2-D analogue is given by
+
+$$K_{i,j} = \exp\left(-\frac{(i-m - 1)^2 +(j-m-1)^2}{2\sigma^2}\right)\,.$$
+
+Using this kernel results in a smoothing operation, often refered to as a Gaussian blur. This kernel is frequently used to remove noise, but it will also remove some edges of the image. Gaussian kernel convolution gives a blurring effect making the image appearing to be viewed through a translucent screen, giving a slight [otherworldly effect](https://tvtropes.org/pmwiki/pmwiki.php/Main/GaussianGirl).
+
+
+Let us implement the Gaussian kernel.
+"""
+
+# ╔═╡ f5574a90-5a90-11eb-3100-dd98e3375390
+function gaussian_kernel(m; σ)
+K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
+K ./= sum(K)
+return K
+end
+
+# ╔═╡ f55f8e6c-5a90-11eb-14fa-1168810ec819
+K_gaussian = gaussian_kernel(3, σ=2)
+
+# ╔═╡ f589c15a-5a90-11eb-2a69-fba0819a4993
+heatmap(K_gaussian)
+
+# ╔═╡ f5b92f94-5a90-11eb-1b69-5592b269dfbb
+keep_working(md"Does not seem to work well for salt and pepper noise")
+
+# ╔═╡ f5d4af24-5a90-11eb-0671-a193539e8335
+function pepper_salt_noise(image; fraction=0.01)
+noisy_image = copy(image)
+mask = rand(size(image)...) .< fraction
+n_corrupted = sum(mask)
+noisy_image[mask] = rand([RGB(0, 0, 0), RGB(1, 1, 1)], n_corrupted)
+return noisy_image
+end
+
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 md"""
 ### Application 3: Elementary cellular automata
@@ -814,13 +1020,9 @@ end
 # ╔═╡ 36786d6e-5a65-11eb-0fa2-81b69989c39e
 begin
 	q91 = Question(
-			description=md""" After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Can you help us?
-		
-		Luckily for us the employees use the same initial bitstring for all products (*3681110060*).
+			description=md""" After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Luckily, the employees used the same initial bitstring for all products (*3681110060*).
 			
 		Complete the function `scan_barcode` that reads a bitstring (barcode) and converts it to the product code.
-		
-		
 			""", 
 			validators = @safe[missing])
 	
@@ -833,9 +1035,9 @@ begin
 		
 		The laser scanner reads the barcode and converts the binary number to an integer which is the product code, a pretty simple and robust system.
 		
-		A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is not super convoluted,		
+		A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is not a little convoluted,		
 			
-		The number corresponding to a barcode is the **rule number** followed by *initial 32-bit array encoded as an integer*. The barcode is generated by taking the **rule number** and evolving the initial condition for 50 iterations.
+		The number corresponding to a barcode is the **rule number** followed by *initial 32-bit array encoded as an integer*. The barcode is generated by taking the rule number and evolving the initial condition for 50 iterations.
 		
 		As an example this barcode corresponds to the number: 
 		**182** *3128863161*
@@ -863,220 +1065,8 @@ bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2
 # ╔═╡ d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 show_barcode(bitArr)
 
-# ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
-md"""
-### Intermezzo: What is an image?
+# ╔═╡ 699903e8-5a8f-11eb-2e36-e33d46f74e21
 
-An image is generally just a matrix of pixels. What is a pixel? Usually this corresponds to just a particular color (or grayscale). So let us play around with colors first.
-
-There are many ways to encode colors. For our purposes, we can just work with the good old RGB scheme, where each color is described by three values, respectively the red, green and blue fraction.
-"""
-
-# ╔═╡ 90c3c542-4aa8-11eb-03fb-e70579c8e4f3
-daanbeardred = RGB(100/255, 11/255, 13/255)
-
-# ╔═╡ 57074882-4aa9-11eb-0ad5-a5ebadc22550
-md"We can extract the red, green, and blue components using the obvious functions."
-
-# ╔═╡ 3ee9cbbc-4aa9-11eb-1cb6-c37d007839e8
-red(daanbeardred), green(daanbeardred), blue(daanbeardred)
-
-# ╔═╡ 7af6568e-4aa9-11eb-3fd5-97fa8401696a
-md"Converting a color to grayscale is also easy."
-
-# ╔═╡ 6e51e25e-4aa9-11eb-116f-09bad1bf0041
-Gray(daanbeardred)
-
-# ╔═╡ 8ac8761c-4aa9-11eb-25d2-ed4c0f15bd66
-md"An image is a matrix of colors, nothing more!"
-
-# ╔═╡ 95942566-4aa9-11eb-318f-09cada65a5f7
-mini_image = [RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1);
-				RGB(0.2, 0.8, 0.9) RGB(0.8, 0.2, 0.2) RGB(0.2, 0.8, 0.9);
-				RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1)]
-
-# ╔═╡ fbc9ceee-4aa9-11eb-308e-613f2a5f3646
-mini_image[2, 2]
-
-# ╔═╡ c8c58ce4-4aaa-11eb-1558-59028a05aba6
-size(mini_image)
-
-# ╔═╡ 0a47f23e-4aaa-11eb-020a-d5a6c4104aa9
-red.(mini_image), green.(mini_image), blue.(mini_image)
-
-# ╔═╡ 1c327406-4aaa-11eb-3212-9d6d00c9c35d
-Gray.(mini_image)
-
-# ╔═╡ 470ef5c8-4aaa-11eb-0bab-ff6a21471bcc
-function redimage(image)
-	return RGB.(red.(image), 0, 0)
-end
-
-# ╔═╡ 78bd5fa6-4aaa-11eb-11f9-bd6f571fdf8c
-function greenimage(image)
-	return RGB.(0, green.(image), 0)
-end
-
-# ╔═╡ 7aae8510-4aaa-11eb-1622-a113684f9a7d
-function blueimage(image)
-	return RGB.(0, 0, blue.(image))
-end
-
-# ╔═╡ 991bcfe4-4aaa-11eb-22e8-935938437b51
-redimage(mini_image), greenimage(mini_image), blueimage(mini_image)
-
-# ╔═╡ a07ab8ba-59a5-11eb-1fa5-39971674843b
-url = "https://i.imgur.com/BJWoNPg.jpg"
-
-# ╔═╡ b8eac080-59a5-11eb-30e1-71c29adc8188
-download(url, "aprettybird.jpg") # download to a local file
-
-# ╔═╡ c9d085bc-59a5-11eb-0d76-a9f8d1e0fbb9
-bird_original = load("aprettybird.jpg")
-
-# ╔═╡ d72cd460-59a5-11eb-2e09-1f7acb30035c
-typeof(bird_original)
-
-# ╔═╡ dc7750c4-59a5-11eb-0095-83af6f5fa6a9
-eltype(bird_original)
-
-# ╔═╡ f54749c4-59a5-11eb-1629-99738fb7247c
-md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array. and because of the type system, a lot of interesting feature work out of the box."
-
-# ╔═╡ 5dfd937c-59a8-11eb-1c4b-2fecfcc2b07e
-md"Lets the define a function to reduce the size of the image"
-
-# ╔═╡ f3e35522-5a73-11eb-2548-ade99251fd3c
-begin
-	q101 = Question(
-			description=md"""
-			Complete the function `decimate(image, ratio=5)`		
-			""", 
-			validators = @safe[missing])
-	
-	qb10 = QuestionBlock(
-		title=md"**Question: decimate image**",
-		description = md"""
-		To proceed with the course we would like smaller images. Since images are just matrices it should not be too challenging to write a function that takes an `image` and resamples the number of pixels so that it is a `ratio` smaller.
-		""",
-		questions = [q101],
-		hints= [
-			hint(md"`1:n:end` takes every `n`-th index in a matrix")
-			]
-	)
-	validate(qb10, tracker)
-end
-
-# ╔═╡ 473c581c-2be5-11eb-1ddc-2d30a3468c8a
-decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
-
-# ╔═╡ f20ebf34-5a73-11eb-2fe2-e1305b9eafb2
-
-
-# ╔═╡ 79bde78a-59a8-11eb-0082-cb29383b0e8f
-keep_working(md"Convert this to exercise")
-
-# ╔═╡ 6ff6f622-59a8-11eb-2f12-2f44e7e35113
-bird = decimate(bird_original, 6)
-
-# ╔═╡ 0d32820e-59a6-11eb-284b-afe07cec30f5
-md"""
-☼
-$(@bind brightness Slider(0:0.01:4, default=1.5))
-☾
-"""
-
-# ╔═╡ fc2bb5d0-59a6-11eb-0af2-37897d8351b0
-brightness
-
-# ╔═╡ 14f5b260-59a6-11eb-23a0-9d1a62ac10bb
-bird./brightness
-
-# ╔═╡ 572369a2-59a6-11eb-2afa-bf64b27cc145
-md"This is just a simple element-wise division of a matrix."
-
-# ╔═╡ 49145bd6-4aa7-11eb-3c93-d90a36903d1a
-md"""
-
-## 2-D operations
-
-Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
-"""
-
-# ╔═╡ 41297876-4aab-11eb-3e41-294b06cd19f2
-md"""
-### Two-dimensional convolutions on images
-
-Just like we did in 1D, we can define a convolution on matrices and images:
-
-$$Y_{i,j} = \sum_{k=-m}^{m} \, \sum_{l=-m}^{m} X_{i + k,\, j+l}\, K_{m+(k+1),\, m+(l+1)}\,.$$
-
-This looks more complex but still amounts to the same thing as the 1D case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
-
-"""
-
-# ╔═╡ d4b6271e-59a7-11eb-3c7f-335c61564d0d
-md"Let's fetch our bird,"
-
-# ╔═╡ 35991636-59a8-11eb-2bb4-55b01255e94a
-bird
-
-# ╔═╡ eeeee44e-4b5c-11eb-159e-773457e1247f
-size(bird)
-
-# ╔═╡ 608e930e-2bfc-11eb-09f2-29600cfba1e6
-function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
-	n_rows, n_cols = size(M)
-	fill!(out, 0.0)
-	m = div(size(K, 1), 2) 
-	for i in 1:n_rows
-		for j in 1:n_cols
-			for k in -m:m
-				for l in -m:m
-					out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
-				end
-			end
-		end
-	end
-	return out
-end
-
-# ╔═╡ 1e98e96a-4b5d-11eb-2d9b-797cdd1e3978
-md"""
-Remember the 1-D Gaussian kernel? Its 2-D analogue is given by
-
-$$K_{i,j} = \exp\left(-\frac{(i-m - 1)^2 +(j-m-1)^2}{2\sigma^2}\right)\,.$$
-
-Using this kernel results in a smoothing operation, often refered to as a Gaussian blur. This kernel is frequently used to remove noise, but it will also remove some edges of the image. Gaussian kernel convolution gives a blurring effect making the image appearing to be viewed through a translucent screen, giving a slight [otherworldly effect](https://tvtropes.org/pmwiki/pmwiki.php/Main/GaussianGirl).
-
-
-Let us implement the Gaussian kernel.
-"""
-
-# ╔═╡ 245deb30-2bfe-11eb-3e47-6b7bd5d73ccf
-function gaussian_kernel(m; σ)
-	K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
-	K ./= sum(K)
-	return K
-end
-
-# ╔═╡ 6278ae28-2bfe-11eb-3c36-9bf8cc703a3a
-K_gaussian = gaussian_kernel(3, σ=2)
-
-# ╔═╡ 6c40b89c-2bfe-11eb-3593-9d9ef6f45b80
-heatmap(K_gaussian)
-
-# ╔═╡ b05d0bdc-4b5e-11eb-14f6-6bf4e3b24949
-function pepper_salt_noise(image; fraction=0.01)
-	noisy_image = copy(image)
-	mask = rand(size(image)...) .< fraction
-	n_corrupted = sum(mask)
-	noisy_image[mask] = rand([RGB(0, 0, 0), RGB(1, 1, 1)], n_corrupted)
-	return noisy_image
-end
-
-# ╔═╡ 22285b5e-4b5f-11eb-197a-e39e5c525c8d
-salt_and_pepper_philip = pepper_salt_noise(bird)
 
 # ╔═╡ 73c3869a-2bfd-11eb-0597-29cd6c1c90db
 convolve_2d(M, K) = convolve_2d!(M, similar(M), K) 
@@ -1094,7 +1084,7 @@ function convolve_image(M, K)
 	return RGB.(Mred, Mgreen, Mblue)
 end
 
-# ╔═╡ e1f23724-2bfd-11eb-1063-1d59909bcacc
+# ╔═╡ f58d5af4-5a90-11eb-3d93-5712bfd9920a
 convolve_image(bird, K_gaussian)
 
 # ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
@@ -1197,14 +1187,6 @@ new_grid = zero(grid)
 end
 =#
 
-# ╔═╡ 1d72179a-5a5e-11eb-28d2-479bca301c73
-q73 = Question(
-			description=md"""
-		Complete `simulate(x0, rule::UInt8; nsteps=100)` that performs a `nsteps` of simulation  given an initial state array `x0` and a rule 
-		
-			""", 
-			validators = @safe[missing])
-
 # ╔═╡ Cell order:
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
@@ -1263,6 +1245,49 @@ q73 = Question(
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
 # ╠═19a98dd4-599e-11eb-2b1c-172e00137e6c
+# ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
+# ╠═e3f4c82a-5a8d-11eb-3d7d-fd30c0e4a134
+# ╠═c3a51344-5a8e-11eb-015f-bd9aa28aa6eb
+# ╠═c3ac56e0-5a8e-11eb-3520-279c4ba47034
+# ╠═c3dc3798-5a8e-11eb-178d-fb98d87768bf
+# ╠═c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
+# ╠═c41426f8-5a8e-11eb-1d49-11c52375a7a0
+# ╠═c41f1cb6-5a8e-11eb-326c-db30e518a702
+# ╠═c44eb368-5a8e-11eb-26cd-d9ba694ac760
+# ╠═c4541a1a-5a8e-11eb-3b09-c3adb3794723
+# ╠═c48a7a24-5a8e-11eb-2151-f5b99da0039b
+# ╠═c4901d26-5a8e-11eb-1786-571c99fa50e2
+# ╠═c4c2df5e-5a8e-11eb-169b-256c7737156a
+# ╠═c4dc60a0-5a8e-11eb-3070-3705948c7c93
+# ╠═c4e02064-5a8e-11eb-29eb-1d9cc2769121
+# ╠═c512c06e-5a8e-11eb-0f57-250b65d242c3
+# ╠═c52bc23a-5a8e-11eb-0e9a-0554ed5c632e
+# ╠═e5ff8880-5a8d-11eb-0c7f-490c48170654
+# ╠═12c363d6-5a8f-11eb-0142-b7a2bee0dad2
+# ╠═12c9c136-5a8f-11eb-3d91-5d121b8999d5
+# ╠═12fd8282-5a8f-11eb-136c-6df77b026bd4
+# ╠═13185c4c-5a8f-11eb-1164-cf745ddb0111
+# ╠═131c000e-5a8f-11eb-0ab1-d55894321001
+# ╠═134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
+# ╠═134edde4-5a8f-11eb-117f-455e04acc27d
+# ╠═13807912-5a8f-11eb-3ca2-09030ee978ab
+# ╠═aba77250-5a8e-11eb-0db1-9f2d8fc726e9
+# ╠═1dfc943e-5a8f-11eb-336b-15b40b9fe412
+# ╠═1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
+# ╠═1e2ac624-5a8f-11eb-1372-05ca0cbe828d
+# ╠═1e2ebef0-5a8f-11eb-2a6c-2bc3dffc6c73
+# ╠═1e5db70a-5a8f-11eb-0984-6ff8e3030923
+# ╠═1e6213ea-5a8f-11eb-3834-73689c07bca4
+# ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
+# ╠═1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
+# ╠═1ede6d80-5a8f-11eb-1119-ff17ab208a00
+# ╠═b5af1a5e-5a8f-11eb-1ec3-4d0474407072
+# ╠═f5574a90-5a90-11eb-3100-dd98e3375390
+# ╠═f55f8e6c-5a90-11eb-14fa-1168810ec819
+# ╠═f589c15a-5a90-11eb-2a69-fba0819a4993
+# ╠═f58d5af4-5a90-11eb-3d93-5712bfd9920a
+# ╠═f5b92f94-5a90-11eb-1b69-5592b269dfbb
+# ╠═f5d4af24-5a90-11eb-0671-a193539e8335
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
@@ -1307,52 +1332,7 @@ q73 = Question(
 # ╠═c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
 # ╠═a283e9d6-5a72-11eb-1bc4-116112a8cc59
 # ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
-# ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
-# ╠═90c3c542-4aa8-11eb-03fb-e70579c8e4f3
-# ╠═57074882-4aa9-11eb-0ad5-a5ebadc22550
-# ╠═3ee9cbbc-4aa9-11eb-1cb6-c37d007839e8
-# ╠═7af6568e-4aa9-11eb-3fd5-97fa8401696a
-# ╠═6e51e25e-4aa9-11eb-116f-09bad1bf0041
-# ╠═87c5bb72-4aa7-11eb-3897-a523011703c5
-# ╠═8ac8761c-4aa9-11eb-25d2-ed4c0f15bd66
-# ╠═95942566-4aa9-11eb-318f-09cada65a5f7
-# ╠═fbc9ceee-4aa9-11eb-308e-613f2a5f3646
-# ╠═c8c58ce4-4aaa-11eb-1558-59028a05aba6
-# ╠═0a47f23e-4aaa-11eb-020a-d5a6c4104aa9
-# ╠═1c327406-4aaa-11eb-3212-9d6d00c9c35d
-# ╠═470ef5c8-4aaa-11eb-0bab-ff6a21471bcc
-# ╠═78bd5fa6-4aaa-11eb-11f9-bd6f571fdf8c
-# ╠═7aae8510-4aaa-11eb-1622-a113684f9a7d
-# ╠═991bcfe4-4aaa-11eb-22e8-935938437b51
-# ╠═a07ab8ba-59a5-11eb-1fa5-39971674843b
-# ╠═b8eac080-59a5-11eb-30e1-71c29adc8188
-# ╠═c9d085bc-59a5-11eb-0d76-a9f8d1e0fbb9
-# ╠═d72cd460-59a5-11eb-2e09-1f7acb30035c
-# ╠═dc7750c4-59a5-11eb-0095-83af6f5fa6a9
-# ╠═f54749c4-59a5-11eb-1629-99738fb7247c
-# ╠═5dfd937c-59a8-11eb-1c4b-2fecfcc2b07e
-# ╠═f3e35522-5a73-11eb-2548-ade99251fd3c
-# ╠═473c581c-2be5-11eb-1ddc-2d30a3468c8a
-# ╠═f20ebf34-5a73-11eb-2fe2-e1305b9eafb2
-# ╠═79bde78a-59a8-11eb-0082-cb29383b0e8f
-# ╠═6ff6f622-59a8-11eb-2f12-2f44e7e35113
-# ╠═0d32820e-59a6-11eb-284b-afe07cec30f5
-# ╠═fc2bb5d0-59a6-11eb-0af2-37897d8351b0
-# ╠═14f5b260-59a6-11eb-23a0-9d1a62ac10bb
-# ╠═572369a2-59a6-11eb-2afa-bf64b27cc145
-# ╠═49145bd6-4aa7-11eb-3c93-d90a36903d1a
-# ╠═41297876-4aab-11eb-3e41-294b06cd19f2
-# ╠═d4b6271e-59a7-11eb-3c7f-335c61564d0d
-# ╠═35991636-59a8-11eb-2bb4-55b01255e94a
-# ╠═eeeee44e-4b5c-11eb-159e-773457e1247f
-# ╠═608e930e-2bfc-11eb-09f2-29600cfba1e6
-# ╠═1e98e96a-4b5d-11eb-2d9b-797cdd1e3978
-# ╠═245deb30-2bfe-11eb-3e47-6b7bd5d73ccf
-# ╠═6278ae28-2bfe-11eb-3c36-9bf8cc703a3a
-# ╠═6c40b89c-2bfe-11eb-3593-9d9ef6f45b80
-# ╠═e1f23724-2bfd-11eb-1063-1d59909bcacc
-# ╠═b05d0bdc-4b5e-11eb-14f6-6bf4e3b24949
-# ╠═22285b5e-4b5f-11eb-197a-e39e5c525c8d
+# ╠═699903e8-5a8f-11eb-2e36-e33d46f74e21
 # ╠═39eae5c2-4b5f-11eb-151a-b76db57f04b8
 # ╠═73c3869a-2bfd-11eb-0597-29cd6c1c90db
 # ╠═c80e4362-2bfe-11eb-2055-5fbf167be551
@@ -1374,4 +1354,3 @@ q73 = Question(
 # ╠═47a40a70-34c8-11eb-2ae1-5fde1e1ef83c
 # ╠═a35eda0c-34c8-11eb-27e4-35a06de2df43
 # ╠═54e78bb0-34c8-11eb-0cf9-a1a2b398e107
-# ╠═1d72179a-5a5e-11eb-28d2-479bca301c73
