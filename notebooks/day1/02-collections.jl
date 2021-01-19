@@ -706,9 +706,6 @@ begin
 	validate(qb70, tracker)
 end
 
-# ╔═╡ 7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
-vandermonde(α, n) = missing
-
 # ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 function mydet(A)
 	size(A,1) != size(A,2) && throw(DimensionMismatch)
@@ -821,16 +818,17 @@ begin
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
 
+# ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
+vandermonde(α, n) = missing
+
 # ╔═╡ b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 let
-	α = 1:20
-	n = 5
-	
+
 q1 = Question(;
 	description=md"""
 Write a one-liner function `vandermonde` to generate this matrix. This function takes as a vector `α` and `n`, the number of powers to compute.
 """,
-	validators = [vandermonde(α, n) == [αᵢ^j for αᵢ in α, j in 0:n-1]]
+	validators = @safe[vandermonde(1:20, 5) == Solutions.vandermonde(1:20, 5)]
 )
 		
 qb1 = QuestionBlock(;
@@ -1001,7 +999,6 @@ md""" ## 5. References
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
 # ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
-# ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
 # ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 # ╠═c6e16d7a-58cf-11eb-32a4-3372939066e3
@@ -1013,4 +1010,5 @@ md""" ## 5. References
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
+# ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
