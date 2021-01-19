@@ -761,26 +761,47 @@ end
 
 # ╔═╡ c6e16d7a-58cf-11eb-32a4-3372939066e3
 begin 
+q91 = Question(
+		  validators = @safe[
+			abs(estimatepi(100) - π) < 1.0, 
+			abs(estimatepi(100000) - π) < 1e-2
+		  ], 
+		)
+	
+q92 = QuestionOptional{Easy}(
+		validators = @safe[
+			abs(estimatepi2(100) - π) < 1.0, 
+			abs(estimatepi2(100000) - π) < 1e-2
+			], 
+		description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
+
+	
 qb90 = QuestionBlock(;
 	title=md"**Question 4: it is pi 'o clock**",
 	description = md"""
 	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit square. Complete the function `estimatepi` below.
 	""",
-	questions = [
-		Question(
-		  validators = @safe[
-			abs(estimatepi(100) - π) < 1.0, 
-			abs(estimatepi(100000) - π) < 1e-2
-		  ], 
-		),
-			
-		QuestionOptional{Easy}(
-				validators = @safe[
-					abs(estimatepi2(100) - π) < 1.0, 
-					abs(estimatepi2(100000) - π) < 1e-2
-					], 
-				description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
-	]
+	questions = [q91, q92],
+	hints=[
+		hint(md"""
+			[Check this image](http://www.pythonlikeyoumeanit.com/_images/circle_square_small.png)
+			 """),
+		hint(md"""
+			Because each throw falls randomly within the square, you realize that the probability of a dart landing within the circle is given by the ratio of the circle’s area to the square’s area:
+				
+			$$P_{circle} = \frac{Area_{circle}}{Area_{square}} = \frac{\pi r^2}{(2r)^2}$$
+				
+			Furthermore, we can interpret Pcircle as being approximated by the fraction of darts thrown that land in the circle. Thus, we find:
+				
+			$$\frac{N_{circle}}{N_{total}} \approx \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$$
+
+			where $N_{total}$ is the total number of darts thrown, and $N_{circle}$ is the number of darts that land within the circle. Thus simply by keeping tally of where the darts land, you can begin to estimate the value of π!
+				
+			[source:](http://www.pythonlikeyoumeanit.com/Module3_IntroducingNumpy/Problems/Approximating_pi.html)  pythonlikeyoumeanit.com
+			 """),
+		
+		
+		]
 )
 	validate(qb90, tracker)
 end
