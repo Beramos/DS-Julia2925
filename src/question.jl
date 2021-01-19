@@ -32,9 +32,9 @@ mutable struct Question <: AbstractQuestion
 	validators::Any
 	status::Markdown.MD
 
-	Question(;description=description_default, 
-						validators=[missing], 
-						status=still_missing()) = new(description, validators, status)
+	Question(;description=md"", 
+						validators=[], 
+						status=md"") = new(description, validators, status)
 end
 
 """
@@ -58,9 +58,9 @@ mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion
 	status::Markdown.MD
 	difficulty::T
 
-	QuestionOptional{T}(;description=description_default, 
-						validators=[missing], 
-						status=still_missing()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
+	QuestionOptional{T}(;description=md"", 
+						validators=[], 
+						status=md"") where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
 end
 
 """
@@ -124,7 +124,7 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 	hints::Array{Markdown.MD}
 	questions::Array{T} where {T<:AbstractQuestion}
 
-	QuestionBlock(;title=title_default,
+	QuestionBlock(;title=md"",
 									description=md"",
 									hints = Markdown.MD[],
 									questions = [Question()]) = new(title, description, hints, questions) 
@@ -179,13 +179,6 @@ function tohtml(q::QuestionBlock)
 	"""
 	return out
 end
-
-
-# --- Defaults --- #
-title_default = Markdown.MD(md"### Question 0.: /insert title here/")
-description_default = Markdown.MD(md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-Open assignments always return `missing`.
-""")
 
 
 # --- Macro(s) --- #
