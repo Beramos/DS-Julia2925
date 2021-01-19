@@ -200,7 +200,7 @@ begin
 		""",
 		questions = @safe[q2],
 		hints = [
-			hint(md"Did you take into account the boundary conditions?")	
+			hint(md"Did you take into account the boundary conditions? The function `clamp` can help you with that.")	
 		]
 	)
 	
@@ -668,26 +668,77 @@ md"""
 After this colourful break, Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
 """
 
-# ╔═╡ 1e6213ea-5a8f-11eb-3834-73689c07bca4
-md"""
-### Two-dimensional convolutions on images
+# ╔═╡ 4d434b48-5a91-11eb-2df8-9d2ea289878e
+begin 	
+	q111 = Question(
+			description=md"""
+			Complete the function `convolve_2d(M::Matrix, K::Matrix)` that performs a 2D-convolution of an input matrix `M` with a kernel matrix `K`.
+			""",
+			validators = [missing]
+		)
+	
+	q112 = Question(
+			description=md"""
+Remember the 1-D Gaussian kernel? Its 2-D analogue is given by
 
+$$K_{i,j} = \exp\left(-\frac{(i-m - 1)^2 +(j-m-1)^2}{2\sigma^2}\right)\,.$$
+
+Using this kernel results in a smoothing operation, often refered to as a Gaussian blur. This kernel is frequently used to remove noise, but it will also remove some edges of the image. Gaussian kernel convolution gives a blurring effect making the image appearing to be viewed through a translucent screen, giving a slight [otherworldly effect](https://tvtropes.org/pmwiki/pmwiki.php/Main/GaussianGirl).
+
+
+Let us implement the Gaussian kernel by completing the function below.
+			""",
+			validators = [missing]
+		)
+			
+	
+	q113 = Question(
+			description=md"""
+			**Optional exercise (Easy);**
+		
+			Explore the Gaussian kernel by plotting a `heatmap` of this kernel for a given number of weights and σ.
+
+			"""
+		)
+	
+	q114 = Question(
+			description=md"""
+The 2D-convolution can not be directly used on images since images are matrixes of triplets of values. Write a function `convolve_image(M, K)` that performs a convolution on an images and use the previously implemented `convolve_2d(M::Matrix, K::Matrix)` function. Previously, it was demonstrated how to extract the idividual colour channels from an images. A convolution of an image is nothing more than a convolution performed on these channels, separately. 
+			""",
+			validators = [missing]
+		)
+		
+		
+	q115 = Question(
+			description=md"""
+Test this new function by applying the Gaussian kernel to our favourite bird image.
+			"""
+		)
+			
+	
+	
+			
+	qb11 = QuestionBlock(;
+		title=md"**Question: Two-dimensional convolution on images**",
+		description = md"""
 Just like we did in 1D, we can define a convolution on matrices and images:
 
 $$Y_{i,j} = \sum_{k=-m}^{m} \, \sum_{l=-m}^{m} X_{i + k,\, j+l}\, K_{m+(k+1),\, m+(l+1)}\,.$$
 
 This looks more complex but still amounts to the same thing as the 1D case. We have an $2m+1 \times 2m+1$ kernel matrix $K$, which we use to compute a weighted local sum.
+		""",
+		questions = @safe[q111, q112, q113, q114, q115],
+		hints = [
+			hint(md"Did you take into account the boundary conditions? The function `clamp` can help you with that.")	
+		]
+	)
+	
+	validate(qb11, tracker)
+end
 
-"""
-
-# ╔═╡ 1e97c530-5a8f-11eb-14b0-47e7e944cba1
-bird
-
-# ╔═╡ 1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
-size(bird)
-
-# ╔═╡ 1ede6d80-5a8f-11eb-1119-ff17ab208a00
-function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
+# ╔═╡ d1851bbe-5a91-11eb-3ae4-fddeff381c1b
+function convolve_2d(M::Matrix, K::Matrix)
+	out = similar(M)
 	n_rows, n_cols = size(M)
 	fill!(out, 0.0)
 	m = div(size(K, 1), 2) 
@@ -703,23 +754,22 @@ function convolve_2d!(M::AbstractMatrix, out::AbstractMatrix, K::AbstractMatrix)
 	return out
 end
 
-# ╔═╡ b5af1a5e-5a8f-11eb-1ec3-4d0474407072
-md"""
-Remember the 1-D Gaussian kernel? Its 2-D analogue is given by
-
-$$K_{i,j} = \exp\left(-\frac{(i-m - 1)^2 +(j-m-1)^2}{2\sigma^2}\right)\,.$$
-
-Using this kernel results in a smoothing operation, often refered to as a Gaussian blur. This kernel is frequently used to remove noise, but it will also remove some edges of the image. Gaussian kernel convolution gives a blurring effect making the image appearing to be viewed through a translucent screen, giving a slight [otherworldly effect](https://tvtropes.org/pmwiki/pmwiki.php/Main/GaussianGirl).
-
-
-Let us implement the Gaussian kernel.
-"""
-
 # ╔═╡ f5574a90-5a90-11eb-3100-dd98e3375390
 function gaussian_kernel(m; σ)
 K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
 K ./= sum(K)
 return K
+end
+
+# ╔═╡ 1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
+size(bird)
+
+# ╔═╡ 1ba16c34-5a92-11eb-3052-e91a2443033b
+function convolve_image(M, K)
+	Mred = convolve_2d(red.(M), K)
+	Mgreen = convolve_2d(green.(M), K)
+	Mblue = convolve_2d(blue.(M), K)
+	return RGB.(Mred, Mgreen, Mblue)
 end
 
 # ╔═╡ f55f8e6c-5a90-11eb-14fa-1168810ec819
@@ -728,8 +778,31 @@ K_gaussian = gaussian_kernel(3, σ=2)
 # ╔═╡ f589c15a-5a90-11eb-2a69-fba0819a4993
 heatmap(K_gaussian)
 
-# ╔═╡ f5b92f94-5a90-11eb-1b69-5592b269dfbb
-keep_working(md"Does not seem to work well for salt and pepper noise")
+# ╔═╡ 1e97c530-5a8f-11eb-14b0-47e7e944cba1
+bird
+
+# ╔═╡ f58d5af4-5a90-11eb-3d93-5712bfd9920a
+convolve_image(bird, K_gaussian)
+
+# ╔═╡ a588a356-5a95-11eb-27e8-cb8d394b6ff6
+begin 	
+	q121 = Question(
+		)
+				
+	qb12 = QuestionBlock(;
+		title=md"**Optional question: testing some cool kernels**",
+		description = md"""
+		Different kernels can do really really cool things. Test and implement the following kernels
+		 ```julia
+		
+		 ```
+		""",
+		questions = @safe[q121],
+
+	)
+	
+	validate(qb11, tracker)
+end
 
 # ╔═╡ f5d4af24-5a90-11eb-0671-a193539e8335
 function pepper_salt_noise(image; fraction=0.01)
@@ -744,7 +817,9 @@ end
 md"""
 ### Application 3: Elementary cellular automata
 
-To conclude our adventures in 1D, let us consider **elementary cellular automata**. These are more or less the simplest dynamical systems one can study. Cellular automata are discrete spatio temporal systems: both the space time and states are discrete. The state of an elementary cellular automaton is determined by an $n$-dimensional binary vector, meaning that there are only two states 0 or 1 (`true` or `false`). The state transistion of a cell is determined by:
+*This is an optional but highly interesting application for the fast workers.*
+
+To conclude our adventures, let us consider **elementary cellular automata**. These are more or less the simplest dynamical systems one can study. Cellular automata are discrete spatio temporal systems: both the space time and states are discrete. The state of an elementary cellular automaton is determined by an $n$-dimensional binary vector, meaning that there are only two states 0 or 1 (`true` or `false`). The state transistion of a cell is determined by:
 - its own state `s`;
 - the states of its two neighbors, left `l` and right `r`.
 
@@ -1065,30 +1140,13 @@ bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2
 # ╔═╡ d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 show_barcode(bitArr)
 
-# ╔═╡ 699903e8-5a8f-11eb-2e36-e33d46f74e21
-
-
-# ╔═╡ 73c3869a-2bfd-11eb-0597-29cd6c1c90db
-convolve_2d(M, K) = convolve_2d!(M, similar(M), K) 
+# ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
+convolve_image(salt_and_pepper_philip, K_gaussian)
 
 # ╔═╡ c80e4362-2bfe-11eb-2055-5fbf167be551
 K_sharpen = [0 -1 0;
 			-1 5 -1;
 			0 -1 0]
-
-# ╔═╡ 84880dfc-2bfd-11eb-32b7-47750e1c696b
-function convolve_image(M, K)
-	Mred = convolve_2d(red.(M), K)
-	Mgreen = convolve_2d(green.(M), K)
-	Mblue = convolve_2d(blue.(M), K)
-	return RGB.(Mred, Mgreen, Mblue)
-end
-
-# ╔═╡ f58d5af4-5a90-11eb-3d93-5712bfd9920a
-convolve_image(bird, K_gaussian)
-
-# ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
-convolve_image(salt_and_pepper_philip, K_gaussian)
 
 # ╔═╡ 8c62855a-2bff-11eb-00f5-3702e142f76f
 const Gx = [1 0 -1;
@@ -1277,16 +1335,16 @@ end
 # ╠═1e2ac624-5a8f-11eb-1372-05ca0cbe828d
 # ╠═1e2ebef0-5a8f-11eb-2a6c-2bc3dffc6c73
 # ╠═1e5db70a-5a8f-11eb-0984-6ff8e3030923
-# ╠═1e6213ea-5a8f-11eb-3834-73689c07bca4
-# ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
-# ╠═1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
-# ╠═1ede6d80-5a8f-11eb-1119-ff17ab208a00
-# ╠═b5af1a5e-5a8f-11eb-1ec3-4d0474407072
+# ╠═4d434b48-5a91-11eb-2df8-9d2ea289878e
+# ╠═d1851bbe-5a91-11eb-3ae4-fddeff381c1b
 # ╠═f5574a90-5a90-11eb-3100-dd98e3375390
+# ╠═1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
+# ╠═1ba16c34-5a92-11eb-3052-e91a2443033b
 # ╠═f55f8e6c-5a90-11eb-14fa-1168810ec819
 # ╠═f589c15a-5a90-11eb-2a69-fba0819a4993
+# ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
 # ╠═f58d5af4-5a90-11eb-3d93-5712bfd9920a
-# ╠═f5b92f94-5a90-11eb-1b69-5592b269dfbb
+# ╠═a588a356-5a95-11eb-27e8-cb8d394b6ff6
 # ╠═f5d4af24-5a90-11eb-0671-a193539e8335
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
@@ -1332,11 +1390,8 @@ end
 # ╠═c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
 # ╠═a283e9d6-5a72-11eb-1bc4-116112a8cc59
 # ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
-# ╠═699903e8-5a8f-11eb-2e36-e33d46f74e21
 # ╠═39eae5c2-4b5f-11eb-151a-b76db57f04b8
-# ╠═73c3869a-2bfd-11eb-0597-29cd6c1c90db
 # ╠═c80e4362-2bfe-11eb-2055-5fbf167be551
-# ╠═84880dfc-2bfd-11eb-32b7-47750e1c696b
 # ╠═8c62855a-2bff-11eb-00f5-3702e142f76f
 # ╠═ae8d6258-2bff-11eb-0182-afc33d9d4efc
 # ╠═3aba6b10-4b5c-11eb-0e4f-81b47568937a
