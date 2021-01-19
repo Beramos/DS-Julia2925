@@ -181,7 +181,7 @@ function tohtml(q::QuestionBlock)
 end
 
 
-u# --- Macro(s) --- #
+# --- Macro(s) --- #
 """
 The @safe macro is a hidden try-catch statement to avoid the Markdown admonitions to crash when
 the user introduces an error in the exercise functions.
