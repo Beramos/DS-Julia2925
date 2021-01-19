@@ -74,3 +74,18 @@ function riemannsum(f, a, b; n=100)
   dx = (b - a) / n
   return sum(f.(a:dx:b)) * dx
 end
+
+### Markdown table
+function markdowntable(table, header)
+  n, m = size(table)
+  table_string = ""
+  # add header
+  table_string *= "| " * join(header, " | ") * " |\n"
+  # horizontal lines for separating the columns
+  table_string *= "| " * repeat(":--|", m) * "\n"
+  for i in 1:n
+      table_string *= "| " * join(table[i,:], " | ") * " |\n"
+  end
+  #clipboard(table_string)
+  return table_string
+end

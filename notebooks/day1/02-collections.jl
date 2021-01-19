@@ -638,8 +638,18 @@ end
 
 # ╔═╡ 0c91ce30-58b9-11eb-3617-4d87682831dd
 begin
-	ex1 = "| A | B | C | D |\n| :--|:--|:--|:--|\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n"
-
+	
+	q71 = Question(
+			validators = @safe[
+			  markdowntable(ones(8, 4), ["A", "B", "C", "D"])==
+			  Solutions.markdowntable(ones(8, 4), ["A", "B", "C", "D"]),
+			  markdowntable(ones(20, 2), ["Foo", "Bar"])==
+			  Solutions.markdowntable(ones(20, 2), ["Foo", "Bar"]),
+			]
+		  )
+	q72 = QuestionOptional{Easy}(
+			description = md"Make sure the user does not put in invalid table specifications by asserting the number of columns in the content equal to the number of elements in the header."
+		  )
 	
 	qb70 = QuestionBlock(;
 		title=md"**Question 2: markdown tables**",
@@ -685,15 +695,10 @@ begin
 		
 
 		""",
-		questions = [
-			Question(
-				validators = [
-					markdowntable(ones(8, 4), ["A", "B", "C", "D"])==ex1
-					], 
-				description = md"")
-		],
+		questions = [q71, q72],
 		hints = [
-			hint(md""" The `join()` and `repeat` functions might come in handy """)
+			hint(md""" The `join` and `repeat`-functions might come in handy """),
+			hint(md""" The @assert macro should get you close to solving the second part."""),
 		]
 		
 	)
