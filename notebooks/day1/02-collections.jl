@@ -19,17 +19,6 @@ using Colors: RGB
 # ╔═╡ 486457d8-4f37-11eb-306c-57d650508136
 using Images
 
-# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
-begin
-	using LinearAlgebra
-	t = collect(0:10:3040)
-	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
-	ϵ₂ = randn(length(t))*20     # noise on Human IQ
-
-	Y₁ = dolphinsIQ = t/12 + ϵ₁
-	Y₂ = humanIQ = t/20 + ϵ₂
-end;
-
 # ╔═╡ 69dc67fa-4cff-11eb-331e-25ffdced4323
 let 
 	using LinearAlgebra
@@ -103,6 +92,17 @@ Plot the trend of human vs. dolphin intelligence by implementing the analytical 
 	questions = [Question(;description=md"",validators=Bool[], status=md"")]
 )
 end
+
+# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+begin
+	using LinearAlgebra
+	t = collect(0:10:3040)
+	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+	ϵ₂ = randn(length(t))*20     # noise on Human IQ
+
+	Y₁ = dolphinsIQ = t/12 + ϵ₁
+	Y₂ = humanIQ = t/20 + ϵ₂
+end;
 
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
@@ -729,7 +729,7 @@ Write a function `mydet` to compute the determinant of a 2x2 square matrix. Reme
 
 ${\displaystyle|A|={\begin{vmatrix}a&b\\c&d\end{vmatrix}}=ad-bc.}$
 """,
-	validators = [det(M₁) == mydet(M₁)]
+	validators = @safe[det(M₁) == mydet(M₁)]
 )
 	
 q3 = Question(;
@@ -737,7 +737,7 @@ q3 = Question(;
 
 Update `mydet` to compute the determinant of a general square matrix.
 """,
-	validators = [det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
+	validators = @safe[det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
 )
 		
 qb2 = QuestionBlock(;
@@ -767,12 +767,29 @@ qb90 = QuestionBlock(;
 	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit square. Complete the function `estimatepi` below.
 	""",
 	questions = [
-		Question(validators = [abs(estimatepi(100) - π) < 1.0, abs(estimatepi(100000) - π) < 1e-2], description = md""),
-		QuestionOptional{Easy}(validators = [abs(estimatepi2(100) - π) < 1.0, abs(estimatepi2(100000) - π) < 1e-2], description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
+		Question(
+		  validators = @safe[
+			abs(estimatepi(100) - π) < 1.0, 
+			abs(estimatepi(100000) - π) < 1e-2
+		  ], 
+		),
+			
+		QuestionOptional{Easy}(
+				validators = @safe[
+					abs(estimatepi2(100) - π) < 1.0, 
+					abs(estimatepi2(100000) - π) < 1e-2
+					], 
+				description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
 	]
 )
 	validate(qb90, tracker)
 end
+
+# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
+
+
+# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
+md"## 5. Extra exercises"
 
 # ╔═╡ 85fb018e-4c1d-11eb-2519-a5abe100748e
 begin 
@@ -782,12 +799,6 @@ begin
 	Yₚ₁ = β₁.*t      # Dolphin IQ
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
-
-# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
-
-
-# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
-md"## 5. Extra exercises"
 
 # ╔═╡ b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 let
@@ -975,10 +986,10 @@ md""" ## 5. References
 # ╠═c6e16d7a-58cf-11eb-32a4-3372939066e3
 # ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
-# ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
-# ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
 # ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
 # ╠═69dc67fa-4cff-11eb-331e-25ffdced4323
+# ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+# ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
