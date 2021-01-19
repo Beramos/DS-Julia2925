@@ -32,9 +32,9 @@ mutable struct Question <: AbstractQuestion
 	validators::Any
 	status::Markdown.MD
 
-	Question(;description=description_default, 
-						validators=[missing], 
-						status=still_missing()) = new(description, validators, status)
+	Question(;description=md"", 
+						validators=[], 
+						status=md"") = new(description, validators, status)
 end
 
 """
@@ -58,9 +58,9 @@ mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion
 	status::Markdown.MD
 	difficulty::T
 
-	QuestionOptional{T}(;description=description_default, 
-						validators=[missing], 
-						status=still_missing()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
+	QuestionOptional{T}(;description=md"", 
+						validators=[], 
+						status=md"") where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
 end
 
 """
@@ -124,7 +124,7 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 	hints::Array{Markdown.MD}
 	questions::Array{T} where {T<:AbstractQuestion}
 
-	QuestionBlock(;title=title_default,
+	QuestionBlock(;title=md"",
 									description=md"",
 									hints = Markdown.MD[],
 									questions = [Question()]) = new(title, description, hints, questions) 
@@ -142,16 +142,19 @@ function tohtml(q::QuestionBlock)
 			hint_string *= "<p>" * html(hint) * "</p>"
 		end
 	end
-
 	
-	state_string = "<p> $(html(q.questions[1].status)) </p>"
-	if q.questions[1].description !== ""
-		state_string = "<p> $(html(q.questions[1].description)) </p>" * state_string
+	N_mandatory = sum(isa.(q.questions,Question))
+	state_string = ""
+	for index in 1:N_mandatory
+		if q.questions[index].description !== ""
+			state_string *= "<p> $(html(q.questions[index].description)) </p>"
+		end
+		state_string *= "<p> $(html(q.questions[index].status)) </p>"
 	end
 
 	opt_state_string = ""
 	if length(q.questions) > 1
-		for opt_question in q.questions[2:end]
+		for opt_question in q.questions[N_mandatory+1:end]
 			if opt_question.difficulty !== ""
 			opt_state_string *= "<p> <b> Optional ($(split(string(typeof(opt_question.difficulty)), ".")[2])): </b> </p>"
 			else
@@ -178,13 +181,6 @@ function tohtml(q::QuestionBlock)
 end
 
 
-# --- Defaults --- #
-title_default = Markdown.MD(md"### Question 0.: /insert title here/")
-description_default = Markdown.MD(md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-Open assignments always return `missing`.
-""")
-
-
 # --- Macro(s) --- #
 """
 The @safe macro is a hidden try-catch statement to avoid the Markdown admonitions to crash when
@@ -207,10 +203,13 @@ macro safe(ex)
 end
 
 # --- Validation --- #
-function check_answer(validators)
+function check_answer(q::AbstractQuestion)
+	validators = q.validators
 	all_valid = all(validators)
 	some_valid = any(validators)
-	if ismissing(all_valid) 
+
+	if length(validators) < 1 && return md""
+	elseif ismissing(all_valid) 
 		status = still_missing()
 	elseif some_valid && !all_valid
 		status = keep_working()
@@ -223,12 +222,8 @@ function check_answer(validators)
 end
 
 function validate(q::QuestionBlock)
-	q.questions[1].status = check_answer(q.questions[1].validators)
-	
-	if length(q.questions) > 1
-		for (index, opt_question) in enumerate(q.questions[2:end])
-			q.questions[index+1].status = check_answer(opt_question.validators)
-		end
+	for (index, question) in enumerate(q.questions)
+		q.questions[index].status = check_answer(question)
 	end
 	return q
 end
