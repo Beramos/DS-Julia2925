@@ -32,9 +32,9 @@ mutable struct Question <: AbstractQuestion
 	validators::Any
 	status::Markdown.MD
 
-	Question(;description=description_default, 
-						validators=[missing], 
-						status=still_missing()) = new(description, validators, status)
+	Question(;description=md"", 
+						validators=[], 
+						status=md"") = new(description, validators, status)
 end
 
 """
@@ -58,9 +58,9 @@ mutable struct QuestionOptional{T<:AbstractDifficulty}  <: AbstractQuestion
 	status::Markdown.MD
 	difficulty::T
 
-	QuestionOptional{T}(;description=description_default, 
-						validators=[missing], 
-						status=still_missing()) where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
+	QuestionOptional{T}(;description=md"", 
+						validators=[], 
+						status=md"") where {T<:AbstractDifficulty} = new{T}(description, validators, status, T())
 end
 
 """
@@ -124,7 +124,7 @@ mutable struct QuestionBlock <: AbstractQuestionBlock
 	hints::Array{Markdown.MD}
 	questions::Array{T} where {T<:AbstractQuestion}
 
-	QuestionBlock(;title=title_default,
+	QuestionBlock(;title=md"",
 									description=md"",
 									hints = Markdown.MD[],
 									questions = [Question()]) = new(title, description, hints, questions) 
@@ -181,13 +181,6 @@ function tohtml(q::QuestionBlock)
 end
 
 
-# --- Defaults --- #
-title_default = Markdown.MD(md"### Question 0.: /insert title here/")
-description_default = Markdown.MD(md"""Complete the function `myclamp(x)` that clamps a number `x` between 0 and 1.
-Open assignments always return `missing`.
-""")
-
-
 # --- Macro(s) --- #
 """
 The @safe macro is a hidden try-catch statement to avoid the Markdown admonitions to crash when
@@ -214,7 +207,9 @@ function check_answer(q::AbstractQuestion)
 	validators = q.validators
 	all_valid = all(validators)
 	some_valid = any(validators)
-	if ismissing(all_valid) 
+
+	if length(validators) < 1 && return md""
+	elseif ismissing(all_valid) 
 		status = still_missing()
 	elseif some_valid && !all_valid
 		status = keep_working()
