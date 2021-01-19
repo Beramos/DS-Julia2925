@@ -55,12 +55,6 @@ We wrap up the day by exploring convolutions and similar operations on 1-D and 2
 - learning to plot and make animations.
 """
 
-# ╔═╡ 14bb9c3a-34b5-11eb-0f20-75a14b584e0c
-matrix = [1 2 3 4; 5 6 7 8; 9 10 11 12]
-
-# ╔═╡ 2712ade2-34b5-11eb-0242-57f37f6607a3
-C = CartesianIndices(matrix)
-
 # ╔═╡ 3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
 md"""
 ## 1-Dimensional operations
@@ -112,8 +106,7 @@ begin
 	q1 = Question(
 			validators = [
 				weighted_mean(x, collect((1:5) / sum(1:5))) == 4.986666666666666
-			], 
-			description = md""
+			]
 		)
 			
 
@@ -265,10 +258,12 @@ end
 QuestionBlock(;
 	title=md"**Task:**",
 	description = md"""
-	Explore this filtering technique by changing the number of weights. Try to understand the how the `moving_average` function works
-	""",
-	questions = [Question(;description=md"", validators = Bool[], status=md"")]
+	Explore this filtering technique by changing the number of weights. Try to understand the how the `moving_average` function works.
+	"""
 )
+
+# ╔═╡ 14cb3b5e-5a58-11eb-2a5a-0b8713107549
+md"Your answer here...."
 
 # ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
 function uniform_weights(m)
@@ -305,21 +300,18 @@ begin
 	fs = (600, 280)
 	
 	pl31 = scatter(@safe 1:length(Wu), Wu; label="", xlabel="weights", size=fs,
-	background_color="#F8F8F8")
+	background_color="#F8F8F8", ms = 6)
 	title!("Your result:")
 	
 	pl32 = scatter(@safe 1:length(Wt), Wt; label="", xlabel="weights", size=fs,
-	background_color="#F8F8F8")
+	background_color="#F8F8F8", ms = 6)
 	title!("Your result:")
 	
 	pl33 = scatter(@safe 1:length(Wg), Wg; label="", xlabel="weights", size=fs,
-	background_color="#F8F8F8")
+	background_color="#F8F8F8", ms = 6)
 	title!("Your result:")
 	
 	q31 = Question(
-			validators = [	
-
-			], 
 			description = md"""
 		- **uniform**: all values of $\mathbf{w}$ are the same;
 		
@@ -328,9 +320,6 @@ begin
 		)
 	
 	q32 = Question(
-		validators = [	
-
-		], 
 		description = md"""
 		- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $i=m+1$ and linearly decreasing from $i=m+1$ to $2m+1$;
 		
@@ -340,9 +329,6 @@ begin
 	)
 	
 	q33 = Question(
-		validators = [	
-
-		], 
 		description = md"""
 		- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{2\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
 
@@ -361,9 +347,6 @@ begin
 
 		""",
 		questions = @safe[q31, q32, q33],
-		hints = [
-
-		]
 	)
 	
 	validate(qb3, tracker)
@@ -605,7 +588,7 @@ begin
 		title=md"**Optional question (hard)**",
 		description = md"""
 		Can you think of a way to get the transitioned state given a rule  and a position of a bit in the bitstring? Complete the function `getbinarydigit(rule, i)`.
-		It is possible to do this in a single line. Don't worry if you don't get this, this is bitstring manipulation and not usually part of a scientific programming curriculum.
+		For confident programmers, it is possible to do this in a single line. 
 		""",
 		questions = [
 			Question(;description=md"", 
@@ -614,11 +597,14 @@ begin
 					])
 		],
 		hints = [
+
 			hint(md"The solution is hidden in the next hint."), 
 			hint(md""" 
 				```julia
 				getbinarydigit(rule, i) = rule & 2^(i-1) != 0
-				```""")	
+				```"""),
+			hint(md"Don't worry if you don't get fully understand the oneliner, it is bitstring manipulation and is not usually part of a scientific programming curriculum."),
+			hint(md"A more naive and less efficient solution would be to convert the rule integer to a string (not a bitstring) which supports indexing. ")
 		]
 	)
 	validate(qb5)
@@ -638,7 +624,7 @@ begin
 			validators = @safe[])
 	
 	qb6 = QuestionBlock(
-		title=md"**Question: transitioning the states**",
+		title=md"**Question: transitioning the individual states**",
 		description = md"""
 		Now for the next step, given a state `s` and the states of its left (`l`) and right (`r`) neighbours, can you determine the next state under a `rule` (UInt8)?
 
@@ -646,9 +632,9 @@ begin
 		questions = [q61, q62],
 		hints = [
 			hint(md"Do not forget you have just implemented `getbinarydigit(rule, i)`."),
-			hint(md"In the example of the rules displayed above, all 8 possible combinations of (`l`, `s`, `r`) always refer to the same position in the bitstring"),
+			hint(md"In the example of the rules displayed above, all 8 possible combinations of (`l`, `s`, `r`) always refer to the same position in the bitstring."),
 			
-			hint(md"8-(4l+2s+1r)"),
+			hint(md"`8-(4l+2s+1r)`"),
 		]
 	)
 	validate(qb6, tracker)
@@ -698,8 +684,33 @@ Dict(
 	for r in [true, false]
 				)									
 
-# ╔═╡ e68101ca-59d5-11eb-18c2-351e9a68421a
-
+# ╔═╡ e46a3f52-5a5a-11eb-1d41-d7d031131d7e
+begin 	
+	q71 = Question(
+			description=md"""
+		Complete `update1dca!(xnew, x, rule::Integer)` that performs a single iteration of the cellular automate given an initial state array `x`, and overwrites the new state array `xnew`, given a certain rule integer 
+		$(fyi(md"`!` is often used as suffix to a julia function to denote an inplace operation. The function itself changes the input arguments directly. `!` is a naming convention and does not fulfil an actual functionality"))
+		
+			""", 
+			validators = @safe[missing])
+	
+		q72 = QuestionOptional{Easy}(
+			description=md"""
+		Complete `xnew = update1dca(x, rule::Integer)` function that performs the same action as `update1dca!` but with an explicit return of the new state array. It is possible to do this in a single line.
+			""")
+	
+	qb7 = QuestionBlock(
+		title=md"**Question: evolving the array**",
+		description = md"""
+		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states tranistion simultaneously from the initial state to the next state.
+		""",
+		questions = [q71, q72],
+		hints= [
+			hint(md"""`similar(x)` is a useful function to initialise a new matrix of the same type and dimensions of the array `x`	""")	
+		]
+	)
+	validate(qb7, tracker)
+end
 
 # ╔═╡ 924461c0-2bf3-11eb-2390-71bad2541463
 function update1dca!(xnew, x, rule::Integer)
@@ -720,6 +731,38 @@ x0_ca = rand(Bool, 100)
 
 # ╔═╡ 6405f574-2bf5-11eb-3656-d7b9c94f145a
 next1dca(x0_ca, rule)
+
+# ╔═╡ 2faf6176-5a5e-11eb-241d-4383971500e3
+begin 	
+	q81 = Question(
+			description=md"""
+		Complete `simulate(x0, rule::UInt8; nsteps=100)` that performs a `nsteps` of simulation  given an initial state array `x0` and a rule 
+		
+			""", 
+			validators = @safe[missing])
+	
+	q82 = Question(
+		description=md"""
+	Plot the evolution of state array at each iteration as an image.
+
+		""")
+
+	qb8 = QuestionBlock(
+		title=md"**Question: simulating the cellular automata**",
+		description = md"""
+		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states tranistion simultaneously from the initial state to the next state.
+		""",
+		questions = [q81, q82],
+		hints= [
+			hint(md"""`similar(x)` is a useful function to initialise a new matrix of the same type and dimensions of the array `x`	"""),
+			hint(md"""`Gray(x)` returns the gray component of a color. Try,  `Gray(0)`, `Gray(1)`""")	
+		]
+	)
+	validate(qb8, tracker)
+end
+
+# ╔═╡ a096becc-5a64-11eb-3a01-1d54d478daf3
+gray(1)
 
 # ╔═╡ 756ef0e0-2bf5-11eb-107c-8d1c65eacc45
 """
@@ -750,7 +793,75 @@ ca_image(X) = Gray.(X)
 plot(ca_image(X), size=(1000, 1000))
 
 # ╔═╡ 4810a052-2bf6-11eb-2e9f-7f9389116950
-all_cas = Dict(rule=>ca_image(simulate(x0_ca, rule; nsteps=500)) for rule in UInt8(0):UInt8(251))
+#all_cas = Dict(rule=>ca_image(simulate(x0_ca, rule; nsteps=500)) for rule in UInt8(0):UInt8(251))
+
+# ╔═╡ b06b4cca-5a71-11eb-09d9-332fe0d48f2c
+function show_barcode(bitArr) 
+	bar(bitArr, color=:Black, ylims=(0.1,0.5), label="", axis = nothing, border=:none,  bar_width=1,  size=(400,300))
+end
+
+# ╔═╡ b8dc1dee-5a71-11eb-3eb4-694841071955
+begin 
+	rule_ex9 = 182
+	initInt_ex9 = 3680689260
+	initBs_exp9 = bitstring(initInt_ex9)
+	
+	bitArr_ex9 = simulate([el == '0' for el in reverse(initBs_exp9)[1:32]], UInt8(rule_ex9); nsteps=50)[end,:]
+	
+	pl_ex9 = show_barcode(bitArr_ex9)
+end
+
+# ╔═╡ 36786d6e-5a65-11eb-0fa2-81b69989c39e
+begin
+	
+	
+	
+	q91 = Question(
+			description=md""" After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Can you help us?
+			
+		Complete the function `scan_barcode` that converts a bitstring (barcode) to the product code?
+		
+			""", 
+			validators = @safe[missing])
+	
+	qb9 = QuestionBlock(
+		title=md"**Optional question: Barcode bonanza**",
+		description = md"""
+		A simple barcode is data represented by varying the widths and spacings of parallel lines. However this is just an array of binary values that correspondent to a integer number.
+		
+		![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/220px-UPC-A-036000291452.svg.png)
+		
+		The laser scanner reads the barcode and converts the binary number to an integer which is the product code, a pretty simple and robust system.
+		
+		A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is not super convoluted,		
+			
+		The number corresponding to a barcode is the **rule number** followed by *initial 32-bit array encoded as an integer*. The barcode is generated by taking the **rule number** and evolving the initial condition for 50 iterations.
+		
+		As an example this barcode corresponds to the number: 
+		**182** *3128863161*
+		
+		$(pl_ex9)
+		
+		""",
+		questions = [q91],
+	)
+	validate(qb9)
+end
+
+# ╔═╡ 87ad7c6a-5a72-11eb-226c-f1a478e108ae
+rule2_ex9 = 42
+
+# ╔═╡ c9df91d8-5a72-11eb-13c4-e77745f5be6d
+init_Int2_ex9 = 3681110060
+
+# ╔═╡ c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
+milk_barcode = bitstring(init_Int2_ex9)
+
+# ╔═╡ a283e9d6-5a72-11eb-1bc4-116112a8cc59
+bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2_ex9); nsteps=50)[end,:]
+
+# ╔═╡ d9db54ee-5a72-11eb-1790-2f90b0c0a91d
+show_barcode(bitArr)
 
 # ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
 md"""
@@ -1062,13 +1173,19 @@ new_grid = zero(grid)
 end
 =#
 
+# ╔═╡ 1d72179a-5a5e-11eb-28d2-479bca301c73
+q73 = Question(
+			description=md"""
+		Complete `simulate(x0, rule::UInt8; nsteps=100)` that performs a `nsteps` of simulation  given an initial state array `x0` and a rule 
+		
+			""", 
+			validators = @safe[missing])
+
 # ╔═╡ Cell order:
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
-# ╠═14bb9c3a-34b5-11eb-0f20-75a14b584e0c
-# ╠═2712ade2-34b5-11eb-0242-57f37f6607a3
 # ╠═3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
 # ╠═e1147d4e-2bee-11eb-0150-d7af1f51f842
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
@@ -1095,6 +1212,7 @@ end
 # ╠═8e53f108-598d-11eb-127f-ddd5be0ec899
 # ╟─99a7e070-5995-11eb-0c53-51fc82db2e93
 # ╠═22261bf2-5995-11eb-2d52-932589333c47
+# ╠═14cb3b5e-5a58-11eb-2a5a-0b8713107549
 # ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
@@ -1145,16 +1263,26 @@ end
 # ╟─be013232-59d4-11eb-360e-e97b6c388991
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
 # ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
-# ╠═e68101ca-59d5-11eb-18c2-351e9a68421a
+# ╠═e46a3f52-5a5a-11eb-1d41-d7d031131d7e
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
 # ╠═405a1036-2bf5-11eb-11f9-a1a714dbf7e1
 # ╠═6405f574-2bf5-11eb-3656-d7b9c94f145a
+# ╠═2faf6176-5a5e-11eb-241d-4383971500e3
+# ╠═a096becc-5a64-11eb-3a01-1d54d478daf3
 # ╠═756ef0e0-2bf5-11eb-107c-8d1c65eacc45
 # ╠═e1dd7abc-2bf5-11eb-1f5a-0f46c7405dd5
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 # ╠═fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 # ╠═4810a052-2bf6-11eb-2e9f-7f9389116950
+# ╠═36786d6e-5a65-11eb-0fa2-81b69989c39e
+# ╠═b06b4cca-5a71-11eb-09d9-332fe0d48f2c
+# ╠═b8dc1dee-5a71-11eb-3eb4-694841071955
+# ╠═87ad7c6a-5a72-11eb-226c-f1a478e108ae
+# ╠═c9df91d8-5a72-11eb-13c4-e77745f5be6d
+# ╠═c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
+# ╠═a283e9d6-5a72-11eb-1bc4-116112a8cc59
+# ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 # ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
 # ╠═90c3c542-4aa8-11eb-03fb-e70579c8e4f3
 # ╠═57074882-4aa9-11eb-0ad5-a5ebadc22550
@@ -1220,3 +1348,4 @@ end
 # ╠═47a40a70-34c8-11eb-2ae1-5fde1e1ef83c
 # ╠═a35eda0c-34c8-11eb-27e4-35a06de2df43
 # ╠═54e78bb0-34c8-11eb-0cf9-a1a2b398e107
+# ╠═1d72179a-5a5e-11eb-28d2-479bca301c73
