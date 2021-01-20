@@ -984,7 +984,7 @@ begin
 	q71 = Question(
 			description=md"""
 		Complete `update1dca!(xnew, x, rule::Integer)` that performs a single iteration of the cellular automate given an initial state array `x`, and overwrites the new state array `xnew`, given a certain rule integer 
-		$(fyi(md"`!` is often used as suffix to a julia function to denote an inplace operation. The function itself changes the input arguments directly. `!` is a naming convention and does not fulfil an actual functionality"))
+		$(fyi(md"`!` is often used as suffix to a julia function to denote an inplace operation. The function itself changes the input arguments directly. `!` is a naming convention and does not fulfil an actual functionality")).
 		
 			""", 
 			validators = @safe[missing])
