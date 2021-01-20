@@ -799,27 +799,28 @@ begin
 Test the following kernels on both the original bird image and the blurry bird image.
 		
 ```julia
-K₂ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
+K₂ = [0 -1/4 0; 
+		-1/4 5/4 -1/4; 
+		0 -1/4 0]
 		
 ```
 
-Convert the image to grayscale and test the following kernels
+Convert the image to grayscale and test the following kernels.
 
 ```julia
-K₃ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
+K₃ = [1 0 -1;
+	  2 0 -2;
+	  1 0 -1]
 		
-```
-		
-		
-"""
+K₄ = [ 1  2  1;
+	   0  0  0;
+	  -1 -2 -1]
+```			
+""")
 	q122 = Question(
 		description=md"""
-Convolutions can also be used for edge detection, however this this not possible 
-		
-```julia
-K₂ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
-		
-```
+Implement edge detection
+		$(keep_working(md"WIP"))
 		
 		
 """
@@ -831,7 +832,7 @@ K₂ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
 		The 1D convolution demonstrated that by changing kernels one can obtain a plethora of functionalities. For the 2D case, we showed that the Gaussian kernel blurs an image. Naturally, there are other common kernels in image processing. 
 
 		""",
-		questions = @safe[q121],
+		questions = @safe[q121 q122],
 
 	)
 	
