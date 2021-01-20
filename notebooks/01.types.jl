@@ -100,7 +100,7 @@ function subtypetree(roottype, level=1, indent=4)
 end
 
 # ╔═╡ dc511e7e-4e75-11eb-1fcc-c5c98e8613a1
-subtypetree(Int)  # check in terminal
+subtypetree(Real)  # check the terminal!
 
 # ╔═╡ 4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 md"""
@@ -139,7 +139,7 @@ parse(Int, "42")
 parse(Float64, "0.999")
 
 # ╔═╡ 9193f988-4e79-11eb-05bc-058e9edb8e35
-md"Below is a bunch of numbers as a text string. Can you compute their sum?
+md"Below is a bunch of numbers as a text string. Can you compute their sum?"
 
 # ╔═╡ 6756d6ac-4e79-11eb-21ab-4776195c9d3b
 bunchofnumbers = "1.728002758512114, 0.45540258865644284, 1.4067738604851092, 1.6549474922755167, -0.5281073122489854, 2.219250973007533, 0.8195027302254512, 1.8833469318073521, 0.7429034224663096, -0.8127686064960085, -0.14337850083375886, -1.477193046160141, 0.024525761924498457, 0.16097115910472956, -0.39278880092280993, 1.3988081686729814, -1.3316370350161346, 0.2791510437718087, 1.9834455917052212, -0.8616791621501649
@@ -160,11 +160,14 @@ Run the following examples in the terminal using `@time`.
 # ╔═╡ 2dff8c88-4e75-11eb-050b-7152e82ac10d
 mynewfun(x) = x^2 + x
 
+# ╔═╡ 7c2b6dc0-4e76-11eb-1d78-553df82d9100
+@time mynewfun(1)  # returns an integer
+
+# ╔═╡ d2a4a32c-5b02-11eb-3839-8108c4965931
+@time mynewfun(1.0)  # returns a Float64
+
 # ╔═╡ 32d64b6e-4e75-11eb-0a2a-27214f217f70
 @time mynewfun(A)
-
-# ╔═╡ 7c2b6dc0-4e76-11eb-1d78-553df82d9100
-@time mynewfun(1)
 
 # ╔═╡ 861ba4c6-4e76-11eb-3d2b-bfabbd143df2
 md"The known methods can be found using the function `methods`. For example, look how many methods are defined for sum:"
@@ -327,8 +330,11 @@ sort(rocks)
 
 # ╔═╡ 84a0f49c-4e7c-11eb-14f2-452e57f2e414
 md"""
-## Case study 2: rock paper scissors
+## Case study 2: rock-paper-scissors
 
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Rock-paper-scissors.svg/1200px-Rock-paper-scissors.svg.png)
+
+We can easily implement the rock-paper-scissors rules using types.
 """
 
 # ╔═╡ 99c4f3c8-4e7c-11eb-3d4a-33ba8d495eb2
@@ -340,6 +346,9 @@ begin
 	abstract type Paper <: Hand end
 	abstract type Scissors <: Hand end
 end
+
+# ╔═╡ cba6d4cc-5b03-11eb-265d-3f08117b0e8d
+md"Now we implement a function to play one hand against an opponent's hand."
 
 # ╔═╡ d913cd92-4e7c-11eb-11e1-3d7539af7fed
 begin
@@ -364,12 +373,21 @@ play(Scissors, Rock)
 # ╔═╡ 925e2f40-4e7d-11eb-0bd2-f91913c5a23e
 play(Scissors, Paper)
 
+# ╔═╡ 5117a6b8-5b04-11eb-2910-dd7412ef69de
+md"Can you extend this so that it works with lizard an Spock?
+![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)"
+
 # ╔═╡ 5a65f7c8-4e80-11eb-1235-4d2992b69efa
 md"""
 ### Case study: Pokémon types
 
 ![](https://www.boxmash.com/wp-content/uploads/2014/03/POKEMON-ARTICLE-TYPES-EFFECTIVE.jpg)
+
+I think this might be removed?
 """
+
+# ╔═╡ f092f656-5b05-11eb-392d-f7118e9bbca3
+# type-based dispatch
 
 # ╔═╡ Cell order:
 # ╠═4ec271b0-4e73-11eb-2660-6b8bd637d7ee
@@ -414,8 +432,9 @@ md"""
 # ╠═e6f31ad8-4e79-11eb-11f4-2936cb039f8d
 # ╠═03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 # ╠═2dff8c88-4e75-11eb-050b-7152e82ac10d
-# ╠═32d64b6e-4e75-11eb-0a2a-27214f217f70
 # ╠═7c2b6dc0-4e76-11eb-1d78-553df82d9100
+# ╠═d2a4a32c-5b02-11eb-3839-8108c4965931
+# ╠═32d64b6e-4e75-11eb-0a2a-27214f217f70
 # ╠═861ba4c6-4e76-11eb-3d2b-bfabbd143df2
 # ╠═8d5f7d8e-4e76-11eb-28ba-bdec03a3e150
 # ╠═99af0924-4e76-11eb-0331-87685125bcd9
@@ -450,9 +469,12 @@ md"""
 # ╠═07a19574-4e80-11eb-38fa-8d3463dfd700
 # ╠═84a0f49c-4e7c-11eb-14f2-452e57f2e414
 # ╠═99c4f3c8-4e7c-11eb-3d4a-33ba8d495eb2
+# ╠═cba6d4cc-5b03-11eb-265d-3f08117b0e8d
 # ╠═d913cd92-4e7c-11eb-11e1-3d7539af7fed
 # ╠═4f107d88-4e7d-11eb-3e49-f54ecf5163da
 # ╠═8331c8b0-4e7d-11eb-0690-8bbae3ed086a
 # ╠═88a95ec0-4e7d-11eb-0a33-77ef82874f45
 # ╠═925e2f40-4e7d-11eb-0bd2-f91913c5a23e
+# ╠═5117a6b8-5b04-11eb-2910-dd7412ef69de
 # ╠═5a65f7c8-4e80-11eb-1235-4d2992b69efa
+# ╠═f092f656-5b05-11eb-392d-f7118e9bbca3
