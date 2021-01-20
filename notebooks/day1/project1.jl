@@ -105,7 +105,7 @@ weighted_mean(x, w) = missing
 begin 	
 	q1 = Question(
 			validators = [
-				weighted_mean(x, collect((1:5) / sum(1:5))) == 4.986666666666666
+				weighted_mean(x, collect((1:5) / sum(1:5))) ≈ 4.986666666666666
 			]
 		)
 			
@@ -119,7 +119,7 @@ begin
 
 		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
 
-		Implement the weighted mean.
+		Implement the weighted mean. Do it in a one-liner.
 
 		""",
 		questions = @safe[q1]
@@ -166,19 +166,19 @@ When computing convolutions (or in numerical computing in general) one has to be
 function convolve_1d(x::Vector, w::Vector)
 	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
 	@assert length(w) < length(x) "length of `w` should be smaller than `x`"
-	n = length(x)
-	m = length(w) ÷ 2
-	out = zeros(n)
+	n = missing
+	m = missing
+	y = missing # initialize the output
 
 	# ... complete
-	return missing
+	return y
 end
 
 # ╔═╡ b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
 begin 	
 	q2 = Question(
 			validators = [	
-				convolve_1d(collect(1:10), [0.5, 0.5, 0.5]) == 
+				convolve_1d(collect(1:10), [0.5, 0.5, 0.5]) ≈ 
 			[3.0, 4.5, 6.0, 7.5, 9.0, 10.5, 12.0, 13.5, 14.5, 15.0]
 			], 
 			description = md""
@@ -230,7 +230,7 @@ Let's try this out on an example, consider a noisy signal,
 """
 
 # ╔═╡ 546beebe-598d-11eb-1717-c9687801e647
-noisy_signal(tᵢ) = 5tᵢ+5sin(tᵢ)+10*rand();
+noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) +  σ * rand();
 
 # ╔═╡ f39d88f6-5994-11eb-041c-012af6d3bae6
 md"We use the convolution function we defined to construct a moving_average function,"
@@ -511,7 +511,21 @@ md"To be topical, let us try it on the tail spike protein of the SARS-CoV-2 viru
 spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT"
 
 # ╔═╡ 7e96f0d6-5999-11eb-3673-43f7f1fa0113
-m = 5
+m = 25
+
+# ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
+begin 	
+	QuestionBlock(
+		title=md"**Question 5: complete protein sliding window**",
+		description = md"""
+		Complete the function `protein_sliding_window` and play around with the parameters. Can you discover a strongly non-polar region in the protein?""",
+		questions = [Question(;description=md"", validators = Bool[], status=md"")],
+		hints = [
+			
+		]
+	)
+
+end
 
 # ╔═╡ c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 function protein_sliding_window(sequence, m, zscales)
@@ -526,13 +540,10 @@ function protein_sliding_window(sequence, m, zscales)
 end
 
 # ╔═╡ 17e7750e-49c4-11eb-2106-65d47b16308c
-proteinsw = protein_sliding_window(spike_sars2, m, zscales1)
+proteinsw = protein_sliding_window(spike_sars2, m, zscales3)
 
 # ╔═╡ dce6ec82-3ca1-11eb-1d87-1727b0e692df
 plot(proteinsw, xlabel="Index of Amino acid in the tail-spike", label="", ylabel="local properties")
-
-# ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
-keep_working(md"**@Michiel** can you provide an outro here? Not sure what to do with this. This ends rather anti-climactic")
 
 # ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
 md"""
@@ -655,7 +666,7 @@ $(@bind brightness Slider(0:0.01:4, default=1.5))
 brightness
 
 # ╔═╡ 1e2ac624-5a8f-11eb-1372-05ca0cbe828d
-bird./brightness
+bird ./ brightness
 
 # ╔═╡ 1e2ebef0-5a8f-11eb-2a6c-2bc3dffc6c73
 md"This is just a simple element-wise division of a matrix."
@@ -861,7 +872,7 @@ md"The challenge with bitstrings is that the separate bits cannot be efficiently
 #getbinarydigit(rule, i) = missing
 
 # ╔═╡ 1266818c-59d3-11eb-0b7d-d7253621762e
-getbinarydigit(rule, i) = rule & 2^(i-1) != 0
+getbinarydigit(rule, i) = isodd(rule >> i-1)
 
 # ╔═╡ 2d4e9afe-59cc-11eb-3033-05d9b684b399
 begin 	
@@ -882,7 +893,7 @@ begin
 			hint(md"The solution is hidden in the next hint."), 
 			hint(md""" 
 				```julia
-				getbinarydigit(rule, i) = rule & 2^(i-1) != 0
+				getbinarydigit(rule, i) = isodd(rule >> i-1)
 				```"""),
 			hint(md"Don't worry if you don't get fully understand the oneliner, it is bitstring manipulation and is not usually part of a scientific programming curriculum."),
 			hint(md"A more naive and less efficient solution would be to convert the rule integer to a string (not a bitstring) which supports indexing. ")
@@ -948,6 +959,9 @@ md"Now that we have this working it is easy to generate and visualise the transi
 
 # ╔═╡ 428af062-59d5-11eb-3cf7-99533810e83c
 md"Rule: $rule_number"
+
+# ╔═╡ a808b2d0-5aff-11eb-036f-fd32a1dc92fc
+md"Click on the small triangle to view the transitions."
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
 Dict(
@@ -1299,10 +1313,10 @@ end
 # ╠═328385ca-49c3-11eb-0977-c79b31a6caaf
 # ╠═c924a5f6-2bf1-11eb-3d37-bb63635624e9
 # ╠═7e96f0d6-5999-11eb-3673-43f7f1fa0113
+# ╠═19a98dd4-599e-11eb-2b1c-172e00137e6c
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
-# ╠═19a98dd4-599e-11eb-2b1c-172e00137e6c
 # ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
 # ╠═e3f4c82a-5a8d-11eb-3d7d-fd30c0e4a134
 # ╠═c3a51344-5a8e-11eb-015f-bd9aa28aa6eb
@@ -1368,6 +1382,7 @@ end
 # ╠═511661de-59d5-11eb-16f5-4dbdf4e93ab2
 # ╟─428af062-59d5-11eb-3cf7-99533810e83c
 # ╟─be013232-59d4-11eb-360e-e97b6c388991
+# ╟─a808b2d0-5aff-11eb-036f-fd32a1dc92fc
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
 # ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 # ╠═e46a3f52-5a5a-11eb-1d41-d7d031131d7e
