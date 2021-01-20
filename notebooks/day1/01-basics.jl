@@ -10,7 +10,7 @@ using Plots
 # ╔═╡ e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # edit the code below to set your name and UGent username
 
-student = (name = "Jaenette Janssen", email = "Jeanette.Janssen@UGent.be");
+student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -382,7 +382,7 @@ clip(x) = missing
 
 # ╔═╡ 8933033a-4abf-11eb-1156-a53a5ee9152c
 begin
-   q2 = Question(;
+   q2 = Question(
 			description=md"""
 			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, without making use of the functions `min` and `max`.
 
@@ -394,8 +394,8 @@ begin
 			clip(1.1)==Solutions.clip(1.1)],
 		)
 	
-   qb2 = QuestionBlock(;
-	title=md"**Question 3: clipping exercise**",
+   qb2 = QuestionBlock(
+	title=md"**Question 3: silly clipping exercise**",
 	questions = [q2],
 	);
 	
@@ -566,12 +566,7 @@ begin
    q40 = Question(;
 			description=md"""
 			What is the difference between `max` and `maximum`? 
-			""",
-			validators= @safe[
-			clip(-1)==Solutions.clip(-1), 
-			clip(0.3)==Solutions.clip(0.3), 
-			clip(1.1)==Solutions.clip(1.1)],
-		)
+			""")
 	
    qb40 = QuestionBlock(;
 	title=md"**Question 4: max(imum)**",
@@ -762,9 +757,6 @@ contour(-5:0.1:5, -10:0.1:10, (x, y) -> 3x^2-4y^2 + x*y/6)
 # ╔═╡ 0e63d722-4ac3-11eb-3740-d31b47a77912
 md"""### 8. Exercises"""
 
-# ╔═╡ 7843abe8-59e3-11eb-0517-736af541e5c8
-
-
 # ╔═╡ a3969292-57ff-11eb-059b-e9e931a30dc1
 stirling(n) = missing
 
@@ -806,6 +798,9 @@ begin
 	validate(qb4, tracker)
 end
 
+# ╔═╡ adb47b64-5af8-11eb-1b32-57cbe5d47200
+
+
 # ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
 time()
 
@@ -828,6 +823,9 @@ Write a script that reads the current time in nanoseconds (`time()`) and convert
 )
 	validate(qb5, tracker)
 end
+
+# ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
+
 
 # ╔═╡ e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 begin 
@@ -874,6 +872,9 @@ function checkfermat(a::Int, b::Int, c::Int, n::Int)
 	println(answer)
 	return answer
 end
+
+# ╔═╡ b4118bfa-5af8-11eb-0aca-cddef8e191ee
+
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
 md"""### 9. Extra exercises"""
@@ -1130,13 +1131,15 @@ end
 # ╠═d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
 # ╟─0e63d722-4ac3-11eb-3740-d31b47a77912
 # ╟─a48be23a-57ff-11eb-1bc3-3d3e046ea67c
-# ╠═7843abe8-59e3-11eb-0517-736af541e5c8
 # ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
+# ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
 # ╟─c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
+# ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
+# ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
