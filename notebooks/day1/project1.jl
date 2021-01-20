@@ -610,8 +610,8 @@ redimage(mini_image), greenimage(mini_image), blueimage(mini_image)
 # ╔═╡ e5ff8880-5a8d-11eb-0c7f-490c48170654
 url = "https://i.imgur.com/BJWoNPg.jpg"
 
-# ╔═╡ 12c363d6-5a8f-11eb-0142-b7a2bee0dad2
-download(url, "aprettybird.jpg") # download to a local file
+# ╔═╡ 6c94fb6e-5b5b-11eb-2478-87422024b091
+download(url, "aprettybird.jpg")
 
 # ╔═╡ 12c9c136-5a8f-11eb-3d91-5d121b8999d5
 bird_original = load("aprettybird.jpg")
@@ -653,7 +653,7 @@ end
 decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
 
 # ╔═╡ aba77250-5a8e-11eb-0db1-9f2d8fc726e9
-bird = decimate(bird_original, 6)
+bird = decimate(bird_original, 3)
 
 # ╔═╡ 1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
 md"""
@@ -757,7 +757,7 @@ function convolve_2d(M::Matrix, K::Matrix)
 		for j in 1:n_cols
 			for k in -m:m
 				for l in -m:m
-					out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
+					out[i,j]  = clamp(out[i,j] +  M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1], 0.0, 1.0)
 				end
 			end
 		end
@@ -789,31 +789,97 @@ K_gaussian = gaussian_kernel(3, σ=2)
 # ╔═╡ f589c15a-5a90-11eb-2a69-fba0819a4993
 heatmap(K_gaussian)
 
-# ╔═╡ 1e97c530-5a8f-11eb-14b0-47e7e944cba1
-bird
-
 # ╔═╡ f58d5af4-5a90-11eb-3d93-5712bfd9920a
-convolve_image(bird, K_gaussian)
+blurry_bird = convolve_image(bird, K_gaussian)
 
 # ╔═╡ a588a356-5a95-11eb-27e8-cb8d394b6ff6
 begin 	
 	q121 = Question(
+		description=md"""
+Test the following kernels on both the original bird image and the blurry bird image.
+		
+```julia
+K₂ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
+		
+```
+
+Convert the image to grayscale and test the following kernels
+
+```julia
+K₃ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
+		
+```
+		
+		
+"""
+	q122 = Question(
+		description=md"""
+Convolutions can also be used for edge detection, however this this not possible 
+		
+```julia
+K₂ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
+		
+```
+		
+		
+"""
 		)
 				
 	qb12 = QuestionBlock(;
-		title=md"**Optional question: testing some cool kernels**",
+		title=md"**Optional question: testing kernels**",
 		description = md"""
-		Different kernels can do really really cool things. Test and implement the following kernels
-		 ```julia
-		
-		 ```
+		The 1D convolution demonstrated that by changing kernels one can obtain a plethora of functionalities. For the 2D case, we showed that the Gaussian kernel blurs an image. Naturally, there are other common kernels in image processing. 
+
 		""",
 		questions = @safe[q121],
 
 	)
 	
-	validate(qb11, tracker)
+	validate(qb12)
 end
+
+# ╔═╡ f27532bc-5b56-11eb-3553-bb047b18ba64
+K₂ = [0 -1/4 0; -1/4 5/4 -1/4; 0 -1/4 0]
+
+# ╔═╡ af2964f8-5b59-11eb-171b-2fc265424690
+K₃ = [1 0 -1;
+		2 0 -2;
+	    1 0 -1]
+
+# ╔═╡ 876e2248-5b5c-11eb-0a78-95be8998b410
+K₄ = [1 2 1;
+		0 0 0;
+	   -1 -2 -1]
+
+# ╔═╡ 291adabc-5b5a-11eb-297f-3316a39bb1bf
+download(url, "aprettybird.jpg") # download to a local file
+
+# ╔═╡ 738086a4-5b57-11eb-0b9c-f59ddc7d6627
+blurry_bird
+
+# ╔═╡ 2086338e-5b54-11eb-3300-7566e516b374
+convolve_image(blurry_bird, K_sharpen)
+
+# ╔═╡ 47798562-5b5d-11eb-0fb3-19f640a8da15
+convolve_image(blurry_bird, K₂)
+
+# ╔═╡ 5c6ac2da-5b5d-11eb-1e46-5d6c9d1ec8f0
+convolve_2d(Gray.(bird) .|> Float64, K₃) .|> Gray
+
+# ╔═╡ 76955102-5b5d-11eb-1cfc-b7685cbb36f5
+convolve_2d(Gray.(bird) .|> Float64, K₄) .|> Gray
+
+# ╔═╡ a5454cfa-5b5d-11eb-36fb-4db3469815b3
+function edge_detection(M)
+	M = M .|> Gray .|> Float64
+	return convolve_2d(M, K₃).^2 + convolve_2d(M, K₄).^2 .|> Gray
+end
+
+# ╔═╡ cd188e54-5b5d-11eb-19bd-f3a28e4baabf
+intensity = 10
+
+# ╔═╡ b7a42204-5b5d-11eb-31ca-afced08a176e
+edge_detection(Gray.(bird)).*intensity
 
 # ╔═╡ f5d4af24-5a90-11eb-0671-a193539e8335
 function pepper_salt_noise(image; fraction=0.01)
@@ -1154,42 +1220,6 @@ bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2
 # ╔═╡ d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 show_barcode(bitArr)
 
-# ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
-convolve_image(salt_and_pepper_philip, K_gaussian)
-
-# ╔═╡ c80e4362-2bfe-11eb-2055-5fbf167be551
-K_sharpen = [0 -1 0;
-			-1 5 -1;
-			0 -1 0]
-
-# ╔═╡ 8c62855a-2bff-11eb-00f5-3702e142f76f
-const Gx = [1 0 -1;
-		   2 0 -2;
-		   1 0 -1]
-
-# ╔═╡ ae8d6258-2bff-11eb-0182-afc33d9d4efc
-const Gy = [1 2 1;
-		    0 0 0;
-		   -1 -2 -1]
-
-# ╔═╡ 3aba6b10-4b5c-11eb-0e4f-81b47568937a
-convolve_2d(Gray.(bird) .|> Float64, Gx) .|> Gray
-
-# ╔═╡ b5bf307a-4b5c-11eb-32eb-614b3193d8cb
-convolve_2d(Gray.(bird) .|> Float64, Gy) .|> Gray
-
-# ╔═╡ 746d3578-2bff-11eb-121a-f3d17397a49e
-function edge_detection(M)
-	M = M .|> Gray .|> Float64
-	return convolve_2d(M, Gx).^2 + convolve_2d(M, Gy).^2 .|> Gray
-end
-
-# ╔═╡ f41919a4-2bff-11eb-276f-a5edd5b374ac
-edge_detection(bird)
-
-# ╔═╡ 55bfb46a-2be5-11eb-2be6-1bc153db11ac
-RGB.(red.(bird), green.(bird), blue.(bird))
-
 # ╔═╡ Cell order:
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
@@ -1266,7 +1296,7 @@ RGB.(red.(bird), green.(bird), blue.(bird))
 # ╠═c512c06e-5a8e-11eb-0f57-250b65d242c3
 # ╠═c52bc23a-5a8e-11eb-0e9a-0554ed5c632e
 # ╠═e5ff8880-5a8d-11eb-0c7f-490c48170654
-# ╠═12c363d6-5a8f-11eb-0142-b7a2bee0dad2
+# ╠═6c94fb6e-5b5b-11eb-2478-87422024b091
 # ╠═12c9c136-5a8f-11eb-3d91-5d121b8999d5
 # ╠═12fd8282-5a8f-11eb-136c-6df77b026bd4
 # ╠═13185c4c-5a8f-11eb-1164-cf745ddb0111
@@ -1287,9 +1317,20 @@ RGB.(red.(bird), green.(bird), blue.(bird))
 # ╠═1ba16c34-5a92-11eb-3052-e91a2443033b
 # ╠═f55f8e6c-5a90-11eb-14fa-1168810ec819
 # ╠═f589c15a-5a90-11eb-2a69-fba0819a4993
-# ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
 # ╠═f58d5af4-5a90-11eb-3d93-5712bfd9920a
 # ╠═a588a356-5a95-11eb-27e8-cb8d394b6ff6
+# ╠═f27532bc-5b56-11eb-3553-bb047b18ba64
+# ╠═af2964f8-5b59-11eb-171b-2fc265424690
+# ╠═876e2248-5b5c-11eb-0a78-95be8998b410
+# ╠═291adabc-5b5a-11eb-297f-3316a39bb1bf
+# ╠═738086a4-5b57-11eb-0b9c-f59ddc7d6627
+# ╠═2086338e-5b54-11eb-3300-7566e516b374
+# ╠═47798562-5b5d-11eb-0fb3-19f640a8da15
+# ╠═5c6ac2da-5b5d-11eb-1e46-5d6c9d1ec8f0
+# ╠═76955102-5b5d-11eb-1cfc-b7685cbb36f5
+# ╠═a5454cfa-5b5d-11eb-36fb-4db3469815b3
+# ╠═cd188e54-5b5d-11eb-19bd-f3a28e4baabf
+# ╠═b7a42204-5b5d-11eb-31ca-afced08a176e
 # ╠═f5d4af24-5a90-11eb-0671-a193539e8335
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
@@ -1336,12 +1377,3 @@ RGB.(red.(bird), green.(bird), blue.(bird))
 # ╠═c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
 # ╠═a283e9d6-5a72-11eb-1bc4-116112a8cc59
 # ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
-# ╠═39eae5c2-4b5f-11eb-151a-b76db57f04b8
-# ╠═c80e4362-2bfe-11eb-2055-5fbf167be551
-# ╠═8c62855a-2bff-11eb-00f5-3702e142f76f
-# ╠═ae8d6258-2bff-11eb-0182-afc33d9d4efc
-# ╠═3aba6b10-4b5c-11eb-0e4f-81b47568937a
-# ╠═b5bf307a-4b5c-11eb-32eb-614b3193d8cb
-# ╠═746d3578-2bff-11eb-121a-f3d17397a49e
-# ╠═f41919a4-2bff-11eb-276f-a5edd5b374ac
-# ╠═55bfb46a-2be5-11eb-2be6-1bc153db11ac
