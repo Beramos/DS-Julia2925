@@ -19,17 +19,6 @@ using Colors: RGB
 # ╔═╡ 486457d8-4f37-11eb-306c-57d650508136
 using Images
 
-# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
-begin
-	using LinearAlgebra
-	t = collect(0:10:3040)
-	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
-	ϵ₂ = randn(length(t))*20     # noise on Human IQ
-
-	Y₁ = dolphinsIQ = t/12 + ϵ₁
-	Y₂ = humanIQ = t/20 + ϵ₂
-end;
-
 # ╔═╡ 69dc67fa-4cff-11eb-331e-25ffdced4323
 let 
 	using LinearAlgebra
@@ -104,6 +93,17 @@ Plot the trend of human vs. dolphin intelligence by implementing the analytical 
 )
 end
 
+# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+begin
+	using LinearAlgebra
+	t = collect(0:10:3040)
+	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+	ϵ₂ = randn(length(t))*20     # noise on Human IQ
+
+	Y₁ = dolphinsIQ = t/12 + ϵ₁
+	Y₂ = humanIQ = t/20 + ϵ₂
+end;
+
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
 
@@ -147,6 +147,9 @@ Let us start with `Array`'s. It is very similar to lists in Python, though it ca
 # ╔═╡ 8f8c7b44-4c1d-11eb-0cd8-3bb82c75c086
 A = []            # empty array
 
+# ╔═╡ b0420f36-5a71-11eb-01f1-f16b115f5895
+md"Note that the element type is `Any`, since the compiler has no idea what we would store in `A`!"
+
 # ╔═╡ a0c22de6-4c1d-11eb-34a2-aff57cfd22a1
 X = [1, 3, -5, 7] # array of integers
 
@@ -154,7 +157,7 @@ X = [1, 3, -5, 7] # array of integers
 md"### Indexing and slicing"
 
 # ╔═╡ bb79bf28-4c1d-11eb-35bf-379ac0cd16b6
-md"Let's start by eating the frog. Julia uses 1-based indexing..."
+md"Let's start by eating the frog. Julia uses [1-based indexing](https://docs.google.com/document/d/11ZKaR0a6hvc6xmYLfmslAAPnkVRSZFGz5GZYRNmxmsQ/edit)..."
 
 # ╔═╡ eaf59a7e-4c1d-11eb-2db3-fd7f995db3e4
 names = ["Arthur", "Ford", "Zaphod", "Marvin", "Trillian", "Eddie"]
@@ -186,12 +189,20 @@ names[end-1:end] = ["Slartibartfast","The Whale and the Bowl of Petunias"]
 # ╔═╡ 4fb1a53e-4c1e-11eb-381b-1f86a5ed97a1
 names
 
+# ╔═╡ 619fd3bc-5a72-11eb-22f7-49ff5486e0fa
+md"What the first index again? And how to access the last element? If you forgot, just use `first` and `last`:"
+
+# ╔═╡ 7e460c3e-5a72-11eb-0c52-cf9583c70759
+first(names), last(names)
+
+# ╔═╡ 354fa70c-5a74-11eb-31fc-ad21a845d3b0
+fyi(md"Pluto might not execute the lines of code in order. As you are chaning `names` later on, it the results might be a bit unexpected.")
+
 # ╔═╡ 56f5f21e-4c1e-11eb-004e-f19aa9029b01
 md"### Types and arrays"
 
 # ╔═╡ 79e0f212-4c1e-11eb-0d64-87308d762180
 md"Julia arrays can be of mixed type."
-
 
 # ╔═╡ 86dcfb26-4c1e-11eb-347f-ffbd8b396f09
 Y = [42, "Universe", []]
@@ -248,7 +259,7 @@ C = []  # empty
 zeros(5)      # row vector of 5 zeroes
 
 # ╔═╡ 503d455c-4c1f-11eb-3af2-8f200db1fd30
-ones(3,3)     # 3X3 matrix of 1's, will be discussed later on
+ones(3,3)     # 3×3 matrix of 1's, will be discussed later on
 
 # ╔═╡ 504d8aca-4c1f-11eb-3600-d77038b0f2bc
 fill(0.5, 10) # in case you want to fill a matrix with a specific value
@@ -258,6 +269,9 @@ rand(2)    # row vector of 2 random floats [0,1]
 
 # ╔═╡ 5071c430-4c1f-11eb-226b-634abae6082f
 randn(2)   # same but normally-distributed random numbers
+
+# ╔═╡ c2ccb916-5a72-11eb-16d9-15283727d6cf
+rand(Bool, 10)  # specifiy the type, many packages overload rand for other stuff
 
 # ╔═╡ 52a8a6ec-4c1f-11eb-386c-a99ef05b41b0
 md"Often it is better to provide a specific type for initialization. For numeric elements `Float64` is the default."
@@ -275,7 +289,7 @@ md"Comprehensions are a concise and powerful way to construct arrays and are ver
 Z = [1, 2, 3, 4, 5, 6, 8, 9, 8, 6, 5, 4, 3, 2, 1]
 
 # ╔═╡ 3f5436d2-4c22-11eb-342a-35b7a29ef146
-dZ = [Z[i-1] - 2*Z[i] + Z[i+1] for i=2:length(Z)-1] # central difference
+dZ = [Z[i-1] - 2Z[i] + Z[i+1] for i=2:length(Z)-1] # central difference
 
 # ╔═╡ 63fea2f6-4c22-11eb-0802-37fd7653cdb5
 md"""General $N$-dimensional arrays can be constructed using the following syntax:
@@ -292,6 +306,12 @@ Note that this is similar to using set notation. For example:
 
 
 """
+
+# ╔═╡ 10267fee-5a73-11eb-2947-279f6be1a3fe
+md"We can also use logic to specify which elements to include."
+
+# ╔═╡ 27051614-5a73-11eb-1d22-35ec8ebc1fd8
+[i^2 for i in 1:20 if isodd(i)]  # squares of the odd integers below 20
 
 # ╔═╡ a5f17ccc-4c22-11eb-2cb8-7b130e1e811f
 md"Arrays behave like a stack. So pushing, appending and popping are valid operations. Elements can be added to the back of the array, (*Pushing and appending*)"
@@ -334,6 +354,18 @@ P[3,2]  # indexing
 
 # ╔═╡ 0b9d0bf8-4c24-11eb-2beb-0763c66e6a20
 P[1,:]  # slicing
+
+# ╔═╡ b9a9a730-5a73-11eb-0d17-7bf1aa935697
+md"You  will likely not be surprised that most functions just work for two (or more) dimensions:"
+
+# ╔═╡ d4405d8c-5a73-11eb-21f7-37c4d7ac537b
+ones(4, 5)
+
+# ╔═╡ da5edf54-5a73-11eb-26ff-2f6af8adceed
+fill(0.5, 8, 2)
+
+# ╔═╡ def334c0-5a73-11eb-3006-e7437155cdef
+rand(Bool, 3, 3)
 
 # ╔═╡ 25d53e6c-4c24-11eb-02a2-a71d4b2a7974
 md"It is important to know that arrays and other collections are copied by reference."
@@ -388,10 +420,10 @@ md"This simplified syntax can lead to strange behaviour. Explain the following d
 [1 2 -3]
 
 # ╔═╡ be174110-4c4a-11eb-05cf-17e2527dfad8
-md"Sometimes, `vcat` and `hcat` are better used to make the code unambiguous."
+md"Sometimes, `vcat` and `hcat` are better used to make the code unambiguous..."
 
 # ╔═╡ cad05c2a-4c4a-11eb-0c89-13cddd2aa35f
-md"By default, the `*` operator is used for matrix-matrix multiplication"
+md"By default, the `*` operator is used for matrix multiplication"
 
 # ╔═╡ d43ae2ee-4c4a-11eb-281a-b353dc1de640
 E = [2 4 3; 3 1 5]
@@ -470,6 +502,9 @@ md"Because of this type system, a lot of interesting feature work out of the box
 # ╔═╡ 8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
 @bind brightness html"<input type=range min=0.0 max=300.0>"
 
+# ╔═╡ ac62d6e0-5a74-11eb-1538-09d157738257
+brightness
+
 # ╔═╡ d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
 img[1:1500, 201:1700]./(brightness/100)
 
@@ -481,6 +516,9 @@ md"Matrices can be generalized to multiple dimensions."
 
 # ╔═╡ 5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
 H = rand(3, 3, 3)
+
+# ╔═╡ bf6b9fc4-5a74-11eb-2676-bda580c65877
+md"That is all there is to, feel free to create arrays of any dimension."
 
 # ╔═╡ 6e7d5a94-4c4b-11eb-3e2d-353177d6bca5
 md"### Ranges"
@@ -521,10 +559,16 @@ collect(str)
 md"Such implicit objects can be processed much smarter than naive structures. Compare!"
 
 # ╔═╡ c4575438-4c4b-11eb-1da2-97acca3f3e99
-@time sum((i for i in 1:100_000_000))
+@elapsed sum((i for i in 1:100_000_000))
+
+# ╔═╡ 0a26ad38-5a75-11eb-0424-4d26aa905de5
+md"Note that we use round brackets to create our own iterator, where every element is processed one by one by `sum`."
 
 # ╔═╡ c64e66c8-4c4b-11eb-1686-8fa64d8b2505
-@time sum(1:100_000_000)   # the timer output is in the terminal
+@elapsed sum(1:100_000_000)   
+
+# ╔═╡ 3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
+sum(1:100_000_000)  == sum((i for i in 1:100_000_000))
 
 # ╔═╡ 03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 md"`StepRange` and `UnitRange` also work with floats."
@@ -545,16 +589,37 @@ md"### Tuples"
 tupleware = ("tuple", "ware") # tuples
 
 # ╔═╡ 4f80f0a8-4c58-11eb-3679-c186c61c5a14
-fyi(md"A tuple is an array with a fixed size. It is not possible to perform operations that change the size of the tuple.")
+fyi(md"A tuple is an array with a fixed size. It is not possible to perform operations that change the size of a tuple.")
 
 # ╔═╡ 6d496b44-4c58-11eb-33b6-5b4d6315b6ea
 pop!(tupleware)
+
+# ╔═╡ 56e8f6b4-5a75-11eb-3eeb-ffec491be69c
+fyi(md"In contrast to arrays however, the types at positions should not be the same, since the compiler will create a new type for every combination!")
+
+# ╔═╡ 8245e46e-5a75-11eb-2d0a-27ef6a1f2492
+mixedtuple = (9, "negen")
+
+# ╔═╡ 942b88b4-5a75-11eb-3e7b-4534bf4a7b12
+typeof(mixedtuple)
 
 # ╔═╡ 7bc7bdf4-4c58-11eb-1fd8-376ac6da5ab2
 md"Indexing and slicing is the same as arrays,"
 
 # ╔═╡ 74d97654-4c58-11eb-344b-8d6df24323d5
 tupleware[end]
+
+# ╔═╡ 9bb1e83a-5a75-11eb-0fcc-59f6cc50bf6a
+md"One can also define named tuples where the fields have names."
+
+# ╔═╡ bcd5696a-5a75-11eb-0ec1-f116216aa682
+namedtuple = (trainer="Ash", pokemon="Pikachu")
+
+# ╔═╡ d74ff724-5a75-11eb-39a1-a963cd64948b
+namedtuple[:trainer]
+
+# ╔═╡ dd8978a4-5a75-11eb-287e-03e4272b6f2c
+namedtuple[1]  # but indexing still works
 
 # ╔═╡ 9cecd9a6-4c58-11eb-22dc-33cd2559d815
 md"### Dictionaries"
@@ -567,6 +632,15 @@ scores = Dict("humans" => 2, "vogons" => 1) # dictionaries
 
 # ╔═╡ 32593936-4c58-11eb-174c-0bb20d93dde5
 scores["humans"]
+
+# ╔═╡ fcfb511c-5a75-11eb-2181-33d147ab1806
+scores["mice"] = 3  # adding a key
+
+# ╔═╡ 1882840a-5a76-11eb-3392-81c2915487f5
+scores
+
+# ╔═╡ 3fc787d6-5a76-11eb-06e9-5378d27ce011
+delete!(scores, "humans")  # removing a key, earth was destroyed
 
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
 md"## 4. Exercises"
@@ -585,24 +659,35 @@ end;
 # ╔═╡ 3aa37510-58bb-11eb-2ecb-37ce4428269c
 begin 
 	
-	q1 = Question(validators = [
-					riemannsum(sin, 0, 2pi) == 2.8774915108571216e-17,
-					riemannsum(x->x*sin(x), 0, 2pi) == -6.281118086046032,
-					riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 0.7858888667277568
-					],
-				description = md"")
+	q1 = Question(
+			validators = @safe[
+				riemannsum(sin, 0, 2pi) == Solutions.riemannsum(sin, 0, 2pi),
 			
-	q2 = Question(validators = [integral1 == -6.281118086046032], 
-		description = md" **Integral 1:**  $ \int_0^{2\pi} x\,sin(x)\,dx$ (n=100)")
+				riemannsum(x->x*sin(x), 0, 2pi) == 
+					Solutions.riemannsum(x->x*sin(x), 0, 2pi),
 			
-	q3 = Question(validators = [integral2 == 0.7858888667277568], 
-		description = md" **Integral 2:**  $ \int_0^1 \sqrt{1-x^2}\,dx$ (n=1000)")
+				riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 
+					Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
+			]
+		)
+			
+	q2 = Question(
+			validators = @safe[
+				integral1 == Solutions.riemannsum(x->x*sin(x), 0, 2pi)
+			], 
+			description = md" **Integral 1:**  $ \int_0^{2\pi} x\,\sin(x)\,dx$ (n=100)")
+			
+	q3 = Question(
+			validators = @safe[
+			integral2 == Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
+			], 
+			description = md" **Integral 2:**  $\int_0^1 \sqrt{1 - x^2}\,dx$ (n=1000)")
 	
 	
 qb1 = QuestionBlock(;
-	title=md"**Question 6: do you still remember how to integrate?**",
+	title=md"**Question 1: do you still remember how to integrate?**",
 	description = md"""
-Integrating for dummies. Compute the Riemann sum **without** making use of a for loop.
+Integrating for dummies. Compute the Riemann sum **without** making use of a for-loop.
 
 Riemann approximates the integration of a function in the interval [a, b],
 		
@@ -627,8 +712,18 @@ end
 
 # ╔═╡ 0c91ce30-58b9-11eb-3617-4d87682831dd
 begin
-	ex1 = "| A | B | C | D |\n| :--|:--|:--|:--|\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n| 1.0 | 1.0 | 1.0 | 1.0 |\n"
-
+	
+	q71 = Question(
+			validators = @safe[
+			  markdowntable(ones(8, 4), ["A", "B", "C", "D"])==
+			  Solutions.markdowntable(ones(8, 4), ["A", "B", "C", "D"]),
+			  markdowntable(ones(20, 2), ["Foo", "Bar"])==
+			  Solutions.markdowntable(ones(20, 2), ["Foo", "Bar"]),
+			]
+		  )
+	q72 = QuestionOptional{Easy}(
+			description = md"Make sure the user does not put in invalid table specifications by asserting the number of columns in the content equal to the number of elements in the header."
+		  )
 	
 	qb70 = QuestionBlock(;
 		title=md"**Question 2: markdown tables**",
@@ -674,24 +769,16 @@ begin
 		
 
 		""",
-		questions = [
-			Question(
-				validators = [
-					markdowntable(ones(8, 4), ["A", "B", "C", "D"])==ex1
-					], 
-				description = md"")
-		],
+		questions = [q71, q72],
 		hints = [
-			hint(md""" The `join()` and `repeat` functions might come in handy """)
+			hint(md""" The `join` and `repeat`-functions might come in handy """),
+			hint(md""" The @assert macro should get you close to solving the second part."""),
 		]
 		
 	)
 	
 	validate(qb70, tracker)
 end
-
-# ╔═╡ 7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
-vandermonde(α, n) = missing
 
 # ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 function mydet(A)
@@ -713,7 +800,7 @@ Write a function `mydet` to compute the determinant of a 2x2 square matrix. Reme
 
 ${\displaystyle|A|={\begin{vmatrix}a&b\\c&d\end{vmatrix}}=ad-bc.}$
 """,
-	validators = [det(M₁) == mydet(M₁)]
+	validators = @safe[det(M₁) == mydet(M₁)]
 )
 	
 q3 = Question(;
@@ -721,7 +808,7 @@ q3 = Question(;
 
 Update `mydet` to compute the determinant of a general square matrix.
 """,
-	validators = [det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
+	validators = @safe[det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
 )
 		
 qb2 = QuestionBlock(;
@@ -745,18 +832,56 @@ end
 
 # ╔═╡ c6e16d7a-58cf-11eb-32a4-3372939066e3
 begin 
+q91 = Question(
+		  validators = @safe[
+			abs(estimatepi(100) - π) < 1.0, 
+			abs(estimatepi(100000) - π) < 1e-2
+		  ], 
+		)
+	
+q92 = QuestionOptional{Easy}(
+		validators = @safe[
+			abs(estimatepi2(100) - π) < 1.0, 
+			abs(estimatepi2(100000) - π) < 1e-2
+			], 
+		description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
+
+	
 qb90 = QuestionBlock(;
 	title=md"**Question 4: it is pi 'o clock**",
 	description = md"""
 	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit square. Complete the function `estimatepi` below.
 	""",
-	questions = [
-		Question(validators = [abs(estimatepi(100) - π) < 1.0, abs(estimatepi(100000) - π) < 1e-2], description = md""),
-		QuestionOptional{Easy}(validators = [abs(estimatepi2(100) - π) < 1.0, abs(estimatepi2(100000) - π) < 1e-2], description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
-	]
+	questions = [q91, q92],
+	hints=[
+		hint(md"""
+			[Check this image](http://www.pythonlikeyoumeanit.com/_images/circle_square_small.png)
+			 """),
+		hint(md"""
+			Because each throw falls randomly within the square, you realize that the probability of a dart landing within the circle is given by the ratio of the circle’s area to the square’s area:
+				
+			$$P_{circle} = \frac{Area_{circle}}{Area_{square}} = \frac{\pi r^2}{(2r)^2}$$
+				
+			Furthermore, we can interpret Pcircle as being approximated by the fraction of darts thrown that land in the circle. Thus, we find:
+				
+			$$\frac{N_{circle}}{N_{total}} \approx \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$$
+
+			where $N_{total}$ is the total number of darts thrown, and $N_{circle}$ is the number of darts that land within the circle. Thus simply by keeping tally of where the darts land, you can begin to estimate the value of π!
+				
+			[source:](http://www.pythonlikeyoumeanit.com/Module3_IntroducingNumpy/Problems/Approximating_pi.html)  pythonlikeyoumeanit.com
+			 """),
+		
+		
+		]
 )
 	validate(qb90, tracker)
 end
+
+# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
+
+
+# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
+md"## 5. Extra exercises"
 
 # ╔═╡ 85fb018e-4c1d-11eb-2519-a5abe100748e
 begin 
@@ -767,22 +892,17 @@ begin
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
 
-# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
-
-
-# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
-md"## 5. Extra exercises"
+# ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
+vandermonde(α, n) = missing
 
 # ╔═╡ b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 let
-	α = 1:20
-	n = 5
-	
+
 q1 = Question(;
 	description=md"""
 Write a one-liner function `vandermonde` to generate this matrix. This function takes as a vector `α` and `n`, the number of powers to compute.
 """,
-	validators = [vandermonde(α, n) == [αᵢ^j for αᵢ in α, j in 0:n-1]]
+	validators = @safe[vandermonde(1:20, 5) == Solutions.vandermonde(1:20, 5)]
 )
 		
 qb1 = QuestionBlock(;
@@ -812,95 +932,106 @@ md""" ## 5. References
 """
 
 # ╔═╡ Cell order:
-# ╠═cdff6730-e785-11ea-2546-4969521b33a7
+# ╟─cdff6730-e785-11ea-2546-4969521b33a7
 # ╠═7308bc54-e6cd-11ea-0eab-83f7535edf25
-# ╠═a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
-# ╠═2222fe0c-4c1d-11eb-1e63-f1dbc90a813c
-# ╠═44542690-4c1d-11eb-2eea-49f28ed7fd90
+# ╟─a2181260-e6cd-11ea-2a69-8d9d31d1ef0e
+# ╟─2222fe0c-4c1d-11eb-1e63-f1dbc90a813c
+# ╟─44542690-4c1d-11eb-2eea-49f28ed7fd90
 # ╠═8f8c7b44-4c1d-11eb-0cd8-3bb82c75c086
+# ╟─b0420f36-5a71-11eb-01f1-f16b115f5895
 # ╠═a0c22de6-4c1d-11eb-34a2-aff57cfd22a1
-# ╠═a81d1f22-4c1d-11eb-1b76-2929f30565bf
-# ╠═bb79bf28-4c1d-11eb-35bf-379ac0cd16b6
+# ╟─a81d1f22-4c1d-11eb-1b76-2929f30565bf
+# ╟─bb79bf28-4c1d-11eb-35bf-379ac0cd16b6
 # ╠═eaf59a7e-4c1d-11eb-2db3-fd7f995db3e4
 # ╠═efa60284-4c1d-11eb-1c08-09993363e4a8
 # ╠═efa6f180-4c1d-11eb-1ab0-3d1ca0b4bc57
 # ╠═efb6718c-4c1d-11eb-0dff-e55e6a676e39
 # ╠═efb69e46-4c1d-11eb-1ce7-ed428db8ff44
-# ╠═0a02b730-4c1e-11eb-1e8a-872dcfc8ab81
+# ╟─0a02b730-4c1e-11eb-1e8a-872dcfc8ab81
 # ╠═15035dee-4c1e-11eb-123f-a961fdd48445
-# ╠═1960de28-4c1e-11eb-1c84-ffe0cbaac940
+# ╟─1960de28-4c1e-11eb-1c84-ffe0cbaac940
 # ╠═4db9d648-4c1e-11eb-1063-e78c78ef5c4b
 # ╠═4fb1a53e-4c1e-11eb-381b-1f86a5ed97a1
-# ╠═56f5f21e-4c1e-11eb-004e-f19aa9029b01
-# ╠═79e0f212-4c1e-11eb-0d64-87308d762180
+# ╟─619fd3bc-5a72-11eb-22f7-49ff5486e0fa
+# ╠═7e460c3e-5a72-11eb-0c52-cf9583c70759
+# ╟─354fa70c-5a74-11eb-31fc-ad21a845d3b0
+# ╟─56f5f21e-4c1e-11eb-004e-f19aa9029b01
+# ╟─79e0f212-4c1e-11eb-0d64-87308d762180
 # ╠═86dcfb26-4c1e-11eb-347f-ffbd8b396f09
-# ╠═8a0e3e36-4c1e-11eb-0ec0-d19fdc3c89d8
+# ╟─8a0e3e36-4c1e-11eb-0ec0-d19fdc3c89d8
 # ╠═90d3dc80-4c1e-11eb-2a11-3fe581f0b5f7
 # ╠═996ba666-4c1e-11eb-3c5c-4bf8673de6bc
 # ╠═90d369a8-4c1e-11eb-3c16-c5fb02bdf3bb
-# ╠═f247382c-4c1e-11eb-229c-efe48b7a4d7f
+# ╟─f247382c-4c1e-11eb-229c-efe48b7a4d7f
 # ╠═fd06f130-4c1e-11eb-37cf-03af9372ae45
 # ╠═00237b9a-4c1f-11eb-3b19-73c0b8e4cbed
 # ╠═0425e980-4c1f-11eb-2477-e35a924b8018
-# ╠═069cccc4-4c1f-11eb-39b3-b94136c1b468
-# ╠═0fd48034-4c1f-11eb-06a9-0d7353b2a0d6
+# ╟─069cccc4-4c1f-11eb-39b3-b94136c1b468
+# ╟─0fd48034-4c1f-11eb-06a9-0d7353b2a0d6
 # ╠═2262e4fc-4c1f-11eb-07b8-0b9732b93d86
-# ╠═3d0107c4-4c1f-11eb-1b5b-ed954348d0aa
+# ╟─3d0107c4-4c1f-11eb-1b5b-ed954348d0aa
 # ╠═4b3317da-4c1f-11eb-19d5-03570c4d65df
 # ╠═503c9da0-4c1f-11eb-292a-db7b8ce9f458
 # ╠═503d455c-4c1f-11eb-3af2-8f200db1fd30
 # ╠═504d8aca-4c1f-11eb-3600-d77038b0f2bc
 # ╠═505874a8-4c1f-11eb-1132-3bbba81ae1db
 # ╠═5071c430-4c1f-11eb-226b-634abae6082f
-# ╠═52a8a6ec-4c1f-11eb-386c-a99ef05b41b0
+# ╠═c2ccb916-5a72-11eb-16d9-15283727d6cf
+# ╟─52a8a6ec-4c1f-11eb-386c-a99ef05b41b0
 # ╠═507254b0-4c1f-11eb-2b2c-8bc88e58e0b3
-# ╠═27b18866-4c22-11eb-22da-656ca8a4c01d
-# ╠═387c3e70-4c22-11eb-37e4-bb6c36600074
+# ╟─27b18866-4c22-11eb-22da-656ca8a4c01d
+# ╟─387c3e70-4c22-11eb-37e4-bb6c36600074
 # ╠═3da23eb8-4c22-11eb-1ec4-c350d615322f
 # ╠═3f5436d2-4c22-11eb-342a-35b7a29ef146
-# ╠═63fea2f6-4c22-11eb-0802-37fd7653cdb5
-# ╠═a5f17ccc-4c22-11eb-2cb8-7b130e1e811f
+# ╟─63fea2f6-4c22-11eb-0802-37fd7653cdb5
+# ╟─10267fee-5a73-11eb-2947-279f6be1a3fe
+# ╠═27051614-5a73-11eb-1d22-35ec8ebc1fd8
+# ╟─a5f17ccc-4c22-11eb-2cb8-7b130e1e811f
 # ╠═f1b481f4-4c22-11eb-39b7-39ffdd5bbccc
 # ╠═f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
-# ╠═fcbeda22-4c22-11eb-2d35-a356b98bbc46
-# ╠═3516a722-4c23-11eb-3ee7-fb8d582c8ce0
+# ╟─fcbeda22-4c22-11eb-2d35-a356b98bbc46
+# ╟─3516a722-4c23-11eb-3ee7-fb8d582c8ce0
 # ╠═08bb725e-4c23-11eb-3338-03370f49dd11
 # ╠═0cfc84ca-4c23-11eb-124b-5397430fd203
 # ╠═4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
 # ╠═562b751e-4c23-11eb-2b8f-73f710bf3520
 # ╠═5ed7284a-4c23-11eb-1451-0ff763f52bc7
-# ╠═0186eab2-4c24-11eb-0ff6-d7f8af343647
+# ╟─0186eab2-4c24-11eb-0ff6-d7f8af343647
 # ╠═097e96e8-4c24-11eb-24c4-31f4d23d3238
 # ╠═0b9bad58-4c24-11eb-26a8-1d04d7b2be61
 # ╠═0b9d0bf8-4c24-11eb-2beb-0763c66e6a20
-# ╠═25d53e6c-4c24-11eb-02a2-a71d4b2a7974
+# ╟─b9a9a730-5a73-11eb-0d17-7bf1aa935697
+# ╠═d4405d8c-5a73-11eb-21f7-37c4d7ac537b
+# ╠═da5edf54-5a73-11eb-26ff-2f6af8adceed
+# ╠═def334c0-5a73-11eb-3006-e7437155cdef
+# ╟─25d53e6c-4c24-11eb-02a2-a71d4b2a7974
 # ╠═6191c72e-4c24-11eb-21bb-a59e880a3573
-# ╠═07220d0a-4c4a-11eb-0ae3-298cf03a0bf6
-# ╠═26f6f852-4c4a-11eb-3a5c-e7d788713ab8
+# ╟─07220d0a-4c4a-11eb-0ae3-298cf03a0bf6
+# ╟─26f6f852-4c4a-11eb-3a5c-e7d788713ab8
 # ╠═54b81ed8-4c4a-11eb-1d47-99d5823f2ab1
 # ╠═56fd77e2-4c4a-11eb-1ab1-4793cd9b220c
 # ╠═56ff198a-4c4a-11eb-1604-8f08c9cf868c
 # ╠═57226e44-4c4a-11eb-26fd-fbd6f993bb72
 # ╠═57327ab4-4c4a-11eb-219f-f70dd02f170c
-# ╠═969bc7a0-4c4a-11eb-3db6-892f68020468
+# ╟─969bc7a0-4c4a-11eb-3db6-892f68020468
 # ╠═a8eba678-4c4a-11eb-2866-1135e65bc4df
-# ╠═afd0b9a6-4c4a-11eb-270b-133ddc3e753b
+# ╟─afd0b9a6-4c4a-11eb-270b-133ddc3e753b
 # ╠═b4de01c4-4c4a-11eb-3b0b-275ec9ddf5bf
 # ╠═b76b87e0-4c4a-11eb-3b21-f1365960fdd0
-# ╠═be174110-4c4a-11eb-05cf-17e2527dfad8
-# ╠═cad05c2a-4c4a-11eb-0c89-13cddd2aa35f
+# ╟─be174110-4c4a-11eb-05cf-17e2527dfad8
+# ╟─cad05c2a-4c4a-11eb-0c89-13cddd2aa35f
 # ╠═d43ae2ee-4c4a-11eb-281a-b353dc1de640
 # ╠═d5f77750-4c4a-11eb-0624-11ca5cc2a84e
 # ╠═d5fa6276-4c4a-11eb-068e-b114e33e5d8f
-# ╠═45e86286-4c4b-11eb-1516-0140dc69ab58
-# ╠═ee779c1a-4c4a-11eb-1894-d743aeff7f44
+# ╟─45e86286-4c4b-11eb-1516-0140dc69ab58
+# ╟─ee779c1a-4c4a-11eb-1894-d743aeff7f44
 # ╠═0697987c-4c4b-11eb-3052-df54b72dec52
 # ╠═14bceb32-4c4b-11eb-06b2-5190f7ebb9c2
-# ╠═1ace7720-4c4b-11eb-0338-37e7a7227a68
+# ╟─1ace7720-4c4b-11eb-0338-37e7a7227a68
 # ╠═2146ac4c-4c4b-11eb-288f-edb3eacff0eb
-# ╠═28f5c018-4c4b-11eb-3530-8b592f2abeda
+# ╟─28f5c018-4c4b-11eb-3530-8b592f2abeda
 # ╠═32351fb8-4c4b-11eb-058b-5bb348e8dfb7
-# ╠═eed4faca-4c1f-11eb-3e6c-b342b48080eb
+# ╟─eed4faca-4c1f-11eb-3e6c-b342b48080eb
 # ╠═fbde6364-4f30-11eb-1ece-712293996c04
 # ╠═42254aa6-4f37-11eb-001b-f78d5383e36f
 # ╟─0977a54e-4f31-11eb-148c-1d44be4f6853
@@ -911,58 +1042,72 @@ md""" ## 5. References
 # ╠═cf3ec91e-4f37-11eb-0706-e9f726532654
 # ╠═d7d1b940-4f37-11eb-3f74-9dbe02774e54
 # ╠═f90725be-4f37-11eb-1905-e99a65ad3e07
-# ╠═dd781738-4f37-11eb-09fb-b7f3390a49b2
+# ╟─dd781738-4f37-11eb-09fb-b7f3390a49b2
 # ╠═ab395348-4f39-11eb-0a3c-1d8af3b6442e
-# ╠═7acaf008-4f3a-11eb-17c2-dfaa1e9f2ce7
-# ╠═8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
+# ╟─7acaf008-4f3a-11eb-17c2-dfaa1e9f2ce7
+# ╟─8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
+# ╠═ac62d6e0-5a74-11eb-1538-09d157738257
 # ╠═d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
-# ╠═5064c592-4c4b-11eb-0dee-5186caf2b1f6
-# ╠═598980b8-4c4b-11eb-0c5b-b7064b189e97
+# ╟─5064c592-4c4b-11eb-0dee-5186caf2b1f6
+# ╟─598980b8-4c4b-11eb-0c5b-b7064b189e97
 # ╠═5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
-# ╠═6e7d5a94-4c4b-11eb-3e2d-353177d6bca5
-# ╠═79129c92-4c4b-11eb-28f6-633aedabd990
+# ╟─bf6b9fc4-5a74-11eb-2676-bda580c65877
+# ╟─6e7d5a94-4c4b-11eb-3e2d-353177d6bca5
+# ╟─79129c92-4c4b-11eb-28f6-633aedabd990
 # ╠═7f693b34-4c4b-11eb-134d-af855593f45e
-# ╠═83939d80-4c4b-11eb-3dc8-1b559c61a43b
+# ╟─83939d80-4c4b-11eb-3dc8-1b559c61a43b
 # ╠═884b0d4a-4c4b-11eb-1d39-5f67ba9e92fe
-# ╠═9483861e-4c4b-11eb-156b-2501ef2c54d0
+# ╟─9483861e-4c4b-11eb-156b-2501ef2c54d0
 # ╠═9fd1be0a-4c4b-11eb-299b-f7f0d8797f71
 # ╠═a2104d08-4c4b-11eb-0ccc-b588e99a2057
 # ╠═a214405c-4c4b-11eb-118b-b7ec852f9257
-# ╠═a806a9dc-4c4b-11eb-1101-6f75be7a610c
+# ╟─a806a9dc-4c4b-11eb-1101-6f75be7a610c
 # ╠═af514422-4c4b-11eb-1cfe-cba6029ec52f
-# ╠═b3035158-4c4b-11eb-1b8d-1fc4070fa132
+# ╟─b3035158-4c4b-11eb-1b8d-1fc4070fa132
 # ╠═c4575438-4c4b-11eb-1da2-97acca3f3e99
+# ╟─0a26ad38-5a75-11eb-0424-4d26aa905de5
 # ╠═c64e66c8-4c4b-11eb-1686-8fa64d8b2505
-# ╠═03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
+# ╠═3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
+# ╟─03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 # ╠═0bec2d28-4c58-11eb-0a51-95bf50bbfd79
-# ╠═0fd08728-4c58-11eb-1b71-c9710d398fab
-# ╠═2c6097f4-4c58-11eb-0807-d5d8cbfbd62c
-# ╠═9505a4d4-4c58-11eb-1e2e-0d080437fa23
+# ╟─0fd08728-4c58-11eb-1b71-c9710d398fab
+# ╟─2c6097f4-4c58-11eb-0807-d5d8cbfbd62c
+# ╟─9505a4d4-4c58-11eb-1e2e-0d080437fa23
 # ╠═23dac6cc-4c58-11eb-2c66-f1f79db08536
-# ╠═4f80f0a8-4c58-11eb-3679-c186c61c5a14
+# ╟─4f80f0a8-4c58-11eb-3679-c186c61c5a14
 # ╠═6d496b44-4c58-11eb-33b6-5b4d6315b6ea
+# ╟─56e8f6b4-5a75-11eb-3eeb-ffec491be69c
+# ╠═8245e46e-5a75-11eb-2d0a-27ef6a1f2492
+# ╠═942b88b4-5a75-11eb-3e7b-4534bf4a7b12
 # ╠═7bc7bdf4-4c58-11eb-1fd8-376ac6da5ab2
 # ╠═74d97654-4c58-11eb-344b-8d6df24323d5
-# ╠═9cecd9a6-4c58-11eb-22dc-33cd2559d815
-# ╠═c6d236da-4c58-11eb-2714-3f5c43583a3d
+# ╟─9bb1e83a-5a75-11eb-0fcc-59f6cc50bf6a
+# ╠═bcd5696a-5a75-11eb-0ec1-f116216aa682
+# ╠═d74ff724-5a75-11eb-39a1-a963cd64948b
+# ╠═dd8978a4-5a75-11eb-287e-03e4272b6f2c
+# ╟─9cecd9a6-4c58-11eb-22dc-33cd2559d815
+# ╟─c6d236da-4c58-11eb-2714-3f5c43583a3d
 # ╠═3253ab74-4c58-11eb-178e-83ea8aba9c8f
 # ╠═32593936-4c58-11eb-174c-0bb20d93dde5
-# ╠═ebb09172-4c58-11eb-1cc9-91193c57677d
-# ╠═3aa37510-58bb-11eb-2ecb-37ce4428269c
+# ╠═fcfb511c-5a75-11eb-2181-33d147ab1806
+# ╠═1882840a-5a76-11eb-3392-81c2915487f5
+# ╠═3fc787d6-5a76-11eb-06e9-5378d27ce011
+# ╟─ebb09172-4c58-11eb-1cc9-91193c57677d
+# ╟─3aa37510-58bb-11eb-2ecb-37ce4428269c
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
-# ╠═0c91ce30-58b9-11eb-3617-4d87682831dd
+# ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
-# ╠═7cb0cbfe-4cfb-11eb-3faf-a7bd7b89a874
-# ╠═b1a00da4-4cfe-11eb-0aff-69099e40d28f
+# ╟─b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
-# ╠═c6e16d7a-58cf-11eb-32a4-3372939066e3
+# ╟─c6e16d7a-58cf-11eb-32a4-3372939066e3
 # ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
-# ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
-# ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
 # ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
-# ╠═69dc67fa-4cff-11eb-331e-25ffdced4323
-# ╠═b56686ec-4cfa-11eb-2b14-a5d49a137cc5
+# ╟─69dc67fa-4cff-11eb-331e-25ffdced4323
+# ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+# ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
+# ╟─b56686ec-4cfa-11eb-2b14-a5d49a137cc5
+# ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
 # ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0

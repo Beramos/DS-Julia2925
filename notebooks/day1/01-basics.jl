@@ -10,7 +10,7 @@ using Plots
 # ╔═╡ e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # edit the code below to set your name and UGent username
 
-student = (name = "Hanne Janssen", email = "Jeanette.Janssen@UGent.be");
+student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -77,11 +77,20 @@ div(2, 4)   # Computes 2/4 truncated to an integer
 # ╔═╡ 8370eaf0-4ab7-11eb-1cd3-dfeec9341c4b
 1//2 + 1//4
 
+# ╔═╡ 50bb93e6-5a6c-11eb-0a6c-d5d749857771
+2.0 + 3.0im  # complex numbers
+
 # ╔═╡ 8383f104-4ab7-11eb-38a5-33e59b1591f6
 'c'        # characters (unicode)
 
 # ╔═╡ 8387934a-4ab7-11eb-11b2-471b08d87b31
 :symbol    # symbols, mostly used for macros
+
+# ╔═╡ 8bab2e50-5a6c-11eb-3c5f-a9f811483814
+:ζ         # any LaTeX symbol
+
+# ╔═╡ 9d2708ca-5a6c-11eb-1c0f-473f0e2b5363
+:🎉        # or Unicode emoji
 
 # ╔═╡ 8c14cb9a-4ab7-11eb-0666-b1d4aca00f97
 md"variable assignment"
@@ -155,7 +164,7 @@ Lots of handy `String`-operations are available in the standard library of Julia
 """
 
 # ╔═╡ 0c8bc7f0-4ab9-11eb-1c73-b7ec002c4155
-uppercase("This feels like shouting.")
+uppercase("Sometimes I feel like shouting.")
 
 # ╔═╡ 0f8a311e-4ab9-11eb-1b64-cd62b65c49bf
 findfirst("a", "banana")
@@ -164,7 +173,7 @@ findfirst("a", "banana")
 findfirst("na", "banana")
 
 # ╔═╡ 0f96fdd6-4ab9-11eb-0e33-2719394a66ba
-findnext("na", "banana", 4)
+findnext("na", "banana", 4)  # start looking from position 4 onwards
 
 # ╔═╡ 1f255304-4ab9-11eb-34f1-270fd5a95256
 md"Unlike `Strings`, a `Char` value represents a single character and is surrounded by single quotes."
@@ -264,10 +273,10 @@ I💖Julia = true
 1 > 10
 
 # ╔═╡ 947fea8e-4abd-11eb-1d6a-2bc540f7a50e
-2 <= 2
+2 <= 2  # or 2 ≤ 2  (\le<TAB>)
 
 # ╔═╡ 948eff10-4abd-11eb-36d0-5183e882a9e2
-2 >= 2
+2 >= 2  # or 2 ≥ 2  (\ge<TAB>)
 
 # ╔═╡ 948f5032-4abd-11eb-3d1c-7da4cb64521c
 # Comparisons can be chained
@@ -373,17 +382,20 @@ clip(x) = missing
 
 # ╔═╡ 8933033a-4abf-11eb-1156-a53a5ee9152c
 begin
-   q2 = Question(;
+   q2 = Question(
 			description=md"""
 			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, without making use of the functions `min` and `max`.
 
 			Open assignments always return `missing`. 
 			""",
-			validators= @safe[clip(-1)==0, clip(0.3)==0.3, clip(1.1)==1.0],
+			validators= @safe[
+			clip(-1)==Solutions.clip(-1), 
+			clip(0.3)==Solutions.clip(0.3), 
+			clip(1.1)==Solutions.clip(1.1)],
 		)
 	
-   qb2 = QuestionBlock(;
-	title=md"**Question 3: clipping exercise**",
+   qb2 = QuestionBlock(
+	title=md"**Question 3: silly clipping exercise**",
 	questions = [q2],
 	);
 	
@@ -391,7 +403,9 @@ begin
 end
 
 # ╔═╡ 035a53ba-4ac1-11eb-3c34-b50a803b7b7d
-md"Oh yeah! 🎉 You defined your first function in Julia. More on this later."
+if !ismissing(clip(3))
+	md"Oh yeah! 🎉 You defined your first function in Julia. More on this later."
+end
 
 # ╔═╡ 2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
 md"## 4. Looping"
@@ -431,14 +445,17 @@ end
 # ╔═╡ b18e55ae-4ac0-11eb-1455-21b83b7c61d5
 let 
 	n = 16757676187786;
+	steps = 0
 	while n > 1
 	  println(n)
+	  steps = steps +1
 	  if iseven(n)
 		n = div(n, 2)
 	  else
 		n = 3n + 1
 	  end
 	end
+	n, steps
 end
 
 # ╔═╡ ec4190a8-4ac0-11eb-0421-398f063775bb
@@ -495,6 +512,9 @@ s([1, 2, 3, 4, 5])   # Multiplication is not defined for Arrays
 # ╔═╡ 6321ae1a-4ac1-11eb-04cb-33e939694874
 s.([1, 2, 3, 4, 5])  # This is an elements-wise execution of s()
 
+# ╔═╡ 3eda5d12-5a6e-11eb-3264-9925907c85b5
+md"Maybe you are of the opinion that squaring a vector should automatically involve squaring the elements, or you might want to concatenate strings using `+`. Tomorrow we will learn to 'overload' functions to induce specific behaviour for specific datatypes!"
+
 # ╔═╡ 7b874424-4ac1-11eb-2d4e-0b4607559b8f
 md"""Keyword arguments are defined using a semicolon in the back signature and a default value can be assigned. "Keywords" assigned before the semicolon are default values but their keywords are not ignored."""
 
@@ -539,7 +559,21 @@ c = [1.0, 3.0, 5.0];
 mymean(c...)
 
 # ╔═╡ b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
-md"""When unsure of what a function does, in the REPL the documentation can be viewed by adding a "?" in front of the function. Here, in the Pluto environment, put the cursor in the function of interest and open the documentation tab."""
+md"""When unsure of what a function does, in the REPL the documentation can be viewed by adding a "?" in front of the function. Here, in the Pluto environment, put the cursor in the function of interest and open the documentation tab (look on your right)."""
+
+# ╔═╡ b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
+begin
+   q40 = Question(;
+			description=md"""
+			What is the difference between `max` and `maximum`? 
+			""")
+	
+   qb40 = QuestionBlock(;
+	title=md"**Question 4: max(imum)**",
+	questions = [q40],
+	)
+	
+end
 
 # ╔═╡ beafce06-4ac1-11eb-2431-1ffeba45716b
 sort
@@ -620,7 +654,7 @@ square(4)
 square(4.)
 
 # ╔═╡ 3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
-md"More about types in the next section !"
+md"More about types in the next section!"
 
 # ╔═╡ a777f624-4f2f-11eb-0595-432ea5115a2d
 md"## Intermezzo: Types"
@@ -729,9 +763,9 @@ stirling(n) = missing
 # ╔═╡ a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 begin 	
 	q4 = Question(
-			validators = [
-				abs(stirling(5)-factorial(5))<10, 
-				abs(stirling(10)-factorial(10))<1e5
+			validators = @safe[
+				stirling(5) == Solutions.stirling(5), 
+				stirling(10) == Solutions.stirling(10)
 				], 
 			description = md""
 		)
@@ -764,43 +798,54 @@ begin
 	validate(qb4, tracker)
 end
 
+# ╔═╡ adb47b64-5af8-11eb-1b32-57cbe5d47200
+
+
+# ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
+time()
+
+# ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
+function since_epoch(t)
+	days, hours, minutes, seconds = missing, missing, missing, missing
+	return days, hours, minutes, seconds
+end
+
 # ╔═╡ c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 begin 
+ now = time()	
 qb5 = QuestionBlock(;
 	title=md"**Question 5: time is relative**",
 	description = md"""
 The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
-Write a script that reads the current time and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
+Write a script that reads the current time in nanoseconds (`time()`) and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
 	""",
-	questions = [Question(validators = [], description = md"")]
+	questions = [Question(validators = @safe[since_epoch(now)==Solutions.since_epoch(now)], description = md"")]
 )
 	validate(qb5, tracker)
 end
 
-# ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-function since_epoch()
-	return days, hours, minutes, seconds
-end
+# ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
+
 
 # ╔═╡ e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 begin 
 	
 q6 = Question(;
 	description=md"""
-1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, "Holy smokes, Fermat was wrong!" Otherwise the program should print, "No, that doesn’t work.""",
-	validators = []		
+1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, *"Holy smokes, Fermat was wrong!"* Otherwise the program should print and return, *"No, that doesn’t work."* """,
+	validators = [], status=md""		
 )
 	
 q7 = Question(;
 	description=md"""
 2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
-	validators = []		
+	validators = Bool[], status=md""		
 )
 	
 oq8 = QuestionOptional{Easy}(;
 	description=md"""
 3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?""",
-	validators = []		
+	validators = [], status=md""
 )
 		
 qb6 = QuestionBlock(;
@@ -814,13 +859,30 @@ for any value of $n$ greater than 2.""",
 	questions = [q6, q7, oq8],
 	hints=[
 			hint(md"check the functions `readline` and `parse`."),
-			hint(md"You can write multiple functions with the same name but with a different number or type of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat` Remember that this construct is called multiple dispatch.")
-			])
-	validate(qb6, tracker)
+			hint(md"You can write multiple functions with the same name but with a different number or type of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat` Remember that this construct is called multiple dispatch."),
+			hint(md"In Pluto, you have to put methods of the same name in a `begin ... end` block.")
+			],
+		
+	)
 end
+
+# ╔═╡ bf53d86c-59e1-11eb-1456-5518e1f63390
+function checkfermat(a::Int, b::Int, c::Int, n::Int)
+	answer = missing
+	println(answer)
+	return answer
+end
+
+# ╔═╡ b4118bfa-5af8-11eb-0aca-cddef8e191ee
+
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
 md"""### 9. Extra exercises"""
+
+# ╔═╡ 87871f34-4ad1-11eb-3903-93e3f63ea14a
+function rightjustify(text)
+	missing
+end
 
 # ╔═╡ 42f24f58-4ac3-11eb-06b5-ebc015c17520
 begin 
@@ -833,13 +895,13 @@ qb7 = QuestionBlock(;
 	Use string concatenation and repetition. Also, Julia provides a built-in function called `length`. Check what it does!
 
 	""",
-	questions = [Question(validators = Bool[], description = md"", status=md"")]
+	questions = [Question(
+					validators = @safe[
+						rightjustify("To the left!") == 
+						Solutions.rightjustify("To the left!")
+					], 
+					description = md"")]
 )
-end
-
-# ╔═╡ 87871f34-4ad1-11eb-3903-93e3f63ea14a
-function rightjustify()
-	missing
 end
 
 # ╔═╡ 448ef88e-4ad2-11eb-20d6-17a51d665ef9
@@ -893,10 +955,10 @@ end
 # ╔═╡ Cell order:
 # ╟─f089cbaa-4ab9-11eb-09d1-05f49911487f
 # ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
-# ╠═fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
+# ╟─fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
 # ╟─0f47f5b2-4aba-11eb-2e5a-b10407e3f928
-# ╠═23d3c9cc-4abd-11eb-0cb0-21673effee6c
-# ╠═62c3b076-4ab7-11eb-0cf2-25cdf7d2540d
+# ╟─23d3c9cc-4abd-11eb-0cb0-21673effee6c
+# ╟─62c3b076-4ab7-11eb-0cf2-25cdf7d2540d
 # ╠═7bf5bdbe-4ab7-11eb-0d4b-c116e02cb9d9
 # ╠═83306610-4ab7-11eb-3eb5-55a465e0abb9
 # ╠═3fa0a15c-5008-11eb-13b5-a91b02c1eb2d
@@ -907,47 +969,50 @@ end
 # ╠═8360ffac-4ab7-11eb-1162-f7a536eb0765
 # ╠═8365cb3e-4ab7-11eb-05c0-85f51cc9b018
 # ╠═8370eaf0-4ab7-11eb-1cd3-dfeec9341c4b
+# ╠═50bb93e6-5a6c-11eb-0a6c-d5d749857771
 # ╠═8383f104-4ab7-11eb-38a5-33e59b1591f6
 # ╠═8387934a-4ab7-11eb-11b2-471b08d87b31
-# ╠═8c14cb9a-4ab7-11eb-0666-b1d4aca00f97
+# ╠═8bab2e50-5a6c-11eb-3c5f-a9f811483814
+# ╠═9d2708ca-5a6c-11eb-1c0f-473f0e2b5363
+# ╟─8c14cb9a-4ab7-11eb-0666-b1d4aca00f97
 # ╠═93b5a126-4ab7-11eb-2f67-290ed869d44a
 # ╠═962ae6d2-4ab7-11eb-14a2-c76a2221f544
-# ╠═98d48302-4ab7-11eb-2397-710d0ae425f7
+# ╟─98d48302-4ab7-11eb-2397-710d0ae425f7
 # ╠═cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
-# ╠═e2c5b558-4ab7-11eb-09be-b354fc56cc6e
+# ╟─e2c5b558-4ab7-11eb-09be-b354fc56cc6e
 # ╠═ec754104-4ab7-11eb-2a44-557e4304dd43
-# ╠═f23a2d2a-4ab7-11eb-1e26-bb2d1d19829f
+# ╟─f23a2d2a-4ab7-11eb-1e26-bb2d1d19829f
 # ╠═fa836e88-4ab7-11eb-0ba6-5fc7372f32ab
-# ╠═0138ef46-4ab8-11eb-1813-55594927d661
+# ╟─0138ef46-4ab8-11eb-1813-55594927d661
 # ╠═0b73d66a-4ab8-11eb-06e9-bbe95285a69f
-# ╠═6b6eb954-4ab8-11eb-17f9-ef3445d359a3
+# ╟─6b6eb954-4ab8-11eb-17f9-ef3445d359a3
 # ╠═94e3eb74-4ab8-11eb-1b27-573dd2f02b1d
-# ╠═7592f8a2-4ac0-11eb-375c-61c915380eeb
-# ╠═abf00a78-4ab8-11eb-1063-1bf4905ca250
+# ╟─7592f8a2-4ac0-11eb-375c-61c915380eeb
+# ╟─abf00a78-4ab8-11eb-1063-1bf4905ca250
 # ╠═be220a48-4ab8-11eb-1cd4-db99cd9db066
 # ╠═cadaf948-4ab8-11eb-3110-259768055e85
 # ╠═cadb506e-4ab8-11eb-23ed-2d5f88fd30b0
 # ╠═caf56346-4ab8-11eb-38f5-41336c5b45a7
-# ╠═046133a8-4ab9-11eb-0591-9de27d85bbca
+# ╟─046133a8-4ab9-11eb-0591-9de27d85bbca
 # ╠═0c8bc7f0-4ab9-11eb-1c73-b7ec002c4155
 # ╠═0f8a311e-4ab9-11eb-1b64-cd62b65c49bf
 # ╠═0f8a5e94-4ab9-11eb-170b-cfec74d6ebbc
 # ╠═0f96fdd6-4ab9-11eb-0e33-2719394a66ba
-# ╠═1f255304-4ab9-11eb-34f1-270fd5a95256
+# ╟─1f255304-4ab9-11eb-34f1-270fd5a95256
 # ╠═34a18900-4ab9-11eb-17a0-1168dd9d06f9
-# ╠═39a0a328-4ab9-11eb-0f37-6717095b56aa
+# ╟─39a0a328-4ab9-11eb-0f37-6717095b56aa
 # ╠═4749f268-4ab9-11eb-15a7-579437e0bd20
 # ╟─5a9bbbe6-4aba-11eb-3652-43eb7891f437
-# ╠═6bdc8a5e-4aba-11eb-263c-df3af7afa517
+# ╟─6bdc8a5e-4aba-11eb-263c-df3af7afa517
 # ╠═77c5280c-58d0-11eb-19ad-83ec82b6d7c7
-# ╠═a69ead46-4abc-11eb-3d1d-eb1c73f65150
+# ╟─a69ead46-4abc-11eb-3d1d-eb1c73f65150
 # ╠═b482b998-4abc-11eb-36da-379010485bfa
-# ╠═07b103ae-4abd-11eb-311b-278d1e033642
+# ╟─07b103ae-4abd-11eb-311b-278d1e033642
 # ╠═15f8b7fe-4abd-11eb-2777-8fc8bf9d342e
 # ╠═efae58fa-5008-11eb-32fe-c3ae588d14f2
 # ╠═18f99e46-4abd-11eb-20a8-859cb1b12fe3
-# ╠═3a7954da-4abd-11eb-3c5b-858054b4d06b
-# ╠═8b17d538-4abd-11eb-0543-ab95c9548d6f
+# ╟─3a7954da-4abd-11eb-3c5b-858054b4d06b
+# ╟─8b17d538-4abd-11eb-0543-ab95c9548d6f
 # ╠═29d34e64-5009-11eb-3301-f729150e17b2
 # ╠═91a9d1a0-4abd-11eb-3337-71983f32b6ae
 # ╠═942d4202-4abd-11eb-1f01-dfe3df40a5b7
@@ -970,107 +1035,114 @@ end
 # ╠═b0a8dfe0-4abd-11eb-167d-2fc3974c7c92
 # ╠═b0a97e00-4abd-11eb-371c-e138aea17bb6
 # ╠═b0ccc252-4abd-11eb-048b-4bec3750bbf1
-# ╠═60b066d8-5009-11eb-3b4c-8b8fa2f4831d
+# ╟─60b066d8-5009-11eb-3b4c-8b8fa2f4831d
 # ╠═b8b7c0f6-5009-11eb-1eb7-0be723a88863
-# ╠═bd446c42-4abd-11eb-0465-d9a61c48ff48
+# ╟─bd446c42-4abd-11eb-0465-d9a61c48ff48
 # ╠═1c5975ec-4abe-11eb-0ff0-bfb2f03a520b
-# ╠═1c22b880-4abf-11eb-3f18-756c1198ccad
-# ╠═37086212-4abf-11eb-3ec9-7f8dae57121e
+# ╟─1c22b880-4abf-11eb-3f18-756c1198ccad
+# ╟─37086212-4abf-11eb-3ec9-7f8dae57121e
 # ╠═489421d8-4abf-11eb-0d5e-fd779cc918a1
-# ╠═6736dafe-4abf-11eb-1fce-0716d2b7f4a8
-# ╠═8933033a-4abf-11eb-1156-a53a5ee9152c
+# ╟─6736dafe-4abf-11eb-1fce-0716d2b7f4a8
+# ╟─8933033a-4abf-11eb-1156-a53a5ee9152c
 # ╠═0c693c24-4ac0-11eb-2329-c743dcc5039d
-# ╠═035a53ba-4ac1-11eb-3c34-b50a803b7b7d
-# ╠═2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
+# ╟─035a53ba-4ac1-11eb-3c34-b50a803b7b7d
+# ╟─2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
 # ╠═3896642a-4ac0-11eb-2c7c-4f376ab82217
 # ╠═3ef3faf8-4ac0-11eb-1965-fd23413e29f3
 # ╠═4118016e-4ac0-11eb-18bf-5de326782c87
 # ╠═4119fbca-4ac0-11eb-1ea9-0bdd324214c5
 # ╠═4139bf3c-4ac0-11eb-2b63-77a513149351
-# ╠═a1d4127c-4ac0-11eb-116f-79c6ee58f524
+# ╟─a1d4127c-4ac0-11eb-116f-79c6ee58f524
 # ╠═a93b28e6-4ac0-11eb-074f-a7b64f43a194
 # ╠═ac35b796-4ac0-11eb-3bc5-5ff4350d5452
 # ╠═b18e55ae-4ac0-11eb-1455-21b83b7c61d5
-# ╠═ec4190a8-4ac0-11eb-0421-398f063775bb
-# ╠═7dce10be-500c-11eb-12cf-43f6989aae91
+# ╟─ec4190a8-4ac0-11eb-0421-398f063775bb
+# ╟─7dce10be-500c-11eb-12cf-43f6989aae91
 # ╠═bafbe0ea-500c-11eb-10be-75d1738d42a2
 # ╠═2033383e-500d-11eb-3aea-cdc1e90dad2c
-# ╠═fdb67aba-4ac0-11eb-1d4a-c354de54baa9
+# ╟─fdb67aba-4ac0-11eb-1d4a-c354de54baa9
 # ╠═28f47a24-4ac1-11eb-271f-6b4de7311db3
 # ╠═3e433ab4-4ac1-11eb-2178-53b7220fa9ab
 # ╠═46112c44-4ac1-11eb-2ad8-030406c7cf67
 # ╠═461489fa-4ac1-11eb-0596-1d3bedb61778
-# ╠═47338c78-4ac1-11eb-04d6-35c2361eaea6
+# ╟─47338c78-4ac1-11eb-04d6-35c2361eaea6
 # ╠═463689b0-4ac1-11eb-1b0f-b7a239011c5c
-# ╠═52bfff04-4ac1-11eb-1216-25eedd9184c3
+# ╟─52bfff04-4ac1-11eb-1216-25eedd9184c3
 # ╠═61846dae-4ac1-11eb-389a-4fbe3f6145b1
 # ╠═6321ae1a-4ac1-11eb-04cb-33e939694874
-# ╠═7b874424-4ac1-11eb-2d4e-0b4607559b8f
+# ╟─3eda5d12-5a6e-11eb-3264-9925907c85b5
+# ╟─7b874424-4ac1-11eb-2d4e-0b4607559b8f
 # ╠═86defe2a-4ac1-11eb-3c01-c5e671877212
 # ╠═886512de-4ac1-11eb-00e1-73292ec23277
 # ╠═88678820-4ac1-11eb-272e-0df61e418900
 # ╠═888dee1e-4ac1-11eb-264d-cd4a4f30f498
-# ╠═8acb086c-4ac1-11eb-1715-756fde34b38f
+# ╟─8acb086c-4ac1-11eb-1715-756fde34b38f
 # ╠═944e1aaa-4ac1-11eb-0e23-41b1c5d0e889
 # ╠═9d4e11be-4ac1-11eb-1fa0-13f1fe60c3bc
 # ╠═9d514ef6-4ac1-11eb-25fc-ffaa2dcc9b02
-# ╠═a0781222-4ac1-11eb-3425-d9b9603487f3
+# ╟─a0781222-4ac1-11eb-3425-d9b9603487f3
 # ╠═a6b95d62-4ac1-11eb-0c93-7fa0f6a120d5
 # ╠═ab006064-4ac1-11eb-32be-6557b8d45f32
-# ╠═b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
+# ╟─b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
+# ╟─b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
 # ╠═beafce06-4ac1-11eb-2431-1ffeba45716b
-# ╠═ec487488-4ac1-11eb-1be3-a93e41f78bf3
+# ╟─ec487488-4ac1-11eb-1be3-a93e41f78bf3
 # ╠═f88fee6c-4ac1-11eb-1671-43493122f061
 # ╠═fa759f92-4ac1-11eb-0d72-1f9d6d38a831
 # ╠═fa7ba458-4ac1-11eb-2ca1-59ff3c032b26
 # ╠═fa9b3266-4ac1-11eb-153a-87c6a1124890
 # ╠═fa9d43b2-4ac1-11eb-33fc-a37503cedabf
-# ╠═0dbe0c34-500e-11eb-2633-67d8dc6b24c8
-# ╠═900da226-500e-11eb-3f1c-5582ed0cf749
-# ╠═b24bee9a-500e-11eb-2130-45b78bbebdec
-# ╠═c8cf6520-500e-11eb-2dd3-4507a3994a83
+# ╟─0dbe0c34-500e-11eb-2633-67d8dc6b24c8
+# ╟─900da226-500e-11eb-3f1c-5582ed0cf749
+# ╟─b24bee9a-500e-11eb-2130-45b78bbebdec
+# ╟─c8cf6520-500e-11eb-2dd3-4507a3994a83
 # ╠═19402512-500f-11eb-3ea7-c3d1c52025d6
-# ╠═6dc0eaae-500f-11eb-3051-37d870366201
+# ╟─6dc0eaae-500f-11eb-3051-37d870366201
 # ╠═8b57c506-500f-11eb-3114-55785eb593a7
-# ╠═fd171e0e-4ac1-11eb-09ea-337d17500149
+# ╟─fd171e0e-4ac1-11eb-09ea-337d17500149
 # ╠═10e71260-4ac2-11eb-1069-55613ee7df0a
 # ╠═1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
 # ╠═226417c2-4ac2-11eb-2914-196461e2b40e
-# ╠═3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
-# ╠═a777f624-4f2f-11eb-0595-432ea5115a2d
-# ╠═abb7bf4e-4f2f-11eb-1dde-abf1cb0fb8b4
+# ╟─3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
+# ╟─a777f624-4f2f-11eb-0595-432ea5115a2d
+# ╟─abb7bf4e-4f2f-11eb-1dde-abf1cb0fb8b4
 # ╠═b63533e8-4f2f-11eb-3811-5f43fcaa2a9e
 # ╠═b730b7b8-4f2f-11eb-3216-613c6100fb9c
 # ╠═b99eb16c-4f2f-11eb-0f1e-5d2b1244689f
 # ╠═bc67fc50-4f2f-11eb-2209-bf35df0e8c27
 # ╠═bf40274a-4f2f-11eb-0086-d3502f67161b
-# ╠═c48e035c-4f2f-11eb-12c7-576aadca7511
-# ╠═c8435740-4f2f-11eb-3046-3d45d5e0e805
+# ╟─c48e035c-4f2f-11eb-12c7-576aadca7511
+# ╟─c8435740-4f2f-11eb-3046-3d45d5e0e805
 # ╠═cacb7254-4f2f-11eb-1daa-1bc04678835c
 # ╠═cc48bc9a-4f2f-11eb-134c-71bd8a944943
 # ╠═d9f28c04-4f2f-11eb-0255-1965fb8f07b5
-# ╠═dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
-# ╠═de48a3f6-4f2f-11eb-314b-493546c37a21
-# ╠═6da71180-4ac2-11eb-1cac-410bd1cce70c
+# ╟─dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
+# ╟─de48a3f6-4f2f-11eb-314b-493546c37a21
+# ╟─6da71180-4ac2-11eb-1cac-410bd1cce70c
 # ╠═85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
-# ╠═a11c2898-4ac2-11eb-24d3-6f8060b5fd65
+# ╟─a11c2898-4ac2-11eb-24d3-6f8060b5fd65
 # ╠═a686e67e-4ac2-11eb-228e-23524a3ddc59
-# ╠═d50cced2-500d-11eb-2dcc-21fc50825f43
-# ╠═ad156892-4ac2-11eb-3634-a3783231e5a1
+# ╟─d50cced2-500d-11eb-2dcc-21fc50825f43
+# ╟─ad156892-4ac2-11eb-3634-a3783231e5a1
 # ╠═bf1385da-4ac2-11eb-3992-41abac921370
-# ╠═d779956a-4ac2-11eb-39de-4b3cecace452
+# ╟─d779956a-4ac2-11eb-39de-4b3cecace452
 # ╠═c7d2a048-4ac2-11eb-3902-b7c8505096ae
 # ╠═cf35b2b2-4ac2-11eb-1ae6-5d3c108210df
 # ╠═d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
-# ╠═0e63d722-4ac3-11eb-3740-d31b47a77912
-# ╠═a48be23a-57ff-11eb-1bc3-3d3e046ea67c
+# ╟─0e63d722-4ac3-11eb-3740-d31b47a77912
+# ╟─a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 # ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
-# ╠═c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
+# ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
+# ╟─c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
+# ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-# ╠═e99d6b96-4ad5-11eb-2144-f97a97e71ae4
-# ╠═f077c390-57fe-11eb-1ad9-31110b3dac39
-# ╠═42f24f58-4ac3-11eb-06b5-ebc015c17520
+# ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
+# ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
+# ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
+# ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
+# ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
-# ╠═01eb4816-4ad2-11eb-3991-af76de0110c5
+# ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207

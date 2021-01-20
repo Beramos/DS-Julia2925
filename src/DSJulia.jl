@@ -27,4 +27,10 @@ module DSJulia
     include("admonition.jl")
     include("question.jl")
     include("grading.jl")
+
+    # Solutions
+    export Solutions
+    module Solutions
+        include("solutions.jl")
+    end
 end
