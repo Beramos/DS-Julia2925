@@ -120,10 +120,31 @@ Float64(42)  # works usually as well
 Int8(42)
 
 # ╔═╡ cd32e96c-4e78-11eb-0b48-5767421c7875
-Float32(pi)
+Float32(π)
 
 # ╔═╡ dc1c8294-4e78-11eb-1400-afa8e5ac8939
+md"When designing new types, one often also implements custom `convert` methods."
 
+# ╔═╡ 40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
+md"We have seen that you can add any type of float with any type of integer (ditto for vectors and arrays with different types. How does this work? Julia uses *promotion* to cast two inputs in the more general type. For example, compare adding a `Float64` with an `Int`."
+
+# ╔═╡ 99228eee-5b24-11eb-385e-7507ca20ae0e
+promote(7.9, 79)
+
+# ╔═╡ ba39991a-5b24-11eb-260b-439bcde4c153
+md"You see that `Float64` is the more general type, so both inputs are cast as floats and further processed by the function. That is why the their sum is a float: `7.9 + 79=86.9`. 
+
+Of course, this also works with more complex composite types, such as matrices:
+"
+
+# ╔═╡ 35e53434-5b25-11eb-10b7-e993e9477c8c
+[1 2; 3 4] + [0.0 1.0; 2.0 3.0]
+
+# ╔═╡ 71111ea6-5b25-11eb-2553-4d15ff3271d6
+
+
+# ╔═╡ 92dc7a4e-5b25-11eb-1518-8182216f24ec
+[0, 1.0, 2, 3]  # cast into a vector of floats
 
 # ╔═╡ aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 md"""
@@ -146,7 +167,7 @@ bunchofnumbers = "1.728002758512114, 0.45540258865644284, 1.4067738604851092, 1.
 "
 
 # ╔═╡ e6f31ad8-4e79-11eb-11f4-2936cb039f8d
-parse.(Float64, split(rstrip(bunchofnumbers), ",")) |> sum
+parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
 
 # ╔═╡ 03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 md"""
@@ -387,7 +408,7 @@ I think this might be removed?
 """
 
 # ╔═╡ f092f656-5b05-11eb-392d-f7118e9bbca3
-# type-based dispatch
+# type-based dispatchtype
 
 # ╔═╡ Cell order:
 # ╠═4ec271b0-4e73-11eb-2660-6b8bd637d7ee
@@ -424,6 +445,12 @@ I think this might be removed?
 # ╠═c3c40df2-4e78-11eb-3d4a-5fdfdf173da3
 # ╠═cd32e96c-4e78-11eb-0b48-5767421c7875
 # ╠═dc1c8294-4e78-11eb-1400-afa8e5ac8939
+# ╠═40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
+# ╠═99228eee-5b24-11eb-385e-7507ca20ae0e
+# ╠═ba39991a-5b24-11eb-260b-439bcde4c153
+# ╠═35e53434-5b25-11eb-10b7-e993e9477c8c
+# ╠═71111ea6-5b25-11eb-2553-4d15ff3271d6
+# ╠═92dc7a4e-5b25-11eb-1518-8182216f24ec
 # ╠═aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 # ╠═815b0436-4e78-11eb-13d4-0dc6531e34f2
 # ╠═570c85bc-4e79-11eb-0249-891cf205d623
