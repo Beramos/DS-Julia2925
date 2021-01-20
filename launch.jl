@@ -9,7 +9,7 @@ Launches the Pluto notebooks for the project
 =#
 
 cd("notebooks")
-import Pkg; Pkg.activate(".")
+import Pkg; Pkg.activate("."); Pkg.instantiate();
 
 using Pluto
 Pluto.run()
