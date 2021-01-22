@@ -37,7 +37,6 @@ function step(f′, t, yᵢ₋₁, Δt, ::SecondOrder)
     return yᵢ₋₁ + Δt * f′(t, y)
 end
 
-
 f′(t, y) = -y + sin(t * y)
 
 y_euler = solve_ode(f′, (0, 10), 1.0, 0.1, Euler())
