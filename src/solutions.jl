@@ -167,3 +167,6 @@ function protein_sliding_window(sequence, m, zscales)
 	end
 	return y / (2m + 1)
 end
+
+### Decimate
+decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]

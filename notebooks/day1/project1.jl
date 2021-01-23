@@ -634,13 +634,19 @@ md"So an image is basically a two-dimensional array of Colors. Which means it ca
 # ╔═╡ 134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
 md"Lets the define a function to reduce the size of the image"
 
+# ╔═╡ 13807912-5a8f-11eb-3ca2-09030ee978ab
+decimate(image, ratio=5) =  missing
+
 # ╔═╡ 134edde4-5a8f-11eb-117f-455e04acc27d
 begin
 	q101 = Question(
 			description=md"""
 			Complete the function `decimate(image, ratio=5)`		
 			""", 
-			validators = @safe[missing])
+			validators = @safe[
+				decimate(bird_original, ratio=5) ==
+					Solutions.decimate(bird_original, ratio=5)
+			])
 	
 	qb10 = QuestionBlock(
 		title=md"**Question: decimate image**",
@@ -654,9 +660,6 @@ begin
 	)
 	validate(qb10, tracker)
 end
-
-# ╔═╡ 13807912-5a8f-11eb-3ca2-09030ee978ab
-decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
 
 # ╔═╡ aba77250-5a8e-11eb-0db1-9f2d8fc726e9
 bird = decimate(bird_original, 6)
