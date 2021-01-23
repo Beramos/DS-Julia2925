@@ -294,7 +294,7 @@ begin
 	
 	fs = (600, 280)
 	
-	pl31 = scatter(@safe 1:length(Wu), Wu; label="", xlabel="weights", size=fs,
+	pl31 = scatter(@safe 1:length(Wu), Wu; label="", ylims=[0, 1.5maximum(Wu)], xlabel="weights", size=fs,
 	background_color="#F8F8F8", ms = 6)
 	title!("Your result:")
 	
@@ -506,7 +506,7 @@ md"To be topical, let us try it on the tail spike protein of the SARS-CoV-2 viru
 spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT"
 
 # ╔═╡ 7e96f0d6-5999-11eb-3673-43f7f1fa0113
-m = 25
+m = 5
 
 # ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
 begin 	
@@ -771,10 +771,10 @@ end
 size(bird)
 
 # ╔═╡ 1ba16c34-5a92-11eb-3052-e91a2443033b
-function convolve_image(M, K)
-	Mred = convolve_2d(red.(M), K)
-	Mgreen = convolve_2d(green.(M), K)
-	Mblue = convolve_2d(blue.(M), K)
+function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
+	Mred = convolve_2d(red.(M) .|> Float32, K)
+	Mgreen = convolve_2d(green.(M) .|> Float32, K)
+	Mblue = convolve_2d(blue.(M) .|> Float32, K)
 	return RGB.(Mred, Mgreen, Mblue)
 end
 
@@ -867,7 +867,7 @@ md"The challenge with bitstrings is that the separate bits cannot be efficiently
 #getbinarydigit(rule, i) = missing
 
 # ╔═╡ 1266818c-59d3-11eb-0b7d-d7253621762e
-getbinarydigit(rule, i) = isodd(rule >> i-1)
+getbinarydigit(rule, i) = isodd(rule >> i)
 
 # ╔═╡ 2d4e9afe-59cc-11eb-3033-05d9b684b399
 begin 	
@@ -891,14 +891,20 @@ begin
 				getbinarydigit(rule, i) = isodd(rule >> i-1)
 				```"""),
 			hint(md"Don't worry if you don't get fully understand the oneliner, it is bitstring manipulation and is not usually part of a scientific programming curriculum."),
-			hint(md"A more naive and less efficient solution would be to convert the rule integer to a string (not a bitstring) which supports indexing. ")
+			hint(md"A more naive and less efficient solution would be to convert the rule integer to a string (not a bitstring), which supports indexing. ")
 		]
 	)
 	validate(qb5)
 end
 
+# ╔═╡ 426f1666-5d87-11eb-108d-f19f928b345b
+bitstring(rule)
+
+# ╔═╡ 1d526a40-5d87-11eb-1984-3bd5b6ccfb89
+bitstring(rule>>0)
+
 # ╔═╡ 781d38a8-59d4-11eb-28f9-9358f132782c
-getbinarydigit(rule, 1) 
+[getbinarydigit(rule, i) for i in 7:-1:0]  # counting all positions
 
 # ╔═╡ 1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
 begin 	
@@ -938,7 +944,7 @@ begin
 	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
 		
 	function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
-		return getbinarydigit(rule, 8-(4l+2s+1r))
+		return getbinarydigit(rule, 4l+2s+1r)
 	end
 	
 end
@@ -947,7 +953,9 @@ end
 nextstate(true, true, true, rule)
 
 # ╔═╡ 511661de-59d5-11eb-16f5-4dbdf4e93ab2
-md"Now that we have this working it is easy to generate and visualise the transitions for each rule. This is not an easy line of code try to really understand these comprehensions before moving on. hint: expand the output for a prettier overview of the rules."
+md"Now that we have this working it is easy to generate and visualise the transitions for each rule. This is not an easy line of code try to really understand these comprehensions before moving on.
+
+> Hint: expand the output for a prettier overview of the rules."
 
 # ╔═╡ be013232-59d4-11eb-360e-e97b6c388991
 @bind rule_number Slider(1:256, default=110)
@@ -960,15 +968,21 @@ md"Click on the small triangle to view the transitions."
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
 Dict(
-	(l=l, s=s, r=r) => nextstate(l, s, r, rule_number)
+	(l=l, s=s, r=r) => nextstate(l, s, r, rule)
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
 )					
 
+# ╔═╡ 1afb9a16-5d8a-11eb-1ed5-875084953542
+md"We made use of a simple function `cm` to map the states to a gray scale. Feel free to modify this function so that two colors are used for `true`/`false`."
+
+# ╔═╡ 90f543e4-5d89-11eb-27c0-8572a859c1b5
+cm(b) = b ? Gray(0.05) : Gray(0.95)
+
 # ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 Dict(
-	Gray.([l, s, r]) => [Gray(1), Gray(nextstate(l, s, r, rule_number)), Gray(1)]
+	cm.([l, s, r]) => [cm(nextstate(l, s, r, rule_number))]
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
@@ -1051,9 +1065,6 @@ begin
 	validate(qb8, tracker)
 end
 
-# ╔═╡ a096becc-5a64-11eb-3a01-1d54d478daf3
-gray(1)
-
 # ╔═╡ 756ef0e0-2bf5-11eb-107c-8d1c65eacc45
 """
     simulate(x0, rule; nsteps=100)
@@ -1077,7 +1088,7 @@ end
 X = simulate(x0_ca, UInt8(rule_number); nsteps=100)
 
 # ╔═╡ 9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
-ca_image(X) = Gray.(X)
+ca_image(X) = cm.(X)
 
 # ╔═╡ fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 plot(ca_image(X), size=(1000, 1000))
@@ -1092,7 +1103,7 @@ end
 
 # ╔═╡ b8dc1dee-5a71-11eb-3eb4-694841071955
 begin 
-	rule_ex9 = 182
+	rule_ex9 = 73
 	initInt_ex9 = 3680689260
 	initBs_exp9 = bitstring(initInt_ex9)
 	
@@ -1124,7 +1135,7 @@ begin
 		The number corresponding to a barcode is the **rule number** followed by *initial 32-bit array encoded as an integer*. The barcode is generated by taking the rule number and evolving the initial condition for 50 iterations.
 		
 		As an example this barcode corresponds to the number: 
-		**182** *3128863161*
+		**$(rule_ex9)** *3128863161*
 		
 		$(pl_ex9)
 		
@@ -1150,12 +1161,15 @@ bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2
 show_barcode(bitArr)
 
 # ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
-convolve_image(salt_and_pepper_philip, K_gaussian)
+convolve_image(bird, K_gaussian)
 
 # ╔═╡ c80e4362-2bfe-11eb-2055-5fbf167be551
 K_sharpen = [0 -1 0;
 			-1 5 -1;
 			0 -1 0]
+
+# ╔═╡ 34062f66-5d8b-11eb-1893-2ba6e4a45b3d
+convolve_image(bird, K_sharpen)
 
 # ╔═╡ 8c62855a-2bff-11eb-00f5-3702e142f76f
 const Gx = [1 0 -1;
@@ -1366,8 +1380,10 @@ end
 # ╠═1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
 # ╠═2d4e9afe-59cc-11eb-3033-05d9b684b399
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
-# ╠═781d38a8-59d4-11eb-28f9-9358f132782c
 # ╠═1266818c-59d3-11eb-0b7d-d7253621762e
+# ╠═426f1666-5d87-11eb-108d-f19f928b345b
+# ╠═1d526a40-5d87-11eb-1984-3bd5b6ccfb89
+# ╠═781d38a8-59d4-11eb-28f9-9358f132782c
 # ╠═1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
 # ╠═625c4e1e-2bf3-11eb-2c03-193f7d013fbe
 # ╠═00f6e42c-59d4-11eb-31c7-d5aa0105e7cf
@@ -1379,13 +1395,14 @@ end
 # ╟─a808b2d0-5aff-11eb-036f-fd32a1dc92fc
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
 # ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
+# ╠═1afb9a16-5d8a-11eb-1ed5-875084953542
+# ╠═90f543e4-5d89-11eb-27c0-8572a859c1b5
 # ╠═e46a3f52-5a5a-11eb-1d41-d7d031131d7e
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
 # ╠═405a1036-2bf5-11eb-11f9-a1a714dbf7e1
 # ╠═6405f574-2bf5-11eb-3656-d7b9c94f145a
 # ╠═2faf6176-5a5e-11eb-241d-4383971500e3
-# ╠═a096becc-5a64-11eb-3a01-1d54d478daf3
 # ╠═756ef0e0-2bf5-11eb-107c-8d1c65eacc45
 # ╠═e1dd7abc-2bf5-11eb-1f5a-0f46c7405dd5
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
@@ -1401,6 +1418,7 @@ end
 # ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 # ╠═39eae5c2-4b5f-11eb-151a-b76db57f04b8
 # ╠═c80e4362-2bfe-11eb-2055-5fbf167be551
+# ╠═34062f66-5d8b-11eb-1893-2ba6e4a45b3d
 # ╠═8c62855a-2bff-11eb-00f5-3702e142f76f
 # ╠═ae8d6258-2bff-11eb-0182-afc33d9d4efc
 # ╠═3aba6b10-4b5c-11eb-0e4f-81b47568937a
