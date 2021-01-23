@@ -47,12 +47,13 @@ end
 md"""
 # Project 1: images and cellular automata
 
-We wrap up the day by exploring convolutions and similar operations on 1-D and 2-D (or even n-D!) matrices. Departing from some basic building blocks we will cover signal processing, image processing and cellular automata!
+We wrap up the day by exploring convolutions and similar operations on 1-D and 2-D (or even n-D!) arrays. Starting from some basic building blocks, we will cover signal processing, image processing and cellular automata!
 
 **Learning goals:**
-- code reuse;
+- practicing julia syntax
+- code reuse
+- efficient use of collections and UnitRange
 - speed and performance (including optimizations);
-- learning to plot and make animations.
 """
 
 # ╔═╡ 3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
@@ -81,10 +82,36 @@ $$\frac{1}{n}\sum_{i=1}^n x_i\,.$$
 The function `mean` is not in the `Base` of Julia but can easily be imported from `StatsBase`. Let's implement it ourselves instead!
 """
 
+# ╔═╡ 13ce6302-5d5d-11eb-093a-5b3cad4a2bca
+0.1 ≈ 0.1000000001
+
+# ╔═╡ d4db4db4-5d5d-11eb-1f57-556c46eaa43e
+rand(20)
+
 # ╔═╡ f272855c-3c9e-11eb-1919-6b7301b15699
 function mean(x)
-	n = length(x)
-	return sum(x) / n
+	return missing
+end
+
+# ╔═╡ 047fe71a-5d5d-11eb-0cd8-4356d2ceb5d7
+begin 	
+	arr_mean_float = rand(20)
+	arr_mean_int = rand(Int, 20)
+	
+	q_mean = Question(
+			validators = @safe[
+				mean(arr_mean_float) ≈ Solutions.mean(arr_mean_float),
+				mean(arr_mean_int) ≈ Solutions.mean(arr_mean_int)
+			]
+		)
+
+	qb_mean = QuestionBlock(;
+		title=md"**Question:**",
+		description = md"Complete the mean function below.",
+		questions = @safe[q_mean]
+	)
+	
+	validate(qb_mean, tracker)
 end
 
 # ╔═╡ 66a20628-4834-11eb-01a2-27cc2b1ec7be
@@ -1228,6 +1255,9 @@ show_barcode(bitArr)
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 # ╠═3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
 # ╠═e1147d4e-2bee-11eb-0150-d7af1f51f842
+# ╠═13ce6302-5d5d-11eb-093a-5b3cad4a2bca
+# ╠═047fe71a-5d5d-11eb-0cd8-4356d2ceb5d7
+# ╠═d4db4db4-5d5d-11eb-1f57-556c46eaa43e
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
