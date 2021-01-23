@@ -132,7 +132,7 @@ md"We have seen that you can add any type of float with any type of integer (dit
 promote(7.9, 79)
 
 # ╔═╡ ba39991a-5b24-11eb-260b-439bcde4c153
-md"You see that `Float64` is the more general type, so both inputs are cast as floats and further processed by the function. That is why the their sum is a float: `7.9 + 79=86.9`. 
+md"You see that `Float64` is the more general type, so both inputs are cast as floats and further processed by the function. That is why the their sum is a float: `7.9 + 79 = 86.9`. 
 
 Of course, this also works with more complex composite types, such as matrices:
 "
