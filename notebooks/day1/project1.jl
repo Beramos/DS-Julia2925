@@ -245,6 +245,9 @@ begin
 	plot!(t, moving_average(noisy_signal, t, wₑ), label="Filtered", lw = 2)
 end
 
+# ╔═╡ c6e0a656-5dbb-11eb-0ce7-598f4fb85bee
+
+
 # ╔═╡ 99a7e070-5995-11eb-0c53-51fc82db2e93
 
 
@@ -275,6 +278,9 @@ function triangle_weights(m)
 	return [0.0]
 end	
 
+# ╔═╡ 212e302e-5dbc-11eb-393f-63f57a3d9d1d
+triangle_weights(7) ≈ Solution.triangle_weights(7)
+
 # ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
 function gaussian_weights(m; σ=4)
 	# complete and replace [0.0]
@@ -286,8 +292,8 @@ begin
 	m₁ = 3
 	try
 		global Wu = uniform_weights(m₁)
-		global Wt = triangle_weigths(m₁)
-		global Wg = gaussian_weigths(m₁)
+		global Wt = triangle_weights(m₁)
+		global Wg = gaussian_weights(m₁)
 	catch e 
 	end
 	
@@ -312,7 +318,7 @@ begin
 		$(pl31)
 		""",
 		validators = @safe[
-			uniform_weights(7) ≈ Solution.uniform_weights(7)
+			uniform_weights(7) ≈ Solutions.uniform_weights(7)
 		]
 		)
 	
@@ -323,7 +329,7 @@ begin
 		$(pl32)
 		""",
 		validators = @safe[
-			triangle_weights(7) ≈ Solution.triangle_weights(7)
+			triangle_weights(7) ≈ Solutions.triangle_weights(7)
 		]
 		
 	)
@@ -335,7 +341,7 @@ begin
 		$(pl33)
 		""",
 		validators = @safe[
-			gaussian_weights(7) ≈ Solution.gaussian_weights(7)
+			gaussian_weights(7) ≈ Solutions.gaussian_weights(7)
 		]
 	)
 
@@ -403,6 +409,9 @@ end
 
 
 # ╔═╡ d2321a9c-5996-11eb-0380-47aa8ec777af
+
+
+# ╔═╡ 36f73086-5dbc-11eb-250a-775130b479ae
 
 
 # ╔═╡ b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
@@ -662,7 +671,10 @@ begin
 end
 
 # ╔═╡ aba77250-5a8e-11eb-0db1-9f2d8fc726e9
-bird = decimate(bird_original, 6)
+smallbird = decimate(bird_original, 6)
+
+# ╔═╡ 6d5de3b8-5dbc-11eb-1fc4-8df16c6c04b7
+bird = Solutions.decimate(bird_original, 6);
 
 # ╔═╡ 1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
 md"""
@@ -1308,11 +1320,13 @@ end
 # ╟─0563fba2-5994-11eb-2d81-f70d10092ad7
 # ╠═4e45e43e-598f-11eb-0a0a-2fa636748f7c
 # ╠═8e53f108-598d-11eb-127f-ddd5be0ec899
+# ╠═c6e0a656-5dbb-11eb-0ce7-598f4fb85bee
 # ╟─99a7e070-5995-11eb-0c53-51fc82db2e93
 # ╠═22261bf2-5995-11eb-2d52-932589333c47
 # ╠═14cb3b5e-5a58-11eb-2a5a-0b8713107549
 # ╟─b31400fc-5db4-11eb-2430-fd1ea1008280
 # ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
+# ╠═212e302e-5dbc-11eb-393f-63f57a3d9d1d
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
 # ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
@@ -1326,6 +1340,7 @@ end
 # ╠═cb9945f6-5995-11eb-3b10-937cde05fa31
 # ╠═696e252a-4862-11eb-2752-9d7bbd0a4b7d
 # ╠═d2321a9c-5996-11eb-0380-47aa8ec777af
+# ╟─36f73086-5dbc-11eb-250a-775130b479ae
 # ╠═b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 # ╠═87610484-3ca1-11eb-0e74-8574e946dd9f
 # ╠═9c82d5ea-3ca1-11eb-3575-f1893df8f129
@@ -1364,6 +1379,7 @@ end
 # ╠═134edde4-5a8f-11eb-117f-455e04acc27d
 # ╠═13807912-5a8f-11eb-3ca2-09030ee978ab
 # ╠═aba77250-5a8e-11eb-0db1-9f2d8fc726e9
+# ╠═6d5de3b8-5dbc-11eb-1fc4-8df16c6c04b7
 # ╠═1dfc943e-5a8f-11eb-336b-15b40b9fe412
 # ╠═1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
 # ╠═1e2ac624-5a8f-11eb-1372-05ca0cbe828d
