@@ -51,8 +51,9 @@ We wrap up day 1 by exploring convolutions and similar operations on 1-D and 2-D
 
 **Learning goals:**
 - code reuse;
-- speed and performance (including optimizations);
-- learning to plot and make animations.
+- efficient use of collections and unitRanges;
+- control flow in julia;
+
 """
 
 # ╔═╡ e1147d4e-2bee-11eb-0150-d7af1f51f842
@@ -258,26 +259,26 @@ QuestionBlock(;
 # ╔═╡ 14cb3b5e-5a58-11eb-2a5a-0b8713107549
 md"Your answer here...."
 
+# ╔═╡ b31400fc-5db4-11eb-2430-fd1ea1008280
+
+
 # ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
 function uniform_weights(m)
-	return ones(2m+1) / (2m+1)
+	# complete and replace [0.0]
+	return [0.0]
 end
 
 # ╔═╡ 294140a4-2bf0-11eb-22f5-858969a4640d
-function triangle_weigths(m)
+function triangle_weights(m)
 	w = zeros(2m+1)
-	for i in 1:(m+1)
-		w[i] = i
-		w[end-i+1] = i
-	end
-	w ./= sum(w)
-	return w
+	# complete and replace [0.0]
+	return [0.0]
 end	
 
 # ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
-function gaussian_weigths(m; σ=4)
-	w = exp.(-(-m:m).^2 / 2σ^2)
-	return w ./ sum(w)
+function gaussian_weights(m; σ=4)
+	# complete and replace [0.0]
+	return [0.0]
 end
 
 # ╔═╡ 64bf7f3a-58f0-11eb-1782-0d33a2b615e0
@@ -309,7 +310,10 @@ begin
 		- **uniform**: all values of $\mathbf{w}$ are the same;
 		
 		$(pl31)
-		"""
+		""",
+		validators = @safe[
+			uniform_weights(7) ≈ Solution.uniform_weights(7)
+		]
 		)
 	
 	q32 = Question(
@@ -317,7 +321,10 @@ begin
 		- **[triangle](https://en.wikipedia.org/wiki/Triangular_function)**: linearly increasing from index $i=1$ till index $i=m+1$ and linearly decreasing from $i=m+1$ to $2m+1$;
 		
 		$(pl32)
-		"""
+		""",
+		validators = @safe[
+			triangle_weights(7) ≈ Solution.triangle_weights(7)
+		]
 		
 	)
 	
@@ -326,11 +333,14 @@ begin
 		- **Gaussian**: proportional to $\exp(-\frac{(i-m - 1)^2}{2\sigma^2})$ with $i\in 1,\ldots,2m+1$. The *bandwidth* is given by $\sigma$, let us set it to 4. 
 
 		$(pl33)
-		"""
+		""",
+		validators = @safe[
+			gaussian_weights(7) ≈ Solution.gaussian_weights(7)
+		]
 	)
 
 	qb3 = QuestionBlock(;
-		title=md"**Question 2: some common weight vectors**",
+		title=md"**Question: common weight vectors**",
 		description = 
 		md"""
 
@@ -1295,6 +1305,7 @@ end
 # ╟─99a7e070-5995-11eb-0c53-51fc82db2e93
 # ╠═22261bf2-5995-11eb-2d52-932589333c47
 # ╠═14cb3b5e-5a58-11eb-2a5a-0b8713107549
+# ╟─b31400fc-5db4-11eb-2430-fd1ea1008280
 # ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d

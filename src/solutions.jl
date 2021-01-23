@@ -135,3 +135,23 @@ function convolve_1d(x::Vector, w::Vector)
 	end
 	return y
 end
+
+### Weight vectors
+function uniform_weights(m)
+	return ones(2m+1) / (2m+1)
+end
+
+function triangle_weights(m)
+	w = zeros(2m+1)
+	for i in 1:(m+1)
+		w[i] = i
+		w[end-i+1] = i
+	end
+	w ./= sum(w)
+	return w
+end	
+
+function gaussian_weights(m; σ=4)
+	w = exp.(-(-m:m).^2 / 2σ^2)
+	return w ./ sum(w)
+end
