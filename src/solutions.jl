@@ -170,3 +170,36 @@ end
 
 ### Decimate
 decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
+
+### 2D convolution
+function convolve_2d(M::Matrix, K::Matrix)
+	out = similar(M)
+	n_rows, n_cols = size(M)
+	fill!(out, 0.0)
+	m = div(size(K, 1), 2) 
+	for i in 1:n_rows
+		for j in 1:n_cols
+			for k in -m:m
+				for l in -m:m
+					out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
+				end
+			end
+		end
+	end
+	return out
+end
+
+function gaussian_kernel(m; σ=4)
+  K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
+  K ./= sum(K)
+  return K
+end
+
+function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
+	Mred = convolve_2d(red.(M) .|> Float32, K)
+	Mgreen = convolve_2d(green.(M) .|> Float32, K)
+	Mblue = convolve_2d(blue.(M) .|> Float32, K)
+	return RGB.(Mred, Mgreen, Mblue)
+end
+
+

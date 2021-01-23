@@ -700,13 +700,31 @@ md"""
 After this colourful break, Let us move from 1-D operations to 2-D operations. This will be a nice opportunity to learn something about image processing.
 """
 
+# ╔═╡ d1851bbe-5a91-11eb-3ae4-fddeff381c1b
+function convolve_2d(M::Matrix, K::Matrix)
+	out = similar(M)
+	n_rows, n_cols = size(M)
+	#...
+	return missing
+end
+
+# ╔═╡ f5574a90-5a90-11eb-3100-dd98e3375390
+function gaussian_kernel(m; σ=4)
+	return missing
+end
+
 # ╔═╡ 4d434b48-5a91-11eb-2df8-9d2ea289878e
 begin 	
+	M_rand = rand(20, 20)
+	K_rand = rand(4, 4)
+	
 	q111 = Question(
 			description=md"""
 			Complete the function `convolve_2d(M::Matrix, K::Matrix)` that performs a 2D-convolution of an input matrix `M` with a kernel matrix `K`.
 			""",
-			validators = [missing]
+			validators = @safe[
+				convolve_2d(M_rand, K_rand) ≈ Solutions.convolve_2d(M_rand, K_rand)
+			]
 		)
 	
 	q112 = Question(
@@ -720,7 +738,9 @@ Using this kernel results in a smoothing operation, often refered to as a Gaussi
 
 Let us implement the Gaussian kernel by completing the function below.
 			""",
-			validators = [missing]
+			validators = @safe[
+				gaussian_kernel(10; σ=4) ≈ Solutions.gaussian_kernel(10; σ=4) 
+			]
 		)
 			
 	
@@ -765,32 +785,7 @@ This looks more complex but still amounts to the same thing as the 1D case. We h
 		]
 	)
 	
-	validate(qb11, tracker)
-end
-
-# ╔═╡ d1851bbe-5a91-11eb-3ae4-fddeff381c1b
-function convolve_2d(M::Matrix, K::Matrix)
-	out = similar(M)
-	n_rows, n_cols = size(M)
-	fill!(out, 0.0)
-	m = div(size(K, 1), 2) 
-	for i in 1:n_rows
-		for j in 1:n_cols
-			for k in -m:m
-				for l in -m:m
-					out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
-				end
-			end
-		end
-	end
-	return out
-end
-
-# ╔═╡ f5574a90-5a90-11eb-3100-dd98e3375390
-function gaussian_kernel(m; σ)
-K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
-K ./= sum(K)
-return K
+	validate(qb11)
 end
 
 # ╔═╡ 1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
@@ -833,16 +828,16 @@ begin
 
 	)
 	
-	validate(qb11, tracker)
+	validate(qb12, tracker)
 end
 
 # ╔═╡ f5d4af24-5a90-11eb-0671-a193539e8335
 function pepper_salt_noise(image; fraction=0.01)
-noisy_image = copy(image)
-mask = rand(size(image)...) .< fraction
-n_corrupted = sum(mask)
-noisy_image[mask] = rand([RGB(0, 0, 0), RGB(1, 1, 1)], n_corrupted)
-return noisy_image
+	noisy_image = copy(image)
+	mask = rand(size(image)...) .< fraction
+	n_corrupted = sum(mask)
+	noisy_image[mask] = rand([RGB(0, 0, 0), RGB(1, 1, 1)], n_corrupted)
+	return noisy_image
 end
 
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
