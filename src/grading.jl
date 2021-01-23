@@ -28,8 +28,12 @@ accept!(t::ProgressTracker) =	t.correct += 1
 Base.show(io::IO, t::ProgressTracker) = print(io, "Notebook of **$(t.name)** with a completion of **$(t.correct) out of $(t.total)** question(s).")
 
 function check_answer(q::Question,  t::ProgressTracker)
-	addQuestion!(t)
 	validators = q.validators
+	if length(validators) < 1
+		return md""
+	end
+
+	addQuestion!(t)
 	all_valid = all(validators)
 	some_valid = any(validators)
 	if ismissing(all_valid) 

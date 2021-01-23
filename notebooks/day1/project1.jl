@@ -55,9 +55,6 @@ We wrap up day 1 by exploring convolutions and similar operations on 1-D and 2-D
 - learning to plot and make animations.
 """
 
-# ╔═╡ 3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
-
-
 # ╔═╡ e1147d4e-2bee-11eb-0150-d7af1f51f842
 md"""
 ## 1-D convolutions
@@ -1262,7 +1259,6 @@ end
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
-# ╟─3d9c3fea-2bde-11eb-0f09-cf11dcb07c0d
 # ╠═e1147d4e-2bee-11eb-0150-d7af1f51f842
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
