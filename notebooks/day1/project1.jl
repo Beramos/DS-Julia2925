@@ -381,7 +381,7 @@ plot(covid_dates, covid_cases, label="measured COVID cases in Belgium")
 # ╔═╡ cb9945f6-5995-11eb-3b10-937cde05fa31
 begin 	
 	qb4 = QuestionBlock(
-		title=md"**Question 4: processing COVID data**",
+		title=md"**Question: processing COVID data**",
 		description = md"""
 		You can see that the plot is very noisy use convolution to smooth things out!
 		
@@ -421,7 +421,7 @@ We will study a protein using a sliding window analysis by making use of the **a
 In order, they quantify:
 1. *lipophilicity*: the degree in which the amino acid chain is lipidloving (and hence hydrophopic);
 2. *steric properties*: how large and flexible the side chains are;
-3. *electric properties*, such as positive or negative charges.
+3. *electric properties*, polarity, such as positive and negative charges present. Negative values for apolar, positive values for polar.
 
 The three z-scales for each of the amino acids is given in dictionaries below.
 """
@@ -516,37 +516,40 @@ spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWF
 # ╔═╡ 7e96f0d6-5999-11eb-3673-43f7f1fa0113
 m = 5
 
-# ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
-begin 	
-	QuestionBlock(
-		title=md"**Question 5: complete protein sliding window**",
-		description = md"""
-		Complete the function `protein_sliding_window` and play around with the parameters. Can you discover a strongly non-polar region in the protein?""",
-		questions = [Question(;description=md"", validators = Bool[], status=md"")],
-		hints = [
-			
-		]
-	)
-
-end
-
 # ╔═╡ c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 function protein_sliding_window(sequence, m, zscales)
-	n = length(sequence)
-	y = zeros(n)
-	for i in (m+1):(n-m)
-		for k in -m:m
-			y[i] += zscales[sequence[i+k]]
-		end
-	end
-	return y / (2m + 1)
+	return missing
+end
+
+# ╔═╡ 19a98dd4-599e-11eb-2b1c-172e00137e6c
+begin 	
+	q_ps = QuestionBlock(
+		title=md"**Question: complete protein sliding window**",
+		description = md"""
+		Complete the function `protein_sliding_window` and play around with the parameters. Can you discover a strongly non-polar region in the protein?
+		
+		Plot the 3rd zscale versus the index of the amino acids in the tail-spike.
+		""",
+		questions = [
+			Question(
+				validators = @safe[
+					protein_sliding_window(spike_sars2, 5, zscales1) ≈
+						Solutions.protein_sliding_window(spike_sars2, 5, zscales1),
+					protein_sliding_window(spike_sars2, 25, zscales2) ≈
+						Solutions.protein_sliding_window(spike_sars2, 25, zscales2),
+					protein_sliding_window(spike_sars2, 5, zscales3) ≈
+						Solutions.protein_sliding_window(spike_sars2, 5, zscales3),
+				]
+				)],
+		hints = [
+			hint(md"Try too increase the window size for clearer results.")
+		]
+	)
+	validate(q_ps, tracker)
 end
 
 # ╔═╡ 17e7750e-49c4-11eb-2106-65d47b16308c
 proteinsw = protein_sliding_window(spike_sars2, m, zscales3)
-
-# ╔═╡ dce6ec82-3ca1-11eb-1d87-1727b0e692df
-plot(proteinsw, xlabel="Index of Amino acid in the tail-spike", label="", ylabel="local properties")
 
 # ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
 md"""
@@ -1331,7 +1334,6 @@ end
 # ╠═19a98dd4-599e-11eb-2b1c-172e00137e6c
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
-# ╠═dce6ec82-3ca1-11eb-1d87-1727b0e692df
 # ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
 # ╠═e3f4c82a-5a8d-11eb-3d7d-fd30c0e4a134
 # ╠═c3a51344-5a8e-11eb-015f-bd9aa28aa6eb

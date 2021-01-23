@@ -155,3 +155,15 @@ function gaussian_weights(m; σ=4)
 	w = exp.(-(-m:m).^2 / 2σ^2)
 	return w ./ sum(w)
 end
+
+### Protein sliding window
+function protein_sliding_window(sequence, m, zscales)
+	n = length(sequence)
+	y = zeros(n)
+	for i in (m+1):(n-m)
+		for k in -m:m
+			y[i] += zscales[sequence[i+k]]
+		end
+	end
+	return y / (2m + 1)
+end
