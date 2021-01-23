@@ -317,6 +317,59 @@ Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
 sum(Squares(18093))  # much faster now!
 
 # ╔═╡ 579e3828-5d91-11eb-1d33-b94628d61fc0
+md"""
+
+## Illustration: custom matrices
+
+Similarly, we can make our very own matrix types. Consider the Strang matrix, a [tridiagonal matrix](https://en.wikipedia.org/wiki/Tridiagonal_matrix) with 2 on the main diagonal, and -1 on the first diagonal below and above the main diagonal. 
+"""
+
+# ╔═╡ e9a99a00-5d91-11eb-2c50-8be452cab83f
+struct Strang <: AbstractMatrix{Int}
+    n::Int
+end
+
+# ╔═╡ ec62c35c-5d91-11eb-3773-b9385f312f7f
+Base.size(S::Strang) = (S.n, S.n)
+
+# ╔═╡ efb0b460-5d91-11eb-2534-496df689dc60
+Base.getindex(S::Strang, i, j) = i==j ? 2 : (abs(i - j) == 1 ?  -1 : 0)
+
+# ╔═╡ f3c3114c-5d91-11eb-1d37-6d97ea6d267f
+S = Strang(1000)  # holy cow! Looks like a real matrix!
+
+# ╔═╡ 04dcda58-5d92-11eb-10ba-396947081338
+sum(S)  # works, but slow...
+
+# ╔═╡ 0f878dea-5d92-11eb-0000-b7484532ee70
+Base.sum(S::Strang) = 2
+
+# ╔═╡ 11630c02-5d92-11eb-1746-4dabf327fbbe
+sum(S)
+
+# ╔═╡ 1e65cb9c-5d92-11eb-3526-332169917fd9
+v = randn(1000)
+
+# ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
+S * v  # works, but slow
+
+# ╔═╡ 276e9af4-5d92-11eb-1399-993570859698
+function Base.:*(S::Strang, v::Vector)
+    n = length(v)
+    @assert size(S, 2) == n
+    x = similar(v)
+    for i in 1:n
+        x[i] = v[i]
+        i > 1 && (x[i] += v[i-1])
+        i < n && (x[i] += v[i+1])
+    end
+    return x
+end
+
+# ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
+S * v  # fast (linear time in v)
+
+# ╔═╡ 3fd82400-5d92-11eb-2b2d-67535d4733e6
 
 
 # ╔═╡ Cell order:
@@ -390,3 +443,15 @@ sum(Squares(18093))  # much faster now!
 # ╠═49f1d98c-5d91-11eb-1657-f320e9fcdc0e
 # ╠═4cb68744-5d91-11eb-2b3e-e7df55888c93
 # ╠═579e3828-5d91-11eb-1d33-b94628d61fc0
+# ╠═e9a99a00-5d91-11eb-2c50-8be452cab83f
+# ╠═ec62c35c-5d91-11eb-3773-b9385f312f7f
+# ╠═efb0b460-5d91-11eb-2534-496df689dc60
+# ╠═f3c3114c-5d91-11eb-1d37-6d97ea6d267f
+# ╠═04dcda58-5d92-11eb-10ba-396947081338
+# ╠═0f878dea-5d92-11eb-0000-b7484532ee70
+# ╠═11630c02-5d92-11eb-1746-4dabf327fbbe
+# ╠═1e65cb9c-5d92-11eb-3526-332169917fd9
+# ╠═201f59ee-5d92-11eb-33ae-51904d249dd4
+# ╠═276e9af4-5d92-11eb-1399-993570859698
+# ╠═300a8428-5d92-11eb-188b-05d00df4f6a7
+# ╠═3fd82400-5d92-11eb-2b2d-67535d4733e6

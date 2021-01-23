@@ -173,4 +173,4 @@ OrderedPair(18, 23)
 
 OrderedPair(8, 2)
 
-# FYI: for parametric types, the `key` keyword should be type annotated. So, for in the `Point` example one would use `new{T}(x,y)`.
+# FYI: for parametric types, the `new` keyword should be type annotated. So, for in the `Point` example one would use `new{T}(x,y)`.
