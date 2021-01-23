@@ -78,7 +78,7 @@ position(agent::Agent) = agent.pos
 
 # A slightly more interesting example is by extending `size`.
 
-Base.size(agent::Predator) = predator.size
+Base.size(agent::Predator) = agent.size
 
 # Here, we had to import `size` because we are extending a function from the `Base` library to work with a new type (doing something vastly different
 # than its original function).
@@ -94,4 +94,83 @@ interact(agent1::Prey, agent2::Predator) = "run"
 
 # FYI: Since in these simple examples, the `interact` methods do not use their arguments, merely perform type checking, we could have written this as `interact(::Agent,::Agent) = ...` etc.
 
-# CONSTRUCTORS
+# PARAMETRIC TYPES
+
+#=
+Sometimes we want more flexiblility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
+numeric datatypes, Int, Int8, Float6, Rational, in addition to new datatypes that might not even be defined yet! To this end, we use
+*parametric types*, types that depend on another type.
+
+For example, consider a 2-dimensional coordinate:
+=#
+
+struct Point{T}
+    x::T
+    y::T
+end
+
+# Here, each coordinate of the type `Point` has two attributes, `x` and `y`, of the same type. The specific type of Point can vary.
+
+p = Point(1.0, 2.0)
+
+Point(1, 2)
+
+# note that
+
+p isa Point
+
+# But what will happen if you evaluate `Point(1, 2.0)`?
+
+Point(1, 2.0)
+
+# Parametric types can be used in dispatch. For example, if we want to compute the norm of a Point, this would only make sense if Point is a number.
+
+norm(p::Point{T} where {T<:Number}) = sqrt(p.x^2 + p.y^2)
+
+norm(p)
+
+# Constructors
+
+## Outer constructors
+
+# Constructors are functions that create new objects. We have already seen that when creating a new `struc`, this immediately initiates the constructor (e.g., `Point(1.0, 2.0)`). These can also be made explicitly:
+
+Point(x::T, y::T) where {T<:Real} = Point{T}(x,y)
+
+# Constructors, however, allow us to have custom behavior when initializing types. For example, we have seen that `Point(1, 2.0)` won't work, because the two inputs are of the same type.
+# In this case, we can make the rule that one of the inputs has to be promoted to a more general type.
+
+
+Point(x::Real, y::Real) = Point(promote(x, y)...)
+
+
+Point(1, 2.0)
+
+
+# We can write other constructors just like functions. For example, support that when we provide a single `x`, we want to create a point (x, y):
+
+Point(x) = Point(x, x);
+
+Point(1)
+
+## Inner constructors
+
+#The above examples show *outer constructors*. These are defined outside the structure. We can also use *inner constructors*, which are declared within the definition of the type. These make use of the keyword `new`. For example, let us define an ordered pair.
+
+struct OrderedPair
+  x
+  y
+  function OrderedPair(x, y)
+    if x < y
+      new(x, y)
+    else
+      new(y, x)
+    end
+  end
+end
+
+OrderedPair(18, 23)
+
+OrderedPair(8, 2)
+
+# FYI: for parametric types, the `key` keyword should be type annotated. So, for in the `Point` example one would use `new{T}(x,y)`.
