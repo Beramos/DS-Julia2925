@@ -370,7 +370,116 @@ end
 S * v  # fast (linear time in v)
 
 # ╔═╡ 3fd82400-5d92-11eb-2b2d-67535d4733e6
+md"""
+## Exercise: wizarding currency
 
+
+The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
+
+Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
+
+Also, overload the function `+` to add two instances of `WizCur` and the `>` and `<` operators to compare two instances of wizarding currency.
+
+The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry has 3 Galleons, 1 Sickle, and 7 Knuts pocket change. Who has the most money? How many do they have together?
+
+HINT: you might find `%` and `div` useful here.
+"""
+
+# ╔═╡ 3ae60e88-5d94-11eb-0c50-1d74ea104758
+struct WizCur
+	# complete me!
+end
+
+# ╔═╡ 48301af2-5d94-11eb-0019-7737667c9cea
+galleons(money::WizCur) = missing
+
+# ╔═╡ 4ea80eda-5d94-11eb-3882-21a41d2d65f8
+sickles(money::WizCur) = missing
+
+# ╔═╡ 5af60d90-5d94-11eb-2ee4-b7bfc2caf53b
+knuts(money::WizCur) = missing
+
+# ╔═╡ 5f7c75ac-5d94-11eb-137a-7914cd009821
+#=
+function Base.show(io::IO, money::WizCur)
+    print(io, "I am printed for WIZCUR, make me say something meaningful")
+end
+=#
+
+# ╔═╡ 678ca64a-5d94-11eb-2b85-0b706526e35b
+Base.isless(m1::WizCur, m2::WizCur) = missing
+
+# ╔═╡ 8afbd434-5d94-11eb-366b-d3d719189ef7
+Base.isgreater(m1::WizCur, m2::WizCur) = missing
+
+# ╔═╡ 9226b2d8-5d94-11eb-2bea-491eb7dc1da7
+Base.isequal(m1::WizCur, m2::WizCur) = missing
+
+# ╔═╡ 95146d46-5d94-11eb-22aa-c1a544e0d784
+Base.:+(m1::WizCur, m2::WizCur) = missing
+
+# ╔═╡ 9eab40be-5d94-11eb-0c59-21f5824fb812
+money_ron = missing
+
+# ╔═╡ a137e0f8-5d94-11eb-2209-73acad549307
+money_harry = missing
+
+# ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
+dungbomb_fund = money_ron + money_harry
+
+# ╔═╡ d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
+md"""
+## Exercise: Vandermonde matrix
+
+The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+
+$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
+
+$$V_{i,j} = \alpha_i^{j-1}$$
+
+Complete the implementation to store and process this matrix.
+"""
+
+# ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
+begin
+	struct Vandermonde{T,VT} <: AbstractMatrix{T}
+		α::VT
+		m::Int
+		Vandermonde(α::AbstractVector{T}, m) where {T} = missing
+	end
+
+	# take length of α as a default value of m
+	Vandermonde(α::Vector{<:Number}) = missing
+end
+
+# ╔═╡ bd91a60e-5d93-11eb-09d4-830ca69439bf
+Base.size(V::Vandermonde) = missing
+
+# ╔═╡ c2ecfec8-5d93-11eb-2640-07bc07f3da98
+Base.getindex(V::Vandermonde, i, j) = missing
+
+# ╔═╡ cb3e91cc-5d93-11eb-020c-d73c10131755
+α = [1, 2, 3, 4]
+
+# ╔═╡ d107c75e-5d93-11eb-0e6f-097b1291e460
+V = Vandermonde(α, 4)
+
+# ╔═╡ ebe6cec6-5d93-11eb-25fd-2f614f1a7576
+md"""
+The determinant of a Vandermonde matrix is easy to compute:
+
+$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
+
+Overload this for the Vandermonde matrix!
+
+HINT: `prod`
+"""
+
+# ╔═╡ d2a076ea-5d93-11eb-216e-f5c37d330b40
+import LinearAlgebra
+
+# ╔═╡ dc945902-5d93-11eb-1121-a7ae99c5862e
+LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ Cell order:
 # ╠═eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
@@ -455,3 +564,24 @@ S * v  # fast (linear time in v)
 # ╠═276e9af4-5d92-11eb-1399-993570859698
 # ╠═300a8428-5d92-11eb-188b-05d00df4f6a7
 # ╠═3fd82400-5d92-11eb-2b2d-67535d4733e6
+# ╠═3ae60e88-5d94-11eb-0c50-1d74ea104758
+# ╠═48301af2-5d94-11eb-0019-7737667c9cea
+# ╠═4ea80eda-5d94-11eb-3882-21a41d2d65f8
+# ╠═5af60d90-5d94-11eb-2ee4-b7bfc2caf53b
+# ╠═5f7c75ac-5d94-11eb-137a-7914cd009821
+# ╠═678ca64a-5d94-11eb-2b85-0b706526e35b
+# ╠═8afbd434-5d94-11eb-366b-d3d719189ef7
+# ╠═9226b2d8-5d94-11eb-2bea-491eb7dc1da7
+# ╠═95146d46-5d94-11eb-22aa-c1a544e0d784
+# ╠═9eab40be-5d94-11eb-0c59-21f5824fb812
+# ╠═a137e0f8-5d94-11eb-2209-73acad549307
+# ╠═a79ba114-5d94-11eb-16ae-9906c6cdf54f
+# ╠═d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
+# ╠═d448a2e0-5d92-11eb-18a6-9ff817992154
+# ╠═bd91a60e-5d93-11eb-09d4-830ca69439bf
+# ╠═c2ecfec8-5d93-11eb-2640-07bc07f3da98
+# ╠═cb3e91cc-5d93-11eb-020c-d73c10131755
+# ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
+# ╠═ebe6cec6-5d93-11eb-25fd-2f614f1a7576
+# ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
+# ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
