@@ -119,8 +119,9 @@ mean(x) = sum(x)/length(x)
 weighted_mean(x, w) = sum(w.*x)
 
 ### 1D convolution
-function sol_convolve_1d(x::Vector, w::Vector)
+function convolve_1d(x::Vector, w::Vector)
 	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
+	@assert length(w) < length(x) "length of `w` should be smaller than `x`"
 	n = length(x)
 	m = length(w) ÷ 2
 	y = zeros(n)

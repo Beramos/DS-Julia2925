@@ -78,8 +78,7 @@ The function `mean` is not in the `Base` of Julia but can easily be imported fro
 
 # ╔═╡ f272855c-3c9e-11eb-1919-6b7301b15699
 function mean(x)
-	n = length(x)
-	return sum(x) / n
+	return missing
 end
 
 # ╔═╡ 66a20628-4834-11eb-01a2-27cc2b1ec7be
@@ -88,26 +87,35 @@ x = [2.1, 3.2, 5.4, 4.9, 6.1]
 # ╔═╡ 432c3892-482c-11eb-1467-a3b9c1592597
 mean(x)
 
-# ╔═╡ 8b220aea-4834-11eb-12bb-3b91414fe30a
-md"""
-So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
-"""
-
 # ╔═╡ 88c10640-4835-11eb-14b0-abba18da058f
 weighted_mean(x, w) = missing
 
-# ╔═╡ 62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
-begin 	
-	q1 = Question(
-			validators = [
-				weighted_mean(x, collect((1:5) / sum(1:5))) ≈ 4.986666666666666
-			]
+# ╔═╡ c7cd636e-5db2-11eb-2895-cd474cc85d18
+begin
+	arr_mean_int = rand(20)
+	arr_mean_float = rand(Int, 20)
+	arr_weights = collect(1:20)/sum(1:20)
+	
+	q_mean = Question(
+			validators = @safe[
+				mean(arr_mean_int) == Solutions.mean(arr_mean_int),
+				mean(arr_mean_float) == Solutions.mean(arr_mean_float)
+			],
+			description = md"""
+			Implement the mean function.
+			"""
 		)
-			
-
-	qb1 = QuestionBlock(;
-		title=md"**Question 1: The weighted mean**",
-		description = md"""
+	
+	q_wmean = Question(
+			validators = @safe[
+				weighted_mean(arr_mean_int, arr_weights) == 
+					Solutions.weighted_mean(arr_mean_int, arr_weights),
+				weighted_mean(arr_mean_float, arr_weights) == 
+					Solutions.weighted_mean(arr_mean_float, arr_weights)		
+			],
+			description = md"""
+		So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
+		
 		In general, the weighted mean is computed as:
 		
 		$$\sum_{i=1}^n w_ix_i\,,$$
@@ -115,12 +123,20 @@ begin
 		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
 
 		Implement the weighted mean. Do it in a one-liner.
+		"""
+		)
+			
+
+	qb_mean = QuestionBlock(;
+		title=md"**Question: the mean and weighted mean**",
+		description = md"""
+
 
 		""",
-		questions = @safe[q1]
+		questions = @safe[q_mean, q_wmean]
 	)
 	
-	validate(qb1, tracker)
+	validate(qb_mean, tracker)
 end
 
 # ╔═╡ a657c556-4835-11eb-12c3-398890e70105
@@ -171,17 +187,16 @@ end
 
 # ╔═╡ b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
 begin 	
-	q2 = Question(
-			validators = [	
+	q_1d = Question(
+			validators = @safe[	
 				convolve_1d(collect(1:10), [0.5, 0.5, 0.5]) ≈ 
-			[3.0, 4.5, 6.0, 7.5, 9.0, 10.5, 12.0, 13.5, 14.5, 15.0]
-			], 
-			description = md""
+					Solutions.convolve_1d(collect(1:10), [0.5, 0.5, 0.5])
+			]
 		)
 			
 
-	qb2 = QuestionBlock(;
-		title=md"**Question 2: one-dimensional convolution**",
+	qb_1d = QuestionBlock(;
+		title=md"**Question: one-dimensional convolution**",
 		description = md"""
 
 		Implement the one-dimensional convolution,
@@ -193,30 +208,13 @@ begin
 		This function should be able to take any vector x and compute the convolution with any weight vector that matches the specification of a weight vector (see previously). 
 
 		""",
-		questions = @safe[q2],
+		questions = @safe[q_1d],
 		hints = [
 			hint(md"Did you take into account the boundary conditions? The function `clamp` can help you with that.")	
 		]
 	)
 	
-	validate(qb2, tracker)
-end
-
-# ╔═╡ 6e95d126-598d-11eb-22a9-f3b895578acd
-function sol_convolve_1d(x::Vector, w::Vector)
-	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
-	n = length(x)
-	m = length(w) ÷ 2
-	out = zeros(n)
-
-	fill!(out, 0.0)
-	for (i, xj) in enumerate(x)
-		for (j, wj) in enumerate(w)
-			k = clamp(i + j - m, 1, n)
-			out[i] += w[j] * x[k]
-		end
-	end
-	return out
+	validate(qb_1d, tracker)
 end
 
 # ╔═╡ 7945ed1c-598c-11eb-17da-af9a36c6a68c
@@ -231,7 +229,7 @@ noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) +  σ * rand();
 md"We use the convolution function we defined to construct a moving_average function,"
 
 # ╔═╡ f94e2e6c-598e-11eb-041a-0b6a068e464c
-moving_average(f::Function, t, w) = sol_convolve_1d(f.(t), ones(w).*1/w);
+moving_average(f::Function, t, w) = Solutions.convolve_1d(f.(t), ones(w).*1/w);
 
 # ╔═╡ 4e45e43e-598f-11eb-0a0a-2fa636748f7c
 @bind wₑ Slider(1:2:43, default=3)
@@ -1274,11 +1272,10 @@ end
 # ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 # ╠═e1147d4e-2bee-11eb-0150-d7af1f51f842
+# ╠═c7cd636e-5db2-11eb-2895-cd474cc85d18
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
-# ╠═8b220aea-4834-11eb-12bb-3b91414fe30a
-# ╠═62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
 # ╠═a657c556-4835-11eb-12c3-398890e70105
 # ╠═181c4246-4836-11eb-0368-61b2998f5424
@@ -1288,7 +1285,6 @@ end
 # ╠═8b4c6880-4837-11eb-0ff7-573dd18a9664
 # ╠═b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
 # ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
-# ╠═6e95d126-598d-11eb-22a9-f3b895578acd
 # ╠═7945ed1c-598c-11eb-17da-af9a36c6a68c
 # ╠═546beebe-598d-11eb-1717-c9687801e647
 # ╠═f39d88f6-5994-11eb-041c-012af6d3bae6
