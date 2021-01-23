@@ -202,7 +202,7 @@ begin
 			
 
 	qb2 = QuestionBlock(;
-		title=md"**Question 2: one-dimensional convolution**",
+		title=md"**Question: one-dimensional convolution**",
 		description = md"""
 
 		Implement the one-dimensional convolution,
@@ -228,16 +228,16 @@ function sol_convolve_1d(x::Vector, w::Vector)
 	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
 	n = length(x)
 	m = length(w) ÷ 2
-	out = zeros(n)
+	y = zeros(n)
 
-	fill!(out, 0.0)
+	fill!(y, 0.0)
 	for (i, xj) in enumerate(x)
 		for (j, wj) in enumerate(w)
 			k = clamp(i + j - m, 1, n)
-			out[i] += w[j] * x[k]
+			y[i] += w[j] * x[k]
 		end
 	end
-	return out
+	return y
 end
 
 # ╔═╡ 7945ed1c-598c-11eb-17da-af9a36c6a68c
