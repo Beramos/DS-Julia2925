@@ -114,8 +114,9 @@ vandermonde(α, n) = [αᵢ^j for αᵢ in α, j in 0:n-1]
 
 #= Notebook 3: project 1 =#
 ### Mean
-
 mean(x) = sum(x)/length(x)
+
+weighted_mean(x, w) = sum(w.*x)
 
 
 

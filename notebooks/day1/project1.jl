@@ -93,66 +93,55 @@ function mean(x)
 	return missing
 end
 
-# ╔═╡ 047fe71a-5d5d-11eb-0cd8-4356d2ceb5d7
-begin 	
-	arr_mean_float = rand(20)
-	arr_mean_int = rand(Int, 20)
-	
-	q_mean = Question(
-			validators = @safe[
-				mean(arr_mean_float) ≈ Solutions.mean(arr_mean_float),
-				mean(arr_mean_int) ≈ Solutions.mean(arr_mean_int)
-			]
-		)
-
-	qb_mean = QuestionBlock(;
-		title=md"**Question:**",
-		description = md"Complete the mean function below.",
-		questions = @safe[q_mean]
-	)
-	
-	validate(qb_mean, tracker)
-end
-
 # ╔═╡ 66a20628-4834-11eb-01a2-27cc2b1ec7be
 x = [2.1, 3.2, 5.4, 4.9, 6.1]
 
 # ╔═╡ 432c3892-482c-11eb-1467-a3b9c1592597
 mean(x)
 
-# ╔═╡ 8b220aea-4834-11eb-12bb-3b91414fe30a
-md"""
-So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
-"""
-
 # ╔═╡ 88c10640-4835-11eb-14b0-abba18da058f
 weighted_mean(x, w) = missing
 
-# ╔═╡ 62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
+# ╔═╡ 047fe71a-5d5d-11eb-0cd8-4356d2ceb5d7
 begin 	
-	q1 = Question(
-			validators = [
-				weighted_mean(x, collect((1:5) / sum(1:5))) ≈ 4.986666666666666
+	arr_mean_float = rand(20)
+	arr_mean_int = rand(Int, 20)
+	arr_weights = collect(1:20)/sum(1:20)
+	
+	q_mean = Question(
+			description = md"Complete the mean function below.",
+			validators = @safe[
+				mean(arr_mean_float) ≈ Solutions.mean(arr_mean_float),
+				mean(arr_mean_int) ≈ Solutions.mean(arr_mean_int)
 			]
 		)
-			
-
-	qb1 = QuestionBlock(;
-		title=md"**Question 1: The weighted mean**",
+	
+	q_wmean = Question(
 		description = md"""
-		In general, the weighted mean is computed as:
-		
-		$$\sum_{i=1}^n w_ix_i\,,$$
+	For the regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
 
-		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
+	In general, the weighted mean is computed as,
 
-		Implement the weighted mean. Do it in a one-liner.
+	$$\sum_{i=1}^n w_ix_i\,,$$
 
-		""",
-		questions = @safe[q1]
+	were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
+
+	Implement the weighted mean. Try to do it in a one-liner.
+		.""",
+		validators = @safe[
+			weighted_mean(arr_mean_float, arr_weights) ≈ 
+				Solutions.weighted_mean(arr_mean_float, arr_weights),
+			weighted_mean(arr_mean_int, arr_weights) ≈ 
+				Solutions.weighted_mean(arr_mean_int, arr_weights)
+		]
+	)
+
+	qb_mean = QuestionBlock(;
+		title=md"**Question: the mean and the weighted mean**",
+		questions = @safe[q_mean, q_wmean]
 	)
 	
-	validate(qb1, tracker)
+	validate(qb_mean, tracker)
 end
 
 # ╔═╡ a657c556-4835-11eb-12c3-398890e70105
@@ -1261,8 +1250,6 @@ show_barcode(bitArr)
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
-# ╠═8b220aea-4834-11eb-12bb-3b91414fe30a
-# ╠═62aa3de4-58e0-11eb-01af-1b2d8c1b7d05
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
 # ╠═a657c556-4835-11eb-12c3-398890e70105
 # ╠═181c4246-4836-11eb-0368-61b2998f5424
