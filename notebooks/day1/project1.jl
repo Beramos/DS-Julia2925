@@ -931,10 +931,7 @@ md"The challenge with bitstrings is that the separate bits cannot be efficiently
 
 
 # ╔═╡ b43157fa-482e-11eb-3169-cf4989528800
-#getbinarydigit(rule, i) = missing
-
-# ╔═╡ 1266818c-59d3-11eb-0b7d-d7253621762e
-getbinarydigit(rule, i) = isodd(rule >> i)
+getbinarydigit(rule, i) = missing
 
 # ╔═╡ 2d4e9afe-59cc-11eb-3033-05d9b684b399
 begin 	
@@ -947,7 +944,8 @@ begin
 		questions = [
 			Question(;description=md"", 
 				validators = @safe[
-					getbinarydigit(UInt8(110), 5) == (UInt8(110) & 2^4 != 0) 
+					getbinarydigit(UInt8(110), 5) == 
+						Solutions.getbinarydigit(UInt8(110), 5)
 					])
 		],
 		hints = [
@@ -955,7 +953,7 @@ begin
 			hint(md"The solution is hidden in the next hint."), 
 			hint(md""" 
 				```julia
-				getbinarydigit(rule, i) = isodd(rule >> i-1)
+				getbinarydigit(rule, i) = isodd(rule >> i)
 				```"""),
 			hint(md"Don't worry if you don't get fully understand the oneliner, it is bitstring manipulation and is not usually part of a scientific programming curriculum."),
 			hint(md"A more naive and less efficient solution would be to convert the rule integer to a string (not a bitstring), which supports indexing. ")
@@ -1008,10 +1006,10 @@ getbinarydigit(rule, 4true+2true+1true+1)
 
 # ╔═╡ d2e5787c-59d2-11eb-1bbd-d79672ab8f1b
 begin
-	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = missing
 		
 	function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
-		return getbinarydigit(rule, 4l+2s+1r)
+		return missing
 	end
 	
 end
@@ -1344,7 +1342,6 @@ show_barcode(bitArr)
 # ╠═1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
 # ╠═2d4e9afe-59cc-11eb-3033-05d9b684b399
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
-# ╠═1266818c-59d3-11eb-0b7d-d7253621762e
 # ╠═426f1666-5d87-11eb-108d-f19f928b345b
 # ╠═1d526a40-5d87-11eb-1984-3bd5b6ccfb89
 # ╠═781d38a8-59d4-11eb-28f9-9358f132782c

@@ -208,4 +208,14 @@ function edge_detection(M)
 	return sqrt.(Solutions.convolve_2d(M, Gx).^2 + Solutions.convolve_2d(M, Gy).^2) .|> Gray
 end
 
+### Get index of bitstring
+getbinarydigit(rule, i) = isodd(rule >> i)
+
+### Next state
+nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+		
+function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
+  return getbinarydigit(rule, 4l+2s+1r)
+end
+
 
