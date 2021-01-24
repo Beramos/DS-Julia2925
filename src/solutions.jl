@@ -202,4 +202,10 @@ function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
 	return RGB.(Mred, Mgreen, Mblue)
 end
 
+### Edge detection
+function edge_detection(M)
+	M = M .|> Gray .|> Float64
+	return sqrt.(Solutions.convolve_2d(M, Gx).^2 + Solutions.convolve_2d(M, Gy).^2) .|> Gray
+end
+
 

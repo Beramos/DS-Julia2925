@@ -828,15 +828,36 @@ end
 # ╔═╡ a588a356-5a95-11eb-27e8-cb8d394b6ff6
 begin 	
 	q121 = Question(
+		description=md"""
+		Kernels emphasise certain features in images and often they have a directionality. K_x and K_y are known as [Sobol filters](https://en.wikipedia.org/wiki/Sobel_operator) and form the basis of edge detection. Which is just a combination of K₂ (x-direction) and K₃ (y-direction),
+		
+		$$G = \sqrt{G_x^2 + G_y^2}\, ,$$
+		
+		which is the square-root of the sum of the squared convolution with the K_x kernel and the K_y kernel. Implement edge detection and test it on the our bird. 
+		"""
 		)
 				
 	qb12 = QuestionBlock(;
 		title=md"**Optional question: testing some cool kernels**",
 		description = md"""
-Different kernels can do really really cool things. Test and implement the following kernels on both the blurry bird and the orginal bird image.
+Different kernels can do really really cool things. Test and implement the following kernels.
 
 ```julia
-	a=1
+K₁ = [0 -1 0;   # test on blurry bird and original bird
+	  -1 5 -1;
+	   0 -1 0]
+		
+K_x = [1 0 -1;  # on a grayscale image
+	   2 0 -2;
+	   1 0 -1]
+		
+K_y = [1 2 1;  # on a grayscale image
+       0 0 0;
+	   -1 -2 -1]
+		
+K₄ = [-2 -1 0;  
+       -1 1 1;
+	   0 1 2]
 ```
 
 What do you think these kernels do?
@@ -854,13 +875,15 @@ K_gaussian2 = Solutions.gaussian_kernel(3, σ=2)
 # ╔═╡ e5042bac-5e2f-11eb-28bb-dbf653abca17
 blurry_bird = Solutions.convolve_image(bird, K_gaussian2)
 
-# ╔═╡ f5d4af24-5a90-11eb-0671-a193539e8335
-function pepper_salt_noise(image; fraction=0.01)
-	noisy_image = copy(image)
-	mask = rand(size(image)...) .< fraction
-	n_corrupted = sum(mask)
-	noisy_image[mask] = rand([RGB(0, 0, 0), RGB(1, 1, 1)], n_corrupted)
-	return noisy_image
+# ╔═╡ 516b1e7c-5e35-11eb-2ef5-4fa72c35878e
+
+
+# ╔═╡ 520771bc-5e35-11eb-0252-bfc7d76872f1
+
+
+# ╔═╡ 52a87820-5e35-11eb-0392-85957277f21a
+function edge_detection(M)
+	return missing
 end
 
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
@@ -1204,45 +1227,6 @@ bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2
 # ╔═╡ d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 show_barcode(bitArr)
 
-# ╔═╡ 39eae5c2-4b5f-11eb-151a-b76db57f04b8
-convolve_image(bird, K_gaussian)
-
-# ╔═╡ c80e4362-2bfe-11eb-2055-5fbf167be551
-K_sharpen = [0 -1 0;
-			-1 5 -1;
-			0 -1 0]
-
-# ╔═╡ 34062f66-5d8b-11eb-1893-2ba6e4a45b3d
-convolve_image(bird, K_sharpen)
-
-# ╔═╡ 8c62855a-2bff-11eb-00f5-3702e142f76f
-const Gx = [1 0 -1;
-		   2 0 -2;
-		   1 0 -1]
-
-# ╔═╡ ae8d6258-2bff-11eb-0182-afc33d9d4efc
-const Gy = [1 2 1;
-		    0 0 0;
-		   -1 -2 -1]
-
-# ╔═╡ 3aba6b10-4b5c-11eb-0e4f-81b47568937a
-convolve_2d(Gray.(bird) .|> Float64, Gx) .|> Gray
-
-# ╔═╡ b5bf307a-4b5c-11eb-32eb-614b3193d8cb
-convolve_2d(Gray.(bird) .|> Float64, Gy) .|> Gray
-
-# ╔═╡ 746d3578-2bff-11eb-121a-f3d17397a49e
-function edge_detection(M)
-	M = M .|> Gray .|> Float64
-	return convolve_2d(M, Gx).^2 + convolve_2d(M, Gy).^2 .|> Gray
-end
-
-# ╔═╡ f41919a4-2bff-11eb-276f-a5edd5b374ac
-edge_detection(bird)
-
-# ╔═╡ 55bfb46a-2be5-11eb-2be6-1bc153db11ac
-RGB.(red.(bird), green.(bird), blue.(bird))
-
 # ╔═╡ d523e4c6-301b-11eb-040a-f7a214cb785b
 function count_neighbors((i, j), grid::Matrix{Bool})
 	n_neighbors = grid[i+1,j+1] + grid[i+1,j] +
@@ -1414,7 +1398,9 @@ end
 # ╠═a588a356-5a95-11eb-27e8-cb8d394b6ff6
 # ╠═f80ab6ba-5e2f-11eb-276c-31bbd5b0fee9
 # ╠═e5042bac-5e2f-11eb-28bb-dbf653abca17
-# ╠═f5d4af24-5a90-11eb-0671-a193539e8335
+# ╠═516b1e7c-5e35-11eb-2ef5-4fa72c35878e
+# ╠═520771bc-5e35-11eb-0252-bfc7d76872f1
+# ╠═52a87820-5e35-11eb-0392-85957277f21a
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
@@ -1463,16 +1449,6 @@ end
 # ╠═c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
 # ╠═a283e9d6-5a72-11eb-1bc4-116112a8cc59
 # ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
-# ╠═39eae5c2-4b5f-11eb-151a-b76db57f04b8
-# ╠═c80e4362-2bfe-11eb-2055-5fbf167be551
-# ╠═34062f66-5d8b-11eb-1893-2ba6e4a45b3d
-# ╠═8c62855a-2bff-11eb-00f5-3702e142f76f
-# ╠═ae8d6258-2bff-11eb-0182-afc33d9d4efc
-# ╠═3aba6b10-4b5c-11eb-0e4f-81b47568937a
-# ╠═b5bf307a-4b5c-11eb-32eb-614b3193d8cb
-# ╠═746d3578-2bff-11eb-121a-f3d17397a49e
-# ╠═f41919a4-2bff-11eb-276f-a5edd5b374ac
-# ╠═55bfb46a-2be5-11eb-2be6-1bc153db11ac
 # ╠═d523e4c6-301b-11eb-040a-f7a214cb785b
 # ╠═fafc7e74-34c6-11eb-0ce1-8fe2e3215739
 # ╠═0f7f9156-34c7-11eb-01dd-db5b3e1b0eca
