@@ -16,7 +16,6 @@ https://computationalthinking.mit.edu/Fall20/installation/
 module DSJulia
     using Markdown
     using Markdown: MD, Admonition
-    using Colors, Images
 
     export check_answer, still_missing, keep_working, correct, not_defined, hint, fyi  
     export Question, QuestionOptional, QuestionBlock, validate
@@ -32,6 +31,7 @@ module DSJulia
     # Solutions
     export Solutions
     module Solutions
+        using Colors, Images
         include("solutions.jl")
     end
 end
