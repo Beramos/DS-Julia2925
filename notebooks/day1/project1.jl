@@ -1227,75 +1227,6 @@ bitArr = simulate([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2
 # ╔═╡ d9db54ee-5a72-11eb-1790-2f90b0c0a91d
 show_barcode(bitArr)
 
-# ╔═╡ d523e4c6-301b-11eb-040a-f7a214cb785b
-function count_neighbors((i, j), grid::Matrix{Bool})
-	n_neighbors = grid[i+1,j+1] + grid[i+1,j] +
-						grid[i+1,j-1] + grid[i,j-1] +
-						grid[i-1, j-1] + grid[i-1,j] +
-						grid[i-1,j+1] + grid[i, j+1]
-	return n_neighbors
-end
-
-# ╔═╡ fafc7e74-34c6-11eb-0ce1-8fe2e3215739
-function cell_state((i, j), grid::Matrix{Bool})
-	return grid[i,j]
-end
-
-# ╔═╡ 0f7f9156-34c7-11eb-01dd-db5b3e1b0eca
-function next_state((i, j), grid::Matrix{Bool})
-	state = cell_state((i, j), grid)
-	n_neighbors = count_neighbors((i, j), grid)
-	next_state =  (state && (2 ≤ n_neighbors ≤ 3)) || # staying alive
-				(!state && n_neighbors == 3)
-	return next_state
-end
-
-# ╔═╡ 9c7ad77a-34c7-11eb-0636-5d4c8dd9542b
-function next_gol!(grid, new_grid)
-	n, m = size(grid)
-	for j in 1:m
-		for i in 1:m
-			if 1 < i < n && 1 < j < m
-				new_grid[i,j] = next_state((i, j), grid)
-			else
-				new_grid[i,j] = false
-			end
-		end
-	end
-	grid .= new_grid
-	return grid
-end
-
-# ╔═╡ 24e09632-34ca-11eb-09c6-cd0a14601723
-function update_gol!(grid; nsteps=1)
-	new_grid = similar(grid)
-	for t in 1:nsteps
-		next_gol!(grid, new_grid)
-	end
-	return grid
-end
-
-# ╔═╡ ac4540e6-34ca-11eb-28a5-39a639f385a1
-md"Updates via hashing, how many needed for all 3x3 grids"
-
-# ╔═╡ 1937de5a-34c8-11eb-0a99-afc09e510273
-grid = rand(Bool, 50, 50)
-
-# ╔═╡ 47a40a70-34c8-11eb-2ae1-5fde1e1ef83c
-new_grid = zero(grid)
-
-# ╔═╡ a35eda0c-34c8-11eb-27e4-35a06de2df43
-(next_gol!(grid, new_grid) for i in 1:1000)
-
-# ╔═╡ 54e78bb0-34c8-11eb-0cf9-a1a2b398e107
-#=
-@gif for i ∈ 1:100
-		next_gol!(grid, new_grid)
-		#grid, new_grid = new_grid, grid
-		plot(show_ca(grid))
-end
-=#
-
 # ╔═╡ Cell order:
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
@@ -1449,13 +1380,3 @@ end
 # ╠═c9e29b8a-5a72-11eb-3d9f-9d7f2d398b30
 # ╠═a283e9d6-5a72-11eb-1bc4-116112a8cc59
 # ╠═d9db54ee-5a72-11eb-1790-2f90b0c0a91d
-# ╠═d523e4c6-301b-11eb-040a-f7a214cb785b
-# ╠═fafc7e74-34c6-11eb-0ce1-8fe2e3215739
-# ╠═0f7f9156-34c7-11eb-01dd-db5b3e1b0eca
-# ╠═9c7ad77a-34c7-11eb-0636-5d4c8dd9542b
-# ╠═24e09632-34ca-11eb-09c6-cd0a14601723
-# ╠═ac4540e6-34ca-11eb-28a5-39a639f385a1
-# ╠═1937de5a-34c8-11eb-0a99-afc09e510273
-# ╠═47a40a70-34c8-11eb-2ae1-5fde1e1ef83c
-# ╠═a35eda0c-34c8-11eb-27e4-35a06de2df43
-# ╠═54e78bb0-34c8-11eb-0cf9-a1a2b398e107
