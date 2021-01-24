@@ -713,13 +713,27 @@ function gaussian_kernel(m; σ=4)
 	return missing
 end
 
+# ╔═╡ ca0748ee-5e2e-11eb-0199-45a98c0645f2
+function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
+	Mred = missing
+	Mgreen = missing
+	Mblue = missing
+	return RGB.(Mred, Mgreen, Mblue)
+end
+
 # ╔═╡ 4d434b48-5a91-11eb-2df8-9d2ea289878e
 begin 	
 	M_rand = rand(20, 20)
 	K_rand = rand(4, 4)
 	
+	test_kernel = [0 -1 0;
+					-1 5 -1;
+					0 -1 0]
+	
 	q111 = Question(
 			description=md"""
+			**Exercise:**
+		
 			Complete the function `convolve_2d(M::Matrix, K::Matrix)` that performs a 2D-convolution of an input matrix `M` with a kernel matrix `K`.
 			""",
 			validators = @safe[
@@ -729,6 +743,8 @@ begin
 	
 	q112 = Question(
 			description=md"""
+**Exercise:**
+		
 Remember the 1-D Gaussian kernel? Its 2-D analogue is given by
 
 $$K_{i,j} = \exp\left(-\frac{(i-m - 1)^2 +(j-m-1)^2}{2\sigma^2}\right)\,.$$
@@ -746,7 +762,7 @@ Let us implement the Gaussian kernel by completing the function below.
 	
 	q113 = Question(
 			description=md"""
-			**Optional exercise (Easy);**
+			**Optional exercise (Easy):**
 		
 			Explore the Gaussian kernel by plotting a `heatmap` of this kernel for a given number of weights and σ.
 
@@ -755,9 +771,14 @@ Let us implement the Gaussian kernel by completing the function below.
 	
 	q114 = Question(
 			description=md"""
-The 2D-convolution can not be directly used on images since images are matrixes of triplets of values. Write a function `convolve_image(M, K)` that performs a convolution on an images and use the previously implemented `convolve_2d(M::Matrix, K::Matrix)` function. Previously, it was demonstrated how to extract the idividual colour channels from an images. A convolution of an image is nothing more than a convolution performed on these channels, separately. 
+**Exercise:**
+		
+The 2D-convolution can not be directly used on images since images are matrixes of triplets of values. Write a function `convolve_image(M, K)` that performs a convolution on an images and use the previously implemented `convolve_2d(M::Matrix, K::Matrix)` function. Previously, it was demonstrated how to extract the idividual colour channels from an images. A convolution of an image is nothing more than a convolution performed on these channels, separately. To avoid inaccuracies you should convert each channel (Red, Green, Blue) to a `Float32` before convolutions.
 			""",
-			validators = [missing]
+			validators = @safe[
+				convolve_image(bird, test_kernel) == 
+					Solutions.convolve_image(bird, test_kernel) 
+			]
 		)
 		
 		
@@ -766,9 +787,6 @@ The 2D-convolution can not be directly used on images since images are matrixes 
 Test this new function by applying the Gaussian kernel to our favourite bird image.
 			"""
 		)
-			
-	
-	
 			
 	qb11 = QuestionBlock(;
 		title=md"**Question: Two-dimensional convolution on images**",
@@ -781,35 +799,31 @@ This looks more complex but still amounts to the same thing as the 1D case. We h
 		""",
 		questions = @safe[q111, q112, q113, q114, q115],
 		hints = [
-			hint(md"Did you take into account the boundary conditions? The function `clamp` can help you with that.")	
+			hint(md"Did you take into account the boundary conditions? The function `clamp` can help you with that."),
+			hint(md""" 
+				You can easily convert an argument of a function by piping it into a type:  
+				```julia
+					function(some_array_var .|> Float32, ...)
+				```
+				""")	
+			
 		]
 	)
 	
 	validate(qb11)
 end
 
-# ╔═╡ 1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
-size(bird)
-
-# ╔═╡ 1ba16c34-5a92-11eb-3052-e91a2443033b
-function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
-	Mred = convolve_2d(red.(M) .|> Float32, K)
-	Mgreen = convolve_2d(green.(M) .|> Float32, K)
-	Mblue = convolve_2d(blue.(M) .|> Float32, K)
-	return RGB.(Mred, Mgreen, Mblue)
-end
-
 # ╔═╡ f55f8e6c-5a90-11eb-14fa-1168810ec819
-K_gaussian = gaussian_kernel(3, σ=2)
+#K_gaussian = gaussian_kernel(3, σ=2)
 
 # ╔═╡ f589c15a-5a90-11eb-2a69-fba0819a4993
-heatmap(K_gaussian)
+#heatmap(K_gaussian)
 
 # ╔═╡ 1e97c530-5a8f-11eb-14b0-47e7e944cba1
-bird
+#bird
 
 # ╔═╡ f58d5af4-5a90-11eb-3d93-5712bfd9920a
-convolve_image(bird, K_gaussian)
+#convolve_image(bird, K_gaussian)
 
 # ╔═╡ a588a356-5a95-11eb-27e8-cb8d394b6ff6
 begin 	
@@ -819,17 +833,26 @@ begin
 	qb12 = QuestionBlock(;
 		title=md"**Optional question: testing some cool kernels**",
 		description = md"""
-		Different kernels can do really really cool things. Test and implement the following kernels
-		 ```julia
-		
-		 ```
+Different kernels can do really really cool things. Test and implement the following kernels on both the blurry bird and the orginal bird image.
+
+```julia
+	a=1
+```
+
+What do you think these kernels do?
 		""",
 		questions = @safe[q121],
 
 	)
 	
-	validate(qb12, tracker)
+	validate(qb12)
 end
+
+# ╔═╡ f80ab6ba-5e2f-11eb-276c-31bbd5b0fee9
+K_gaussian2 = Solutions.gaussian_kernel(3, σ=2)
+
+# ╔═╡ e5042bac-5e2f-11eb-28bb-dbf653abca17
+blurry_bird = Solutions.convolve_image(bird, K_gaussian2)
 
 # ╔═╡ f5d4af24-5a90-11eb-0671-a193539e8335
 function pepper_salt_noise(image; fraction=0.01)
@@ -1383,13 +1406,14 @@ end
 # ╠═4d434b48-5a91-11eb-2df8-9d2ea289878e
 # ╠═d1851bbe-5a91-11eb-3ae4-fddeff381c1b
 # ╠═f5574a90-5a90-11eb-3100-dd98e3375390
-# ╠═1e9ea3c6-5a8f-11eb-1aa5-0db1d4dd1194
-# ╠═1ba16c34-5a92-11eb-3052-e91a2443033b
+# ╠═ca0748ee-5e2e-11eb-0199-45a98c0645f2
 # ╠═f55f8e6c-5a90-11eb-14fa-1168810ec819
 # ╠═f589c15a-5a90-11eb-2a69-fba0819a4993
 # ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
 # ╠═f58d5af4-5a90-11eb-3d93-5712bfd9920a
 # ╠═a588a356-5a95-11eb-27e8-cb8d394b6ff6
+# ╠═f80ab6ba-5e2f-11eb-276c-31bbd5b0fee9
+# ╠═e5042bac-5e2f-11eb-28bb-dbf653abca17
 # ╠═f5d4af24-5a90-11eb-0671-a193539e8335
 # ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
