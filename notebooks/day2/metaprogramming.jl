@@ -3,15 +3,10 @@
 
 using Markdown
 using InteractiveUtils
-
-# ╔═╡ 98b72c42-5e8a-11eb-0d12-35b018fceea6
+using PlutoUI
 using BioSequences
-
-# ╔═╡ 6c4c6d20-5e91-11eb-089f-0704e812b94f
-begin
-	using JuMP
-	using GLPK
-end
+using JuMP
+using GLPK
 
 # ╔═╡ 31c1e25e-5e53-11eb-2467-9153d30962d5
 md"""
@@ -98,7 +93,9 @@ The `dump` function provides indented and annotated display of `Expr` objects:
 """
 
 # ╔═╡ 985a57f2-5e54-11eb-1f2f-bf23014c6171
-dump(ex2)
+PlutoUI.with_terminal() do
+	dump(ex2)
+end
 
 # ╔═╡ d66ea502-5e54-11eb-2694-4766a05aed38
 md"""
@@ -240,9 +237,6 @@ Here is an extraordinarily simple macro:
 macro sayhello()
 	return :( println("Hello, world!") )
 end
-
-# ╔═╡ 371df3b8-5e5e-11eb-2a74-bd370bce9114
-import PlutoUI
 
 # ╔═╡ c40cebe6-5e5e-11eb-1f7f-37134b7a449f
 md"""
@@ -903,7 +897,6 @@ end
 # ╠═6dab1d58-5e5d-11eb-3381-a1796f8d14c5
 # ╟─b833d8ba-5e5d-11eb-3311-899efb15c1b0
 # ╠═169c6aa2-5e5e-11eb-1d84-e7e3b4641e10
-# ╠═371df3b8-5e5e-11eb-2a74-bd370bce9114
 # ╠═ae1525ea-5e5e-11eb-3906-593143776559
 # ╟─c40cebe6-5e5e-11eb-1f7f-37134b7a449f
 # ╠═f5ab41f4-5e5f-11eb-02f7-efcb3e05e616
@@ -986,7 +979,6 @@ end
 # ╠═187ce708-5e7b-11eb-0270-d1e370b40a59
 # ╠═ef4eb9ee-5e87-11eb-20f7-61b88f285aef
 # ╠═0711fef8-5e8b-11eb-3edc-031bc5c0f1f7
-# ╠═98b72c42-5e8a-11eb-0d12-35b018fceea6
 # ╠═aa7e464c-5e8a-11eb-36e1-27b72b340b10
 # ╟─cee05374-5e8d-11eb-2a2f-1fe4004fc9e4
 # ╠═d9f18616-5e8d-11eb-1b1a-3bcc749fb467
@@ -1003,7 +995,6 @@ end
 # ╠═416a8a52-5e8b-11eb-12dd-71c4bc68ffdf
 # ╠═44e6a33c-5e8b-11eb-23e6-99d769ae271f
 # ╠═2e25d78e-5e91-11eb-07a3-2574f1b2c08e
-# ╠═6c4c6d20-5e91-11eb-089f-0704e812b94f
 # ╠═851112ba-5e92-11eb-1b1d-53e9675ffc2a
 # ╠═ad8e86f8-5e92-11eb-07ef-9fc52e245199
 # ╠═e4247250-5e93-11eb-1112-e5528a5b0a3a
