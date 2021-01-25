@@ -218,6 +218,7 @@ function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
   return getbinarydigit(rule, 4l+2s+1r)
 end
 
+### Update 1 step of CA
 function update1dca!(xnew, x, rule::Integer)
 	n = length(x)
 	xnew[1] = nextstate(x[end], x[1], x[2], rule)
@@ -228,4 +229,27 @@ function update1dca!(xnew, x, rule::Integer)
 	return xnew
 end
 
-next1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
+update1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
+
+
+### simulating the CA
+"""
+    simulate(x0, rule; nsteps=100)
+
+Simulate `nsteps` time steps according to `rule` with `X0` as the initial condition.
+Returns a matrix X, where the rows are the state vectors at different time steps.
+"""
+function simulate(x0, rule::UInt8; nsteps=100)
+	n = length(x0)
+    X = zeros(Bool, nsteps+1, n)
+	X[1,:] = x0
+	for t in 1:nsteps
+		x = @view X[t,:]
+		xnew = @view X[t+1,:]
+		update1dca!(xnew, x, rule)
+	end
+    return X
+end
+
+### plotting CA
+#plot(ca_image(X), size=(1000, 1000))
