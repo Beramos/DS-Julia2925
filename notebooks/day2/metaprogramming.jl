@@ -515,7 +515,7 @@ end
 md"""for which we want to add a number of methods to. We can do this programmatically in the following loop:"""
 
 # ╔═╡ 49807d8c-5e6d-11eb-0170-f1419837d958
-for op = (:sin, :cos, :tan, :log, :exp, :log10)
+for op = (:sin, :cos, :tan, :log, :exp, :log)
     @eval Base.$op(a::MyNumber) = MyNumber($op(a.x))
 end
 
@@ -528,11 +528,54 @@ y = MyNumber(π)
 # ╔═╡ 3428d7b8-5e6d-11eb-32bc-af1df0579e60
 sin(x)
 
+# ╔═╡ 18e3753a-5f55-11eb-0a11-47ca6abe9186
+md"This will not work since we only have defined `log` and not `log10`."
+
 # ╔═╡ 2f4fe6ce-5e6c-11eb-1744-2f9534c8b6ba
 log10(y)
 
 # ╔═╡ cae2546a-5e6b-11eb-3fc2-69f9a15107cf
 md"""In this manner, Julia acts as its own preprocessor, and allows code generation from inside the language."""
+
+# ╔═╡ 4d9de330-5f55-11eb-0d89-eb81e6c9ffab
+md"
+Code generation can for instance be used to simplify the creation of a mathematical optimisation problem. In this case, we we'll use the `JuMP` package.
+`JuMP` ('Julia for Mathematical Programming') is an open-source modeling language that is embedded in Julia. It allows users to users formulate various classes of optimization problems (linear, mixed-integer, quadratic, conic quadratic, semidefinite, and nonlinear) with easy-to-read code. `JuMP` also makes advanced optimization techniques easily accessible from a high-level language. 
+
+As a dummy example, let us consider the following linear programming problem:
+
+``\max_{x,y}\,\,x + 2y``
+
+``\text{s.t.}``
+
+``x + y \leq 1``
+
+``0\leq x, y \leq 1``
+
+Which can be transcribed into a `JuMP` model as:
+"
+
+# ╔═╡ 92458f54-5f57-11eb-179f-c749ce06f7e2
+let
+	model = Model(GLPK.Optimizer)
+	@variable(model, 0 <= x <= 1)
+	@variable(model, 0 <= y <= 1)
+	@constraint(model, x + y <= 1)
+	@objective(model, Max, x + 2y)
+	optimize!(model)
+	value(x), value(y), objective_value(model)
+end
+
+# ╔═╡ d1222dcc-5f57-11eb-2c87-77a16ea8e65d
+md"
+Without the macros, the code would be more difficult to read. As an example, check the `macroexpansion` of `@constraint` to see the bunch of code that is generated behind the scenes:
+"
+
+# ╔═╡ 0b1f3542-5f58-11eb-1610-75df3e2a4a76
+let
+	model = Model(GLPK.Optimizer)
+	@macroexpand @constraint(model, x + y <= 1)
+end
 
 # ╔═╡ 10a8532a-5e60-11eb-3331-974e708cb39d
 md"""
@@ -758,37 +801,6 @@ rna = convert(LongRNASeq, dna)
 # ╔═╡ 44e6a33c-5e8b-11eb-23e6-99d769ae271f
 dna.data === rna.data
 
-# ╔═╡ 2e25d78e-5e91-11eb-07a3-2574f1b2c08e
-md"""
-``\max_{x,y}\,\,x + 2y``
-
-``\text{s.t.}``
-
-``x + y \leq 1``
-
-``0\leq x, y \leq 1``
-"""
-
-# ╔═╡ 851112ba-5e92-11eb-1b1d-53e9675ffc2a
-let
-	model = Model(GLPK.Optimizer)
-	@variable(model, 0 <= x <= 1)
-	@variable(model, 0 <= y <= 1)
-	@constraint(model, x + y <= 1)
-	@objective(model, Max, x + 2y)
-	optimize!(model)
-	objective_value(model)
-end
-
-# ╔═╡ ad8e86f8-5e92-11eb-07ef-9fc52e245199
-let
-	model = Model(GLPK.Optimizer)
-	@macroexpand @variable(model, 0 <= x <= 1)
-end
-
-# ╔═╡ e4247250-5e93-11eb-1112-e5528a5b0a3a
-@evalpoly
-
 # ╔═╡ 565e9ee0-5e94-11eb-1225-39434e8cd949
 
 
@@ -896,9 +908,14 @@ end
 # ╟─4ef3f280-5e6d-11eb-2020-b7cd9e6b9c03
 # ╠═53f36f36-5e6d-11eb-3f06-6de0eff4d173
 # ╠═3428d7b8-5e6d-11eb-32bc-af1df0579e60
+# ╟─18e3753a-5f55-11eb-0a11-47ca6abe9186
 # ╠═2f4fe6ce-5e6c-11eb-1744-2f9534c8b6ba
 # ╟─cae2546a-5e6b-11eb-3fc2-69f9a15107cf
-# ╟─10a8532a-5e60-11eb-3331-974e708cb39d
+# ╟─4d9de330-5f55-11eb-0d89-eb81e6c9ffab
+# ╠═92458f54-5f57-11eb-179f-c749ce06f7e2
+# ╟─d1222dcc-5f57-11eb-2c87-77a16ea8e65d
+# ╠═0b1f3542-5f58-11eb-1610-75df3e2a4a76
+# ╠═10a8532a-5e60-11eb-3331-974e708cb39d
 # ╠═d46324d8-5e7a-11eb-005c-f7fec5a39880
 # ╟─d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
 # ╠═e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
@@ -934,10 +951,6 @@ end
 # ╠═928feaa2-5e8c-11eb-3db1-11c326f49e64
 # ╠═416a8a52-5e8b-11eb-12dd-71c4bc68ffdf
 # ╠═44e6a33c-5e8b-11eb-23e6-99d769ae271f
-# ╠═2e25d78e-5e91-11eb-07a3-2574f1b2c08e
-# ╠═851112ba-5e92-11eb-1b1d-53e9675ffc2a
-# ╠═ad8e86f8-5e92-11eb-07ef-9fc52e245199
-# ╠═e4247250-5e93-11eb-1112-e5528a5b0a3a
 # ╠═565e9ee0-5e94-11eb-1225-39434e8cd949
 # ╠═52b173c6-5e94-11eb-37d1-abf9f2bd5900
 # ╠═2e2601b6-5e94-11eb-3613-eb5fee19b6b7
