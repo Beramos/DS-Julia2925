@@ -660,6 +660,11 @@ are not constructed based on run-time data. In this majority of cases, the abili
 expressions as compile-time values is invaluable.
 """
 
+# ╔═╡ 90a672d0-5f5c-11eb-3a62-1b034cd41e67
+md"
+Designing your own custom string literals can be done as such:
+"
+
 # ╔═╡ b4104d12-5e7c-11eb-3e22-a78b74526129
 macro foo_str(str, flag)
     # do stuff
@@ -670,61 +675,53 @@ end
 foo"this is the string"theflag
 
 # ╔═╡ 5069df16-5e7d-11eb-217d-6b740e9b3559
+md"""
+The first example of custom can be found in every notebook in this course! It is the markdown string literal, which allows the usage of Markdown markup language to prettify these lectures!
 
+```julia
+md"I am a Markdown string with glorious **formatting capabilities**."
+```
+I am a Markdown string with glorious *formatting* **capabilities**.
+"""
 
 # ╔═╡ 1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
-
+md"The second example is from the `BioSequences.jl` package. In that bioinformatics package, you can define sequences e.g. DNA and RNA as string literals:
+"
 
 # ╔═╡ 0664eb22-5e7d-11eb-07a6-ed35143bf03f
-
+dna"ACGT"
 
 # ╔═╡ a965bd70-5e7c-11eb-13dd-5fe83950af11
+md"Repetition and concatenation can be performed pretty straightforward:"
 
+# ╔═╡ fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
+repeat(dna"TTAGGG", 10)
 
 # ╔═╡ a157dafc-5e7c-11eb-105d-4db3ee9dbec6
+dna = dna"ACGT" * dna"TGCAA"
 
+# ╔═╡ 0ec9887c-5f5e-11eb-29e5-931881dcb222
+md"Other typical string operations such as pushing new values work as you would expect"
 
-# ╔═╡ 187ce708-5e7b-11eb-0270-d1e370b40a59
-md"""
-Various ideas here below
-"""
+# ╔═╡ 1d4aca5a-5f5e-11eb-23c3-d1ddef4e6ee6
+push!(dna, DNA_A)
 
+# ╔═╡ c4c2137a-5f5d-11eb-1e06-8f5e2b1f1c0e
+md"There exist methods to convert a DNA sequence to its RNA equivalent:"
 
+# ╔═╡ e13fcbbe-5f5d-11eb-2074-fdbc945861e1
+rna = convert(LongRNASeq, dna)
 
-# ╔═╡ ef4eb9ee-5e87-11eb-20f7-61b88f285aef
-md"""
-Things from BioSequences
-"""
+# ╔═╡ 2c1308f4-5f5e-11eb-058f-79cbf7dd23c6
+md"Note that altough the printout of the DNA and RNA object is different because of different nucleotides. The information content is the same, and as such this statement is true:"
 
-# ╔═╡ 0711fef8-5e8b-11eb-3edc-031bc5c0f1f7
-md"""
-	LongDNASeq(i) = i # placeholder for DNA sequence generation
-	
-	remove_newlines(s) = replace(s, r"\r|\n" => "")
+# ╔═╡ fdf46c92-5f5d-11eb-345b-e145c9c2874c
+dna.data === rna.data
 
-	macro dna_str(seq, flag)
-		if flag == "s"
-			return LongDNASeq(remove_newlines(seq))
-		elseif flag == "d"
-			return quote
-				LongDNASeq($(remove_newlines(seq)))
-			end
-		end
-		error("Invalid DNA flag: '$(flag)'")
-	end
+# ╔═╡ 37da420a-5f61-11eb-3688-09e6188165e3
+md"Remember before that we mentioned that you can add a flag to a string literal? In `BioSequences.jl` this has a use case. 
 
-	macro dna_str(seq)
-		return LongDNASeq(remove_newlines(seq))
-	end
-"""
-
-# ╔═╡ aa7e464c-5e8a-11eb-36e1-27b72b340b10
-dna"attGTTT"s
-
-# ╔═╡ cee05374-5e8d-11eb-2a2f-1fe4004fc9e4
-md"""
-If you wanted foo to create a new sequence each time it is called, then you can add a flag to the end of the sequence literal to dictate behaviour: A flag of 's' means 'static': the sequence will be allocated before code is run, as is the default behaviour described above. However providing 'd' flag changes the behaviour: 'd' means 'dynamic': the sequence will be allocated whilst the code is running, and not before. So to change foo so as it creates a new sequence each time it is called, simply add the 'd' flag to the sequence literal:
-"""
+If you have a function that generates a sequence, and you want it to create a new sequence each time it is called, then you can add a flag to the end of the sequence literal to dictate behaviour: A flag of 's' means 'static': the sequence will be allocated before code is run, as is the default behaviour. However providing 'd' flag changes the behaviour: 'd' means 'dynamic': the sequence will be allocated whilst the code is running, and not before. So to change foo so as it creates a new sequence each time it is called, simply add the 'd' flag to the sequence literal:"
 
 # ╔═╡ d9f18616-5e8d-11eb-1b1a-3bcc749fb467
 function getdna_dynamic()
@@ -738,9 +735,12 @@ getdna_dynamic()
 # ╔═╡ f13dd22a-5e8d-11eb-1def-137de66123ba
 getdna_dynamic()
 
+# ╔═╡ be11ec9a-5f61-11eb-374a-c96489ea582d
+md"Output of `getdna_dynamic()` stays the same!"
+
 # ╔═╡ f44d757e-5e8d-11eb-18f1-719d3c7b8688
 function getdna_static()
-	s = dna"CTT"s     # 'd' flag appended to the string literal.
+	s = dna"CTT"s     # 's' flag appended to the string literal.
 	push!(s, DNA_A)
 end
 
@@ -754,30 +754,6 @@ getdna_static()
 md"""
 Be careful when you are using sequence literals inside of functions, and inside the bodies of things like for loops. And if you use them and are unsure, use the 's' and 'd' flags to ensure the behaviour you get is the behaviour you intend.
 """
-
-# ╔═╡ 26573800-5e8b-11eb-2f34-85ac38238fed
-dna"ACGT" * dna"TGCAA"
-
-# ╔═╡ 29ab3ba0-5e8b-11eb-158a-3343a4049ebd
-repeat(dna"TA", 10)
-
-# ╔═╡ 35026c60-5e8b-11eb-0892-f357f7d92ea6
-dna = dna"TTANGTAGACCG"
-
-# ╔═╡ 928feaa2-5e8c-11eb-3db1-11c326f49e64
-push!(dna, DNA_A)
-
-# ╔═╡ 416a8a52-5e8b-11eb-12dd-71c4bc68ffdf
-rna = convert(LongRNASeq, dna)
-
-# ╔═╡ 44e6a33c-5e8b-11eb-23e6-99d769ae271f
-dna.data === rna.data
-
-# ╔═╡ 565e9ee0-5e94-11eb-1225-39434e8cd949
-
-
-# ╔═╡ 52b173c6-5e94-11eb-37d1-abf9f2bd5900
-
 
 # ╔═╡ 2e2601b6-5e94-11eb-3613-eb5fee19b6b7
 
@@ -895,32 +871,29 @@ dna.data === rna.data
 # ╠═f1d24ba2-5e7a-11eb-010a-f543cfc306b5
 # ╟─f838762c-5e7a-11eb-000a-e963fab5e97d
 # ╠═149c1c12-5e7b-11eb-297d-6da57f45891b
-# ╠═780da60e-5e7c-11eb-0c1a-55be73da188f
+# ╟─780da60e-5e7c-11eb-0c1a-55be73da188f
+# ╟─90a672d0-5f5c-11eb-3a62-1b034cd41e67
 # ╠═b4104d12-5e7c-11eb-3e22-a78b74526129
 # ╠═20393e86-5e7d-11eb-18e3-613890472903
 # ╠═5069df16-5e7d-11eb-217d-6b740e9b3559
-# ╠═1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
+# ╟─1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
 # ╠═0664eb22-5e7d-11eb-07a6-ed35143bf03f
-# ╠═a965bd70-5e7c-11eb-13dd-5fe83950af11
+# ╟─a965bd70-5e7c-11eb-13dd-5fe83950af11
+# ╠═fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
 # ╠═a157dafc-5e7c-11eb-105d-4db3ee9dbec6
-# ╠═187ce708-5e7b-11eb-0270-d1e370b40a59
-# ╠═ef4eb9ee-5e87-11eb-20f7-61b88f285aef
-# ╠═0711fef8-5e8b-11eb-3edc-031bc5c0f1f7
-# ╠═aa7e464c-5e8a-11eb-36e1-27b72b340b10
-# ╟─cee05374-5e8d-11eb-2a2f-1fe4004fc9e4
+# ╟─0ec9887c-5f5e-11eb-29e5-931881dcb222
+# ╠═1d4aca5a-5f5e-11eb-23c3-d1ddef4e6ee6
+# ╟─c4c2137a-5f5d-11eb-1e06-8f5e2b1f1c0e
+# ╠═e13fcbbe-5f5d-11eb-2074-fdbc945861e1
+# ╟─2c1308f4-5f5e-11eb-058f-79cbf7dd23c6
+# ╠═fdf46c92-5f5d-11eb-345b-e145c9c2874c
+# ╟─37da420a-5f61-11eb-3688-09e6188165e3
 # ╠═d9f18616-5e8d-11eb-1b1a-3bcc749fb467
 # ╠═ea3da4dc-5e8d-11eb-0910-091b926aea58
 # ╠═f13dd22a-5e8d-11eb-1def-137de66123ba
+# ╟─be11ec9a-5f61-11eb-374a-c96489ea582d
 # ╠═f44d757e-5e8d-11eb-18f1-719d3c7b8688
 # ╠═fa310fdc-5e8d-11eb-024b-7ded3e213112
 # ╠═1acb02d4-5e8e-11eb-232c-f756e92c3f97
 # ╟─2dcb4600-5e8e-11eb-093e-59eb79f0cf20
-# ╠═26573800-5e8b-11eb-2f34-85ac38238fed
-# ╠═29ab3ba0-5e8b-11eb-158a-3343a4049ebd
-# ╠═35026c60-5e8b-11eb-0892-f357f7d92ea6
-# ╠═928feaa2-5e8c-11eb-3db1-11c326f49e64
-# ╠═416a8a52-5e8b-11eb-12dd-71c4bc68ffdf
-# ╠═44e6a33c-5e8b-11eb-23e6-99d769ae271f
-# ╠═565e9ee0-5e94-11eb-1225-39434e8cd949
-# ╠═52b173c6-5e94-11eb-37d1-abf9f2bd5900
 # ╠═2e2601b6-5e94-11eb-3613-eb5fee19b6b7
