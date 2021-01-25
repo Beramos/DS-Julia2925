@@ -218,4 +218,14 @@ function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
   return getbinarydigit(rule, 4l+2s+1r)
 end
 
+function update1dca!(xnew, x, rule::Integer)
+	n = length(x)
+	xnew[1] = nextstate(x[end], x[1], x[2], rule)
+	xnew[end] = nextstate(x[end-1], x[end], x[1], rule)
+	for i in 2:n-1
+		xnew[i] = nextstate(x[i-1], x[i], x[i+1], rule)
+	end
+	return xnew
+end
 
+next1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
