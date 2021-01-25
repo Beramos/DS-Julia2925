@@ -618,13 +618,15 @@ regular expression occurs in a loop:
 """
 
 # ╔═╡ f1d24ba2-5e7a-11eb-010a-f543cfc306b5
-for line = lines
-    m = match(r"^\s*(?:#|$)", line)
-    if m === nothing
-        # non-comment
-    else
-        # comment
-    end
+PlutoUI.with_terminal() do
+	for line ∈ ["first", "sec#nd", "third"]
+		m = match(r"#", line)
+		if m === nothing
+			println("nothing found")
+		else
+			println("found something")
+		end
+	end
 end
 
 # ╔═╡ f838762c-5e7a-11eb-000a-e963fab5e97d
@@ -635,14 +637,14 @@ In order to accomplish this without macros, one would have to write this loop li
 """
 
 # ╔═╡ 149c1c12-5e7b-11eb-297d-6da57f45891b
-begin 
-	re = Regex("^\\s*(?:#|\$)")
-	for line = lines
+PlutoUI.with_terminal() do
+	re = Regex("#")
+	for line ∈ ["first", "sec#nd", "third"]
 		m = match(re, line)
 		if m === nothing
-			# non-comment
+			println("nothing found")
 		else
-			# comment
+			println("found something")
 		end
 	end
 end
@@ -653,39 +655,9 @@ Moreover, if the compiler could not determine that the regex object was constant
 certain optimizations might not be possible, making this version still less efficient than the
 more convenient literal form above. Of course, there are still situations where the non-literal
 form is more convenient: if one needs to interpolate a variable into the regular expression, one
-must take this more verbose approach; in cases where the regular expression pattern itself is
-dynamic, potentially changing upon each loop iteration, a new regular expression object must be
-constructed on each iteration. In the vast majority of use cases, however, regular expressions
+must take this more verbose approach. In the vast majority of use cases, however, regular expressions
 are not constructed based on run-time data. In this majority of cases, the ability to write regular
 expressions as compile-time values is invaluable.
-
-Like non-standard string literals, non-standard command literals exist using a prefixed variant
-of the command literal syntax. The command literal ```custom`literal` ``` is parsed as `@custom_cmd "literal"`.
-Julia itself does not contain any non-standard command literals, but packages can make use of
-this syntax. Aside from the different syntax and the `_cmd` suffix instead of the `_str` suffix,
-non-standard command literals behave exactly like non-standard string literals.
-
-In the event that two modules provide non-standard string or command literals with the same name,
-it is possible to qualify the string or command literal with a module name. For instance, if both
-`Foo` and `Bar` provide non-standard string literal `@x_str`, then one can write `Foo.x"literal"`
-or `Bar.x"literal"` to disambiguate between the two.
-
-The mechanism for user-defined string literals is deeply, profoundly powerful. Not only are Julia's
-non-standard literals implemented using it, but also the command literal syntax (``` `echo "Hello, $person"` ```)
-is implemented with the following innocuous-looking macro:
-"""
-
-# ╔═╡ 887eca0c-5e7c-11eb-060e-b961312f92bf
-macro cmd(str)
-    :(cmd_gen($(shell_parse(str)[1])))
-end
-
-# ╔═╡ 979dd942-5e7c-11eb-3565-e586ad505f7e
-md"""
-Of course, a large amount of complexity is hidden in the functions used in this macro definition,
-but they are just functions, written entirely in Julia. You can read their source and see precisely
-what they do -- and all they do is construct expression objects to be inserted into your program's
-syntax tree.
 """
 
 # ╔═╡ b4104d12-5e7c-11eb-3e22-a78b74526129
@@ -915,7 +887,7 @@ dna.data === rna.data
 # ╠═92458f54-5f57-11eb-179f-c749ce06f7e2
 # ╟─d1222dcc-5f57-11eb-2c87-77a16ea8e65d
 # ╠═0b1f3542-5f58-11eb-1610-75df3e2a4a76
-# ╠═10a8532a-5e60-11eb-3331-974e708cb39d
+# ╟─10a8532a-5e60-11eb-3331-974e708cb39d
 # ╠═d46324d8-5e7a-11eb-005c-f7fec5a39880
 # ╟─d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
 # ╠═e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
@@ -923,9 +895,7 @@ dna.data === rna.data
 # ╠═f1d24ba2-5e7a-11eb-010a-f543cfc306b5
 # ╟─f838762c-5e7a-11eb-000a-e963fab5e97d
 # ╠═149c1c12-5e7b-11eb-297d-6da57f45891b
-# ╟─780da60e-5e7c-11eb-0c1a-55be73da188f
-# ╠═887eca0c-5e7c-11eb-060e-b961312f92bf
-# ╟─979dd942-5e7c-11eb-3565-e586ad505f7e
+# ╠═780da60e-5e7c-11eb-0c1a-55be73da188f
 # ╠═b4104d12-5e7c-11eb-3e22-a78b74526129
 # ╠═20393e86-5e7d-11eb-18e3-613890472903
 # ╠═5069df16-5e7d-11eb-217d-6b740e9b3559
