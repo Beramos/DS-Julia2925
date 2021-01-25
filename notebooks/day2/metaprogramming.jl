@@ -227,10 +227,16 @@ eval(:(1 + 2))
 md"""
 ## Macros
 
+Not that we have an understanding of the basic concepts of code representation in julia, we can introduce the core concept of this notebook: macros. 
 Macros provide a method to include generated code in the final body of a program. A macro maps
 a tuple of arguments to a returned *expression*, and the resulting expression is compiled directly
 rather than requiring a runtime `eval` call. Macro arguments may include expressions,
-literal values, and symbols.
+literal values, and symbols. 
+
+In the following examples, we will show that macros allow us to
+1. modify code before it runs
+2. elegantly add new features or synthax
+3. process strings at compile time instead of runtime
 
 ### Basics
 
@@ -314,7 +320,6 @@ macro twostep(arg)
 	str1 = "I execute at runtime. "
 	str2 = "The argument is: "
 	message = str1 * str2
-	#return :(println("I execute at runtime. The argument is: ", $arg))
 	return :(println($message, $arg))
 end
 
@@ -359,6 +364,8 @@ md"""
 ### Building an advanced macro
 
 Here is a simplified definition of Julia's `@assert` macro, which checks if expression is true:
+
+(`... ? ... : ...` is the ternary operator seen in `01-basics.jl` )
 """
 
 # ╔═╡ e61381aa-5e66-11eb-3347-5d26b61e6c17
@@ -759,7 +766,7 @@ Be careful when you are using sequence literals inside of functions, and inside 
 
 
 # ╔═╡ Cell order:
-# ╠═42e620aa-5f4c-11eb-2ebf-85814cf720e7
+# ╟─42e620aa-5f4c-11eb-2ebf-85814cf720e7
 # ╟─31c1e25e-5e53-11eb-2467-9153d30962d5
 # ╟─4ab33c0e-5e53-11eb-2e63-2dd6f06de3ba
 # ╠═e76d8f04-5e53-11eb-26df-db496622642d
