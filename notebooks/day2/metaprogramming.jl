@@ -126,10 +126,10 @@ their string representations together:
 :foo == Symbol("foo")
 
 # ╔═╡ f5fac50e-5e54-11eb-2ff9-cf7e30a4a8ad
-Symbol("func",10)
+Symbol("func", 10)
 
 # ╔═╡ fe35b31e-5e54-11eb-258e-29913f1e8723
-Symbol(:var,'_',"sym")
+Symbol(:var, '_', "sym")
 
 # ╔═╡ 0464f1be-5e55-11eb-34df-ef1217012663
 md"""Note that to use `:` syntax, the symbol's name must be a valid identifier.
@@ -150,7 +150,7 @@ on the enclosed code. Here is an example of the short form used to quote an arit
 """
 
 # ╔═╡ 917a579c-5e5a-11eb-3fe6-cb0dcad5e4e6
-ex = :(a+b*c+1)
+ex = :(a + b * c + 1)
 
 # ╔═╡ 82d3220a-5e5a-11eb-3c49-d5e7afb1af2a
 typeof(ex)
@@ -197,7 +197,7 @@ Notice that the `$` interpolation syntax allows inserting only a single expressi
 enclosing expression.
 Occasionally, you have an array of expressions and need them all to become arguments of
 the surrounding expression.
-This can be done with the syntax `$(xs...)`.
+This can be done with the syntax `$(args...)`.
 
 For example, the following code generates a function call where the number of arguments is
 determined programmatically:
@@ -331,11 +331,14 @@ end
 md"""
 ### Macro invocation
 
-Macros are invoked with the following general syntax:"""
+Macros are invoked with the following general syntax:
 
-# ╔═╡ 28e30e52-5e66-11eb-1b8d-470dd79bb2e7
-# @name expr1 expr2 ...
-# @name(expr1, expr2, ...)
+```julia
+@name expr1 expr2 ...
+@name(expr1, expr2, ...)
+```
+
+"""
 
 # ╔═╡ 29a2c0ee-5e66-11eb-2194-6f1c3cef563a
 md"""
@@ -343,10 +346,11 @@ Note the distinguishing `@` before the macro name and the lack of commas between
 expressions in the first form, and the lack of whitespace after `@name` in the second form. The
 two styles should not be mixed. For example, the following syntax is different from the examples
 above; it passes the tuple `(expr1, expr2, ...)` as one argument to the macro:
-"""
 
-# ╔═╡ 3979de26-5e66-11eb-3de4-f9800ac1a24d
-# @name (expr1, expr2, ...)
+```julia
+@name (expr1, expr2, ...)
+```
+"""
 
 # ╔═╡ a1e86478-5e66-11eb-2ef9-6d460e707013
 md"""
@@ -472,7 +476,7 @@ macro time(ex)
         local t0 = time_ns()
         local val = $ex
         local t1 = time_ns()
-        println("elapsed time: ", (t1-t0)/1e9, " seconds")
+        println("elapsed time: ", (t1-t0) / 1e9, " seconds")
         val
     end
 end
@@ -573,7 +577,7 @@ end
 md"""for which we want to add a number of methods to. We can do this programmatically in the following loop:"""
 
 # ╔═╡ 49807d8c-5e6d-11eb-0170-f1419837d958
-for op = (:sin, :cos, :tan, :log, :exp)
+for op = (:sin, :cos, :tan, :log, :exp, :log10)
     @eval Base.$op(a::MyNumber) = MyNumber($op(a.x))
 end
 
@@ -627,7 +631,7 @@ Regex("^\\s*(?:#|\$)")
 # ╔═╡ ec73cd70-5e7a-11eb-0285-6b1fabd1289d
 md"""
 Not only is the string literal form shorter and far more convenient, but it is also more efficient:
-since the regular expression is compiled and the `Regex` object is actually created *when the code is compiled*,
+since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*,
 the compilation occurs only once, rather than every time the code is executed. Consider if the
 regular expression occurs in a loop:
 """
@@ -917,9 +921,7 @@ end
 # ╠═17ad84aa-5e63-11eb-3d83-8fd5d37f9ff8
 # ╠═f1969888-5e65-11eb-18a3-879d2f87b447
 # ╟─0613f620-5e66-11eb-08d9-01dd3a403321
-# ╠═28e30e52-5e66-11eb-1b8d-470dd79bb2e7
 # ╟─29a2c0ee-5e66-11eb-2194-6f1c3cef563a
-# ╠═3979de26-5e66-11eb-3de4-f9800ac1a24d
 # ╟─a1e86478-5e66-11eb-2ef9-6d460e707013
 # ╠═e61381aa-5e66-11eb-3347-5d26b61e6c17
 # ╟─a43490de-5e67-11eb-253e-f7455ade3ffe
