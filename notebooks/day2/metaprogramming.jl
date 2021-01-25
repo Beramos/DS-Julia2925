@@ -3,10 +3,14 @@
 
 using Markdown
 using InteractiveUtils
-using PlutoUI
-using BioSequences
-using JuMP
-using GLPK
+
+# ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
+begin 
+	using PlutoUI
+	using BioSequences
+	using JuMP
+	using GLPK
+end
 
 # ╔═╡ 31c1e25e-5e53-11eb-2467-9153d30962d5
 md"""
@@ -307,18 +311,22 @@ Note that in this case, you need to look at your REPL to see the output. A macro
 # ╔═╡ cabb3cdc-5e62-11eb-2479-bb8337c05292
 macro twostep(arg)
 	println("I execute at parse time. The argument is: ", arg)
-	return :(println("I execute at runtime. The argument is: ", $arg))
+	str1 = "I execute at runtime. "
+	str2 = "The argument is: "
+	message = str1 * str2
+	#return :(println("I execute at runtime. The argument is: ", $arg))
+	return :(println($message, $arg))
 end
+
+# ╔═╡ f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
+md"""Note that the computation of message is compiled away if we expand the macro!"""
 
 # ╔═╡ 01feeca0-5e63-11eb-11a0-1b66a92127d1
 ex_twostep = @macroexpand @twostep :(1, 2, 3)
 
-# ╔═╡ 17ad84aa-5e63-11eb-3d83-8fd5d37f9ff8
-ex_twostep
-
 # ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
 PlutoUI.with_terminal() do
-	eval(ex_twostep)
+	dump(ex_twostep)
 end
 
 # ╔═╡ 0613f620-5e66-11eb-08d9-01dd3a403321
@@ -442,70 +450,6 @@ So now instead of getting a plain string in `msg_body`, the macro is receiving a
 
 The `@assert` macro makes great use of splicing into quoted expressions to simplify the manipulation of expressions inside the macro body.
 """
-
-# ╔═╡ 9b56f14a-5e68-11eb-2f0a-13520566ee75
-md"""
-### Hygiene
-
-An issue that arises in more complex macros is that of [hygiene](https://en.wikipedia.org/wiki/Hygienic_macro).
-In short, macros must ensure that the variables they introduce in their returned expressions do
-not accidentally clash with existing variables in the surrounding code they expand into. Conversely,
-the expressions that are passed into a macro as arguments are often *expected* to evaluate in
-the context of the surrounding code, interacting with and modifying the existing variables. Another
-concern arises from the fact that a macro may be called in a different module from where it was
-defined. In this case we need to ensure that all global variables are resolved to the correct
-module. Julia already has a major advantage over languages with textual macro expansion (like
-C) in that it only needs to consider the returned expression. All the other variables (such as
-`msg` in `@assert` above) follow the normal scoping block behavior.
-
-To demonstrate these issues, let us consider writing a `@time` macro that takes an expression
-as its argument, records the time, evaluates the expression, records the time again, prints the
-difference between the before and after times, and then has the value of the expression as its
-final value. The macro might look like this:
-"""
-
-# ╔═╡ fd0bc950-5e69-11eb-3879-21c95a5603f8
-macro time(ex)
-    return quote
-        local t0 = time_ns()
-        local val = $ex
-        local t1 = time_ns()
-        println("elapsed time: ", (t1-t0) / 1e9, " seconds")
-        val
-    end
-end
-
-# ╔═╡ 0538097c-5e6a-11eb-0de0-a75344332337
-md"""
-Here, we want `t0`, `t1`, and `val` to be private temporary variables, and we want `time_ns` to refer
-to the `time_ns` function in Julia Base, not to any `time_ns` variable the user
-might have (the same applies to `println`). Imagine the problems that could occur if the user
-expression `ex` also contained assignments to a variable called `t0`, or defined its own `time_ns`
-variable. We might get errors, or mysteriously incorrect behavior.
-
-Julia's macro expander solves these problems in the following way. First, variables within a macro
-result are classified as either local or global. A variable is considered local if it is assigned
-to (and not declared global), declared local, or used as a function argument name. Otherwise,
-it is considered global. Local variables are then renamed to be unique (using the `gensym` function, which generates new symbols), and global variables are resolved within the macro definition
-environment. Therefore both of the above concerns are handled; the macro's locals will not conflict
-with any user variables, and `time_ns` and `println` will refer to the Julia Base definitions.
-
-One problem remains however. Consider the following use of this macro:
-"""
-
-# ╔═╡ 1d69dd34-5e6a-11eb-19b0-492beed921ec
-begin 
-	module MyModule
-	import Base.@time
-
-	time_ns() = 3 # compute something
-
-	@time time_ns()
-	end
-end
-
-# ╔═╡ 16474a2e-5e6b-11eb-2a95-8b73cafaa199
-NOT FINISHED
 
 # ╔═╡ 43a19ace-5e6b-11eb-005b-b7d2d9a46878
 md"""
@@ -855,6 +799,7 @@ end
 
 
 # ╔═╡ Cell order:
+# ╠═42e620aa-5f4c-11eb-2ebf-85814cf720e7
 # ╟─31c1e25e-5e53-11eb-2467-9153d30962d5
 # ╟─4ab33c0e-5e53-11eb-2e63-2dd6f06de3ba
 # ╠═e76d8f04-5e53-11eb-26df-db496622642d
@@ -910,8 +855,8 @@ end
 # ╠═536addec-5e61-11eb-1a9d-d7f2c190d6c2
 # ╟─855412b2-5e61-11eb-3aba-bb862489414e
 # ╠═cabb3cdc-5e62-11eb-2479-bb8337c05292
+# ╟─f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
 # ╠═01feeca0-5e63-11eb-11a0-1b66a92127d1
-# ╠═17ad84aa-5e63-11eb-3d83-8fd5d37f9ff8
 # ╠═f1969888-5e65-11eb-18a3-879d2f87b447
 # ╟─0613f620-5e66-11eb-08d9-01dd3a403321
 # ╟─29a2c0ee-5e66-11eb-2194-6f1c3cef563a
@@ -933,11 +878,6 @@ end
 # ╠═715464cc-5e68-11eb-3e1a-977db04a7db6
 # ╠═7588018e-5e68-11eb-3be2-b97ce124d6bf
 # ╟─84771eaa-5e68-11eb-0684-cf1a3118d10b
-# ╟─9b56f14a-5e68-11eb-2f0a-13520566ee75
-# ╠═fd0bc950-5e69-11eb-3879-21c95a5603f8
-# ╟─0538097c-5e6a-11eb-0de0-a75344332337
-# ╠═1d69dd34-5e6a-11eb-19b0-492beed921ec
-# ╠═16474a2e-5e6b-11eb-2a95-8b73cafaa199
 # ╟─43a19ace-5e6b-11eb-005b-b7d2d9a46878
 # ╠═508167c4-5e6b-11eb-2587-b967b79cf74c
 # ╠═59f86d98-5e6b-11eb-3259-7312501b70bf
