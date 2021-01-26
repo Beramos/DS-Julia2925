@@ -42,19 +42,37 @@ The type of objects can be assessed using the function `typeof`. For collections
 a = 42; s = "mice"; n = 0.9; A = [1 2; 3 4];
 
 # ╔═╡ bd994d64-600e-11eb-1ab3-ed6317b7c211
-
+begin 
+	QuestionBlock(
+		title=md"**Task:**",
+		description = md"""
+		Check the type of the `a`, `s`, `n` and `A`
+		
+		```julia
+		typeof(a)
+		
+		typeof(s)
+		
+		typeof(n)
+		
+		typeof(A)
+		
+		```
+		"""
+	)
+end
 
 # ╔═╡ b844d568-4e73-11eb-3de9-4158b0bdca12
-#typeof(a)
+
 
 # ╔═╡ c662744a-4e73-11eb-1bfc-6daaf7282285
-#typeof(s)
+
 
 # ╔═╡ cae803e2-4e73-11eb-13e0-23abccf86bac
-#typeof(n)
+
 
 # ╔═╡ cc606026-4e73-11eb-3576-5d301a771a5a
-#typeof(A)
+
 
 # ╔═╡ d3803112-4e73-11eb-2018-f72ffb7f6ec6
 md"These are all *concrete types*. Julia types are part of a hierarchical type system, forming a single, fully connected type graph. The concrete types are the leaves of this tree, whereas the inner nodes are *abstract types*. As hinted by the name, these are abstract and cannot be instantiated. They, however, help with conceptually ordering the type system."
@@ -71,44 +89,99 @@ md"Concrete types (should) have a well-defined memory layout, for example `Float
 # ╔═╡ de3de7fc-4e73-11eb-2ff6-1560481f7ee5
 md"We can find the supertype (ancestor) of a concrete or abstract type using the function `supertype`."
 
+# ╔═╡ 910c8e0e-600f-11eb-2558-57040714937b
+begin 
+	QuestionBlock(
+		title=md"**Task:**",
+		description = md"""
+		Check the supertype of the following concrete and abstract types,
+		
+		```julia
+		supertype(Int8)
+
+		supertype(Float64)
+
+		supertype(AbstractFloat)
+
+		supertype(Real)
+
+		supertype(Number)
+
+		supertype(Any)
+		```
+		"""
+	)
+end
+
 # ╔═╡ e1c8cf4a-4e73-11eb-27be-d702064a0182
-supertype(Int8)
+
 
 # ╔═╡ e56a46c6-4e73-11eb-1748-1b6fe5ab0376
-supertype(Float64)
+
 
 # ╔═╡ e89adcaa-4e73-11eb-1ed8-e9c89ca633f6
-supertype(AbstractFloat)
+
 
 # ╔═╡ ec2ab2be-4e73-11eb-1a22-010439761432
-supertype(Real)
+
 
 # ╔═╡ efa205b4-4e73-11eb-1647-e9dcab5f7b7a
-supertype(Number)
+
 
 # ╔═╡ f3b5a778-4e73-11eb-1d3c-11ae19713eca
-supertype(Any)
+
 
 # ╔═╡ a0cecb24-4e74-11eb-3634-cd8dd628e9ec
-md"See how all the numbers are hierarchically represented? Note that any type is always a subtype of `Any`. We can check if an object is (sub)type using the function `isa`."
+md"See how all the numbers are hierarchically represented? Note that any type is always a subtype of `Any`. We can check if an object is (sub)type using the function `isa` or use the `<:` operator."
+
+# ╔═╡ 200d8d36-6012-11eb-0171-8bc2511e18f1
+begin 
+	QuestionBlock(
+		title=md"**Task:**",
+		description = md"""
+		Predict the outcome of the following statements,
+		
+		```julia
+		Float64 <: AbstractFloat
+
+		Float16 <: AbstractFloat
+
+		AbstractFloat <: Number
+
+		Int <: Number
+
+		Int <: AbstractFloat
+
+		Integer isa Int
+
+		```
+		""",
+		hints = [
+			hint(md"If you are confused by the last statement, read the next section.")
+		]
+	)
+end
 
 # ╔═╡ b31fe65a-4e74-11eb-0414-35f2be687c7f
-Float64 <: AbstractFloat
+
 
 # ╔═╡ c2ac0c48-4e74-11eb-10b0-91ad620fefcd
-Float16 <: AbstractFloat
+
 
 # ╔═╡ c5208cce-4e74-11eb-0615-135b510a9e8d
-AbstractFloat <: Number
+
 
 # ╔═╡ c817296a-4e74-11eb-0994-972871114f02
-Int <: Number
+
 
 # ╔═╡ cb066442-4e74-11eb-35e7-ed38d4bd8bbf
-Int <: AbstractFloat
+
 
 # ╔═╡ ce3d5380-4e74-11eb-3d9d-5f34cbbae118
-Integer <: Int
+
+
+# ╔═╡ 66343826-6012-11eb-109c-17c7a582cbc8
+
 
 # ╔═╡ 34ca6158-4e75-11eb-3d51-330952c9b3dd
 md"We can check the entire subtree of a type using the function `subtypetree`"
@@ -137,7 +210,7 @@ Changing a variable `x` into a different type `T` can be done using the function
 convert(Float64, 42)
 
 # ╔═╡ 704b2ebe-4e78-11eb-1583-d10e0aeb2b8d
-Float64(42)  # works usually as well
+Float64(42)  # for most types this works as well
 
 # ╔═╡ c3c40df2-4e78-11eb-3d4a-5fdfdf173da3
 Int8(42)
@@ -145,11 +218,8 @@ Int8(42)
 # ╔═╡ cd32e96c-4e78-11eb-0b48-5767421c7875
 Float32(π)
 
-# ╔═╡ dc1c8294-4e78-11eb-1400-afa8e5ac8939
-md"When designing new types, one often also implements custom `convert` methods."
-
 # ╔═╡ 40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
-md"We have seen that you can add any type of float with any type of integer (ditto for vectors and arrays with different types. How does this work? Julia uses *promotion* to cast two inputs in the more general type. For example, compare adding a `Float64` with an `Int`."
+md"We have seen that you can add any type of float with any type of integer (ditto for vectors and arrays with different types but how does this work? Julia uses *promotion* to cast two inputs in the more general type. For example, compare adding a `Float64` with an `Int`."
 
 # ╔═╡ 99228eee-5b24-11eb-385e-7507ca20ae0e
 promote(7.9, 79)
@@ -171,9 +241,9 @@ Of course, this also works with more complex composite types, such as matrices:
 
 # ╔═╡ aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 md"""
-When designing new types, one often also implements custom `convert` methods.
+When designing new types, one also often has to implement custom `convert` methods since it is not always clear how to convert different types.
 
-When reading files, it is often useful to interpret parts of the strings as differnt data types such as numbers. This can be done using the function `parse` that works similarly to `convert`.
+When reading files, it is often useful to interpret parts of the strings as different datatypes such as numbers. This can be done using the function `parse` that works similarly to `convert`.
 """
 
 # ╔═╡ 815b0436-4e78-11eb-13d4-0dc6531e34f2
@@ -182,12 +252,35 @@ parse(Int, "42")
 # ╔═╡ 570c85bc-4e79-11eb-0249-891cf205d623
 parse(Float64, "0.999")
 
-# ╔═╡ 9193f988-4e79-11eb-05bc-058e9edb8e35
-md"Below is a bunch of numbers as a text string. Can you compute their sum?"
+# ╔═╡ 370d59fc-6013-11eb-0918-715fb28f9056
+
 
 # ╔═╡ 6756d6ac-4e79-11eb-21ab-4776195c9d3b
 bunchofnumbers = "1.728002758512114, 0.45540258865644284, 1.4067738604851092, 1.6549474922755167, -0.5281073122489854, 2.219250973007533, 0.8195027302254512, 1.8833469318073521, 0.7429034224663096, -0.8127686064960085, -0.14337850083375886, -1.477193046160141, 0.024525761924498457, 0.16097115910472956, -0.39278880092280993, 1.3988081686729814, -1.3316370350161346, 0.2791510437718087, 1.9834455917052212, -0.8616791621501649
 "
+
+# ╔═╡ 4495802e-6013-11eb-22fa-03f635d30a7b
+begin 
+	q_sparse = Question(
+		validators=@safe[
+			sumofbunchofnumbers == Solutions.bunchofnumbers_parser(bunchofnumbers) 
+		]
+	)
+	
+	qb_sparse = QuestionBlock(
+		title=md"**Question: string parsing**",
+		description = md"""
+		Below are a bunch of numbers in a text string. Can you compute their sum `(Float64)`?
+		
+		""",
+		questions = [q_sparse],
+		hints = [
+			hint(md" `rstrip` is a handy function."),
+			hint(md" `split` is a handy function."),
+		]
+	)
+	validate(qb_sparse, tracker)
+end
 
 # ╔═╡ e6f31ad8-4e79-11eb-11f4-2936cb039f8d
 parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
@@ -439,7 +532,7 @@ I think this might be removed?
 # ╠═4ec271b0-4e73-11eb-2660-6b8bd637d7ee
 # ╠═a1f2d06e-4e73-11eb-3afd-1353def71700
 # ╠═c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
-# ╠═bd994d64-600e-11eb-1ab3-ed6317b7c211
+# ╟─bd994d64-600e-11eb-1ab3-ed6317b7c211
 # ╠═b844d568-4e73-11eb-3de9-4158b0bdca12
 # ╠═c662744a-4e73-11eb-1bfc-6daaf7282285
 # ╠═cae803e2-4e73-11eb-13e0-23abccf86bac
@@ -449,6 +542,7 @@ I think this might be removed?
 # ╠═f533012c-4e78-11eb-0f45-3b47f088c9c6
 # ╠═f69d89ba-4e73-11eb-3ab9-9179ea7e3217
 # ╠═de3de7fc-4e73-11eb-2ff6-1560481f7ee5
+# ╟─910c8e0e-600f-11eb-2558-57040714937b
 # ╠═e1c8cf4a-4e73-11eb-27be-d702064a0182
 # ╠═e56a46c6-4e73-11eb-1748-1b6fe5ab0376
 # ╠═e89adcaa-4e73-11eb-1ed8-e9c89ca633f6
@@ -456,12 +550,14 @@ I think this might be removed?
 # ╠═efa205b4-4e73-11eb-1647-e9dcab5f7b7a
 # ╠═f3b5a778-4e73-11eb-1d3c-11ae19713eca
 # ╠═a0cecb24-4e74-11eb-3634-cd8dd628e9ec
+# ╟─200d8d36-6012-11eb-0171-8bc2511e18f1
 # ╠═b31fe65a-4e74-11eb-0414-35f2be687c7f
 # ╠═c2ac0c48-4e74-11eb-10b0-91ad620fefcd
 # ╠═c5208cce-4e74-11eb-0615-135b510a9e8d
 # ╠═c817296a-4e74-11eb-0994-972871114f02
 # ╠═cb066442-4e74-11eb-35e7-ed38d4bd8bbf
 # ╠═ce3d5380-4e74-11eb-3d9d-5f34cbbae118
+# ╟─66343826-6012-11eb-109c-17c7a582cbc8
 # ╠═34ca6158-4e75-11eb-3d51-330952c9b3dd
 # ╠═8fae9e4a-4e75-11eb-0346-377e9f09ecce
 # ╠═dc511e7e-4e75-11eb-1fcc-c5c98e8613a1
@@ -470,7 +566,6 @@ I think this might be removed?
 # ╠═704b2ebe-4e78-11eb-1583-d10e0aeb2b8d
 # ╠═c3c40df2-4e78-11eb-3d4a-5fdfdf173da3
 # ╠═cd32e96c-4e78-11eb-0b48-5767421c7875
-# ╠═dc1c8294-4e78-11eb-1400-afa8e5ac8939
 # ╠═40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
 # ╠═99228eee-5b24-11eb-385e-7507ca20ae0e
 # ╠═ba39991a-5b24-11eb-260b-439bcde4c153
@@ -480,7 +575,8 @@ I think this might be removed?
 # ╠═aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 # ╠═815b0436-4e78-11eb-13d4-0dc6531e34f2
 # ╠═570c85bc-4e79-11eb-0249-891cf205d623
-# ╠═9193f988-4e79-11eb-05bc-058e9edb8e35
+# ╠═370d59fc-6013-11eb-0918-715fb28f9056
+# ╠═4495802e-6013-11eb-22fa-03f635d30a7b
 # ╠═6756d6ac-4e79-11eb-21ab-4776195c9d3b
 # ╠═e6f31ad8-4e79-11eb-11f4-2936cb039f8d
 # ╠═03766a5c-4e75-11eb-12ad-cb2e9468e0d2
