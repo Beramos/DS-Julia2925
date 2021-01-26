@@ -657,9 +657,26 @@ play(Scissors, Rock)
 # ╔═╡ 925e2f40-4e7d-11eb-0bd2-f91913c5a23e
 play(Scissors, Paper)
 
-# ╔═╡ 5117a6b8-5b04-11eb-2910-dd7412ef69de
-md"Can you extend this so that it works with lizard an Spock?
-![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)"
+# ╔═╡ 03b97ade-601a-11eb-293e-8920b39b1ce7
+
+
+# ╔═╡ 0b2b40ae-601a-11eb-1d83-53ff171bb799
+begin 
+	QuestionBlock(
+		title=md"**Optional question: rock, paper, lizard, Spock**",
+		description = md"""
+		
+		Can you extend the previous code so that it works with lizard an Spock? 
+		
+		![](https://i.imgur.com/jbmAYKI.png)
+		
+		adapted from: [source](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)
+		"""
+	)
+end
+
+# ╔═╡ 269b934c-601b-11eb-00ad-5fec0e2c37e1
+
 
 # ╔═╡ Cell order:
 # ╠═e9576706-600e-11eb-1e10-e3bac02a254e
@@ -782,4 +799,6 @@ md"Can you extend this so that it works with lizard an Spock?
 # ╠═8331c8b0-4e7d-11eb-0690-8bbae3ed086a
 # ╠═88a95ec0-4e7d-11eb-0a33-77ef82874f45
 # ╠═925e2f40-4e7d-11eb-0bd2-f91913c5a23e
-# ╠═5117a6b8-5b04-11eb-2910-dd7412ef69de
+# ╠═03b97ade-601a-11eb-293e-8920b39b1ce7
+# ╟─0b2b40ae-601a-11eb-1d83-53ff171bb799
+# ╠═269b934c-601b-11eb-00ad-5fec0e2c37e1
