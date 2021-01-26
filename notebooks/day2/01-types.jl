@@ -583,7 +583,7 @@ md"Will 💎 scratch 🔶?"
 mohs_scale(💎) > mohs_scale(🔶)
 
 # ╔═╡ 02e57e74-6019-11eb-3e35-1d2b4d61b283
-md"To make this more user-friendly, one can add a method to the `<`-operator or the `isless`-function to work directly on `mohs_scale.`"
+md"To make this more user-friendly, one can add a method to the `<`-operator or the `isless`-function to work directly on `mohs_scale`."
 
 # ╔═╡ 6e429164-4e7f-11eb-1829-0582f1417815
 Base.isless(m1::Type{<:Mohs}, m2::Type{<:Mohs}) = mohs_scale(m1) < mohs_scale(m2)
@@ -616,7 +616,7 @@ sort(rocks)
 md"""
 ## Case study 2: rock-paper-scissors
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Rock-paper-scissors.svg/1200px-Rock-paper-scissors.svg.png)
+![Fire, water, grass!](https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Rock-paper-scissors.svg/1200px-Rock-paper-scissors.svg.png)
 
 We can easily implement the rock-paper-scissors rules using types.
 """
