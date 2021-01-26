@@ -511,8 +511,15 @@ md"""
 ## Case study 1: Mohs scale
 
 
-![](http://www.911metallurgist.com/blog/wp-content/uploads/2015/08/Mohs-Hardness-Test-Kit-and-Scale.jpg)
+![](https://i.imgur.com/WtyJ2Uq.png)
+[source ](http://www.911metallurgist.com/blog/wp-content/uploads/2015/08/Mohs-Hardness-Test-Kit-and-Scale.jpg)
 """
+
+# ╔═╡ d668a692-6017-11eb-2f28-e9b00762b92d
+md"The Mohs scale of mineral hardness is a qualitative ordinal scale characterizing scratch resistance of various minerals through the ability of harder material to scratch softer material. [wikipedia](https://en.wikipedia.org/wiki/Mohs_scale_of_mineral_hardness)"
+
+# ╔═╡ fb1d0b9a-6017-11eb-0ba1-67e204f150fd
+md"First we define the abstract type tree structure,"
 
 # ╔═╡ b487a776-4e7e-11eb-291b-e900e6e1a2f6
 begin
@@ -531,6 +538,15 @@ begin
 	abstract type Talc <: Mohs end
 end
 
+# ╔═╡ 0884f752-6018-11eb-2eb3-d1cd317dceb3
+md"You can see, it is a pretty flat hierarchy"
+
+# ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
+subtypetree(Mohs)  # check the terminal!
+
+# ╔═╡ 443ecf72-6018-11eb-1a7a-e75e9596e4bd
+md"Next, let us define a function `mohs_scale` that dispatches on the different abstract types (minerals) and returns a hardness value"
+
 # ╔═╡ 1aea83a8-4e7f-11eb-2d06-c3e550c4e1b9
 begin
 	mohs_scale(::Type{Diamond}) = 10
@@ -545,6 +561,30 @@ begin
 	mohs_scale(::Type{Talc}) = 1
 end
 
+# ╔═╡ 70390e06-6018-11eb-3bd8-97ff84985261
+begin
+	💎 = Diamond
+	🔶 = Topaz
+end;
+
+# ╔═╡ 9b4cad6e-6018-11eb-0e41-2fea9c9219ed
+supertype(💎)
+
+# ╔═╡ ab1c59c4-6018-11eb-1147-8d441c25aa0b
+mohs_scale(💎)
+
+# ╔═╡ e36b2aa8-6018-11eb-0582-997ba8b7eae7
+mohs_scale(🔶)
+
+# ╔═╡ b5339e22-6018-11eb-38b6-352602a85cdd
+md"Will 💎 scratch 🔶?"
+
+# ╔═╡ fc0f2e92-6018-11eb-0b45-49fdec301609
+mohs_scale(💎) > mohs_scale(🔶)
+
+# ╔═╡ 02e57e74-6019-11eb-3e35-1d2b4d61b283
+md"To make this more user-friendly, one can add a method to the `<`-operator or the `isless`-function to work directly on `mohs_scale.`"
+
 # ╔═╡ 6e429164-4e7f-11eb-1829-0582f1417815
 Base.isless(m1::Type{<:Mohs}, m2::Type{<:Mohs}) = mohs_scale(m1) < mohs_scale(m2)
 
@@ -554,14 +594,23 @@ isless(Diamond, Corundum)
 # ╔═╡ 9d1c94ba-4e7f-11eb-060e-d1bc9683af92
 Calcite < Fluorite < Corundum
 
+# ╔═╡ 8dc6a6ce-6019-11eb-1cd5-d1c1c118f4ee
+md"`>` is defined using the `isless` function, so this just works,"
+
+# ╔═╡ 73f66dc6-6019-11eb-06b8-7db54f428e12
+💎 > 🔶
+
 # ╔═╡ ee370b50-4e7f-11eb-1ce0-d1bdb3e41ae2
 rocks = [Gypsum, Orthoclase, Quartz, Corundum, Fluorite, Gypsum, Talc]
 
 # ╔═╡ 1117c600-4e80-11eb-3231-4383d700f760
-md"`sort` and `sort!` work using the `isless` function, so these just work:"
+md"Even cooler, `sort` and `sort!` are also internally defined using the `isless` function, so these just work out of the box:"
 
 # ╔═╡ 07a19574-4e80-11eb-38fa-8d3463dfd700
 sort(rocks)
+
+# ╔═╡ af5bdeb4-6019-11eb-2265-a9b81e01d9c0
+
 
 # ╔═╡ 84a0f49c-4e7c-11eb-14f2-452e57f2e414
 md"""
@@ -713,15 +762,30 @@ I think this might be removed?
 # ╠═812cfe48-4e7a-11eb-32e6-c918bbe3e602
 # ╟─15bb7eb6-6016-11eb-01d2-0be88279db7e
 # ╠═178a5f96-6016-11eb-0314-010203c5fedf
-# ╠═4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
+# ╟─4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
+# ╟─d668a692-6017-11eb-2f28-e9b00762b92d
+# ╠═fb1d0b9a-6017-11eb-0ba1-67e204f150fd
 # ╠═b487a776-4e7e-11eb-291b-e900e6e1a2f6
+# ╠═0884f752-6018-11eb-2eb3-d1cd317dceb3
+# ╠═24588124-6018-11eb-24d1-f9c7759f4c8f
+# ╟─443ecf72-6018-11eb-1a7a-e75e9596e4bd
 # ╠═1aea83a8-4e7f-11eb-2d06-c3e550c4e1b9
+# ╠═70390e06-6018-11eb-3bd8-97ff84985261
+# ╠═9b4cad6e-6018-11eb-0e41-2fea9c9219ed
+# ╠═ab1c59c4-6018-11eb-1147-8d441c25aa0b
+# ╠═e36b2aa8-6018-11eb-0582-997ba8b7eae7
+# ╠═b5339e22-6018-11eb-38b6-352602a85cdd
+# ╠═fc0f2e92-6018-11eb-0b45-49fdec301609
+# ╠═02e57e74-6019-11eb-3e35-1d2b4d61b283
 # ╠═6e429164-4e7f-11eb-1829-0582f1417815
 # ╠═ad6e9d8e-4e7f-11eb-1e33-efcee699f2a0
 # ╠═9d1c94ba-4e7f-11eb-060e-d1bc9683af92
+# ╠═8dc6a6ce-6019-11eb-1cd5-d1c1c118f4ee
+# ╠═73f66dc6-6019-11eb-06b8-7db54f428e12
 # ╠═ee370b50-4e7f-11eb-1ce0-d1bdb3e41ae2
 # ╠═1117c600-4e80-11eb-3231-4383d700f760
 # ╠═07a19574-4e80-11eb-38fa-8d3463dfd700
+# ╟─af5bdeb4-6019-11eb-2265-a9b81e01d9c0
 # ╠═84a0f49c-4e7c-11eb-14f2-452e57f2e414
 # ╠═99c4f3c8-4e7c-11eb-3d4a-33ba8d495eb2
 # ╠═cba6d4cc-5b03-11eb-265d-3f08117b0e8d
