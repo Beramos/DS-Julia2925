@@ -227,7 +227,7 @@ eval(:(1 + 2))
 md"""
 ## Macros
 
-Not that we have an understanding of the basic concepts of code representation in julia, we can introduce the core concept of this notebook: macros. 
+Now that we have an understanding of the basic concepts of code representation in julia, we can introduce the core concept of this notebook: macros. 
 Macros provide a method to include generated code in the final body of a program. A macro maps
 a tuple of arguments to a returned *expression*, and the resulting expression is compiled directly
 rather than requiring a runtime `eval` call. Macro arguments may include expressions,
@@ -235,7 +235,7 @@ literal values, and symbols.
 
 In the following examples, we will show that macros allow us to
 1. modify code before it runs
-2. elegantly add new features or synthax
+2. elegantly add new features or syntax
 3. process strings at compile time instead of runtime
 
 ### Basics
@@ -683,7 +683,7 @@ foo"this is the string"theflag
 
 # ╔═╡ 5069df16-5e7d-11eb-217d-6b740e9b3559
 md"""
-The first example of custom can be found in every notebook in this course! It is the markdown string literal, which allows the usage of Markdown markup language to prettify these lectures!
+The first example of a custom macro can be found in every notebook in this course! It is the markdown string literal, which allows the usage of Markdown markup language to prettify these lectures!
 
 ```julia
 md"I am a Markdown string with glorious **formatting capabilities**."
@@ -882,7 +882,7 @@ Be careful when you are using sequence literals inside of functions, and inside 
 # ╟─90a672d0-5f5c-11eb-3a62-1b034cd41e67
 # ╠═b4104d12-5e7c-11eb-3e22-a78b74526129
 # ╠═20393e86-5e7d-11eb-18e3-613890472903
-# ╠═5069df16-5e7d-11eb-217d-6b740e9b3559
+# ╟─5069df16-5e7d-11eb-217d-6b740e9b3559
 # ╟─1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
 # ╠═0664eb22-5e7d-11eb-07a6-ed35143bf03f
 # ╟─a965bd70-5e7c-11eb-13dd-5fe83950af11
