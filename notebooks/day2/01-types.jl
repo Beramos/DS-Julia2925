@@ -4,34 +4,57 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ e9576706-600e-11eb-1e10-e3bac02a254e
+# edit the code below to set your name and UGent username
+
+student = (name = "Hanne Janssen", email = "Hanne.Janssen@UGent.be");
+
+# press the ▶ button in the bottom right of this cell to run your edits
+# or use Shift+Enter
+
+# you might need to wait until all other cells in this notebook have completed running. 
+# scroll down the page to see what's up
+
+# ╔═╡ fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
+begin 
+	using DSJulia;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
+	Submission by: **_$(student.name)_**
+	"""
+end
+
 # ╔═╡ 4ec271b0-4e73-11eb-2660-6b8bd637d7ee
 md"""
 # Abstract and primitive types
 
-All Julia objects, both those already defined as well as those you might make yourself, have a type. The type system is the secret sauce, allowing Julia to be fast because code can be specialized for a particular combination of types. It is also supremely useful in conjunction with *multiple dispatch*, in which functions work differently depending on which types you feed into them. This notebook will show the basics of the type system. We will only consider abstract and primitive types here, leaving composite types for the next notebook.
+All Julia objects, both those already defined as well as those you might invent yourself, have a type. The type system is the secret *sauce*, allowing Julia to be fast because code can be specialised for a particular combination of types. It is also supremely useful in conjunction with *multiple dispatch*, in which functions work differently depending on which types you feed into them. This notebook will show the basics of the type system. We will only consider abstract and primitive types here, leaving composite types for the next notebook. Don't worry if you do not yet understand what this means, you will discover it soon enough.
 """
 
 # ╔═╡ a1f2d06e-4e73-11eb-3afd-1353def71700
 md"""
 ## Checking the type
 
-The type of objects can be assessed using the function `typeof`. For collections, `eltype` gives the types of individual elements. Try the following examples. Note that types are always capitalized!
+The type of objects can be assessed using the function `typeof`. For collections, `eltype` gives the types of individual elements. Try the following examples. Note that types are always capitalised!
 """
 
 # ╔═╡ c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
 a = 42; s = "mice"; n = 0.9; A = [1 2; 3 4];
 
+# ╔═╡ bd994d64-600e-11eb-1ab3-ed6317b7c211
+
+
 # ╔═╡ b844d568-4e73-11eb-3de9-4158b0bdca12
-typeof(a)
+#typeof(a)
 
 # ╔═╡ c662744a-4e73-11eb-1bfc-6daaf7282285
-typeof(s)
+#typeof(s)
 
 # ╔═╡ cae803e2-4e73-11eb-13e0-23abccf86bac
-typeof(n)
+#typeof(n)
 
 # ╔═╡ cc606026-4e73-11eb-3576-5d301a771a5a
-typeof(A)
+#typeof(A)
 
 # ╔═╡ d3803112-4e73-11eb-2018-f72ffb7f6ec6
 md"These are all *concrete types*. Julia types are part of a hierarchical type system, forming a single, fully connected type graph. The concrete types are the leaves of this tree, whereas the inner nodes are *abstract types*. As hinted by the name, these are abstract and cannot be instantiated. They, however, help with conceptually ordering the type system."
@@ -46,7 +69,7 @@ typeofpi = typeof(pi)
 md"Concrete types (should) have a well-defined memory layout, for example `Float64` is  encoded using 64 bits while `Float32` is encoded using 32 bits and hence some computations can be executed quicker but less precise by the former. Abstract types on the other hand mainly encode a semantic meaning, any `Real` should behave as a real number (e.g., addition, division are defined)."
 
 # ╔═╡ de3de7fc-4e73-11eb-2ff6-1560481f7ee5
-md"We can find the supertype of a concrete or abstract type using the function `supertype`."
+md"We can find the supertype (ancestor) of a concrete or abstract type using the function `supertype`."
 
 # ╔═╡ e1c8cf4a-4e73-11eb-27be-d702064a0182
 supertype(Int8)
@@ -411,9 +434,12 @@ I think this might be removed?
 # type-based dispatchtype
 
 # ╔═╡ Cell order:
+# ╠═e9576706-600e-11eb-1e10-e3bac02a254e
+# ╟─fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
 # ╠═4ec271b0-4e73-11eb-2660-6b8bd637d7ee
 # ╠═a1f2d06e-4e73-11eb-3afd-1353def71700
 # ╠═c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
+# ╠═bd994d64-600e-11eb-1ab3-ed6317b7c211
 # ╠═b844d568-4e73-11eb-3de9-4158b0bdca12
 # ╠═c662744a-4e73-11eb-1bfc-6daaf7282285
 # ╠═cae803e2-4e73-11eb-13e0-23abccf86bac
