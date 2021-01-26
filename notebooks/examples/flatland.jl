@@ -8,14 +8,14 @@ michielfmstock@gmail.com
 Implementation of basic shapes as an introduction of the type system.
 =#
 
-
+using LinearAlgebra
 
 # TYPES
 # -----
 
 abstract type Shape end
 
-abstract type AbstractRectangle end
+abstract type AbstractRectangle <: Shape end
 
 mutable struct Rectangle <: AbstractRectangle
     x::Float64
@@ -41,7 +41,8 @@ mutable struct RegularPolygon{N} <: Shape
     y::Float64
     R::Float64
     θ::Float64  # angle
-    function RegularPolygon((x, y), n; R=1.0, θ=0.0)
+    function RegularPolygon((x, y), n::Int; R=1.0, θ=0.0)
+        @assert n ≥ 3 "polygons need a minimum of three corners"
         return new{n}(x, y, R, θ)
     end
 end
@@ -219,7 +220,7 @@ end
 
 function same_side((a, b), p, q)
 	n = (a[2] - b[2], b[1] - a[1])
-	return sign(n⋅(p.-a)) == sign(n⋅(q.-a))
+	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
 end
 
 function Base.in(q, s::Triangle)
@@ -229,10 +230,37 @@ function Base.in(q, s::Triangle)
             same_side((p3, p1), p2, q)
 end
 
-function Base.in(q, shape::RegularPolygon)
-    corners = corners(shape)
+function Base.in(q, shape::Shape)
+    corns = corners(shape)
+    n = ncorners(shape)
     c = center(shape)
+    # check if q is always on the same side as the center
+    for i in 1:n-1
+        !same_side((corns[i], corns[i+1]), c, q) && return false
+    end
+    !same_side((corns[end], corns[1]), c, q) && return false
+    return true
 end
+
+# FIXME: does not work for combinations of circles an other shapes
+function Base.intersect(shape1::Shape, shape2::Shape)
+    return center(shape1) ∈ shape2 ||
+            center(shape2) ∈ shape1 ||
+            any(c->c ∈ shape2, corners(shape1))
+end
+
+function Base.intersect(shape1::Circle, shape2::Circle)
+    c1 = center(shape1)
+    c2 = center(shape2)
+    d = sum(abs2, c1 .- c2) |> sqrt
+    return d < shape1.R + shape2.R
+end
+
+function Base.intersect(shape1::Circle, shape2::Shape)
+    c1 = center(shape1)
+    return center(shape1) ∈ shape2 ||
+        center(shape2) ∈ shape1 ||
+
 
 
 # random generation
