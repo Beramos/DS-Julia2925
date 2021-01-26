@@ -7,10 +7,25 @@ using InteractiveUtils
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
 begin 
 	using PlutoUI
-	using BioSequences
+end
+
+# ╔═╡ 122cffca-5fdc-11eb-3555-b39b818f1116
+let 
 	using JuMP
 	using GLPK
 end
+
+# ╔═╡ 0963185c-5fdc-11eb-0eed-89d514850353
+using BioSequences
+
+# ╔═╡ 24806108-5fdc-11eb-2f19-bb09f836f893
+using Sockets
+
+# ╔═╡ 4621c212-5fc7-11eb-2c9d-ad577506420e
+using Plots
+
+# ╔═╡ b2c1cef8-5fe5-11eb-20c7-134432196893
+using Distributed
 
 # ╔═╡ 31c1e25e-5e53-11eb-2467-9153d30962d5
 md"""
@@ -584,6 +599,53 @@ let
 	@macroexpand @constraint(model, x + y <= 1)
 end
 
+# ╔═╡ 57f243ec-5fe3-11eb-04d9-d776ccba4c0f
+md"Finally, this section on code generation ends with two more examples:
+1. a macro to repeat a certain expression n-times
+2. a macro to repeat a certain expression until a condition is met
+
+Are these macros the best way to tackle the problems at hand? Maybe not, but they do give a nice illustration of how the code generation works.
+"
+
+# ╔═╡ 211cf9ca-5fe3-11eb-2596-71b1848753d7
+macro dotimes(n, body)
+    quote
+        for i = 1:$(esc(n))
+            $(esc(body))
+        end
+    end
+end
+
+# ╔═╡ 35ccaee2-5fe3-11eb-3bd0-e355b0fd3f71
+@macroexpand @dotimes 3 println("hi there")
+
+# ╔═╡ 434669d2-5fe3-11eb-1f4a-27edf1f9e7f6
+macro until(condition, block)
+    quote
+        while true
+            $(esc(block))
+            if $(esc(condition))
+                break
+            end
+        end
+    end
+end
+
+# ╔═╡ 9612965e-5fe3-11eb-172a-59cc73a26ab6
+PlutoUI.with_terminal() do
+	i = 0
+	@until i == 10 begin
+		i += 1
+		println(i) 
+	end
+end
+
+# ╔═╡ 3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
+@macroexpand @until i == 10 begin
+	i += 1
+	println(i) 
+end
+
 # ╔═╡ 10a8532a-5e60-11eb-3331-974e708cb39d
 md"""
 ## Non-Standard String Literals
@@ -763,7 +825,110 @@ Be careful when you are using sequence literals inside of functions, and inside 
 """
 
 # ╔═╡ 2e2601b6-5e94-11eb-3613-eb5fee19b6b7
+md"
+## Overview of some interesting macros
+"
 
+# ╔═╡ 311a4666-5fc5-11eb-2cc0-ef66e5be96e3
+md"check if an expression is true"
+
+# ╔═╡ 4622422a-5fc5-11eb-20f2-9bfe466f8f30
+@assert true == true
+
+# ╔═╡ 5ba5d6b6-5fc5-11eb-256b-73a954a5db68
+md"Integers and floating point numbers with arbitrary precision. This macro exists because promoting a floating point number to a `BigFloat` will keep the approximation error of `Float64`."
+
+# ╔═╡ a47ab60e-5fc5-11eb-368a-d76fc6ee640d
+big"0.1"
+
+# ╔═╡ a99546c2-5fc5-11eb-0902-71cb283543c8
+@big_str "0.1"
+
+# ╔═╡ af2c7d4e-5fc5-11eb-30d4-a367d2c0db23
+big(0.1)
+
+# ╔═╡ 4a335466-5fc6-11eb-2273-312fd3928616
+md"There exists a lot more unique string literals than we have shown here, such as html strings, ip address literals, etc."
+
+# ╔═╡ 17f771dc-5fc6-11eb-3b83-ed51f87194e0
+html"""<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">1</pre></td><td><pre style="margin: 0; line-height: 125%">println(<span style="color: #a31515">&quot;hello world!&quot;</span>)
+</pre></td></tr></table></div>
+"""
+
+# ╔═╡ 92836b48-5fc6-11eb-19b6-1d7a5c310052
+PlutoUI.with_terminal() do
+	println("There is nothing like ", ip"127.0.0.1")
+end
+
+# ╔═╡ f26e65a8-5fc6-11eb-3cd7-3f40c12a6abb
+md"Find out what function is exactly used in multiple dipatching."
+
+# ╔═╡ 154e2392-5fc7-11eb-250b-e726ab7710e7
+@which sin(2.2)
+
+# ╔═╡ 2cfa3952-5fc7-11eb-2e79-95f86aafbf2c
+@which sin(2)
+
+# ╔═╡ 4aece42a-5fc7-11eb-291f-99120483339f
+md"
+There exist some handy macros to analyse execution time and memory allocation.
+
+```julia
+using BenchmarkTools
+@btime sin(2)
+@benchmark sin(2)
+@elapsed sin(2)
+```
+"
+
+# ╔═╡ 295e0028-5fd6-11eb-39e4-b392de1c0de2
+md"""
+When developing modules, scripts or julia packages, you can use the `@info`, `@warn`, `@error` and `@debug` as logging macros. They are mostly useful in packages, not in notebooks like this.
+
+An example usage would be a warning thrown by an optimisation algorithm to tell you that e.g. the predefined accuracy or tolerance was not reached.
+
+Note, to make `@debug` you need to set an environment variable to mark that you are in debug mode: `ENV["JULIA_DEBUG"] = "all"`
+"""
+
+# ╔═╡ 4a9d85ba-5fc7-11eb-1b6e-59ef2259dd24
+PlutoUI.with_terminal() do
+	@info "Information comes here"
+	@error "Error has been found at this exact location"
+	@warn "Same. but for a warning"
+end
+
+# ╔═╡ 34829ada-5fdc-11eb-263a-cf60a9650556
+md"Plot recipes are a nifty thing to make plots for your custom data type:"
+
+# ╔═╡ 5c33798c-5fda-11eb-186f-79450fb59e3b
+struct TemperatureMeas
+	t1
+	t2
+	t3
+	TemperatureMeas(t1, t2, t3) = new(t1, t2, t3)
+end
+
+# ╔═╡ 1ca80d42-5fdb-11eb-153f-9ddb25a4fb6b
+@recipe function f(tempmeas::TemperatureMeas)
+    xguide --> "time (seconds)"
+    yguide --> "temperature (Celsius)"
+    [tempmeas.t1, tempmeas.t2, tempmeas.t3] # return the arguments (input data) for the next recipe
+end
+
+# ╔═╡ 1a793992-5fdb-11eb-3b38-05544f268a65
+plot(TemperatureMeas(Plots.fakedata(50), Plots.fakedata(50), Plots.fakedata(50)))
+
+# ╔═╡ d418dca4-5fe5-11eb-3f1a-a31e5dc5f7e9
+md"
+Using the `Distributed` module, one can easily transform certain types of code to run distributed (i.e. on multiple cores). Below is an example of how you can transform a for-loop into its distributed version.
+"
+
+# ╔═╡ f1b70998-5fdb-11eb-292b-0776f1b03816
+PlutoUI.with_terminal() do
+	@sync @distributed for i ∈ 1:5
+		println(i)
+	end
+end
 
 # ╔═╡ Cell order:
 # ╟─42e620aa-5f4c-11eb-2ebf-85814cf720e7
@@ -863,13 +1028,20 @@ Be careful when you are using sequence literals inside of functions, and inside 
 # ╟─4ef3f280-5e6d-11eb-2020-b7cd9e6b9c03
 # ╠═53f36f36-5e6d-11eb-3f06-6de0eff4d173
 # ╠═3428d7b8-5e6d-11eb-32bc-af1df0579e60
-# ╟─18e3753a-5f55-11eb-0a11-47ca6abe9186
+# ╠═18e3753a-5f55-11eb-0a11-47ca6abe9186
 # ╠═2f4fe6ce-5e6c-11eb-1744-2f9534c8b6ba
-# ╟─cae2546a-5e6b-11eb-3fc2-69f9a15107cf
-# ╟─4d9de330-5f55-11eb-0d89-eb81e6c9ffab
+# ╠═cae2546a-5e6b-11eb-3fc2-69f9a15107cf
+# ╠═4d9de330-5f55-11eb-0d89-eb81e6c9ffab
+# ╠═122cffca-5fdc-11eb-3555-b39b818f1116
 # ╠═92458f54-5f57-11eb-179f-c749ce06f7e2
 # ╟─d1222dcc-5f57-11eb-2c87-77a16ea8e65d
 # ╠═0b1f3542-5f58-11eb-1610-75df3e2a4a76
+# ╟─57f243ec-5fe3-11eb-04d9-d776ccba4c0f
+# ╠═211cf9ca-5fe3-11eb-2596-71b1848753d7
+# ╠═35ccaee2-5fe3-11eb-3bd0-e355b0fd3f71
+# ╠═434669d2-5fe3-11eb-1f4a-27edf1f9e7f6
+# ╠═9612965e-5fe3-11eb-172a-59cc73a26ab6
+# ╠═3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
 # ╟─10a8532a-5e60-11eb-3331-974e708cb39d
 # ╠═d46324d8-5e7a-11eb-005c-f7fec5a39880
 # ╟─d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
@@ -884,6 +1056,7 @@ Be careful when you are using sequence literals inside of functions, and inside 
 # ╠═20393e86-5e7d-11eb-18e3-613890472903
 # ╠═5069df16-5e7d-11eb-217d-6b740e9b3559
 # ╟─1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
+# ╠═0963185c-5fdc-11eb-0eed-89d514850353
 # ╠═0664eb22-5e7d-11eb-07a6-ed35143bf03f
 # ╟─a965bd70-5e7c-11eb-13dd-5fe83950af11
 # ╠═fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
@@ -903,4 +1076,28 @@ Be careful when you are using sequence literals inside of functions, and inside 
 # ╠═fa310fdc-5e8d-11eb-024b-7ded3e213112
 # ╠═1acb02d4-5e8e-11eb-232c-f756e92c3f97
 # ╟─2dcb4600-5e8e-11eb-093e-59eb79f0cf20
-# ╠═2e2601b6-5e94-11eb-3613-eb5fee19b6b7
+# ╟─2e2601b6-5e94-11eb-3613-eb5fee19b6b7
+# ╟─311a4666-5fc5-11eb-2cc0-ef66e5be96e3
+# ╠═4622422a-5fc5-11eb-20f2-9bfe466f8f30
+# ╟─5ba5d6b6-5fc5-11eb-256b-73a954a5db68
+# ╠═a47ab60e-5fc5-11eb-368a-d76fc6ee640d
+# ╠═a99546c2-5fc5-11eb-0902-71cb283543c8
+# ╠═af2c7d4e-5fc5-11eb-30d4-a367d2c0db23
+# ╟─4a335466-5fc6-11eb-2273-312fd3928616
+# ╟─17f771dc-5fc6-11eb-3b83-ed51f87194e0
+# ╠═24806108-5fdc-11eb-2f19-bb09f836f893
+# ╠═92836b48-5fc6-11eb-19b6-1d7a5c310052
+# ╟─f26e65a8-5fc6-11eb-3cd7-3f40c12a6abb
+# ╠═154e2392-5fc7-11eb-250b-e726ab7710e7
+# ╠═2cfa3952-5fc7-11eb-2e79-95f86aafbf2c
+# ╟─4aece42a-5fc7-11eb-291f-99120483339f
+# ╟─295e0028-5fd6-11eb-39e4-b392de1c0de2
+# ╠═4a9d85ba-5fc7-11eb-1b6e-59ef2259dd24
+# ╟─34829ada-5fdc-11eb-263a-cf60a9650556
+# ╠═4621c212-5fc7-11eb-2c9d-ad577506420e
+# ╠═5c33798c-5fda-11eb-186f-79450fb59e3b
+# ╠═1ca80d42-5fdb-11eb-153f-9ddb25a4fb6b
+# ╠═1a793992-5fdb-11eb-3b38-05544f268a65
+# ╟─d418dca4-5fe5-11eb-3f1a-a31e5dc5f7e9
+# ╠═b2c1cef8-5fe5-11eb-20c7-134432196893
+# ╠═f1b70998-5fdb-11eb-292b-0776f1b03816
