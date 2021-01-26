@@ -259,6 +259,9 @@ parse(Float64, "0.999")
 bunchofnumbers = "1.728002758512114, 0.45540258865644284, 1.4067738604851092, 1.6549474922755167, -0.5281073122489854, 2.219250973007533, 0.8195027302254512, 1.8833469318073521, 0.7429034224663096, -0.8127686064960085, -0.14337850083375886, -1.477193046160141, 0.024525761924498457, 0.16097115910472956, -0.39278880092280993, 1.3988081686729814, -1.3316370350161346, 0.2791510437718087, 1.9834455917052212, -0.8616791621501649
 "
 
+# ╔═╡ e6f31ad8-4e79-11eb-11f4-2936cb039f8d
+sumofbunchofnumbers = missing
+
 # ╔═╡ 4495802e-6013-11eb-22fa-03f635d30a7b
 begin 
 	q_sparse = Question(
@@ -282,29 +285,43 @@ begin
 	validate(qb_sparse, tracker)
 end
 
-# ╔═╡ e6f31ad8-4e79-11eb-11f4-2936cb039f8d
-parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
-
 # ╔═╡ 03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 md"""
 ## Methods and dispatch
 
-When a function is run for the first time with a particular combination of type inputs, it gets compiled by the LLVM compiler. Such a specific function is referred to as a `method`. Every time a function is run with a new combination of types of arguments, a suitable method is compiled. This is noticeable when measuring the running time.
-
-Run the following examples in the terminal using `@time`.
+When a function is run for the first time with a particular combination of input types, it gets compiled by the LLVM compiler. Such a specific function is referred to as a `method`. Every time a function is run with a new combination of types of arguments, a suitable method is compiled. This is noticeable when measuring the running time.
 """
+
+# ╔═╡ 63166056-6014-11eb-09c4-e5a44d37095f
+begin 
+	QuestionBlock(
+		title=md"**Task:**",
+		description = md"""
+		Run the following examples in the terminal using `@time`.
+		
+		```julia
+		@time mynewfun(1)  # returns an integer
+
+		@time mynewfun(1.0)  # returns a Float64
+
+		@time mynewfun(A)
+
+		```
+		"""
+	)
+end
 
 # ╔═╡ 2dff8c88-4e75-11eb-050b-7152e82ac10d
 mynewfun(x) = x^2 + x
 
 # ╔═╡ 7c2b6dc0-4e76-11eb-1d78-553df82d9100
-@time mynewfun(1)  # returns an integer
+
 
 # ╔═╡ d2a4a32c-5b02-11eb-3839-8108c4965931
-@time mynewfun(1.0)  # returns a Float64
+
 
 # ╔═╡ 32d64b6e-4e75-11eb-0a2a-27214f217f70
-@time mynewfun(A)
+
 
 # ╔═╡ 861ba4c6-4e76-11eb-3d2b-bfabbd143df2
 md"The known methods can be found using the function `methods`. For example, look how many methods are defined for sum:"
@@ -312,14 +329,50 @@ md"The known methods can be found using the function `methods`. For example, loo
 # ╔═╡ 8d5f7d8e-4e76-11eb-28ba-bdec03a3e150
 methods(sum)
 
-# ╔═╡ 99af0924-4e76-11eb-0331-87685125bcd9
-md"check how many methods there are associated with the humble multiplication operator `*`."
+# ╔═╡ b4fac50a-6015-11eb-16d4-594858d78b3e
+
+
+# ╔═╡ 9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
+begin 
+	QuestionBlock(
+		title=md"**Question:**",
+		description = md"""
+		*did I break something?*
+		
+		check how many methods there are associated with the humble multiplication operator `*`.
+		"""
+	)
+end
 
 # ╔═╡ b18d0532-4e76-11eb-2e8a-2bee580533cc
-# how many methods for *?
+
+
+# ╔═╡ b3d15950-6015-11eb-1909-c127822a4a83
+
 
 # ╔═╡ cd2eaafc-4e76-11eb-245a-e9898d3d57a4
-md"The arguments a function can take can be restricted using the `::`-operator. Here, if we limit a function as `f(x::T)`, this means that `x` can be any type `<: T`. Can you explain the reasoning behind the following code? How does it process numbers? What does it do with strings?"
+md"The arguments a function can take can be restricted using the `::`-operator. Here, if we limit a function as `f(x::T)`, this means that `x` can be any type `<: T`. "
+
+# ╔═╡ 002fdec6-6015-11eb-0e89-c7d020826cf9
+begin 
+	QuestionBlock(
+		title=md"**Question: ::**",
+		description = md"""
+		
+		Can you explain the reasoning behind the following code? How does it process numbers? What does it do with strings?"
+			
+		```julia
+		methods(twice)
+		twice(10) # Int	
+		twice(10.0)  # Float64, also a Number but not an Int	
+		twice("A griffin! ")  # strings mean something else		
+		
+		```
+		
+		
+		"""
+	)
+end
 
 # ╔═╡ db1bb4c8-4e76-11eb-2756-3f6ce778acc0
 begin
@@ -328,16 +381,16 @@ begin
 end
 
 # ╔═╡ ff755bf8-4e76-11eb-205f-d52529ae50ed
-methods(twice)
+
 
 # ╔═╡ 03932e5e-4e77-11eb-3769-635cc33c3c4d
-twice(10) # Int
+
 
 # ╔═╡ 0b4f99ea-4e77-11eb-29fc-632788d179a3
-twice(10.0)  # Float64, also a Number but not an Int
+
 
 # ╔═╡ 2a0b220a-4e77-11eb-1da7-2978422c11f4
-twice("A griffin! ")  # strings mean something else
+
 
 # ╔═╡ bf91e40a-4e77-11eb-14f1-754b1ce5130e
 md"> Julia will always select the method with the most specific type signature.
@@ -354,35 +407,74 @@ begin
 	f(x::Float64, y::Float64) = 2x - y;
 end
 
+# ╔═╡ 622b8382-6015-11eb-17fb-3352c73a0d10
+begin 
+	QuestionBlock(
+		title=md"**Question: ::²**",
+		description = md"""
+		
+		Predict the outcome of the following statements.
+			
+		```julia
+		f(1, 2.0)
+
+		f(1.0, 2)
+
+		f(Int8(1), Int8(2))
+
+		f(1.0, 2.0)
+
+		f("one", 2)
+
+		f("one", "two")
+
+		f(1, Float32(2.0))
+
+		f(1, 2)
+
+		f([1 1; 1 1], [2.0 2.0; 2.0 2.0])
+
+		f([1 1; 1 1], [2 2; 2 2])	
+
+		```
+		
+		
+		"""
+	)
+end
+
 # ╔═╡ 76fe9fc4-4e77-11eb-3bc7-2dfbdff8dfc8
-f(1, 2.0)
+
 
 # ╔═╡ 7aa14c94-4e77-11eb-25c7-fb0103267b06
-f(1.0, 2)
+
 
 # ╔═╡ 7f3a5336-4e77-11eb-2ad6-3d889dc75ac0
-f(Int8(1), Int8(2))
+
 
 # ╔═╡ 822c01d4-4e77-11eb-1409-fbaf83c950b6
-f(1.0, 2.0)
+
 
 # ╔═╡ 85f186a6-4e77-11eb-19ca-5db29615ba97
-f("one", 2)
+
 
 # ╔═╡ 891c820e-4e77-11eb-1ebf-b3065e0d4211
-f("one", "two")
+
 
 # ╔═╡ 8d0d39c4-4e77-11eb-034d-07dc33ab6e9a
-f(1, Float32(2.0))
+
 
 # ╔═╡ 901efaee-4e77-11eb-02d9-b5fe1f0931d5
-f(1, 2)
+
 
 # ╔═╡ 938d8b1e-4e77-11eb-03d3-9b88c7cab3c1
-f([1 1; 1 1], [2.0 2.0; 2.0 2.0])
+
 
 # ╔═╡ 96f6fef2-4e77-11eb-2ec4-399472d86a60
-f([1 1; 1 1], [2 2; 2 2])
+
+
+# ╔═╡ a35e6072-6015-11eb-3107-97235db2c766
+
 
 # ╔═╡ 812cfe48-4e7a-11eb-32e6-c918bbe3e602
 md"""
@@ -580,15 +672,19 @@ I think this might be removed?
 # ╠═6756d6ac-4e79-11eb-21ab-4776195c9d3b
 # ╠═e6f31ad8-4e79-11eb-11f4-2936cb039f8d
 # ╠═03766a5c-4e75-11eb-12ad-cb2e9468e0d2
+# ╟─63166056-6014-11eb-09c4-e5a44d37095f
 # ╠═2dff8c88-4e75-11eb-050b-7152e82ac10d
 # ╠═7c2b6dc0-4e76-11eb-1d78-553df82d9100
 # ╠═d2a4a32c-5b02-11eb-3839-8108c4965931
 # ╠═32d64b6e-4e75-11eb-0a2a-27214f217f70
 # ╠═861ba4c6-4e76-11eb-3d2b-bfabbd143df2
 # ╠═8d5f7d8e-4e76-11eb-28ba-bdec03a3e150
-# ╠═99af0924-4e76-11eb-0331-87685125bcd9
+# ╟─b4fac50a-6015-11eb-16d4-594858d78b3e
+# ╠═9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
 # ╠═b18d0532-4e76-11eb-2e8a-2bee580533cc
+# ╟─b3d15950-6015-11eb-1909-c127822a4a83
 # ╠═cd2eaafc-4e76-11eb-245a-e9898d3d57a4
+# ╟─002fdec6-6015-11eb-0e89-c7d020826cf9
 # ╠═db1bb4c8-4e76-11eb-2756-3f6ce778acc0
 # ╠═ff755bf8-4e76-11eb-205f-d52529ae50ed
 # ╠═03932e5e-4e77-11eb-3769-635cc33c3c4d
@@ -596,6 +692,7 @@ I think this might be removed?
 # ╠═2a0b220a-4e77-11eb-1da7-2978422c11f4
 # ╠═bf91e40a-4e77-11eb-14f1-754b1ce5130e
 # ╠═e1a88a70-4e76-11eb-2486-e1d2f4211792
+# ╠═622b8382-6015-11eb-17fb-3352c73a0d10
 # ╠═76fe9fc4-4e77-11eb-3bc7-2dfbdff8dfc8
 # ╠═7aa14c94-4e77-11eb-25c7-fb0103267b06
 # ╠═7f3a5336-4e77-11eb-2ad6-3d889dc75ac0
@@ -606,6 +703,7 @@ I think this might be removed?
 # ╠═901efaee-4e77-11eb-02d9-b5fe1f0931d5
 # ╠═938d8b1e-4e77-11eb-03d3-9b88c7cab3c1
 # ╠═96f6fef2-4e77-11eb-2ec4-399472d86a60
+# ╟─a35e6072-6015-11eb-3107-97235db2c766
 # ╠═812cfe48-4e7a-11eb-32e6-c918bbe3e602
 # ╠═4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 # ╠═b487a776-4e7e-11eb-291b-e900e6e1a2f6
