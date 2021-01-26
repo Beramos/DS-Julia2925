@@ -481,7 +481,7 @@ md"""
 
 ## Extending the type system
 
-Being aware of the type system is a first step, the fun is in extending it and creating your own types.
+Being aware of the type system is a first step but the fun is in extending it and creating your own types. 
 
 ### Abstract types
 
@@ -499,6 +499,12 @@ abstract type «name» <: «supertype» end
 ### Composite types
 *Composite types* (records, structs, or objects) are more exciting. They are often containers for several objects set to behave in a certain way. We will study them in depth in the next notebook.
 """
+
+# ╔═╡ 15bb7eb6-6016-11eb-01d2-0be88279db7e
+
+
+# ╔═╡ 178a5f96-6016-11eb-0314-010203c5fedf
+md"It takes some time to fully grasp the potential of julia's type system, especially if you have experience in object-oriented programming. In the following examples we will try to show you the uniqueness and power of this paradigm."
 
 # ╔═╡ 4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 md"""
@@ -705,6 +711,8 @@ I think this might be removed?
 # ╠═96f6fef2-4e77-11eb-2ec4-399472d86a60
 # ╟─a35e6072-6015-11eb-3107-97235db2c766
 # ╠═812cfe48-4e7a-11eb-32e6-c918bbe3e602
+# ╟─15bb7eb6-6016-11eb-01d2-0be88279db7e
+# ╠═178a5f96-6016-11eb-0314-010203c5fedf
 # ╠═4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 # ╠═b487a776-4e7e-11eb-291b-e900e6e1a2f6
 # ╠═1aea83a8-4e7f-11eb-2d06-c3e550c4e1b9
