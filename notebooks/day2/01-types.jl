@@ -661,18 +661,6 @@ play(Scissors, Paper)
 md"Can you extend this so that it works with lizard an Spock?
 ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)"
 
-# ╔═╡ 5a65f7c8-4e80-11eb-1235-4d2992b69efa
-md"""
-### Case study: Pokémon types
-
-![](https://www.boxmash.com/wp-content/uploads/2014/03/POKEMON-ARTICLE-TYPES-EFFECTIVE.jpg)
-
-I think this might be removed?
-"""
-
-# ╔═╡ f092f656-5b05-11eb-392d-f7118e9bbca3
-# type-based dispatchtype
-
 # ╔═╡ Cell order:
 # ╠═e9576706-600e-11eb-1e10-e3bac02a254e
 # ╟─fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
@@ -795,5 +783,3 @@ I think this might be removed?
 # ╠═88a95ec0-4e7d-11eb-0a33-77ef82874f45
 # ╠═925e2f40-4e7d-11eb-0bd2-f91913c5a23e
 # ╠═5117a6b8-5b04-11eb-2910-dd7412ef69de
-# ╠═5a65f7c8-4e80-11eb-1235-4d2992b69efa
-# ╠═f092f656-5b05-11eb-392d-f7118e9bbca3
