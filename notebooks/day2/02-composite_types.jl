@@ -285,9 +285,9 @@ fyi(md"For parametric types, the `new` keyword should be type annotated. So, for
 # ╔═╡ 46df4eb0-5d90-11eb-1fdf-f34a7bcb7191
 md"""
 
-## Illustration: iterators
+## Example: iterators
 
-We can extend Julia by making use of establised interfaces, such as for iterators like `a:b`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
+We can extend Julia by making use of establised interfaces, such as for iterators like `1:0.1:10`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
 """
 
 # ╔═╡ a4a1cb18-5d90-11eb-08ee-8570368a056b
@@ -340,7 +340,7 @@ sum(Squares(18093))  # much faster now!
 # ╔═╡ 579e3828-5d91-11eb-1d33-b94628d61fc0
 md"""
 
-## Illustration: custom matrices
+## Example: custom matrices
 
 Similarly, we can make our very own matrix types. Consider the Strang matrix, a [tridiagonal matrix](https://en.wikipedia.org/wiki/Tridiagonal_matrix) with 2 on the main diagonal, and -1 on the first diagonal below and above the main diagonal. 
 """
