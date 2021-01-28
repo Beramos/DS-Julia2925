@@ -145,9 +145,10 @@ md"""
 
 Sometimes we want more flexiblility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
 numeric datatypes, `Int`, `Int8`, `Float6`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
-*parametric types*, types that depend on another type.
+*parametric types*, types that **depend** on another type.
 
 For example, consider a 2-dimensional coordinate:
+(x,y)
 """
 
 # ╔═╡ cf6dea8c-5d8d-11eb-3f54-4d947305f5e5
@@ -157,12 +158,12 @@ begin
 		y::T
 	end
 	
-# PASTE HERE YOUR CONSTRUCTORS!
+# PASTE YOUR CONSTRUCTORS HERE!
 
 end
 
 # ╔═╡ d305007e-5d8d-11eb-2505-3347d7d1a561
-md"Here, each coordinate of the type `Point` has two attributes, `x` and `y`, of the same type. The specific type of Point can vary."
+md"Here, each coordinate of the type `Point` has two attributes, `x` and `y`, of the same type. The specific type of `Point` can vary."
 
 # ╔═╡ d84355d4-5d8d-11eb-2c2c-21daf0364c21
 p = Point(1.0, 2.0)
@@ -192,7 +193,7 @@ p isa Point{Int}  # obviously not true
 p isa Point{Real}  # unexpectedly not true!
 
 # ╔═╡ 17022b06-5d8e-11eb-391b-7194962a2c18
-md"The above observation is very important! Even though `Float16 <: Real`, this does not hold for the corresponding parametric types."
+md"The observations above is very important! Even though `Float16 <: Real`, this does not hold for the corresponding parametric types."
 
 # ╔═╡ 393e2f9e-5d8e-11eb-11d7-511c32ce6e48
 Point(1, 2.0)  # should error initially, but will be fixed later in the notebook!
