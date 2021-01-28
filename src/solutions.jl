@@ -120,3 +120,30 @@ vandermonde(α, n) = [αᵢ^j for αᵢ in α, j in 0:n-1]
 #= Notebook 1: types =#
 ### String parsing
 bunchofnumbers_parser(bunchofnumbers) = parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
+
+
+#= Notebook 2: composite types =#
+### Wizarding currency
+
+struct WizCur
+  knuts::Int
+  sickles::Int
+  galleons::Int
+  function WizCur(knuts::Int, sickles::Int, galleons::Int)
+        knuts, sickles = knuts % 29, sickles + div(knuts, 29)
+        sickles, galleons = sickles % 17, galleons + div(sickles, 17)
+        new(knuts, sickles, galleons)
+    end
+end
+
+Base.show(io::IO, wizcur::WizCur) = print("$(wizcur.knuts)K, $(wizcur.sickles)S, $(wizcur.galleons)G")
+
+
+Base.:+(c1::WizCur, c2::WizCur) = WizCur(c1.knuts+c2.knuts, c1.sickles+c2.sickles, c1.galleons+c2.galleons)
+knuts(c::WizCur) = c.knuts + 17c.sickles + 493c.galleons
+Base.:>(c1::WizCur, c2::WizCur) = knuts(c1) > knuts(c2)
+Base.:<(c1::WizCur, c2::WizCur) = knuts(c1) < knuts(c2)
+
+money_ron = WizCur(732, 19, 0)
+money_harry = WizCur(7, 1, 3)
+money_harry > money_ron
