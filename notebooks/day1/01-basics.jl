@@ -21,6 +21,7 @@ student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
 begin 
 	using DSJulia;
+	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
 
@@ -139,6 +140,11 @@ println("The answer to $mystery is $(3*2*7)")
 
 # ╔═╡ 7592f8a2-4ac0-11eb-375c-61c915380eeb
 md"... but take a look at the terminal window."
+
+# ╔═╡ dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
+PlutoUI.with_terminal() do
+	println("The answer to $mystery is $(3*2*7)")
+end
 
 # ╔═╡ abf00a78-4ab8-11eb-1063-1bf4905ca250
 md"""
@@ -953,7 +959,7 @@ qb8 = QuestionBlock(;
 end
 
 # ╔═╡ Cell order:
-# ╟─f089cbaa-4ab9-11eb-09d1-05f49911487f
+# ╠═f089cbaa-4ab9-11eb-09d1-05f49911487f
 # ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # ╟─fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
 # ╟─0f47f5b2-4aba-11eb-2e5a-b10407e3f928
@@ -988,6 +994,7 @@ end
 # ╟─6b6eb954-4ab8-11eb-17f9-ef3445d359a3
 # ╠═94e3eb74-4ab8-11eb-1b27-573dd2f02b1d
 # ╟─7592f8a2-4ac0-11eb-375c-61c915380eeb
+# ╠═dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
 # ╟─abf00a78-4ab8-11eb-1063-1bf4905ca250
 # ╠═be220a48-4ab8-11eb-1cd4-db99cd9db066
 # ╠═cadaf948-4ab8-11eb-3110-259768055e85

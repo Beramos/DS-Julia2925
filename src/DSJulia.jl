@@ -22,6 +22,7 @@ module DSJulia
     export NoDiff, Easy, Intermediate, Hard
     export ProgressTracker, grade
     export @safe
+    export terminal
 
     include("styles.jl")
     include("admonition.jl")
@@ -32,5 +33,14 @@ module DSJulia
     export Solutions
     module Solutions
         include("solutions.jl")
+    end
+
+    # Convenience macro for terminal printing in Pluto
+    macro terminal(ex)
+        return quote
+            PlutoUI.with_terminal() do
+                $ex
+            end
+        end
     end
 end
