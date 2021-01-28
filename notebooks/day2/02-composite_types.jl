@@ -4,8 +4,25 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ 372d3cf2-6173-11eb-356e-23c959c3fd89
+# edit the code below to set your name and UGent username
+
+student = (name = "Sam Janssen", email = "Sam.Janssen@UGent.be");
+
+# press the ▶ button in the bottom right of this cell to run your edits
+# or use Shift+Enter
+
+# you might need to wait until all other cells in this notebook have completed running. 
+# scroll down the page to see what's up
+
 # ╔═╡ eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
-using DSJulia
+begin 
+	using DSJulia;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
+	Submission by: **_$(student.name)_**
+	"""
+end
 
 # ╔═╡ 70be3952-5d8c-11eb-1509-b3f7077d57e0
 md"""
@@ -482,6 +499,7 @@ import LinearAlgebra
 LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ Cell order:
+# ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
 # ╠═eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
 # ╠═70be3952-5d8c-11eb-1509-b3f7077d57e0
 # ╠═acd7de0c-5d8c-11eb-120a-8b79f2b8eb3b
