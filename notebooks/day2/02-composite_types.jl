@@ -84,7 +84,7 @@ deer.pos
 fyi(md"This is just syntactic sugar for `getfield`, e.g. `getfield(deer, :id)`")
 
 # ╔═╡ fb6e62d4-5d8c-11eb-34f3-bf3df7cd4cb3
-md"Similarly, a predator type can be defined. In addition to an id and position, which each agent has, they also have a size, determining its mobility."
+md"Similarly, a predator type can be defined. In addition to an `id` and `position`, which each agent has, they also have a size, determining its mobility."
 
 # ╔═╡ 01fe6f9a-5d8d-11eb-0519-03aefcd587bb
 mutable struct Predator <: Agent
@@ -124,7 +124,7 @@ size(wolf)
 md"Here, we had to import `size` because we are extending a function from the `Base` library to work with a new type (doing something vastly different than its original function)."
 
 # ╔═╡ 47049bf0-5d8d-11eb-18c2-733287b69420
-md"Similarly, we can program behaviour between the agents."
+md"Similarly, we can program the interaction behaviour between the agents."
 
 # ╔═╡ 50f17586-5d8d-11eb-0eec-579467b787d0
 begin
@@ -218,7 +218,7 @@ Constructors are functions that create new objects.
 
 ### Outer constructors
 
-We have already seen that when creating a new `struc`, this immediately initiates the constructor (e.g., `Point(1.0, 2.0)`). These can also be made explicitly:
+We have already seen that when creating a new `struct`, this immediately initiates the constructor (e.g., `Point(1.0, 2.0)`). These can also be made explicitly:
 
 ```julia
 Point(x::T, y::T) where {T<:Real} = Point{T}(x,y)
@@ -237,7 +237,7 @@ Point(1.2)
 # ╔═╡ 9d4b9eee-5d8f-11eb-07bb-557415e4ac4a
 md"""
 
-The line above yield an error, because there is no constructor method when two inputs are of a different type. The following constructors will resolve such cases satisfactory.
+The line above yields an error, because there is no constructor method when two inputs are of a different type. The following constructors will resolve such cases satisfactorily.
 
 ```julia
 Point(x::Real, y::Real) = Point(promote(x, y)...)
