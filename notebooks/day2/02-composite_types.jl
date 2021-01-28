@@ -543,43 +543,21 @@ V = Vandermonde(α, 4)
 
 # ╔═╡ f01448f0-617d-11eb-1829-0fcfe19b3115
 begin 
-		
-	q_dvm = Question(
-		validators = @safe[
-
-		]
-	)
-	
-
 	qb_dvm = QuestionBlock(
-		title=md"**Exercise: determinant of Vandermonde matrix**",
+		title=md"**Exercise: determinant of a Vandermonde matrix**",
 		description = md"""
-		The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+		The determinant of a Vandermonde matrix is easy to compute:
 
-		$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
+		$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
 
-		$$V_{i,j} = \alpha_i^{j-1}$$
+		Overload this for the Vandermonde matrix!
 
-		Complete the implementation to store and process this matrix.
 		""",
 		hints = [
 			hint(md"`prod`")
-		],
-		questions = [q_dvm]
+		]
 	)
-		validate(qb_dvm, tracker)
-	
 end
-
-# ╔═╡ ebe6cec6-5d93-11eb-25fd-2f614f1a7576
-md"""
-The determinant of a Vandermonde matrix is easy to compute:
-
-$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
-
-Overload this for the Vandermonde matrix!
-
-"""
 
 # ╔═╡ d2a076ea-5d93-11eb-216e-f5c37d330b40
 import LinearAlgebra
@@ -695,6 +673,5 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
 # ╟─7f02b0a0-617f-11eb-1263-91423840def3
 # ╠═f01448f0-617d-11eb-1829-0fcfe19b3115
-# ╠═ebe6cec6-5d93-11eb-25fd-2f614f1a7576
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
