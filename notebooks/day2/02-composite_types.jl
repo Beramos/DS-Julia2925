@@ -28,18 +28,18 @@ end
 md"""
 # Composite and parametric types
 
-In the previous notebook, we have seen that we can easily extend the type system with our own types in the hierarchy. The interesting thing is to have the concrete 'leafs' on this tree contain data that can be used in the functions.
+The previous notebook showed that it is easy to extend the type system with our own types in the hierarchy. The interesting thing is to have the concrete 'leafs' on this tree contain data that can be used in the functions.
 
-## Paramametric types
+## Composite types
 
-Composite types, sometimes call records, structs or object, can store several values in its *fields*.
+Composite types, sometimes call records, structs (matlab) or object (python), can store several values in its *fields*.
 
-When defining a new composite type, we can choose them to be mutable or immuatble:
+When defining a new composite type, we can choose them to be mutable or immutable:
 - mutable types are defined using `mutable struct ... end`, they allow the fields to be changed after the object is created;
-- immuatble types are defined similarly using `mutable struct ... end`, after creating the object its fields cannot be changed.
-Mutable types are a bit more flexible, though might be a somewhat less safe and are more difficult to work with. As the compiler
-knows everything in advance, it might better optimize for immutable types. Which one you choose depends on your application, though
-generally immuatable types are the better choice!
+- immutable types are defined similarly using `struct ... end`, after creating the object its fields cannot be changed (immutable by default).
+Mutable types are a bit more flexible, though might be less safe and are more difficult to work with. As the compiler
+knows everything in advance, it often optimizes better for immutable types. The choice depends on the application, though
+generally immutable types are the better choice!
 
 As an example, let us define an agent type for an ecological individual-based model (IBM). We create the abstract type `Agent` for which we
 can then specify several children types.
@@ -60,10 +60,10 @@ mutable struct Prey <: Agent
 end
 
 # ╔═╡ bcacf89e-5d8c-11eb-0077-e5761b8855a3
-md"Notice the type annotation for `id`, which we choose to always reprsenent by an integer."
+md"Notice the type annotation for `id`, which we choose to always represent by an integer."
 
 # ╔═╡ c7a077ba-5d8c-11eb-08bb-07c343ea8ab1
-md"Defining a composite type immediately a constructor available."
+md"After defining a composite type, a constructor for that type is immediately available. A constructor is a function to instantiate a type."
 
 # ╔═╡ cd0d8636-5d8c-11eb-19f9-4da4550d306f
 deer = Prey(1, (0.5, 1.9))
@@ -76,6 +76,9 @@ fieldnames(Prey)
 
 # ╔═╡ dac11770-5d8c-11eb-1058-2d043e172931
 md"The fields can be accessed easily:"
+
+# ╔═╡ 61c43794-6174-11eb-1545-2db114b929e4
+deer.pos
 
 # ╔═╡ e7b9023a-5d8c-11eb-1387-cfa7c41ab6ca
 fyi(md"This is just syntactic sugar for `getfield`, e.g. `getfield(deer, :id)`")
@@ -94,7 +97,7 @@ end
 wolf = Predator(2, (0.0, 0.0), 40.0)  # 40 kg wolf
 
 # ╔═╡ 18d04a36-5d8d-11eb-1986-693eaad5d5be
-md"Using the `.` syntax for accessing the fields is not very tidy! We should define custom getter functions
+md"Using the `.` syntax for accessing the fields is very \"object-oriented\" and not  very juliaesque! We should define custom getter functions
 for the user to access the relevant fields. We could define `id` and `position` methods to get the respective
 fields for the two agents. However, since these fields should be defined for every `Agent` type, we can just create
 these for the Agent type!"
@@ -131,14 +134,14 @@ begin
 end
 
 # ╔═╡ 585995ae-5d8d-11eb-256f-bd8e9eb52063
-md"We have chosen the default behaviour that two Agents of unspecified types do not interact at al, this will now be the case when a prey meets other prey, a predator an other predator or a new third type comes into the equation."
+md"We have chosen the default behaviour that two Agents of unspecified types do not interact at all, this will now be the case when a prey meets other prey, a predator an other predator or a new third type comes into the equation."
 
 # ╔═╡ 62e49c94-5d8d-11eb-39ac-f30febf282ff
 fyi(md"Since in these simple examples, the `interact` methods do not use their arguments, merely perform type checking, we could have written this as `interact(::Agent,::Agent) = ...` etc.")
 
 # ╔═╡ 6e8548b4-5d8d-11eb-3fcc-45cb005e5c5e
 md"""
-## Paramtric types
+## Parametric types
 
 Sometimes we want more flexiblility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
 numeric datatypes, `Int`, `Int8`, `Float6`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
@@ -500,7 +503,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ Cell order:
 # ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
-# ╠═eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
+# ╟─eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
 # ╠═70be3952-5d8c-11eb-1509-b3f7077d57e0
 # ╠═acd7de0c-5d8c-11eb-120a-8b79f2b8eb3b
 # ╠═af8c6460-5d8c-11eb-3ba8-c16e8855e992
@@ -511,6 +514,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═ce25e25c-5d8c-11eb-2e8e-b5b1e7350d70
 # ╠═d672cc72-5d8c-11eb-2c06-0341181e3a3d
 # ╠═dac11770-5d8c-11eb-1058-2d043e172931
+# ╠═61c43794-6174-11eb-1545-2db114b929e4
 # ╠═e7b9023a-5d8c-11eb-1387-cfa7c41ab6ca
 # ╠═fb6e62d4-5d8c-11eb-34f3-bf3df7cd4cb3
 # ╠═01fe6f9a-5d8d-11eb-0519-03aefcd587bb
