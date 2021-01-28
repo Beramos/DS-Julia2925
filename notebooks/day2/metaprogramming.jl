@@ -438,11 +438,11 @@ end
 
 # ╔═╡ 376fe8e4-5e68-11eb-1d7d-c9b1945b133f
 md"""
-Now `@assert` has two modes of operation, depending upon the number of arguments it receives!
-If there's only one argument, the tuple of expressions captured by `msgs` will be empty and it
-will behave the same as the simpler definition above. But now if the user specifies a second argument,
+Now `@assert` has two modes of operation depending upon the number of arguments it receives!
+If there is only one argument, the tuple of expressions captured by `msgs` will be empty and it
+will behave the same as the simpler definition above with only one argument. But now if the user specifies a second argument,
 it is printed in the message body instead of the failing expression. You can inspect the result
-of a macro expansion with the aptly named `@macroexpand`
+of a macro expansion with `@macroexpand`.
 """
 
 # ╔═╡ 4750ce04-5e68-11eb-237e-3fed9eb1f4c5
