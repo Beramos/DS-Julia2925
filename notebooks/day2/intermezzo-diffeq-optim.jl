@@ -1,4 +1,12 @@
+begin 
+  import Pkg; Pkg.activate(".")
+  Pkg.add("DifferentialEquations")
+  Pkg.add("Optim")
+end
+
 using DifferentialEquations, Plots
+
+
 
 function f(du,u,p,t)
   du[1] = u[2]
