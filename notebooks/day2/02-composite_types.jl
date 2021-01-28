@@ -480,11 +480,32 @@ end
 # ╔═╡ 392228e2-617d-11eb-09a5-c9e5649356eb
 
 
+# ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
+begin
+	struct Vandermonde{T,VT} <: AbstractMatrix{T}
+		α::VT
+		m::Int
+		Vandermonde(α::AbstractVector{T}, m) where {T} = missing
+	end
+
+	# take length of α as a default value of m
+	Vandermonde(α::Vector{<:Number}) = missing
+end
+
 # ╔═╡ 902f4dfe-617d-11eb-2957-71130adca3ae
 begin 	
 	q_vm = Question(
 		validators = @safe[
-
+			
+			Solutions.Vandermonde(Solutions.α, length(Solutions.α)) ==
+				Vandermonde(Solutions.α, length(Solutions.α)),
+			
+			Solutions.Vandermonde(Solutions.α) == Vandermonde(Solutions.α),
+			
+			Solutions.Vandermonde(Solutions.α)[1] == Vandermonde(Solutions.α)[1],
+			
+			size(Solutions.Vandermonde(Solutions.α)) == 
+				size(Vandermonde(Solutions.α))
 		]
 	)
 	
@@ -505,18 +526,6 @@ begin
 	
 end
 
-# ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
-begin
-	struct Vandermonde{T,VT} <: AbstractMatrix{T}
-		α::VT
-		m::Int
-		Vandermonde(α::AbstractVector{T}, m) where {T} = missing
-	end
-
-	# take length of α as a default value of m
-	Vandermonde(α::Vector{<:Number}) = missing
-end
-
 # ╔═╡ bd91a60e-5d93-11eb-09d4-830ca69439bf
 Base.size(V::Vandermonde) = missing
 
@@ -529,6 +538,9 @@ Base.getindex(V::Vandermonde, i, j) = missing
 # ╔═╡ d107c75e-5d93-11eb-0e6f-097b1291e460
 V = Vandermonde(α, 4)
 
+# ╔═╡ 7f02b0a0-617f-11eb-1263-91423840def3
+
+
 # ╔═╡ f01448f0-617d-11eb-1829-0fcfe19b3115
 begin 
 		
@@ -540,7 +552,7 @@ begin
 	
 
 	qb_dvm = QuestionBlock(
-		title=md"**Exercise: Determinant of Vandermonde matrix**",
+		title=md"**Exercise: determinant of Vandermonde matrix**",
 		description = md"""
 		The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
 
@@ -681,6 +693,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═c2ecfec8-5d93-11eb-2640-07bc07f3da98
 # ╠═cb3e91cc-5d93-11eb-020c-d73c10131755
 # ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
+# ╟─7f02b0a0-617f-11eb-1263-91423840def3
 # ╠═f01448f0-617d-11eb-1829-0fcfe19b3115
 # ╠═ebe6cec6-5d93-11eb-25fd-2f614f1a7576
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
