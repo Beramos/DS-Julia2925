@@ -11,6 +11,7 @@ begin
 	using Pipe
 	using Plots
 	using CSV, DataFrames
+	using DSJulia
 end
 
 # ╔═╡ f9549978-61a6-11eb-28ce-bdbbd524be6c
@@ -44,10 +45,10 @@ In this intermezzo, we will talk about working with spectral data from an near-i
 
 We will show:
 1. what data type could be choosen for such an approach
-2. how to use multiple dispatch on our new struct
+2. how to define functions (using multiple dispatch) for our new struct
 3. an example of a plotting recipe (custom plot function on your struct)
 4. data pipelines
-5. maybe dr watson?
+5. simple IO data management for simulations using DrWatson
 "
 
 # ╔═╡ aa168338-60f1-11eb-1b4d-8b0a26902f90
@@ -103,9 +104,7 @@ end
 md"Let us showcase the print behaviour:"
 
 # ╔═╡ f812abd4-60f4-11eb-3b88-69d0b6a4c9c8
-PlutoUI.with_terminal() do
-	println(nir)
-end
+@terminal println(nir)
 
 # ╔═╡ 8f978728-60f4-11eb-33ae-4b5ce56a844d
 nir
@@ -194,9 +193,9 @@ end
 # ╔═╡ 99480eee-61aa-11eb-0306-4500a7a9cd0e
 md"
 We will end this intermezzo with a showcase of some handy `DrWatson` features. 
-Let us start by defining a function that performs the preprocessing, and we will give it the original name of `run_preprocessing`. We will allow a dict of parameters as input so that we can make a scenario analysis of the effect of different parameter values. 
+Let us start by defining a function that performs the preprocessing (`run_preprocessing`). We will allow a dict of parameters as input so that we can make a scenario analysis of the effect of different parameter values. 
 
-DrWatson has some handy functions, such as `savename` which creates a name for the parameter values, and `datadir` which provides access to the folders on your hard disk where the (simulation) data is stored.
+DrWatson has some handy functions, such as `savename` which creates a name with the parameter names and their values, and `datadir` which provides access to the folders on your hard disk where the (simulation) data is stored.
 
 Note the (on purpose) heavy usage of macros to make the code more readable: `@unpack`, `@pipe`, `@ntuple`, `@dict`.
 "
@@ -272,9 +271,7 @@ This parameter combination has been computed in the previous mapping, so the res
 "
 
 # ╔═╡ f680cfcc-61af-11eb-0a04-314c6b2ea701
-PlutoUI.with_terminal() do
-	simulate_or_load(Dict(:derivativeOrder => 0, :degree => 2))[1][:spectrum]
-end
+@terminal simulate_or_load(Dict(:derivativeOrder => 0, :degree => 2))[1][:spectrum]
 
 # ╔═╡ 9095b8c6-61b6-11eb-2ae4-67897b126e22
 md"
@@ -282,12 +279,10 @@ This parameter combination was not part of the original set, so this will be com
 "
 
 # ╔═╡ fb3a876c-61af-11eb-1a11-35d2951e1582
-PlutoUI.with_terminal() do
-	simulate_or_load(Dict(:derivativeOrder => 0, :degree => 9))
-end
+@terminal simulate_or_load(Dict(:derivativeOrder => 0, :degree => 9))
 
 # ╔═╡ Cell order:
-# ╠═ec6273de-60ed-11eb-23af-05a59d76f2d2
+# ╟─ec6273de-60ed-11eb-23af-05a59d76f2d2
 # ╟─5f1f35ba-6184-11eb-11ec-63a6acb353fe
 # ╟─aa168338-60f1-11eb-1b4d-8b0a26902f90
 # ╠═9ed1673e-60f1-11eb-04f3-7dae7d556332
@@ -306,7 +301,7 @@ end
 # ╠═26dfb3a6-61a6-11eb-1cc6-bdcc9cf849ee
 # ╟─3a9f7890-61a6-11eb-3c83-079a65eb3044
 # ╠═f9549978-61a6-11eb-28ce-bdbbd524be6c
-# ╠═2067c21a-61a7-11eb-1f35-f1c8301812ad
+# ╟─2067c21a-61a7-11eb-1f35-f1c8301812ad
 # ╠═585952e2-61a7-11eb-1fde-71e94e121eca
 # ╠═9f4e7a7c-61a9-11eb-3348-31d52b8ce735
 # ╟─ab61f4e2-61a9-11eb-2d41-eb6089d1716a
