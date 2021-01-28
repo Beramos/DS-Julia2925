@@ -22,7 +22,7 @@ module DSJulia
     export NoDiff, Easy, Intermediate, Hard
     export ProgressTracker, grade
     export @safe
-    export terminal
+    export @terminal
 
     include("styles.jl")
     include("admonition.jl")
