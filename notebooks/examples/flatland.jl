@@ -1,6 +1,6 @@
 #=
 Created on 05/01/2021 20:52:11
-Last update: 26/01/2020
+Last update: 28/01/2020
 
 @author: Michiel Stock
 michielfmstock@gmail.com
@@ -100,6 +100,10 @@ function corners(shape::RegularPolygon)
     return [(x+R*cos(t+θ), y+R*sin(t+θ)) for t in range(0, step=2π/n, length=n)]
 end
 
+function corners(shape::Triangle)
+    return [(shape.x1, shape.y1), (shape.x2, shape.y2), (shape.x3, shape.y3)]
+end
+
 center(shape::Shape) = shape.x, shape.y
 
 function center(shape::Triangle)
@@ -113,7 +117,6 @@ function xycoords(shape::Circle; n=50)
     ts = range(0, 2π, length=n)
     return shape.x .+ shape.R * cos.(ts), shape.y .+ shape.R * sin.(ts)
 end
-
 
 # area
 
@@ -152,7 +155,7 @@ function move!(shape::Triangle, (dx, dy))
     shape
 end
 
-rotate!(shape::Circle, dθ) = shape
+rotate!(shape::Union{Circle,AbstractRectangle}, dθ) = shape
 
 function rotate!(shape::RegularPolygon, dθ)
     shape.θ += dθ
@@ -223,6 +226,11 @@ function same_side((a, b), p, q)
 	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
 end
 
+function linecross((p1, p2), (q1, q2))
+    t, s = [p1-p2 q2-q1] \ (p1 - q1)
+    return 0.0 ≤ t ≤ 1.0 &&  0.0 ≤ s ≤ 1.0
+end
+
 function Base.in(q, s::Triangle)
     p1, p2, p3 = corners(s)
     return same_side((p1, p2), p3, q) && 
@@ -242,11 +250,13 @@ function Base.in(q, shape::Shape)
     return true
 end
 
-# FIXME: does not work for combinations of circles an other shapes
-function Base.intersect(shape1::Shape, shape2::Shape)
+# FIXME: does not work for combinations of circles an other shapes?
+# FIXME: does not actually work in general!
+function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
     return center(shape1) ∈ shape2 ||
             center(shape2) ∈ shape1 ||
-            any(c->c ∈ shape2, corners(shape1))
+            any(c->c ∈ shape2, corners(shape1)) || 
+            any(c->c ∈ shape1, corners(shape2)) 
 end
 
 function Base.intersect(shape1::Circle, shape2::Circle)
@@ -256,58 +266,28 @@ function Base.intersect(shape1::Circle, shape2::Circle)
     return d < shape1.R + shape2.R
 end
 
-function Base.intersect(shape1::Circle, shape2::Shape)
-    c1 = center(shape1)
-    return center(shape1) ∈ shape2 ||
-        center(shape2) ∈ shape1 ||
-
-
 
 # random generation
 
+xlim(shape::Shape) = extrema(xycoords(shape)[1])
+xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R) 
 
+ylim(shape::Shape) = extrema(xycoords(shape)[2])
+ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
 
-
-
-
-arthur = Rectangle((0, 0), 5)
-
-
-# REGULAR POLYGON
-# ---------------
-
-
-
-
-
-# CIRCLE
-# ------
-
-
-
-Circle((x, y), R=1) = Circle(x, y, R)
-
-ncorners(::Circle) = 0
-
-
-# TRIANGLE
-# --------
-
-
-
-
-
-ncorners(::Triangle) = 3
-
-
-
-
-
-
-
-
-
-bill = Triangle((0, 0), (1, 0), (0.5, √(1-0.5)))
+function randshape(shape::Shape, (xmin, xmax), (ymin, ymax))
+    # make a full copy
+    shape = deepcopy(shape)
+    # random rotation
+    rotate!(shape, 2π * rand())
+    # random tranlation within bound
+    dxmin, dxmax = (xmin, xmax) .- xlim(shape)
+    dymin, dymax = (ymin, ymax) .- ylim(shape)
+    dx = (dxmax - dxmin) * rand() + dxmin
+    dy = (dymax - dymin) * rand() + dymin
+    move!(shape, (dx, dy))
+    return shape
+end
 
 
 # Plotting
@@ -324,7 +304,32 @@ using RecipesBase
     return x, y
 end
 
+# generating an image
+
+function sample(shape::S, n, xlims, ylims) where {S<:Shape}
+    # allocate vector
+    shapes = Vector{S}(undef, n)
+    trials = 0
+    while true
+        trials += 1
+        for i in 1:n
+            new_shape = randshape(shape, xlims, ylims)
+            # any intersection with previous shapes: start again
+            any(s->intersect(s, new_shape), shapes[1:i-1]) && break
+            shapes[i] = new_shape
+            i==n && return shapes, trials
+        end
+    end
+end
+
+
+
+
 using Plots
 
-plot(bill, color=:yellow)
 
+function plotshapes(shapes; kwargs...)
+    p = plot(;kwargs...)
+    plot!.(shapes)
+    return p
+end
