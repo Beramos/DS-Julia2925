@@ -124,26 +124,38 @@ bunchofnumbers_parser(bunchofnumbers) = parse.(Float64, split(rstrip(bunchofnumb
 
 #= Notebook 2: composite types =#
 ### Wizarding currency
-
 struct WizCur
-  knuts::Int
-  sickles::Int
   galleons::Int
-  function WizCur(knuts::Int, sickles::Int, galleons::Int)
-        knuts, sickles = knuts % 29, sickles + div(knuts, 29)
-        sickles, galleons = sickles % 17, galleons + div(sickles, 17)
-        new(knuts, sickles, galleons)
-    end
+  sickles::Int
+  knuts::Int
+  function WizCur(galleons::Int, sickles::Int, knuts::Int)
+      sickles += knuts ÷ 29
+      knuts %= 29
+      galleons += sickles ÷ 17
+      sickles %= 17
+      return new(galleons, sickles, knuts)
+  end
 end
 
-Base.show(io::IO, wizcur::WizCur) = print("$(wizcur.knuts)K, $(wizcur.sickles)S, $(wizcur.galleons)G")
+galleons(money::WizCur) = money.galleons
+sickles(money::WizCur) = money.sickles
+knuts(money::WizCur) = money.knuts
 
+moneyinknuts(money::WizCur) = 29*17galleons(money) + 17sickles(money) + knuts(money)
 
-Base.:+(c1::WizCur, c2::WizCur) = WizCur(c1.knuts+c2.knuts, c1.sickles+c2.sickles, c1.galleons+c2.galleons)
-knuts(c::WizCur) = c.knuts + 17c.sickles + 493c.galleons
-Base.:>(c1::WizCur, c2::WizCur) = knuts(c1) > knuts(c2)
-Base.:<(c1::WizCur, c2::WizCur) = knuts(c1) < knuts(c2)
+function Base.show(io::IO, money::WizCur)
+  print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
+end
 
-money_ron = WizCur(732, 19, 0)
-money_harry = WizCur(7, 1, 3)
-money_harry > money_ron
+Base.isless(m1::WizCur, m2::WizCur) = moneyinknuts(m1) < moneyinknuts(m2) 
+Base.isgreater(m1::WizCur, m2::WizCur) = moneyinknuts(m1) > moneyinknuts(m2) 
+Base.isequal(m1::WizCur, m2::WizCur) = moneyinknuts(m1) == moneyinknuts(m2)
+
+Base.:+(m1::WizCur, m2::WizCur) = WizCur(galleons(m1)+galleons(m2),
+                                          sickles(m1)+sickles(m2),
+                                          knuts(m1)+knuts(m2))
+
+money_ron = WizCur(0, 19, 732)
+money_harry = WizCur(3, 1, 7)
+
+dungbomb_fund = money_ron + money_harry
