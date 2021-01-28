@@ -40,7 +40,7 @@ module DSJulia
     macro terminal(ex)
         return quote
             PlutoUI.with_terminal() do
-                $ex
+                $(esc(ex))
             end
         end
     end
