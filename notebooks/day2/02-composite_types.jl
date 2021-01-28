@@ -404,48 +404,11 @@ end
 # ╔═╡ 48301af2-5d94-11eb-0019-7737667c9cea
 galleons(money::WizCur) = missing
 
-# ╔═╡ dd0b7c7a-6177-11eb-2cb7-8b194a75d776
-begin 
-		
-	q_wc = Question(
-		validators = @safe[
-			Solution.WizCur(732, 19, 0) |> Solutions.galleons == 
-			WizCur(732, 19, 0) |> galleons
-		
-		]
-	)
-	
-	qb_wc = QuestionBlock(
-		title=md"**Exercise: wizarding currency**",
-		description = md"""
-			
-
-The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
-
-Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
-
-Also, overload the function `+` to add two instances of `WizCur` and the `>` and `<` operators to compare two instances of wizarding currency.
-
-The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry has 3 Galleons, 1 Sickle, and 7 Knuts pocket change. Who has the most money? How many do they have together?
-		""",
-		hints = [
-			hint(md"You might find `%` and `div` useful here.")
-		],
-		questions = [q_wc]
-	)
-		validate(qb_wc, tracker)
-	
-end
-
 # ╔═╡ 4ea80eda-5d94-11eb-3882-21a41d2d65f8
 sickles(money::WizCur) = missing
 
 # ╔═╡ 5af60d90-5d94-11eb-2ee4-b7bfc2caf53b
 knuts(money::WizCur) = missing
-
-# ╔═╡ 3d94ebaa-617b-11eb-3fc2-0de87184d62b
-Solutions.WizCur(732, 19, 0) |> Solutions.galleons == 
-			WizCur(732, 19, 0) |> galleons
 
 # ╔═╡ 5f7c75ac-5d94-11eb-137a-7914cd009821
 #=
@@ -474,6 +437,48 @@ money_harry = missing
 
 # ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
 dungbomb_fund = money_ron + money_harry
+
+# ╔═╡ dd0b7c7a-6177-11eb-2cb7-8b194a75d776
+begin 
+		
+	q_wc = Question(
+		validators = @safe[
+			Solutions.WizCur(732, 19, 0) |> Solutions.galleons == 
+				WizCur(732, 19, 0) |> galleons,
+			Solutions.WizCur(732, 19, 0) |> Solutions.knuts == 
+				WizCur(732, 19, 0) |> knuts,		
+			Solutions.WizCur(732, 19, 0) |> Solutions.sickles == 
+					WizCur(732, 19, 0) |> sickles,					
+			galleons(dungbomb_fund) == Solutions.galleons(Solutions.dungbomb_fund),
+			sickles(dungbomb_fund) == Solutions.sickles(Solutions.dungbomb_fund),
+			knuts(dungbomb_fund) == Solutions.knuts(Solutions.dungbomb_fund)
+		]
+	)
+	
+	qb_wc = QuestionBlock(
+		title=md"**Exercise: wizarding currency**",
+		description = md"""
+			
+
+The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
+
+Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
+
+Also, overload the function `+` to add two instances of `WizCur` and the `>` and `<` operators to compare two instances of wizarding currency.
+
+The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry has 3 Galleons, 1 Sickle, and 7 Knuts pocket change. Who has the most money? How many do they have together?
+		""",
+		hints = [
+			hint(md"You might find `%` and `div` useful here.")
+		],
+		questions = [q_wc]
+	)
+		validate(qb_wc, tracker)
+	
+end
+
+# ╔═╡ 392228e2-617d-11eb-09a5-c9e5649356eb
+
 
 # ╔═╡ d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
 md"""
@@ -620,7 +625,6 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═48301af2-5d94-11eb-0019-7737667c9cea
 # ╠═4ea80eda-5d94-11eb-3882-21a41d2d65f8
 # ╠═5af60d90-5d94-11eb-2ee4-b7bfc2caf53b
-# ╠═3d94ebaa-617b-11eb-3fc2-0de87184d62b
 # ╠═5f7c75ac-5d94-11eb-137a-7914cd009821
 # ╠═678ca64a-5d94-11eb-2b85-0b706526e35b
 # ╠═8afbd434-5d94-11eb-366b-d3d719189ef7
@@ -629,6 +633,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═9eab40be-5d94-11eb-0c59-21f5824fb812
 # ╠═a137e0f8-5d94-11eb-2209-73acad549307
 # ╠═a79ba114-5d94-11eb-16ae-9906c6cdf54f
+# ╟─392228e2-617d-11eb-09a5-c9e5649356eb
 # ╠═d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
 # ╠═d448a2e0-5d92-11eb-18a6-9ff817992154
 # ╠═bd91a60e-5d93-11eb-09d4-830ca69439bf
