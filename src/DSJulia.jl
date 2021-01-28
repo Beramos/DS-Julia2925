@@ -16,6 +16,7 @@ https://computationalthinking.mit.edu/Fall20/installation/
 module DSJulia
     using Markdown
     using Markdown: MD, Admonition
+    using PlutoUI
 
     export check_answer, still_missing, keep_working, correct, not_defined, hint, fyi  
     export Question, QuestionOptional, QuestionBlock, validate
