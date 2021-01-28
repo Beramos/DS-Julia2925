@@ -59,7 +59,8 @@ function compute_ODE(p; times=1:0.5:15)
   return sol.t , hcat(sol.u...)[1,:]
 end
 
-time, exp_disp = compute_ODE((9.81, 5e-2))
+time, exp_disp = compute_ODE((9.81, 5e-2)) 
+exp_disp .+= 0.75randn(length(exp_disp)) # add noise
 
 scatter(time, exp_disp, label="Experiment", xlabel="Time(s)", ylabel="Displacement (m)")
 
