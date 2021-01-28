@@ -46,7 +46,7 @@ data.
 md"""
 ## Program representation
 
-Every Julia program starts life as a string:
+Every Julia program starts its life as a string:
 """
 
 # ╔═╡ e76d8f04-5e53-11eb-26df-db496622642d
@@ -58,7 +58,7 @@ md"""
 
 The next step is to parse each string
 into an object called an expression, represented by the Julia type `Expr`. 
-Parsing means taking the input (in this case, a string) and builds a data structure – often some kind of parse tree, abstract syntax tree or other hierarchical structure, giving a structural representation of the input while checking for correct syntax. 
+Parsing means taking the input (in this case, a string) and building a data structure – often some kind of parse tree, [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or other hierarchical structure, giving a structural representation of the input while checking for correct syntax. 
 """
 
 # ╔═╡ 15aaa5b6-5e54-11eb-067f-9dcd096940b6
@@ -69,7 +69,7 @@ typeof(ex1)
 
 # ╔═╡ 22770a30-5e54-11eb-28db-1359ab1f402f
 md"""
-`Expr` objects contain two parts:
+`Expr` objects contains two parts:
 
   * a `Symbol` identifying the kind of expression. A symbol is an [interned string](https://en.wikipedia.org/wiki/String_interning)
     identifier (string interning is a method of storing only one copy of each distinct string value, which must be immutable).
@@ -242,7 +242,7 @@ eval(:(1 + 2))
 md"""
 ## Macros
 
-Now that we have an understanding of the basic concepts of code representation in julia, we can introduce the core concept of this notebook: macros. 
+Now that we have an understanding of the basic concepts of code representation in Julia, we can introduce the core concept of this notebook: macros. 
 Macros provide a method to include generated code in the final body of a program. A macro maps
 a tuple of arguments to a returned *expression*, and the resulting expression is compiled directly
 rather than requiring a runtime `eval` call. Macro arguments may include expressions,
@@ -306,6 +306,11 @@ PlutoUI.with_terminal() do
 	@sayhello("Mr. Bond")
 end
 
+# ╔═╡ 0c787198-61a0-11eb-1e30-fbcb5a624076
+PlutoUI.with_terminal() do
+	@sayhello "Mr. Bond"
+end
+
 # ╔═╡ 4a732eb8-5e60-11eb-197b-0729d0f1be15
 md"""
 We can view the quoted return expression using the function `macroexpand` or the macro `@macroexpand` (**important note:**
@@ -318,7 +323,7 @@ We can see that the `"Mr. Bond"` literal has been interpolated into the expressi
 # ╔═╡ 855412b2-5e61-11eb-3aba-bb862489414e
 md"""
 
-### Hold up: why macros?
+### Hold on: why macros?
 
 We have already seen a function `f(::Expr...) -> Expr` in a previous section. In fact, `macroexpand` is also such a function. So, why do macros exist?
 
@@ -378,9 +383,9 @@ above; it passes the tuple `(expr1, expr2, ...)` as one argument to the macro:
 md"""
 ### Building an advanced macro
 
-Here is a simplified definition of Julia's `@assert` macro, which checks if expression is true:
+Here is a simplified definition of Julia's `@assert` macro, which checks if an expression is true:
 
-(`... ? ... : ...` is the ternary operator seen in `01-basics.jl` )
+(`... ? ... : ...` is the ternary if-else operator seen in `01-basics.jl` )
 """
 
 # ╔═╡ e61381aa-5e66-11eb-3347-5d26b61e6c17
@@ -558,6 +563,12 @@ log10(y)
 
 # ╔═╡ cae2546a-5e6b-11eb-3fc2-69f9a15107cf
 md"""In this manner, Julia acts as its own preprocessor, and allows code generation from inside the language."""
+
+# ╔═╡ 0ac5096e-61a1-11eb-24ba-13bc0a3377c6
+
+
+# ╔═╡ efc1357a-61a0-11eb-20f5-a15338080e4c
+md"### Example: domain specific languages"
 
 # ╔═╡ 4d9de330-5f55-11eb-0d89-eb81e6c9ffab
 md"
@@ -983,6 +994,7 @@ end
 # ╠═1fdf9600-5e60-11eb-30d3-b167811ae47f
 # ╟─2dcacdfc-5e60-11eb-3d04-9f2ffb46d0fe
 # ╠═36fc5076-5e60-11eb-04be-bd9f542b1ff3
+# ╠═0c787198-61a0-11eb-1e30-fbcb5a624076
 # ╟─4a732eb8-5e60-11eb-197b-0729d0f1be15
 # ╠═536addec-5e61-11eb-1a9d-d7f2c190d6c2
 # ╟─855412b2-5e61-11eb-3aba-bb862489414e
@@ -1031,7 +1043,9 @@ end
 # ╠═18e3753a-5f55-11eb-0a11-47ca6abe9186
 # ╠═2f4fe6ce-5e6c-11eb-1744-2f9534c8b6ba
 # ╠═cae2546a-5e6b-11eb-3fc2-69f9a15107cf
-# ╠═4d9de330-5f55-11eb-0d89-eb81e6c9ffab
+# ╟─0ac5096e-61a1-11eb-24ba-13bc0a3377c6
+# ╟─efc1357a-61a0-11eb-20f5-a15338080e4c
+# ╟─4d9de330-5f55-11eb-0d89-eb81e6c9ffab
 # ╠═122cffca-5fdc-11eb-3555-b39b818f1116
 # ╠═92458f54-5f57-11eb-179f-c749ce06f7e2
 # ╟─d1222dcc-5f57-11eb-2c87-77a16ea8e65d
