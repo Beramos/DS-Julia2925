@@ -159,3 +159,23 @@ money_ron = WizCur(0, 19, 732)
 money_harry = WizCur(3, 1, 7)
 
 dungbomb_fund = money_ron + money_harry
+
+
+### Vandermonde
+struct Vandermonde{T,VT} <: AbstractMatrix{T}
+  α::VT
+  m::Int
+  Vandermonde(α::AbstractVector{T}, m) where {T} = new{T,typeof(α)}(α,m)
+end
+
+Vandermonde(α::Vector{<:Number}) = Vandermonde(α, length(α))
+
+Base.size(V::Vandermonde) = (length(V.α), V.m)
+Base.getindex(V::Vandermonde, i, j) = V.α[i]^(j-1)
+
+α = [1, 2, 3, 4]
+
+V = Vandermonde(α, 4)
+
+determinant(V::Vandermonde) = 
+  ((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod

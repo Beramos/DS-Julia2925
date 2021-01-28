@@ -480,18 +480,30 @@ end
 # ╔═╡ 392228e2-617d-11eb-09a5-c9e5649356eb
 
 
-# ╔═╡ d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
-md"""
-## Exercise: Vandermonde matrix
+# ╔═╡ 902f4dfe-617d-11eb-2957-71130adca3ae
+begin 	
+	q_vm = Question(
+		validators = @safe[
 
-The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+		]
+	)
+	
+	qb_vm = QuestionBlock(
+		title=md"**Exercise: Vandermonde matrix**",
+		description = md"""
+		The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
 
-$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
+		$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
 
-$$V_{i,j} = \alpha_i^{j-1}$$
+		$$V_{i,j} = \alpha_i^{j-1}$$
 
-Complete the implementation to store and process this matrix.
-"""
+		Complete the implementation to store and process this matrix.
+		""",
+		questions = [q_vm]
+	)
+		validate(qb_vm, tracker)
+	
+end
 
 # ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
 begin
@@ -517,6 +529,36 @@ Base.getindex(V::Vandermonde, i, j) = missing
 # ╔═╡ d107c75e-5d93-11eb-0e6f-097b1291e460
 V = Vandermonde(α, 4)
 
+# ╔═╡ f01448f0-617d-11eb-1829-0fcfe19b3115
+begin 
+		
+	q_dvm = Question(
+		validators = @safe[
+
+		]
+	)
+	
+
+	qb_dvm = QuestionBlock(
+		title=md"**Exercise: Determinant of Vandermonde matrix**",
+		description = md"""
+		The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+
+		$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
+
+		$$V_{i,j} = \alpha_i^{j-1}$$
+
+		Complete the implementation to store and process this matrix.
+		""",
+		hints = [
+			hint(md"`prod`")
+		],
+		questions = [q_dvm]
+	)
+		validate(qb_dvm, tracker)
+	
+end
+
 # ╔═╡ ebe6cec6-5d93-11eb-25fd-2f614f1a7576
 md"""
 The determinant of a Vandermonde matrix is easy to compute:
@@ -525,7 +567,6 @@ $${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
 
 Overload this for the Vandermonde matrix!
 
-HINT: `prod`
 """
 
 # ╔═╡ d2a076ea-5d93-11eb-216e-f5c37d330b40
@@ -634,12 +675,13 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═a137e0f8-5d94-11eb-2209-73acad549307
 # ╠═a79ba114-5d94-11eb-16ae-9906c6cdf54f
 # ╟─392228e2-617d-11eb-09a5-c9e5649356eb
-# ╠═d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
+# ╠═902f4dfe-617d-11eb-2957-71130adca3ae
 # ╠═d448a2e0-5d92-11eb-18a6-9ff817992154
 # ╠═bd91a60e-5d93-11eb-09d4-830ca69439bf
 # ╠═c2ecfec8-5d93-11eb-2640-07bc07f3da98
 # ╠═cb3e91cc-5d93-11eb-020c-d73c10131755
 # ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
+# ╠═f01448f0-617d-11eb-1829-0fcfe19b3115
 # ╠═ebe6cec6-5d93-11eb-25fd-2f614f1a7576
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
