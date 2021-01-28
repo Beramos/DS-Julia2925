@@ -7,6 +7,7 @@ using InteractiveUtils
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
 begin 
 	using PlutoUI
+	using DSJulia
 end
 
 # ╔═╡ 122cffca-5fdc-11eb-3555-b39b818f1116
@@ -112,9 +113,7 @@ The `dump` function provides indented and annotated display of `Expr` objects:
 """
 
 # ╔═╡ 985a57f2-5e54-11eb-1f2f-bf23014c6171
-PlutoUI.with_terminal() do
-	dump(ex2)
-end
+@terminal dump(ex2)
 
 # ╔═╡ d66ea502-5e54-11eb-2694-4766a05aed38
 md"""
@@ -287,14 +286,10 @@ macro sayhello(name)
 end
 
 # ╔═╡ ae1525ea-5e5e-11eb-3906-593143776559
-PlutoUI.with_terminal() do
-	@sayhello
-end
+@terminal @sayhello
 
 # ╔═╡ bda7fd66-5e5e-11eb-1e06-eb67a0178e14
-PlutoUI.with_terminal() do
-	@sayhello()
-end
+@terminal @sayhello()
 
 # ╔═╡ 2dcacdfc-5e60-11eb-3d04-9f2ffb46d0fe
 md"""
@@ -302,14 +297,10 @@ This macro takes one argument: `name`. When `@sayhello` is encountered, the quot
 """
 
 # ╔═╡ 36fc5076-5e60-11eb-04be-bd9f542b1ff3
-PlutoUI.with_terminal() do
-	@sayhello("Mr. Bond")
-end
+@terminal @sayhello("Mr. Bond")
 
 # ╔═╡ 0c787198-61a0-11eb-1e30-fbcb5a624076
-PlutoUI.with_terminal() do
-	@sayhello "Mr. Bond"
-end
+@terminal @sayhello "Mr. Bond"
 
 # ╔═╡ 4a732eb8-5e60-11eb-197b-0729d0f1be15
 md"""
@@ -331,7 +322,7 @@ Macros are necessary because they execute when code is parsed, therefore, macros
 to generate and include fragments of customized code *before* the full program is run. To illustrate
 the difference, consider the following example.
 
-Note that in this case, you need to look at your REPL to see the output. A macro definition is not allowed in the local scope, so we cannot wrap this in an `PlutoUI.with_terminal() do ... end`-block
+Note that in this case, you need to look at your REPL to see the output. A macro definition is not allowed in the local scope, so we cannot wrap this with our `@terminal` macro.
 """
 
 # ╔═╡ cabb3cdc-5e62-11eb-2479-bb8337c05292
@@ -350,9 +341,7 @@ md"""Note that the computation of message is compiled away if we expand the macr
 ex_twostep = @macroexpand @twostep :(1, 2, 3)
 
 # ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
-PlutoUI.with_terminal() do
-	dump(ex_twostep)
-end
+@terminal dump(ex_twostep)
 
 # ╔═╡ 0613f620-5e66-11eb-08d9-01dd3a403321
 md"""
@@ -467,9 +456,7 @@ typeof(:("a should equal b"))
 typeof(:("a ($a) should equal b ($b)!"))
 
 # ╔═╡ 7588018e-5e68-11eb-3be2-b97ce124d6bf
-PlutoUI.with_terminal() do
-	dump(:("a ($a) should equal b ($b)!"))
-end
+@terminal dump(:("a ($a) should equal b ($b)!"))
 
 # ╔═╡ 84771eaa-5e68-11eb-0684-cf1a3118d10b
 md"""
@@ -652,9 +639,9 @@ PlutoUI.with_terminal() do
 end
 
 # ╔═╡ 3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
-@macroexpand @until i == 10 begin
-	i += 1
-	println(i) 
+@macroexpand @until j == 10 begin
+	j += 1
+	println(j) 
 end
 
 # ╔═╡ 10a8532a-5e60-11eb-3331-974e708cb39d
@@ -867,9 +854,7 @@ html"""<!-- HTML generated using hilite.me --><div style="background: #ffffff; o
 """
 
 # ╔═╡ 92836b48-5fc6-11eb-19b6-1d7a5c310052
-PlutoUI.with_terminal() do
-	println("There is nothing like ", ip"127.0.0.1")
-end
+@terminal println("There is nothing like ", ip"127.0.0.1")
 
 # ╔═╡ f26e65a8-5fc6-11eb-3cd7-3f40c12a6abb
 md"Find out what function is exactly used in multiple dipatching."
