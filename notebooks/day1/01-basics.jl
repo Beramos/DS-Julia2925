@@ -21,6 +21,7 @@ student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
 begin 
 	using DSJulia;
+	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
 
@@ -139,6 +140,12 @@ println("The answer to $mystery is $(3*2*7)")
 
 # ╔═╡ 7592f8a2-4ac0-11eb-375c-61c915380eeb
 md"... but take a look at the terminal window."
+
+# ╔═╡ 97b7f7d8-61aa-11eb-2bf6-739bd5f2e941
+md"So the [Stdout](https://www.computerhope.com/jargon/s/stdout.htm) is printed to the terminal window and not the notebooks. We can use the @terminal macro of our own making to circumvent this. More on macros tomorrow!"
+
+# ╔═╡ dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
+@terminal println("The answer to $mystery is $(3*2*7)")
 
 # ╔═╡ abf00a78-4ab8-11eb-1063-1bf4905ca250
 md"""
@@ -988,6 +995,8 @@ end
 # ╟─6b6eb954-4ab8-11eb-17f9-ef3445d359a3
 # ╠═94e3eb74-4ab8-11eb-1b27-573dd2f02b1d
 # ╟─7592f8a2-4ac0-11eb-375c-61c915380eeb
+# ╟─97b7f7d8-61aa-11eb-2bf6-739bd5f2e941
+# ╠═dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
 # ╟─abf00a78-4ab8-11eb-1063-1bf4905ca250
 # ╠═be220a48-4ab8-11eb-1cd4-db99cd9db066
 # ╠═cadaf948-4ab8-11eb-3110-259768055e85

@@ -1,11 +1,10 @@
 name = "DSJulia"
 uuid = "36755c37-737e-4b39-b6ef-e2f953844095"
-authors = ["Michiel Stock <michielfmstock@gmail.com>",
-            "Bram De Jaegher <bram.dejaegher@ugent.be",
-            "Daan Van Hauwermeiren <Daan.VanHauwermeiren@UGent.be>"]
+authors = ["Michiel Stock <michielfmstock@gmail.com>", "Bram De Jaegher <bram.dejaegher@ugent.be", "Daan Van Hauwermeiren <Daan.VanHauwermeiren@UGent.be>"]
 version = "0.1.0"
 
 [deps]
 Markdown = "d6f4376e-aef5-505a-96c1-9c027394607a"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"

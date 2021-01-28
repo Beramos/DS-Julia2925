@@ -16,12 +16,14 @@ https://computationalthinking.mit.edu/Fall20/installation/
 module DSJulia
     using Markdown
     using Markdown: MD, Admonition
+    using PlutoUI
 
     export check_answer, still_missing, keep_working, correct, not_defined, hint, fyi  
     export Question, QuestionOptional, QuestionBlock, validate
     export NoDiff, Easy, Intermediate, Hard
     export ProgressTracker, grade
     export @safe
+    export @terminal
 
     include("styles.jl")
     include("admonition.jl")
@@ -32,5 +34,14 @@ module DSJulia
     export Solutions
     module Solutions
         include("solutions.jl")
+    end
+
+    # Convenience macro for terminal printing in Pluto
+    macro terminal(ex)
+        return quote
+            PlutoUI.with_terminal() do
+                $(esc(ex))
+            end
+        end
     end
 end
