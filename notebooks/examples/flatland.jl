@@ -416,6 +416,14 @@ function Base.in(q, s::Triangle)
             same_side((p3, p1), p2, q)
 end
 
+function Base.in((x,y), shape::AbstractRectangle)
+    xmin, xmax = xlim(shape)
+    xmin ≤ x ≤ xmax || return false
+    ymin, ymax = ylim(shape)
+    ymin ≤ y ≤ ymax || return false
+    return true
+end
+
 function Base.in(q, shape::Shape)
     corns = corners(shape)
     n = ncorners(shape)

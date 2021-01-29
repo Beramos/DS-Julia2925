@@ -5,7 +5,10 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ 63f5861e-6244-11eb-268b-a16bc3f8265c
-using DSJulia
+using DSJulia, LinearAlgebra
+
+# ╔═╡ dfc779ee-6246-11eb-240b-4dc7a7d95641
+using Plots, RecipesBase
 
 # ╔═╡ b1d21552-6242-11eb-2665-c9232be7026e
 md"""
@@ -238,7 +241,11 @@ md"This returns the bounding box, as the smallest rectangle that can completely 
 boundingbox(shape::Shape) = missing
 
 # ╔═╡ d60f8ca4-6244-11eb-2055-4551e4c10906
+md"""
+## Area
 
+Next, we compute the area of our shapes.
+"""
 
 # ╔═╡ f69370bc-6244-11eb-290e-fdd4d7cc826a
 hint(md"The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}$$.")
@@ -247,6 +254,188 @@ hint(md"The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}
 hint(md"A regular polygon consists of a couple of isosceles triangles.")
 
 # ╔═╡ ebf4a45a-6244-11eb-0965-197f536f8e87
+begin
+	area(shape::Shape) = missing
+end
+
+# ╔═╡ 36cc0492-6246-11eb-38dd-4f42fb7066dc
+md"""
+## Moving, rotating and scaling
+
+Important: the functions work *in-place*, meaning that the modify your object (that is why use use `mutable` structures).
+
+For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
+
+Note: rotations are in radials, so between $0$ and $2\pi$.
+"""
+
+# ╔═╡ 83c6d25c-6246-11eb-1a24-57e20f5e7262
+begin
+	function move!(shape::Shape, (dx, dx))
+		# move the shape
+		return shape
+	end
+end
+
+# ╔═╡ a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
+begin
+	function rotate!(shape::Shape, dθ)
+		# rotate the shape, counterclockwise
+		return shape
+	end
+end
+
+# ╔═╡ b907e8fc-6246-11eb-0beb-bb44930d033c
+begin
+	function scale!(shape::Shape, a)
+		@assert a > 0 "scaling has to be a positive number"
+		# scale with a factor a
+		return shape
+	end
+end
+
+# ╔═╡ d08ab6d0-6246-11eb-08a8-152f9802cdfc
+md"""
+## Plotting 
+
+OK, let's take a look at our shapes! We use `RecipesBase` to allow plotting.
+This falls back on `xycoords` (can you see how it works?), so make sure this method is operational.
+"""
+
+# ╔═╡ e30d10d2-6246-11eb-1d59-332b5916712e
+@recipe function f(s::Shape)
+    xguide --> "x"
+    yguide --> "y"
+    label --> ""
+    aspect_ratio := :equal
+    seriestype := :shape
+    x, y = xycoords(s)
+    return x, y
+end
+
+# ╔═╡ e7e90744-6246-11eb-157c-cf67e8619d6e
+"""Plots a list of shapes."""
+function plotshapes(shapes; kwargs...)
+    p = plot(;kwargs...)
+    plot!.(shapes)
+    return p
+end
+
+# ╔═╡ 1aec9fc2-6247-11eb-2942-edc370918f9e
+md"Let's look!"
+
+# ╔═╡ 16d0ea9c-6247-11eb-12c6-1709f6d0ac99
+plot(myshape)
+
+# ╔═╡ 287a7506-6247-11eb-2bad-0778802c00d5
+plot(myshape, color="pink")
+
+# ╔═╡ 221e09a2-6247-11eb-12a8-a13c0a2f96e7
+md"""
+## In and intersection
+
+Here, we want to perform some geometric checks. 
+
+```julia
+(x, y) in shape
+```
+should return a Boolean whether the point.
+
+Similarly, we want to check whether two shapes overlap (partly):
+
+```julia
+intersect(shape1, shape2)
+```
+
+By completing these functions, the following more mathematical syntax should also work:
+
+```julia
+(x, y) ∈ shape  # \in<TAB>
+shape1 ∩ shape2  # \cap<TAB>
+```
+
+We have defined some functions you might find useful.
+"""
+
+# ╔═╡ dc124df4-6248-11eb-199a-dd4627122715
+hint(md"Maybe you can perform very rapid checks to immediately check whether two shapes cannot possibly overlap?")
+
+# ╔═╡ 0381fbba-6248-11eb-3e80-b37137438531
+crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
+
+# ╔═╡ 150f1dae-6248-11eb-276f-9bbf7eba58fd
+"""
+    same_side((a, b), p, q)
+
+Given a line described by two points, `a` and `b`, check whether two points
+`p` and `q` are on the same side.
+"""
+function same_side((a, b), p, q)
+    # normal vector on the line
+    n = (a[2] - b[2], b[1] - a[1])
+    # check if they are on both sides by projection
+	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
+end
+
+# ╔═╡ 165b9192-6248-11eb-3c29-c7a8c166f731
+same_side(((0, 0), (1, 1)), (0.6, 0.7), (12, 30))
+
+# ╔═╡ 653af7c6-6248-11eb-2a7b-fbf7550ef92b
+"""
+    linecross((p1, p2), (q1, q2))
+
+Check whether line segments `(p1, p2)` and `(q1, q2)` intersect.
+"""
+function linecross((p1, p2), (q1, q2))
+    v = p2 .- p1
+    w = q2 .- q1
+    vw = crossprod(v, w)
+    t = crossprod(q1 .- p1, w) / vw
+    s = crossprod(q1 .- p1, v) / vw
+    return 0.0 ≤ t ≤ 1.0 &&  0.0 ≤ s ≤ 1.0
+end
+
+# ╔═╡ 6aa3519a-6248-11eb-193d-a3537f7d3bd0
+linecross(((0, 0), (1, 1)), ((0, 1), (1, 0)))
+
+# ╔═╡ 91273cd2-6248-11eb-245c-abb6269f916b
+md"Note, Julia will parse composite arguments:"
+
+# ╔═╡ e9a82498-6248-11eb-0f36-bbbdc5580c8d
+@inline function boundboxes_overlap(shape1::Shape, shape2::Shape)
+    (xmin1, xmax1), (xmin2, xmax2) = xlim(shape1), xlim(shape2)
+    (ymin1, ymax1), (ymin2, ymax2)  = ylim(shape1), ylim(shape2)
+    # check for x and y overlap
+    return (xmin1 ≤ xmin2 ≤ xmax1 || xmin1 ≤ xmax2 ≤ xmax1 || xmin2 ≤ xmin1 ≤ xmax2) &&
+            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 ||ymin2 ≤ ymin1 ≤ ymax2)
+end
+
+# ╔═╡ ab9775d2-6248-11eb-360a-8b1e048d5717
+let
+	p1 = (0, 0)
+	p2 = (1, 1)
+	q1 = (0, 1)
+	q2 = (1, 0)
+	linecross((p1, p2), (q1, q2))
+end
+
+# ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
+begin
+	function Base.in((x, y), s::Shape)
+		# compute something
+		return missing
+	end
+end
+
+# ╔═╡ f4873fce-6249-11eb-0140-871354ca5430
+let
+	# verfication
+	points = filter(p->p ∈ myshape, [5randn(2) for i in 1:10_000])
+	scatter(first.(points), last.(points))
+	plot!(myshape, alpha=0.2)
+end
+
+# ╔═╡ f97bf1c0-6247-11eb-1acc-e30068a277d0
 
 
 # ╔═╡ Cell order:
@@ -290,3 +479,27 @@ hint(md"A regular polygon consists of a couple of isosceles triangles.")
 # ╠═f69370bc-6244-11eb-290e-fdd4d7cc826a
 # ╠═69780926-6245-11eb-3442-0dc8aea8cb73
 # ╠═ebf4a45a-6244-11eb-0965-197f536f8e87
+# ╠═36cc0492-6246-11eb-38dd-4f42fb7066dc
+# ╠═83c6d25c-6246-11eb-1a24-57e20f5e7262
+# ╠═a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
+# ╠═b907e8fc-6246-11eb-0beb-bb44930d033c
+# ╠═d08ab6d0-6246-11eb-08a8-152f9802cdfc
+# ╠═dfc779ee-6246-11eb-240b-4dc7a7d95641
+# ╠═e30d10d2-6246-11eb-1d59-332b5916712e
+# ╠═e7e90744-6246-11eb-157c-cf67e8619d6e
+# ╠═1aec9fc2-6247-11eb-2942-edc370918f9e
+# ╠═16d0ea9c-6247-11eb-12c6-1709f6d0ac99
+# ╠═287a7506-6247-11eb-2bad-0778802c00d5
+# ╠═221e09a2-6247-11eb-12a8-a13c0a2f96e7
+# ╠═dc124df4-6248-11eb-199a-dd4627122715
+# ╠═0381fbba-6248-11eb-3e80-b37137438531
+# ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
+# ╠═165b9192-6248-11eb-3c29-c7a8c166f731
+# ╠═653af7c6-6248-11eb-2a7b-fbf7550ef92b
+# ╠═6aa3519a-6248-11eb-193d-a3537f7d3bd0
+# ╠═91273cd2-6248-11eb-245c-abb6269f916b
+# ╠═e9a82498-6248-11eb-0f36-bbbdc5580c8d
+# ╠═ab9775d2-6248-11eb-360a-8b1e048d5717
+# ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
+# ╠═f4873fce-6249-11eb-0140-871354ca5430
+# ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
