@@ -200,7 +200,7 @@ end
 #=
 The fuctions below yield the outer limits of the x and y axes of your shape. Can you complete the method as a oneliner?
 
-Hint: `extrema` could be useful here...
+Hint: The function `extrema` could be useful here...
 =#
 
 xlim(shape::Shape) = extrema(xycoords(shape)[1])
@@ -212,7 +212,12 @@ ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
 ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
 
 boundingbox(shape::Shape) = Rectangle(xlim(shape), ylim(shape))
-# area
+
+# # Area
+
+#=
+Next, we compute the area of our shapes. 
+=#
 
 area(shape::AbstractRectangle) = prod(lw(shape))
 
@@ -233,6 +238,15 @@ end
 area(shape::Circle) = shape.R^2 * π
 
 # move, rotate and scale
+
+#=
+Moving, rotating and scaling should also work.
+Important, the functions work in-place, meaning that the modify your structure (that is why use use `mutable` structures).
+
+For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
+
+Hint: Rotations are in radials, so between $0$ and $2\pi$.
+=#
 
 function move!(shape::Shape, (dx, dy))
     shape.x += dx
@@ -305,9 +319,60 @@ function scale!(shape::Triangle, a)
     return shape
 end
 
+# plotting utilities
+
+
+using Plots, RecipesBase
+
+#=
+OK, let's take a look at our shapes! We use `RecipesBase` to allow plotting.
+This falls back on `xycoords` (can you see how it works?), so make sure this method is operational.
+=#
+
+@recipe function f(s::Shape)
+    xguide --> "x"
+    yguide --> "y"
+    label --> ""
+    aspect_ratio := :equal
+    seriestype := :shape
+    x, y = xycoords(s)
+    return x, y
+end
+
+
+function plotshapes(shapes; kwargs...)
+    p = plot(;kwargs...)
+    plot!.(shapes)
+    return p
+end
+
+
+
 # in and interaction
 
-Base.in((x, y), s::Circle) = (s.x-x)^2 + (s.y-y)^2 ≤ s.R^2
+#=
+Here, we want to perform some geometric checks. 
+
+```julia
+(x, y) in shape
+```
+should return a Boolean whether the point.
+
+Similarly, we want to check whether two shapes overlap (partly):
+
+```julia
+intersect(shape1, shape2)
+```
+
+By completing these functions, the following more mathematical syntax should also work:
+
+```julia
+(x, y) ∈ shape  # \in<TAB>
+shape1 ∩ shape2  # \cap<TAB>
+```
+=#
+
+Base.in((x, y), s::Circle) = (s.x - x)^2 + (s.y - y)^2 ≤ s.R^2
 
 function Base.in((x, y), s::AbstractRectangle)
     xc, yc = center(s)
@@ -315,13 +380,26 @@ function Base.in((x, y), s::AbstractRectangle)
     return (xc - 0.5l ≤ x ≤ xc + 0.5l) && (yc - 0.5w ≤ y ≤ yc + 0.5w)
 end
 
+crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
+
+"""
+    same_side((a, b), p, q)
+
+Given a line described by two points, `a` and `b`, check whether two points
+`p` and `q` are on the same side.
+"""
 function same_side((a, b), p, q)
-	n = (a[2] - b[2], b[1] - a[1])
+    # normal vector on the line
+    n = (a[2] - b[2], b[1] - a[1])
+    # check if they are on both sides by projection
 	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
 end
 
-crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
+"""
+    linecross((p1, p2), (q1, q2))
 
+Check whether line segments `(p1, p2)` and `(q1, q2)` intersect.
+"""
 function linecross((p1, p2), (q1, q2))
     v = p2 .- p1
     w = q2 .- q1
@@ -399,21 +477,11 @@ end
 
 # random generation
 
+#=
+Finally, `randplace!` takes a shape, rotates it randomly and moves it randomly within the bounds of the limits
+`(xmin, xmax)` and `(ymin, ymax)`.
+=#
 
-
-function randshape(shape::Shape, (xmin, xmax), (ymin, ymax))
-    # make a full copy
-    shape = deepcopy(shape)
-    # random rotation
-    rotate!(shape, 2π * rand())
-    # random tranlation within bound
-    dxmin, dxmax = (xmin, xmax) .- xlim(shape)
-    dymin, dymax = (ymin, ymax) .- ylim(shape)
-    dx = (dxmax - dxmin) * rand() + dxmin
-    dy = (dymax - dymin) * rand() + dymin
-    move!(shape, (dx, dy))
-    return shape
-end
 
 function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     # random rotation
@@ -459,26 +527,4 @@ function rejection_sampling(shape, n, xlims, ylims; rotate=true)
     return shapes, trials
 end
 
-# plotting utilities
-
-using Plots
-
-
-function plotshapes(shapes; kwargs...)
-    p = plot(;kwargs...)
-    plot!.(shapes)
-    return p
-end
-
-using RecipesBase
-
-@recipe function f(s::Shape)
-    xguide --> "x"
-    yguide --> "y"
-    label --> ""
-    aspect_ratio := :equal
-    seriestype := :shape
-    x, y = xycoords(s)
-    return x, y
-end
 
