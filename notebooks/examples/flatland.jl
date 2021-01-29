@@ -41,6 +41,8 @@ Our simple rejection sampling algorithm that we will use is computationally very
 - [ ] complete `intersect`, to check whether two shapes overlap;
 - [ ] complete `randplace!`, which randomly moves and rotates a shape within a box;
 - [ ] complete the rejection sampling algorithm and experiment with your shape(s).
+
+Note: You will need to create specifice methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 =#
 
 using LinearAlgebra
@@ -48,7 +50,17 @@ using LinearAlgebra
 # TYPES
 # -----
 
+# We define all kinds of shapes. 
+
 abstract type Shape end
+
+#=
+ `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axes.
+They have a `l`ength and `w`idth attribute, in addtion to an `x` and `y` for their center.
+
+For the constructors, we follow the convention: `Shape((x,y); kwargs)` where `kwargs` are the keyword arguments determining
+the shape.
+=#
 
 abstract type AbstractRectangle <: Shape end
 
@@ -71,6 +83,8 @@ function Rectangle((xmin, xmax), (ymin, ymax))
     return Rectangle((x, y), l=l, w=w)
 end
 
+# Squares are special cases
+
 mutable struct Square <: AbstractRectangle
     x::Float64
     y::Float64
@@ -79,6 +93,15 @@ mutable struct Square <: AbstractRectangle
         return new(x, y, l)
     end
 end
+
+# This small function to get `l` and `w` will allow you to treat `Square` and `Rectangle` the same!
+lw(shape::Rectangle) = shape.l, shape.w
+lw(shape::Square) = shape.l, shape.l
+
+#=
+Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it it tilted.
+The order of the polygon is part of its parametric type, so we give the compiler some hint how it will behave.
+=#
 
 mutable struct RegularPolygon{N} <: Shape 
     x::Float64
@@ -91,6 +114,10 @@ mutable struct RegularPolygon{N} <: Shape
     end
 end
 
+#=
+`Circle`s are pretty straightforward, having a center and a radius.
+=#
+
 mutable struct Circle <: Shape
     x::Float64
     y::Float64
@@ -99,6 +126,10 @@ mutable struct Circle <: Shape
         return new(x, y, R)
     end
 end
+
+#=
+Triangles are described by its three points. It's center is computed when needed.
+=#
 
 abstract type AbstractTriangle <: Shape end
 
@@ -127,8 +158,7 @@ ncorners(::AbstractTriangle) = 3
 ncorners(::Circle) = 0
 ncorners(::RegularPolygon{N}) where {N} = N
 
-lw(shape::Rectangle) = shape.l, shape.w
-lw(shape::Square) = shape.l, shape.l
+
 
 function corners(shape::AbstractRectangle)
     x, y = center(shape)
@@ -155,6 +185,9 @@ function center(shape::Triangle)
     return ((x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3)
 end
 
+# xycoords returns two of the outline vectors: ycoords and ycoords, for `Circle`, you can specify the number of points to take
+# (50 by default).
+
 xycoords(s::Shape) = [first(p) for p in corners(s)], [last(p) for p in corners(s)]
 
 function xycoords(shape::Circle; n=50)
@@ -163,6 +196,12 @@ function xycoords(shape::Circle; n=50)
 end
 
 # x,y-bounding
+
+#=
+The fuctions below yield the outer limits of the x and y axes of your shape. Can you complete the method as a oneliner?
+
+Hint: `extrema` could be useful here...
+=#
 
 xlim(shape::Shape) = extrema(xycoords(shape)[1])
 xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
