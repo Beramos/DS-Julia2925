@@ -27,6 +27,20 @@ plot all your shapes (provided you implemented all the helper functions).
 Implementing such shapes can have various exciting applications, such as making a drawing tool or a ray tracer. Our
 end goal is to implement a simulator of a toy statistical physics system. Here, we simulate a system with inert particles, leading to self-organization.
 Our simple rejection sampling algorithm that we will use is computationally very demanding, an ideal case study for Julia!
+
+## Assignments
+
+- [ ] add the correct *inner* constructor to your type;
+- [ ] complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
+- [ ] complete `center` to return the center of mass of the shape;
+- [ ] complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
+- [ ] complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
+- [ ] complete `area`, this computes the area of your shape;
+- [ ] complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
+- [ ] complete the function `in`, to check whether a point is in your shape;
+- [ ] complete `intersect`, to check whether two shapes overlap;
+- [ ] complete `randplace!`, which randomly moves and rotates a shape within a box;
+- [ ] complete the rejection sampling algorithm and experiment with your shape(s).
 =#
 
 using LinearAlgebra
