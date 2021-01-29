@@ -8,6 +8,27 @@ michielfmstock@gmail.com
 Implementation of basic shapes as an introduction of the type system.
 =#
 
+#=
+# Flatland
+
+## Introduction and goal
+In this notebook, we will implement a variety of two-dimensional geometric shapes.
+The different shapes might have drastically different representations. For example, we can describe a rectangle
+by the coordinates of its center, its length and its width. A triangle, on the other hand,
+is more naturally represented by its three points. Similarly, computing the area of a rectangle or a triangle
+involves two different formulas. The nice thing about Julia is that you can hide this complexity from the users.
+You have to create your structures, subtypes of the abstract `Shape` type and have custom methods that will work
+for each type!
+
+Below, we suggest a variety of shapes, each with its unique representation. For this assignment, you have to complete **one**
+type and make sure all the provided functions `corners`, `area`, `move!`, `rotate!`,... work. Using `PlottingRecipes`, you can easily
+plot all your shapes (provided you implemented all the helper functions).
+
+Implementing such shapes can have various exciting applications, such as making a drawing tool or a ray tracer. Our
+end goal is to implement a simulator of a toy statistical physics system. Here, we simulate a system with inert particles, leading to self-organization.
+Our simple rejection sampling algorithm that we will use is computationally very demanding, an ideal case study for Julia!
+=#
+
 using LinearAlgebra
 
 # TYPES
@@ -25,6 +46,15 @@ mutable struct Rectangle <: AbstractRectangle
     function Rectangle((x, y); l=1.0, w=1.0)
         return new(x, y, l, w)
     end
+end
+
+function Rectangle((xmin, xmax), (ymin, ymax))
+    @assert xmin < xmax && ymin < ymax "Corners have to be ordered: `xmin < xmax && ymin < ymax `"
+    x = (xmin + xmax) / 2
+    y = (ymin + ymax) / 2
+    l = xmax - xmin
+    w = ymax - ymin
+    return Rectangle((x, y), l=l, w=w)
 end
 
 mutable struct Square <: AbstractRectangle
@@ -89,7 +119,7 @@ lw(shape::Square) = shape.l, shape.l
 function corners(shape::AbstractRectangle)
     x, y = center(shape)
     l, w = lw(shape)
-    return [(x+w/2, y+l/2), (x-w/2, y+l/2), (x-w/2, y-l/2), (x+w/2, y-l/2)]
+    return [(x+l/2, y+w/2), (x-l/2, y+w/2), (x-l/2, y-w/2), (x+l/2, y-w/2)]
 end
 
 function corners(shape::RegularPolygon)
@@ -118,6 +148,17 @@ function xycoords(shape::Circle; n=50)
     return shape.x .+ shape.R * cos.(ts), shape.y .+ shape.R * sin.(ts)
 end
 
+# x,y-bounding
+
+xlim(shape::Shape) = extrema(xycoords(shape)[1])
+xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
+xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
+
+ylim(shape::Shape) = extrema(xycoords(shape)[2])
+ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
+ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
+
+boundingbox(shape::Shape) = Rectangle(xlim(shape), ylim(shape))
 # area
 
 area(shape::AbstractRectangle) = prod(lw(shape))
@@ -305,13 +346,7 @@ end
 
 # random generation
 
-xlim(shape::Shape) = extrema(xycoords(shape)[1])
-xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
-xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
 
-ylim(shape::Shape) = extrema(xycoords(shape)[2])
-ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
-ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
 
 function randshape(shape::Shape, (xmin, xmax), (ymin, ymax))
     # make a full copy
@@ -341,23 +376,7 @@ end
 
 
 
-# generating an image
-
-function sample(shape::S, n, xlims, ylims) where {S<:Shape}
-    # allocate vector
-    shapes = Vector{S}(undef, n)
-    trials = 0
-    while true
-        trials += 1
-        for i in 1:n
-            new_shape = randshape(shape, xlims, ylims)
-            # any intersection with previous shapes: start again
-            any(s->intersect(s, new_shape), shapes[1:i-1]) && break
-            shapes[i] = new_shape
-            i==n && return shapes, trials
-        end
-    end
-end
+# Generating an image
 
 function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
     trials = 0
