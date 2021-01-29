@@ -436,7 +436,20 @@ let
 end
 
 # ╔═╡ f97bf1c0-6247-11eb-1acc-e30068a277d0
+md"""
+## Random placement
 
+Finally, `randplace!` takes a shape, rotates it randomly and moves it randomly within the bounds of the limits `(xmin, xmax)` and `(ymin, ymax)`. Note that the **whole** shape should be within these bounds, not only the center!
+"""
+
+# ╔═╡ 8d73b66c-624e-11eb-0a52-2309ef897b1c
+function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
+    # random rotation
+    
+    # random tranlation within bound
+    
+    return shape
+end
 
 # ╔═╡ Cell order:
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
@@ -503,3 +516,4 @@ end
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
+# ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c

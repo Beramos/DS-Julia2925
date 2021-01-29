@@ -504,7 +504,6 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
 end
 
 
-
 # Generating an image
 
 function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
