@@ -1,6 +1,6 @@
 #=
 Created on 05/01/2021 20:52:11
-Last update: 28/01/2020
+Last update: 29/01/2020
 
 @author: Michiel Stock
 michielfmstock@gmail.com
@@ -227,7 +227,7 @@ function same_side((a, b), p, q)
 end
 
 function linecross((p1, p2), (q1, q2))
-    t, s = [p1-p2 q2-q1] \ (p1 - q1)
+    t, s = [p1.-p2 q2.-q1] \ (p1 .- q1)
     return 0.0 ≤ t ≤ 1.0 &&  0.0 ≤ s ≤ 1.0
 end
 
@@ -250,14 +250,37 @@ function Base.in(q, shape::Shape)
     return true
 end
 
-# FIXME: does not work for combinations of circles an other shapes?
-# FIXME: does not actually work in general!
+@inline function boundboxes_overlap(shape1, shape2)
+    (xmin1, xmax1), (xmin2, xmax2) = xlim(shape1), xlim(shape2)
+    (ymin1, ymax1), (ymin2, ymax2)  = ylim(shape1), ylim(shape2)
+    # check for x and y overlap
+    return (xmin1 ≤ xmin2 ≤ xmax1 || xmin1 ≤ xmax2 ≤ xmax1 || xmin2 ≤ xmin1 ≤ xmax2) &&
+            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 ||ymin2 ≤ ymin1 ≤ ymax2)
+end
+
+Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle) = boundboxes_overlap(shape1, shape2)
+
 function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
+    (shape1.x - shape2.x)^2 + (shape1.y - shape2.y)^2 > (shape1.R + shape2.R)^2 && return false
     return center(shape1) ∈ shape2 ||
             center(shape2) ∈ shape1 ||
-            any(c->c ∈ shape2, corners(shape1)) || 
-            any(c->c ∈ shape1, corners(shape2)) 
+            any(c->c ∈ shape2, corners(shape1)) ||
+            any(c->c ∈ shape1, corners(shape2))
 end
+
+
+
+function Base.intersect(shape1::Triangle, shape2::Triangle)
+    # first check if the bounding boxes overlap
+    boundboxes_overlap(shape1, shape2) || return false
+    # yes? 
+    # now check if one shape is within the other one
+    p1, p2, p2 = corners(shape1)
+    q1, q2, q3 = corners(shape2)
+    (p1 ∈ shape2 || q1 ∈ shape1) && return true
+    # if not, we have to check whether two lines intersect
+    
+
 
 function Base.intersect(shape1::Circle, shape2::Circle)
     c1 = center(shape1)
@@ -270,10 +293,12 @@ end
 # random generation
 
 xlim(shape::Shape) = extrema(xycoords(shape)[1])
-xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R) 
+xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
+xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
 
 ylim(shape::Shape) = extrema(xycoords(shape)[2])
 ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
+ylim(shape::AbstractRectangle) = (shape.y - lw[2], shape.y + lw[2])
 
 function randshape(shape::Shape, (xmin, xmax), (ymin, ymax))
     # make a full copy
@@ -333,3 +358,5 @@ function plotshapes(shapes; kwargs...)
     plot!.(shapes)
     return p
 end
+
+filter(p->p in triangle, [50rand(2) for i in 1:10000])
