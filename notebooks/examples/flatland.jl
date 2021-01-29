@@ -233,7 +233,7 @@ function linecross((p1, p2), (q1, q2))
     w = q2 .- q1
     vw = crossprod(v, w)
     t = crossprod(q1 .- p1, w) / vw
-    s = -crossprod(p1 .- q1, v) / vw
+    s = crossprod(q1 .- p1, v) / vw
     return 0.0 ≤ t ≤ 1.0 &&  0.0 ≤ s ≤ 1.0
 end
 
@@ -281,10 +281,17 @@ function Base.intersect(shape1::Triangle, shape2::Triangle)
     boundboxes_overlap(shape1, shape2) || return false
     # yes? 
     # now check if one shape is within the other one
-    p1, p2, p2 = corners(shape1)
+    p1, p2, p3 = corners(shape1)
     q1, q2, q3 = corners(shape2)
     (p1 ∈ shape2 || q1 ∈ shape1) && return true
     # if not, we have to check whether two lines intersect
+    return linecross((p1, p2), (q1, q2)) ||
+            linecross((p1, p2), (q2, q3)) ||
+            linecross((p1, p2), (q1, q3)) ||
+            linecross((p3, p2), (q1, q2)) ||
+            linecross((p3, p2), (q2, q3)) ||
+            linecross((p3, p2), (q1, q3))
+end
     
 
 
@@ -311,6 +318,18 @@ function randshape(shape::Shape, (xmin, xmax), (ymin, ymax))
     shape = deepcopy(shape)
     # random rotation
     rotate!(shape, 2π * rand())
+    # random tranlation within bound
+    dxmin, dxmax = (xmin, xmax) .- xlim(shape)
+    dymin, dymax = (ymin, ymax) .- ylim(shape)
+    dx = (dxmax - dxmin) * rand() + dxmin
+    dy = (dymax - dymin) * rand() + dymin
+    move!(shape, (dx, dy))
+    return shape
+end
+
+function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
+    # random rotation
+    rotate && rotate!(shape, 2π * rand())
     # random tranlation within bound
     dxmin, dxmax = (xmin, xmax) .- xlim(shape)
     dymin, dymax = (ymin, ymax) .- ylim(shape)
@@ -353,7 +372,20 @@ function sample(shape::S, n, xlims, ylims) where {S<:Shape}
     end
 end
 
-
+function rejection_sampling!(shapes::Vector{<:Shape}, n, xlims, ylims; rotate=true)
+    trials = 0
+    success = false
+    while true
+        trials += 1
+        for (i, shape) in shapes
+            randplace!(shape, xlims, ylims; rotate)
+            # any intersection with previous shapes: start again
+            for j in 1:i-1
+                intersect(s, new_shape)
+            any(s->intersect(s, new_shape), @view(shapes[1:i-1])) && break
+            i==n && return 
+        end
+    end
 
 
 using Plots
