@@ -226,8 +226,14 @@ function same_side((a, b), p, q)
 	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
 end
 
+crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
+
 function linecross((p1, p2), (q1, q2))
-    t, s = [p1.-p2 q2.-q1] \ (p1 .- q1)
+    v = p2 .- p1
+    w = q2 .- q1
+    vw = crossprod(v, w)
+    t = crossprod(q1 .- p1, w) / vw
+    s = -crossprod(p1 .- q1, v) / vw
     return 0.0 ≤ t ≤ 1.0 &&  0.0 ≤ s ≤ 1.0
 end
 
@@ -250,7 +256,7 @@ function Base.in(q, shape::Shape)
     return true
 end
 
-@inline function boundboxes_overlap(shape1, shape2)
+@inline function boundboxes_overlap(shape1::Shape, shape2::Shape)
     (xmin1, xmax1), (xmin2, xmax2) = xlim(shape1), xlim(shape2)
     (ymin1, ymax1), (ymin2, ymax2)  = ylim(shape1), ylim(shape2)
     # check for x and y overlap
