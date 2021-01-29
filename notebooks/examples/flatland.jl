@@ -311,7 +311,7 @@ xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
 
 ylim(shape::Shape) = extrema(xycoords(shape)[2])
 ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
-ylim(shape::AbstractRectangle) = (shape.y - lw[2], shape.y + lw[2])
+ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
 
 function randshape(shape::Shape, (xmin, xmax), (ymin, ymax))
     # make a full copy
@@ -340,19 +340,6 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
 end
 
 
-# Plotting
-
-using RecipesBase
-
-@recipe function f(s::Shape)
-    xguide --> "x"
-    yguide --> "y"
-    label --> ""
-    aspect_ratio := :equal
-    seriestype := :shape
-    x, y = xycoords(s)
-    return x, y
-end
 
 # generating an image
 
@@ -372,21 +359,35 @@ function sample(shape::S, n, xlims, ylims) where {S<:Shape}
     end
 end
 
-function rejection_sampling!(shapes::Vector{<:Shape}, n, xlims, ylims; rotate=true)
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
     trials = 0
     success = false
+    n = length(shapes)
     while true
         trials += 1
-        for (i, shape) in shapes
+        for (i, shape) in enumerate(shapes)
             randplace!(shape, xlims, ylims; rotate)
             # any intersection with previous shapes: start again
+            overlap = false
             for j in 1:i-1
-                intersect(s, new_shape)
-            any(s->intersect(s, new_shape), @view(shapes[1:i-1])) && break
-            i==n && return 
+                if intersect(shape, shapes[j])
+                    overlap = true
+                    break
+                end
+            end
+            overlap && break
+            i==n && return trials
         end
     end
+end
 
+function rejection_sampling(shape, n, xlims, ylims; rotate=true)
+    shapes = [deepcopy(shape) for i in 1:n]
+    trials = rejection_sampling!(shapes, xlims, ylims; rotate)
+    return shapes, trials
+end
+
+# plotting utilities
 
 using Plots
 
@@ -397,4 +398,15 @@ function plotshapes(shapes; kwargs...)
     return p
 end
 
-filter(p->p in triangle, [50rand(2) for i in 1:10000])
+using RecipesBase
+
+@recipe function f(s::Shape)
+    xguide --> "x"
+    yguide --> "y"
+    label --> ""
+    aspect_ratio := :equal
+    seriestype := :shape
+    x, y = xycoords(s)
+    return x, y
+end
+
