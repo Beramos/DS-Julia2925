@@ -371,7 +371,7 @@ rand(Bool, 3, 3)
 md"It is important to know that arrays and other collections are copied by reference."
 
 # ╔═╡ 6191c72e-4c24-11eb-21bb-a59e880a3573
-let
+@terminal let
 	println(); println()
     P = [0 1 1; 2 3 5; 8 13 21; 34 55 89]
 	@show R = P
@@ -379,7 +379,7 @@ let
 	@show P[1, 1] = 42
 	println()
 	@show R
-end; # Check the terminal
+end
 
 # ╔═╡ 07220d0a-4c4a-11eb-0ae3-298cf03a0bf6
 md"`deepcopy()` can be used to make a fully dereferenced object."
@@ -539,8 +539,10 @@ str = 1:3:20
 md"Similar to the `range` function in Python, the object that is created is not an array, but an iterator. This is actually the term used in Python. Julia has many different types and structs, which behave a particular way. Types of `UnitRange` only store the beginning and end value (and stepsize in the case of `StepRange`). But functions are overloaded such that it acts as arrays."
 
 # ╔═╡ 9fd1be0a-4c4b-11eb-299b-f7f0d8797f71
-for i in ur
-  println(i)
+@terminal let
+	for i in ur
+	  println(i)
+	end
 end
 
 # ╔═╡ a2104d08-4c4b-11eb-0ccc-b588e99a2057

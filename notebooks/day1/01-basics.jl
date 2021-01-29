@@ -421,21 +421,27 @@ md"## 4. Looping"
 characters = ["Harry", "Ron", "Hermione"]
 
 # ╔═╡ 3ef3faf8-4ac0-11eb-1965-fd23413e29f3
-for char in characters
-  println("Character $char")
+@terminal begin
+	for char in characters
+	  println("Character $char")
+	end
 end
 
 # ╔═╡ 4118016e-4ac0-11eb-18bf-5de326782c87
-for (i, char) in enumerate(characters)
-  println("$i. $char")
+@terminal begin
+	for (i, char) in enumerate(characters)
+	  println("$i. $char")
+	end
 end
 
 # ╔═╡ 4119fbca-4ac0-11eb-1ea9-0bdd324214c5
 pets = ["Hedwig", "Pig", "Crookhanks"]
 
 # ╔═╡ 4139bf3c-4ac0-11eb-2b63-77a513149351
-for (char, pet) in zip(characters, pets)
-  println("$char has $pet as a pet")
+@terminal begin
+	for (char, pet) in zip(characters, pets)
+	  println("$char has $pet as a pet")
+	end
 end
 
 # ╔═╡ a1d4127c-4ac0-11eb-116f-79c6ee58f524
@@ -445,12 +451,14 @@ md"Strings can also be looped"
 getme = "a shrubbery"
 
 # ╔═╡ ac35b796-4ac0-11eb-3bc5-5ff4350d5452
-for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
-  println("$letter")
+@terminal begin
+	for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
+	  println("$letter")
+	end
 end
 
 # ╔═╡ b18e55ae-4ac0-11eb-1455-21b83b7c61d5
-let 
+@terminal let 
 	n = 16757676187786;
 	steps = 0
 	while n > 1
@@ -655,10 +663,10 @@ square(2.0)
 square("ni")   # the multiplication of strings is defined as a concatenation
 
 # ╔═╡ 1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
-square(4)
+@terminal square(4)
 
 # ╔═╡ 226417c2-4ac2-11eb-2914-196461e2b40e
-square(4.)
+@terminal square(4.)
 
 # ╔═╡ 3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
 md"More about types in the next section!"
@@ -722,7 +730,7 @@ Some nifty basic macros are `@time` and `@show`. `@time` prints the cpu time and
 """
 
 # ╔═╡ 85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
-@time square(10)  #Don't forget that printing happens in the terminal windows
+@terminal @time square(10)
 
 # ╔═╡ a11c2898-4ac2-11eb-24d3-6f8060b5fd65
 md"""The `@show` macro is often useful for debugging purposes. It displays both the expression to be evaluated and its result, finally returning the value of the result."""
@@ -1125,7 +1133,7 @@ end
 # ╠═cacb7254-4f2f-11eb-1daa-1bc04678835c
 # ╠═cc48bc9a-4f2f-11eb-134c-71bd8a944943
 # ╠═d9f28c04-4f2f-11eb-0255-1965fb8f07b5
-# ╟─dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
+# ╠═dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
 # ╟─de48a3f6-4f2f-11eb-314b-493546c37a21
 # ╟─6da71180-4ac2-11eb-1cac-410bd1cce70c
 # ╠═85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
