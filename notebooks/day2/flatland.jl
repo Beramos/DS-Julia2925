@@ -675,6 +675,16 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     return shape
 end
 
+# ╔═╡ 2338ef6a-630b-11eb-1837-431b567ad619
+md"""
+## Simulating a system of shapes
+
+Suppose we want to use our shape(s) to study a system of non-interacting particles. Here, we assume that the shapes are hard and cannot overlap. There are no forces that attract or repel particles. Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
+
+One approach to study systems of particles is to model the dynamics of every particle and keep track of all collisions and so on.
+
+"""
+
 # ╔═╡ Cell order:
 # ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
 # ╠═23bcbb02-62ef-11eb-27f9-13ed327ac098
@@ -692,7 +702,7 @@ end
 # ╟─06520b30-62f4-11eb-2b90-1fcb3053945e
 # ╠═12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
-# ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
+# ╟─23ea0a46-6243-11eb-145a-b38e34969cfd
 # ╠═1b129bf4-6243-11eb-1fa2-d7bd5563a1b4
 # ╟─2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
 # ╠═33757f2c-6243-11eb-11c2-ab5bbd90aa6b
@@ -701,7 +711,7 @@ end
 # ╟─4234b198-6243-11eb-2cfa-6102bfd9b896
 # ╠═473d9b5c-6243-11eb-363d-23108e81eb93
 # ╠═50e45ac6-6243-11eb-27f9-d5e7d0e1dc01
-# ╠═dad14258-6309-11eb-0a9a-37c0386c8cb4
+# ╟─dad14258-6309-11eb-0a9a-37c0386c8cb4
 # ╠═55de4f76-6243-11eb-1445-a54d01242f64
 # ╠═5b6b9854-6243-11eb-2d5b-f3e41ecf2914
 # ╠═5f120f1a-6243-11eb-1448-cb12a75680b0
@@ -757,3 +767,4 @@ end
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
+# ╠═2338ef6a-630b-11eb-1837-431b567ad619
