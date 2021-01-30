@@ -374,8 +374,8 @@ shape1 ∩ shape2  # \cap<TAB>
 
 Base.in((x, y), s::Circle) = (s.x - x)^2 + (s.y - y)^2 ≤ s.R^2
 
-function Base.in((x, y), s::AbstractRectangle)
-    xc, yc = center(s)
+function Base.in((x, y), shape::AbstractRectangle)
+    xc, yc = center(shape)
     l, w = lw(shape)
     return (xc - 0.5l ≤ x ≤ xc + 0.5l) && (yc - 0.5w ≤ y ≤ yc + 0.5w)
 end
@@ -499,13 +499,13 @@ end
 
 
 Suppose we want to use our shape(s) to study a system of non-interacting particles.
-Here, we assume that the shapes are hard and cannot overlap.
+Here, we assume that the shapes are rigid and cannot overlap.
 There are no forces that attract or repel particles.
 Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
 
-One approach to study systems of particles is to model the dynamics of every particle and keep track of all collisions and so on.
-We will do something cleverer: we will use ideas from statistical physics.
-Namely, every state that is valid (i.e., no shapes overlap and all shapes are within the box) is equally likely.
+One approach to study systems of particles is to model every particle's dynamics, keep track of all collisions, etc.
+We will do something more ingenious: we will use ideas from statistical physics.
+Namely, every valid state (i.e., no shapes overlap and all shapes are within the box) is equally likely.
 So instead of simulating the system, we will take samples from it!
 These samples are equivalent to random 'snapshots' of a more complex simulation.
 Pretty cool, right?
@@ -514,38 +514,35 @@ To generate the samples, we will use [rejection sampling](https://en.wikipedia.o
 Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
 More concretely, we follow the following steps:
 1. generate all the shapes you want to place;
-2. randomly place the shapes in to the box (using `randplace!`);
-3. from the moment a single shape overlaps with another shape, you have to start completely anew to step 2.
+2. randomly place the shapes into the box (using `randplace!`);
+3. from the moment a single shape overlaps with another shape, you have to start entirely anew to step 2.
 
-The last point is very important! If you place a shape that overlaps an earlier shape,
-it is not sufficient to redistribute that shape. **You have to start over completely.** Only then, you will generate correct samples.
-
+The last point is crucial! If you place a shape that overlaps an earlier shape,
+it is insufficient to redistribute that shape. **You have to start over completely.** Only then will you generate correct samples.
 
 The inputs of our function implementing the above algorithm are:
-- `shapes`: a list of your shapes (same type, but not necessarily the same dimensions);
+- `shapes`: a list of your shapes (same type, but not necessarily with the same dimensions);
 - `xlims`, `ylims`: tuples outlining the box;
-- `rotate`: flag if the shapes can be rotated.
-The function works inplace, and also returns the number of trials that were needed to generate a valid sample.
-This quantity is in itself relevant (it is related to the partition function of the Bolzmann distribution) but we will only use it for diagnostic purposes.
+The function works inplace, and returns the number of trials needed to generate a valid sample.
+This quantity is relevant by itself (it is related to the partition function of the Boltzmann distribution), but we will only use it for diagnostic purposes.
 
 As you might imagine, this algorithm is still very computationally expensive.
-Try with about 20 shapes, and work yourself up to larger examples.
-Try a mixture of small and large shapes, you should see some self-organization going on!
+Try with about 20 shapes, and work yourself up to more extensive examples.
+Try a mixture of small and large shapes. You should see some self-organization going on!
 =#
 
-# Generating an image
 
 xlims = (0, 100)
 ylims = (0, 80)
 
-function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
     trials = 0
     success = false
     n = length(shapes)
     while true
         trials += 1
         for (i, shape) in enumerate(shapes)
-            randplace!(shape, xlims, ylims; rotate)
+            randplace!(shape, xlims, ylims)
             # any intersection with previous shapes: start again
             overlap = false
             for j in 1:i-1
@@ -562,9 +559,9 @@ end
 
 # function to place `n` copies of a given `shape`.
 
-function rejection_sampling(shape, n, xlims, ylims; rotate=true)
+function rejection_sampling(shape, n, xlims, ylims)
     shapes = [deepcopy(shape) for i in 1:n]
-    trials = rejection_sampling!(shapes, xlims, ylims; rotate)
+    trials = rejection_sampling!(shapes, xlims, ylims)
     return shapes, trials
 end
 
