@@ -84,41 +84,6 @@ md"""
 
 """
 
-# ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
-begin 
-	checkbox(test::Bool)= test ? "✅" : "◯"
-	checkbox2(test::Bool)= test ? "✅" : ""
-end;
-
-# ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
-md"""
- $(checkbox(false)) add the correct *inner* constructor to your type (see below);
-
-
- $(checkbox(false)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
-
-
- $(checkbox(false)) complete `center` to return the center of mass of the shape;
- 
- $(checkbox(false)) complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
- 
- $(checkbox(false)) complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
- 
- $(checkbox(false)) complete `area`, this computes the area of your shape;
- 
- $(checkbox(false)) complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
- 
- $(checkbox(false)) complete the function `in`, to check whether a point is in your shape;
- 
- $(checkbox(false)) complete `intersect`, to check whether two shapes overlap;
- 
- $(checkbox(false)) complete `randplace!`, which randomly moves and rotates a shape within a box;
- 
- $(checkbox(false)) complete the rejection sampling algorithm and experiment with your shape(s).
- 
-**Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
-"""
-
 # ╔═╡ d65b61ba-6242-11eb-030d-b18a7518731b
 md"## Types
 We define all kinds of shapes. For the constructors, we follow the convention: `Shape((x,y); kwargs)` where `kwargs` are the keyword arguments determining
@@ -161,28 +126,6 @@ begin
 	end
 end
 
-# ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
-begin
-   test_rect = @safe Rectangle((1.0, 1.0)) !== missing
-
-	
-	
-   q_rect_con = Question(;
-			description=md"""
-			So we have defined a composite Rectangle type with a few fields but the inner constructor is missing. This inner constructor should to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0.   
-		
-			Multiple dispatch allows us to define multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes.
-			""")
-	
-   q_rect_con = QuestionBlock(;
-	title=md"**Rectangle ⭐️** $(checkbox2(test_rect)) ",
-	questions = [q_rect_con],
-	hints=[
-		hint(md"Remember, `new()`?")
-	]
-	)
-end
-
 # ╔═╡ 4d4285e8-6334-11eb-0d76-136cc5f645cd
 
 
@@ -197,21 +140,6 @@ mutable struct Square <: AbstractRectangle
     function Square((x, y); l=1.0)
         return missing # replace this with the correct statement
     end
-end
-
-# ╔═╡ abc99468-6333-11eb-1a9d-e50f8e56e468
-begin
-   test_sq = @safe Square((1.0, 1.0)) !== missing
-
-   q_sq_con = Question(;
-			description=md"""
-			Can you complete the inner constructor for the square type?
-			""")
-	
-   qb_sq_con = QuestionBlock(;
-	title=md"**Square ⭐️** $(checkbox2(test_sq)) ",
-	questions = [q_sq_con]
-	)
 end
 
 # ╔═╡ 501f9828-6334-11eb-0f2a-ebaa1d5b0f46
@@ -239,21 +167,6 @@ mutable struct Circle <: Shape
     end
 end
 
-# ╔═╡ 5dcdba4e-6335-11eb-19d2-2d10ae81fa39
-begin
-   test_circle = @safe Circle((1.0, 1.0)) !== missing
-
-   q_circle_con = Question(;
-			description=md"""
-`Circle`'s are pretty straightforward, having a center and a radius.
-			""")
-	
-   qb_circle_con = QuestionBlock(;
-	title=md"**Circles ⭐️⭐️** $(checkbox2(test_circle)) ",
-	questions = [q_circle_con]
-	)
-end
-
 # ╔═╡ 4ce7abea-6335-11eb-1657-a3ee8986d55e
 
 
@@ -267,25 +180,6 @@ mutable struct RegularPolygon{N} <: Shape
         @assert n ≥ 3 "polygons need a minimum of three corners"
         return missing # replace this with the correct statement
     end
-end
-
-# ╔═╡ 6d06ddfc-6334-11eb-2995-81333ac5e1cd
-begin
-   test_poly = @safe RegularPolygon((1.0, 1.0), 5) !== missing
-
-   q_poly_con = Question(;
-			description=md"""
-Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
-The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave.
-
-Can you complete the inner constructor for the polygon type? This is a little more challenging since it is a **parametric composite type** where `N` is the number of corners.
-			""")
-	
-   qb_poly_con = QuestionBlock(;
-	title=md"**Regular polygons ⭐️⭐️⭐️** $(checkbox2(test_poly)) ",
-	questions = [q_poly_con],
-	hints=[hint(md"`new{n}(...)`")]
-	)
 end
 
 # ╔═╡ bbbe4c9a-6335-11eb-1dc7-55ddf17887f4
@@ -356,6 +250,9 @@ begin
 	end
 		tester = ismissing(myshape) ? md"❌ **$myshapeType is not properly defined!** First complete the inner constructors for $myshapeType or change to a type that do have defined." : md""
 end;
+
+# ╔═╡ 3c0f4c08-6347-11eb-0a1c-570b04149bd8
+intersect(myshape,myshape)
 
 # ╔═╡ ca5302b2-6337-11eb-2e98-efb764a792a4
 tester
@@ -734,25 +631,6 @@ Here, we want to perform some geometric checks.
 should return a Boolean whether the point is in the shape.
 """
 
-# ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
-begin
-   test_in = @safe in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5)))
-
-   q_in = Question(;
-			description=md"""
-			Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.""")
-	
-   qb_in = QuestionBlock(;
-	title=md"**Is point in shape? $(checkbox2(test_in))**",
-	questions = [q_in],
-	hints=[
-		hint(md"It has something to do with the center..."),
-		hint(md"... but also with the edges"),
-		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
-	]
-	)
-end
-
 # ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
 #=begin
 	function Base.in((x, y), s::Shape)
@@ -893,7 +771,6 @@ end=#
 
 # ╔═╡ f65ab7b8-633c-11eb-1606-75583b69677c
 function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
-    (shape1.x - shape2.x)^2 + (shape1.y - shape2.y)^2 > (shape1.R + shape2.R)^2 && return false
     return center(shape1) ∈ shape2 ||
             center(shape2) ∈ shape1 ||
             any(c->c ∈ shape2, corners(shape1)) ||
@@ -984,6 +861,144 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     return shape
 end
 
+# ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+begin 
+	checkbox(test::Bool)= test ? "✅" : "◯"
+	checkbox2(test::Bool)= test ? "✅" : ""
+	test1 = @safe !ismissing(myshape)
+	test2 = @safe !ismissing(myshape |> corners) && !ismissing(myshape|> ncorners)
+	test3 = @safe !ismissing(myshape |> center)
+	test4 = @safe !ismissing(myshape |> xycoords)
+	test5 = @safe !ismissing(myshape |> xlim) && !ismissing(myshape |> ylim) &&
+		!ismissing(myshape |> boundingbox)
+	test6 = @safe !ismissing(myshape |> area)
+	test7 = @safe !ismissing(move!(myshape |> deepcopy,(1.0,1.0))) &&
+				!ismissing(rotate!(myshape |> deepcopy,(1.0))) &&
+				!ismissing(scale!(myshape |> deepcopy,(1.0)))
+	test8 = @safe !ismissing(in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5))))
+	test9 = @safe !ismissing(intersect(myshape, myshape))
+	test10 = @safe !ismissing(randplace!(myshape, (0.0, 1.0), (0.0, 1.0)))
+end;
+
+# ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
+md"""
+ $(checkbox(test1)) add the correct *inner* constructor to your type (see below);
+
+
+ $(checkbox(test2)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
+
+
+ $(checkbox(test3)) complete `center` to return the center of mass of the shape;
+ 
+ $(checkbox(test4)) complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
+ 
+ $(checkbox(test5)) complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
+ 
+ $(checkbox(test6)) complete `area`, this computes the area of your shape;
+ 
+ $(checkbox(test7)) complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
+ 
+ $(checkbox(test8)) complete the function `in`, to check whether a point is in your shape;
+ 
+ $(checkbox(test9)) complete `intersect`, to check whether two shapes overlap;
+ 
+ $(checkbox(test10)) complete `randplace!`, which randomly moves and rotates a shape within a box;
+ 
+ $(checkbox(false)) complete the rejection sampling algorithm and experiment with your shape(s).
+ 
+**Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
+"""
+
+# ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
+begin
+   test_rect = @safe Rectangle((1.0, 1.0)) !== missing
+
+	
+	
+   q_rect_con = Question(;
+			description=md"""
+			So we have defined a composite Rectangle type with a few fields but the inner constructor is missing. This inner constructor should to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0.   
+		
+			Multiple dispatch allows us to define multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes.
+			""")
+	
+   q_rect_con = QuestionBlock(;
+	title=md"**Rectangle ⭐️** $(checkbox2(test_rect)) ",
+	questions = [q_rect_con],
+	hints=[
+		hint(md"Remember, `new()`?")
+	]
+	)
+end
+
+# ╔═╡ abc99468-6333-11eb-1a9d-e50f8e56e468
+begin
+   test_sq = @safe Square((1.0, 1.0)) !== missing
+
+   q_sq_con = Question(;
+			description=md"""
+			Can you complete the inner constructor for the square type?
+			""")
+	
+   qb_sq_con = QuestionBlock(;
+	title=md"**Square ⭐️** $(checkbox2(test_sq)) ",
+	questions = [q_sq_con]
+	)
+end
+
+# ╔═╡ 5dcdba4e-6335-11eb-19d2-2d10ae81fa39
+begin
+   test_circle = @safe Circle((1.0, 1.0)) !== missing
+
+   q_circle_con = Question(;
+			description=md"""
+`Circle`'s are pretty straightforward, having a center and a radius.
+			""")
+	
+   qb_circle_con = QuestionBlock(;
+	title=md"**Circles ⭐️⭐️** $(checkbox2(test_circle)) ",
+	questions = [q_circle_con]
+	)
+end
+
+# ╔═╡ 6d06ddfc-6334-11eb-2995-81333ac5e1cd
+begin
+   test_poly = @safe RegularPolygon((1.0, 1.0), 5) !== missing
+
+   q_poly_con = Question(;
+			description=md"""
+Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
+The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave.
+
+Can you complete the inner constructor for the polygon type? This is a little more challenging since it is a **parametric composite type** where `N` is the number of corners.
+			""")
+	
+   qb_poly_con = QuestionBlock(;
+	title=md"**Regular polygons ⭐️⭐️⭐️** $(checkbox2(test_poly)) ",
+	questions = [q_poly_con],
+	hints=[hint(md"`new{n}(...)`")]
+	)
+end
+
+# ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
+begin
+   test_in = @safe in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5)))
+
+   q_in = Question(;
+			description=md"""
+			Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.""")
+	
+   qb_in = QuestionBlock(;
+	title=md"**Is point in shape? $(checkbox2(test_in))**",
+	questions = [q_in],
+	hints=[
+		hint(md"It has something to do with the center..."),
+		hint(md"... but also with the edges"),
+		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
+	]
+	)
+end
+
 # ╔═╡ 3e0a2e20-6341-11eb-3c23-a38b04c89b37
 md"Testing if the function works:"
 
@@ -1010,9 +1025,10 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
 # ╟─b1d21552-6242-11eb-2665-c9232be7026e
 # ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
-# ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
+# ╠═7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
-# ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+# ╠═3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+# ╠═3c0f4c08-6347-11eb-0a1c-570b04149bd8
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
@@ -1045,7 +1061,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═668f568a-6243-11eb-3f01-adf1b603e0e4
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
 # ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
-# ╟─5a61e0da-6338-11eb-2a58-ad06aae62940
+# ╠═5a61e0da-6338-11eb-2a58-ad06aae62940
 # ╟─ca5302b2-6337-11eb-2e98-efb764a792a4
 # ╟─fc921d8c-6335-11eb-042e-f19d918c0a4e
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
@@ -1085,7 +1101,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═287a7506-6247-11eb-2bad-0778802c00d5
 # ╟─01d899e6-6305-11eb-017b-27bb2c104ef5
 # ╟─221e09a2-6247-11eb-12a8-a13c0a2f96e7
-# ╟─6851ebb2-6339-11eb-2ab7-39e07c4e3154
+# ╠═6851ebb2-6339-11eb-2ab7-39e07c4e3154
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
 # ╠═711e0588-6306-11eb-31a9-7b029ac90071
 # ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
