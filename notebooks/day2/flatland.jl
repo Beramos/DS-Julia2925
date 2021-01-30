@@ -405,20 +405,33 @@ The fuctions below yield the outer limits of the x and y axes of your shape. Can
 hint(md"The function `extrema` could be useful here...")
 
 # ╔═╡ a89bdba6-6244-11eb-0b83-c1c64e4de17d
-begin
+#=begin
 	xlim(shape::Shape) = missing
-end
+end=#
 
 # ╔═╡ b1372784-6244-11eb-0279-27fd755cda6a
-begin
+#=begin
 	ylim(shape::Shape) = missing
-end
+end=#
 
 # ╔═╡ bd706964-6244-11eb-1d9d-2b60e53cdce1
 md"This should return the bounding box, as the smallest rectangle that can completely contain your shape."
 
 # ╔═╡ b91e1e62-6244-11eb-1045-0770fa92e040
-boundingbox(shape::Shape) = missing
+#boundingbox(shape::Shape) = missing
+
+# ╔═╡ 7acf19a2-6309-11eb-12dd-ed2563b9ccb7
+begin
+	xlim(shape::Shape) = extrema(xycoords(shape)[1])
+	xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
+	xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
+
+	ylim(shape::Shape) = extrema(xycoords(shape)[2])
+	ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
+	ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
+
+	boundingbox(shape::Shape) = Rectangle(xlim(shape), ylim(shape))
+end
 
 # ╔═╡ d60f8ca4-6244-11eb-2055-4551e4c10906
 md"""
@@ -456,28 +469,104 @@ For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
 
 
 # ╔═╡ 83c6d25c-6246-11eb-1a24-57e20f5e7262
-begin
+#=begin
 	function move!(shape::Shape, (dx, dx))
 		# move the shape
 		return shape
 	end
-end
+end=#
 
 # ╔═╡ a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
-begin
+#=begin
 	function rotate!(shape::Shape, dθ)
 		# rotate the shape, counterclockwise
 		return shape
 	end
-end
+end=#
 
 # ╔═╡ b907e8fc-6246-11eb-0beb-bb44930d033c
-begin
+#=begin
 	function scale!(shape::Shape, a)
 		@assert a > 0 "scaling has to be a positive number"
 		# scale with a factor a
 		return shape
 	end
+end=#
+
+# ╔═╡ d6dd39be-6308-11eb-34bd-d16118d85051
+begin
+	
+	function move!(shape::Shape, (dx, dy))
+    shape.x += dx
+    shape.y += dy
+end
+
+function move!(shape::Triangle, (dx, dy))
+    shape.x1 += dx
+    shape.x2 += dx
+    shape.x3 += dx
+    shape.y1 += dy
+    shape.y2 += dy
+    shape.y3 += dy
+    shape
+end
+
+rotate!(shape::Union{Circle,AbstractRectangle}, dθ) = shape
+
+function rotate!(shape::RegularPolygon, dθ)
+    shape.θ += dθ
+    shape
+end
+
+
+function rotate!(shape::Triangle, dθ)
+    xc, yc = center(shape)
+    # center triangle
+    move!(shape, (-xc, -yc))
+    (x1, y1), (x2, y2), (x3, y3) = corners(shape)
+    cosdθ = cos(dθ)
+    sindθ = sin(dθ)
+    shape.x1 = x1 * cos(dθ) - y1 * sin(dθ)
+    shape.x2 = x2 * cos(dθ) - y2 * sin(dθ)
+    shape.x3 = x3 * cos(dθ) - y3 * sin(dθ)
+    shape.y1 = y1 * cos(dθ) + x1 * sin(dθ)
+    shape.y2 = y2 * cos(dθ) + x2 * sin(dθ)
+    shape.y3 = y3 * cos(dθ) + x3 * sin(dθ)
+    # set to original position
+    move!(shape, (xc, yc))
+    shape
+end
+
+function scale!(shape::Union{Circle,RegularPolygon}, a)
+    @assert a > 0 "scaling has to be a positive number"
+    shape.R *= a
+end
+
+function scale!(shape::Rectangle, a)
+    @assert a > 0 "scaling has to be a positive number"
+    shape.w *= a
+    shape.l *= a
+end
+
+function scale!(shape::Square, a)
+    @assert a > 0 "scaling has to be a positive number"
+    shape.w *= a
+end
+
+function scale!(shape::Triangle, a)
+    @assert a > 0 "scaling has to be a positive number"
+    xc, yc = center(shape)
+    move!(shape, (-xc, -yc))
+    shape.x1 *= a
+    shape.x2 *= a
+    shape.x3 *= a
+    shape.y1 *= a
+    shape.y2 *= a
+    shape.y3 *= a
+    move!(shape, (xc, yc))
+    return shape
+end
+	
 end
 
 # ╔═╡ d08ab6d0-6246-11eb-08a8-152f9802cdfc
@@ -650,13 +739,36 @@ Finally, `randplace!` takes a shape, rotates it randomly and moves it randomly w
 """
 
 # ╔═╡ 8d73b66c-624e-11eb-0a52-2309ef897b1c
-function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
+#=function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     # random rotation
     
     # random translation within bound
     
     return shape
+end=#
+
+# ╔═╡ 3651df40-6308-11eb-26e0-b5d70db4ad20
+function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
+    # random rotation
+    rotate && rotate!(shape, 2π * rand())
+    # random tranlation within bound
+    dxmin, dxmax = (xmin, xmax) .- xlim(shape)
+    dymin, dymax = (ymin, ymax) .- ylim(shape)
+    dx = (dxmax - dxmin) * rand() + dxmin
+    dy = (dymax - dymin) * rand() + dymin
+    move!(shape, (dx, dy))
+    return shape
 end
+
+# ╔═╡ 3be4b7d4-6308-11eb-1d99-0b7c1e2f668c
+begin
+	# verification
+	my_shapes = [randplace!(deepcopy(myshape), (-10,10),(-10,10)) for i in 1:100] 
+	plotshapes(my_shapes, alpha=0.2)
+end
+
+# ╔═╡ b23be224-6308-11eb-2b02-2b519f5b512e
+my_shapes
 
 # ╔═╡ Cell order:
 # ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
@@ -704,6 +816,7 @@ end
 # ╠═b1372784-6244-11eb-0279-27fd755cda6a
 # ╟─bd706964-6244-11eb-1d9d-2b60e53cdce1
 # ╠═b91e1e62-6244-11eb-1045-0770fa92e040
+# ╠═7acf19a2-6309-11eb-12dd-ed2563b9ccb7
 # ╟─d60f8ca4-6244-11eb-2055-4551e4c10906
 # ╟─f69370bc-6244-11eb-290e-fdd4d7cc826a
 # ╟─69780926-6245-11eb-3442-0dc8aea8cb73
@@ -714,6 +827,7 @@ end
 # ╠═83c6d25c-6246-11eb-1a24-57e20f5e7262
 # ╠═a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
 # ╠═b907e8fc-6246-11eb-0beb-bb44930d033c
+# ╠═d6dd39be-6308-11eb-34bd-d16118d85051
 # ╟─d08ab6d0-6246-11eb-08a8-152f9802cdfc
 # ╠═dfc779ee-6246-11eb-240b-4dc7a7d95641
 # ╠═e30d10d2-6246-11eb-1d59-332b5916712e
@@ -738,3 +852,6 @@ end
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
+# ╠═3651df40-6308-11eb-26e0-b5d70db4ad20
+# ╠═3be4b7d4-6308-11eb-1d99-0b7c1e2f668c
+# ╠═b23be224-6308-11eb-2b02-2b519f5b512e
