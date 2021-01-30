@@ -329,7 +329,7 @@ end
 # plotting utilities
 
 
-using Plots, RecipesBase
+import Plots, RecipesBase
 
 #=
 OK, let's take a look at our shapes! We use `RecipesBase` to allow plotting.
@@ -348,8 +348,8 @@ end
 
 
 function plotshapes(shapes; kwargs...)
-    p = plot(;kwargs...)
-    plot!.(shapes)
+    p = Plots.plot(;kwargs...)
+    Plots.plot!.(shapes)
     return p
 end
 
