@@ -161,7 +161,7 @@ end
 
 # ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
 begin
-   test_rect_con = @safe Rectangle((1.0, 1.0)) !== missing
+   test_rect = @safe Rectangle((1.0, 1.0)) !== missing
 
 	
 	
@@ -173,7 +173,7 @@ begin
 			""")
 	
    q_rect_con = QuestionBlock(;
-	title=md"**Rectangle ⭐️** $(checkbox2(test_rect_con)) ",
+	title=md"**Rectangle ⭐️** $(checkbox2(test_rect)) ",
 	questions = [q_rect_con],
 	hints=[
 		hint(md"Remember, `new()`?")
@@ -330,13 +330,10 @@ hex = RegularPolygon((1.2, 3), 6)
 # ╔═╡ 7b785b7a-6243-11eb-31c2-9d9deea78842
 circle = Circle((10, 10))
 
-# ╔═╡ 755a6186-62fd-11eb-03e1-0173111f293f
+# ╔═╡ 5a61e0da-6338-11eb-2a58-ad06aae62940
+md"""**Select one of the shapes you have to developed.** 
 
-md"""**Select the shape you want to develop.** 
-
-Although operations are more challenging to define for some shapes, they are roughly ordered in increasing difficulty.
-
-My shape type: $(@bind myshapeType Select(["Square", "Rectangle", "Circle", "RegularPolygon{N}", "Triangle"]);)
+My shape type: $(@bind myshapeType Select(["Square", "Rectangle", "Circle", "RegularPolygon{N}", "Triangle"]))
 
 """
 
@@ -355,15 +352,19 @@ begin
 	else 
 		myshape = missing
 	end
+		tester = ismissing(myshape) ? md"❌ **$myshapeType is not properly defined!** First complete the inner constructors for $myshapeType or change to a type that do have defined." : md""
 end;
 
-# ╔═╡ a2cda8e8-6330-11eb-0e3e-1d5feeb3e267
-myshape
+# ╔═╡ ca5302b2-6337-11eb-2e98-efb764a792a4
+tester
+
+# ╔═╡ fc921d8c-6335-11eb-042e-f19d918c0a4e
+
 
 # ╔═╡ 7c80d608-6243-11eb-38ba-f97f7476b245
 md"""
 ## Corners and center
-Some very basic functions to get or generate the corners and centers of your shapes. The corners are returned as a list of tuples, e.g. `[(x1, y1), (x2, y2),...]`.
+Some very basic functions to get or generate the corners and centers of your shapes. The corners are returned as a list of tuples, e.g. `[(x1, y1), (x2, y2), ...]`.
 """
 
 # ╔═╡ 62e7e05e-62fe-11eb-1611-61274c5498cc
@@ -915,9 +916,10 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═64fcb6a0-6243-11eb-1b35-437e8e0bfac8
 # ╠═668f568a-6243-11eb-3f01-adf1b603e0e4
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
-# ╠═b6a4c98a-6300-11eb-0542-ab324d8e4d7e
-# ╠═a2cda8e8-6330-11eb-0e3e-1d5feeb3e267
-# ╟─755a6186-62fd-11eb-03e1-0173111f293f
+# ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+# ╟─5a61e0da-6338-11eb-2a58-ad06aae62940
+# ╟─ca5302b2-6337-11eb-2e98-efb764a792a4
+# ╟─fc921d8c-6335-11eb-042e-f19d918c0a4e
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
 # ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
