@@ -500,7 +500,7 @@ end
 
 function rejection_sampling(shape, n, xlims, ylims; rotate=true)
     shapes = [deepcopy(shape) for i in 1:n]
-    trials = rejection_sampling!(shapes, xlims, ylims; rotate)
+    trials = rejection_sampling!(shapes, xlims, ylims; rotate=rotate)
     return shapes, trials
 end
 
