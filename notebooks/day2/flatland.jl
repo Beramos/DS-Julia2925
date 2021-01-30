@@ -438,15 +438,7 @@ end
 # ╔═╡ d60f8ca4-6244-11eb-2055-4551e4c10906
 md"""
 ## Area
-
-Next, let us compute the area of our shapes.
 """
-
-# ╔═╡ f69370bc-6244-11eb-290e-fdd4d7cc826a
-hint(md"The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}$$.")
-
-# ╔═╡ 69780926-6245-11eb-3442-0dc8aea8cb73
-hint(md"A regular polygon consists of a couple of isosceles triangles.")
 
 # ╔═╡ ebf4a45a-6244-11eb-0965-197f536f8e87
 begin
@@ -977,6 +969,24 @@ Can you complete the inner constructor for the polygon type? This is a little mo
 	)
 end
 
+# ╔═╡ 94cbef4e-6348-11eb-030f-d7a9debdd305
+begin
+   q_area = Question(;
+			description=md"""
+
+Next, let us compute the area of our shapes.
+			""")
+	
+   qb_area = QuestionBlock(;
+	title=md"**Area 925 ⭐️** $(checkbox2(test_circle)) ",
+	questions = [q_area],
+	hints= [
+		hint(md"The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}$$."),
+		hint(md"A regular polygon consists of a couple of isosceles triangles.")	
+		]
+	)
+end
+
 # ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
 begin
    test_in = @safe in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5)))
@@ -1076,8 +1086,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═b91e1e62-6244-11eb-1045-0770fa92e040
 # ╠═7acf19a2-6309-11eb-12dd-ed2563b9ccb7
 # ╟─d60f8ca4-6244-11eb-2055-4551e4c10906
-# ╟─f69370bc-6244-11eb-290e-fdd4d7cc826a
-# ╟─69780926-6245-11eb-3442-0dc8aea8cb73
+# ╟─94cbef4e-6348-11eb-030f-d7a9debdd305
 # ╠═ebf4a45a-6244-11eb-0965-197f536f8e87
 # ╟─230dd290-6303-11eb-0f55-311ef2b9541e
 # ╟─36cc0492-6246-11eb-38dd-4f42fb7066dc
