@@ -255,3 +255,73 @@ end
 
 ### plotting CA
 #plot(ca_image(X), size=(1000, 1000))
+
+
+#=______________________
+|                       |
+|         Day 2         |
+|_______________________|
+=#
+
+#= Notebook 1: types =#
+### String parsing
+bunchofnumbers_parser(bunchofnumbers) = parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
+
+
+#= Notebook 2: composite types =#
+### Wizarding currency
+struct WizCur
+  galleons::Int
+  sickles::Int
+  knuts::Int
+  function WizCur(galleons::Int, sickles::Int, knuts::Int)
+      sickles += knuts ÷ 29
+      knuts %= 29
+      galleons += sickles ÷ 17
+      sickles %= 17
+      return new(galleons, sickles, knuts)
+  end
+end
+
+galleons(money::WizCur) = money.galleons
+sickles(money::WizCur) = money.sickles
+knuts(money::WizCur) = money.knuts
+
+moneyinknuts(money::WizCur) = 29*17galleons(money) + 17sickles(money) + knuts(money)
+
+function Base.show(io::IO, money::WizCur)
+  print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
+end
+
+Base.isless(m1::WizCur, m2::WizCur) = moneyinknuts(m1) < moneyinknuts(m2) 
+Base.isgreater(m1::WizCur, m2::WizCur) = moneyinknuts(m1) > moneyinknuts(m2) 
+Base.isequal(m1::WizCur, m2::WizCur) = moneyinknuts(m1) == moneyinknuts(m2)
+
+Base.:+(m1::WizCur, m2::WizCur) = WizCur(galleons(m1)+galleons(m2),
+                                          sickles(m1)+sickles(m2),
+                                          knuts(m1)+knuts(m2))
+
+money_ron = WizCur(0, 19, 732)
+money_harry = WizCur(3, 1, 7)
+
+dungbomb_fund = money_ron + money_harry
+
+
+### Vandermonde
+struct Vandermonde{T,VT} <: AbstractMatrix{T}
+  α::VT
+  m::Int
+  Vandermonde(α::AbstractVector{T}, m) where {T} = new{T,typeof(α)}(α,m)
+end
+
+Vandermonde(α::Vector{<:Number}) = Vandermonde(α, length(α))
+
+Base.size(V::Vandermonde) = (length(V.α), V.m)
+Base.getindex(V::Vandermonde, i, j) = V.α[i]^(j-1)
+
+α = [1, 2, 3, 4]
+
+V = Vandermonde(α, 4)
+
+determinant(V::Vandermonde) = 
+  ((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod
