@@ -385,7 +385,7 @@ Here, we want to perform some geometric checks.
 ```julia
 (x, y) in shape
 ```
-should return a Boolean whether the point.
+should return a Boolean whether the point is in the shape.
 
 Similarly, we want to check whether two shapes overlap (partly):
 
