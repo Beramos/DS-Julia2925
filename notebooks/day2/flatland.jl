@@ -181,8 +181,8 @@ begin
 	)
 end
 
-# ╔═╡ 06520b30-62f4-11eb-2b90-1fcb3053945e
-md"So we have defined a composite Rectangle type with an inner constructor to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0. Using multiple dispatch allows to defined multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes."
+# ╔═╡ 4d4285e8-6334-11eb-0d76-136cc5f645cd
+
 
 # ╔═╡ 12ddaece-6243-11eb-1e9d-2be312d2e22d
 md"Squares are a special case of rectangle."
@@ -193,9 +193,27 @@ mutable struct Square <: AbstractRectangle
     y::Float64
     l::Float64
     function Square((x, y); l=1.0)
-        return missing
+        return missing # replace this with the correct statement
     end
 end
+
+# ╔═╡ abc99468-6333-11eb-1a9d-e50f8e56e468
+begin
+   test_sq = @safe Square((1.0, 1.0)) !== missing
+
+   q_sq_con = Question(;
+			description=md"""
+			Can you complete the inner constructor for the square type?
+			""")
+	
+   qb_sq_con = QuestionBlock(;
+	title=md"**Square ⭐️** $(checkbox2(test_sq)) ",
+	questions = [q_sq_con]
+	)
+end
+
+# ╔═╡ 501f9828-6334-11eb-0f2a-ebaa1d5b0f46
+
 
 # ╔═╡ 23ea0a46-6243-11eb-145a-b38e34969cfd
 md"This small function to get `l` and `w` will allow you to treat `Square` and `Rectangle` the same!"
@@ -205,6 +223,9 @@ begin
 	lw(shape::Rectangle) = shape.l, shape.w
 	lw(shape::Square) = shape.l, shape.l
 end
+
+# ╔═╡ 5dc9c05c-6334-11eb-0ea3-29a7300ebf74
+
 
 # ╔═╡ 2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
 md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
@@ -833,11 +854,14 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═f4b05730-6242-11eb-0e24-51d4c60dc451
 # ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
 # ╟─30c89806-6331-11eb-0610-d3545e7aeba4
-# ╠═06520b30-62f4-11eb-2b90-1fcb3053945e
-# ╠═12ddaece-6243-11eb-1e9d-2be312d2e22d
+# ╟─4d4285e8-6334-11eb-0d76-136cc5f645cd
+# ╟─12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
-# ╟─23ea0a46-6243-11eb-145a-b38e34969cfd
+# ╟─abc99468-6333-11eb-1a9d-e50f8e56e468
+# ╟─501f9828-6334-11eb-0f2a-ebaa1d5b0f46
+# ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
 # ╠═1b129bf4-6243-11eb-1fa2-d7bd5563a1b4
+# ╠═5dc9c05c-6334-11eb-0ea3-29a7300ebf74
 # ╟─2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
 # ╠═33757f2c-6243-11eb-11c2-ab5bbd90aa6b
 # ╟─381d19b8-6243-11eb-2477-5f0e919ff7bd
