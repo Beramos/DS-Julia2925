@@ -495,9 +495,48 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     return shape
 end
 
+#=
 
+
+Suppose we want to use our shape(s) to study a system of non-interacting particles.
+Here, we assume that the shapes are hard and cannot overlap.
+There are no forces that attract or repel particles.
+Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
+
+One approach to study systems of particles is to model the dynamics of every particle and keep track of all collisions and so on.
+We will do something cleverer: we will use ideas from statistical physics.
+Namely, every state that is valid (i.e., no shapes overlap and all shapes are within the box) is equally likely.
+So instead of simulating the system, we will take samples from it!
+These samples are equivalent to random 'snapshots' of a more complex simulation.
+Pretty cool, right?
+
+To generate the samples, we will use [rejection sampling](https://en.wikipedia.org/wiki/Rejection_sampling).
+Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
+More concretely, we follow the following steps:
+1. generate all the shapes you want to place;
+2. randomly place the shapes in to the box (using `randplace!`);
+3. from the moment a single shape overlaps with another shape, you have to start completely anew to step 2.
+
+The last point is very important! If you place a shape that overlaps an earlier shape,
+it is not sufficient to redistribute that shape. **You have to start over completely.** Only then, you will generate correct samples.
+
+
+The inputs of our function implementing the above algorithm are:
+- `shapes`: a list of your shapes (same type, but not necessarily the same dimensions);
+- `xlims`, `ylims`: tuples outlining the box;
+- `rotate`: flag if the shapes can be rotated.
+The function works inplace, and also returns the number of trials that were needed to generate a valid sample.
+This quantity is in itself relevant (it is related to the partition function of the Bolzmann distribution) but we will only use it for diagnostic purposes.
+
+As you might imagine, this algorithm is still very computationally expensive.
+Try with about 20 shapes, and work yourself up to larger examples.
+Try a mixture of small and large shapes, you should see some self-organization going on!
+=#
 
 # Generating an image
+
+xlims = (0, 100)
+ylims = (0, 80)
 
 function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
     trials = 0
@@ -516,10 +555,12 @@ function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
                 end
             end
             overlap && break
-            i==n && return trials
+            i==n && return shapes, trials
         end
     end
 end
+
+# function to place `n` copies of a given `shape`.
 
 function rejection_sampling(shape, n, xlims, ylims; rotate=true)
     shapes = [deepcopy(shape) for i in 1:n]
