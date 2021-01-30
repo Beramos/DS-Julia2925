@@ -83,11 +83,14 @@ md"""
 """
 
 # ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
-checkbox(test::Bool)= test ? "✅" : "◯";
+begin 
+	checkbox(test::Bool)= test ? "✅" : "◯"
+	checkbox2(test::Bool)= test ? "✅" : ""
+end;
 
 # ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
 md"""
- $(checkbox(true)) add the correct *inner* constructor to your type (see below);
+ $(checkbox(false)) add the correct *inner* constructor to your type (see below);
 
 
  $(checkbox(false)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
@@ -142,7 +145,7 @@ begin
 		l::Float64
 		w::Float64
 		function Rectangle((x, y); l=1.0, w=1.0)
-			return missing
+			return missing # replace this with the correct statement
 		end
 	end
 	
@@ -154,6 +157,28 @@ begin
 		w = ymax - ymin
 		return Rectangle((x, y), l=l, w=w)
 	end
+end
+
+# ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
+begin
+   test_rect_con = @safe Rectangle((1.0, 1.0)) !== missing
+
+	
+	
+   q_rect_con = Question(;
+			description=md"""
+			So we have defined a composite Rectangle type with a few fields but the inner constructor is missing. This inner constructor should to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0.   
+		
+			Multiple dispatch allows us to define multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes.
+			""")
+	
+   q_rect_con = QuestionBlock(;
+	title=md"**Rectangle ⭐️** $(checkbox2(test_rect_con)) ",
+	questions = [q_rect_con],
+	hints=[
+		hint(md"Remember, `new()`?")
+	]
+	)
 end
 
 # ╔═╡ 06520b30-62f4-11eb-2b90-1fcb3053945e
@@ -274,6 +299,9 @@ begin
 		myshape = missing
 	end
 end;
+
+# ╔═╡ a2cda8e8-6330-11eb-0e3e-1d5feeb3e267
+myshape
 
 # ╔═╡ 7c80d608-6243-11eb-38ba-f97f7476b245
 md"""
@@ -616,6 +644,9 @@ end
 # ╔═╡ 1aec9fc2-6247-11eb-2942-edc370918f9e
 md"Let's look!"
 
+# ╔═╡ 8bdc61b0-6330-11eb-3e9a-15412fecf8af
+myshape
+
 # ╔═╡ 16d0ea9c-6247-11eb-12c6-1709f6d0ac99
 plot(myshape)
 
@@ -801,7 +832,8 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
 # ╠═f4b05730-6242-11eb-0e24-51d4c60dc451
 # ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
-# ╟─06520b30-62f4-11eb-2b90-1fcb3053945e
+# ╟─30c89806-6331-11eb-0610-d3545e7aeba4
+# ╠═06520b30-62f4-11eb-2b90-1fcb3053945e
 # ╠═12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
 # ╟─23ea0a46-6243-11eb-145a-b38e34969cfd
@@ -820,7 +852,8 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═64fcb6a0-6243-11eb-1b35-437e8e0bfac8
 # ╠═668f568a-6243-11eb-3f01-adf1b603e0e4
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
-# ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+# ╠═b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+# ╠═a2cda8e8-6330-11eb-0e3e-1d5feeb3e267
 # ╟─755a6186-62fd-11eb-03e1-0173111f293f
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
 # ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
@@ -852,6 +885,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═e30d10d2-6246-11eb-1d59-332b5916712e
 # ╠═e7e90744-6246-11eb-157c-cf67e8619d6e
 # ╠═1aec9fc2-6247-11eb-2942-edc370918f9e
+# ╠═8bdc61b0-6330-11eb-3e9a-15412fecf8af
 # ╠═16d0ea9c-6247-11eb-12c6-1709f6d0ac99
 # ╠═6bae2128-6303-11eb-34f2-1dfa96e46ae6
 # ╠═287a7506-6247-11eb-2bad-0778802c00d5
