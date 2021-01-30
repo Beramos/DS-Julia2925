@@ -251,9 +251,6 @@ begin
 		tester = ismissing(myshape) ? md"❌ **$myshapeType is not properly defined!** First complete the inner constructors for $myshapeType or change to a type that do have defined." : md""
 end;
 
-# ╔═╡ 3c0f4c08-6347-11eb-0a1c-570b04149bd8
-intersect(myshape,myshape)
-
 # ╔═╡ ca5302b2-6337-11eb-2e98-efb764a792a4
 tester
 
@@ -875,7 +872,7 @@ begin
 	test7 = @safe !ismissing(move!(myshape |> deepcopy,(1.0,1.0))) &&
 				!ismissing(rotate!(myshape |> deepcopy,(1.0))) &&
 				!ismissing(scale!(myshape |> deepcopy,(1.0)))
-	test8 = @safe !ismissing(in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5))))
+	test8 = @safe !ismissing(in((0.5, 0), myshape))
 	test9 = @safe !ismissing(intersect(myshape, myshape))
 	test10 = @safe !ismissing(randplace!(myshape, (0.0, 1.0), (0.0, 1.0)))
 end;
@@ -1028,7 +1025,6 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
 # ╠═3a961b6e-62f1-11eb-250b-13a3f6f17eaa
-# ╠═3c0f4c08-6347-11eb-0a1c-570b04149bd8
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
@@ -1061,7 +1057,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═668f568a-6243-11eb-3f01-adf1b603e0e4
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
 # ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
-# ╠═5a61e0da-6338-11eb-2a58-ad06aae62940
+# ╟─5a61e0da-6338-11eb-2a58-ad06aae62940
 # ╟─ca5302b2-6337-11eb-2e98-efb764a792a4
 # ╟─fc921d8c-6335-11eb-042e-f19d918c0a4e
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
