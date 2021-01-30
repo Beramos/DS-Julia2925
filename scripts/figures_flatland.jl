@@ -8,9 +8,10 @@ michielfmstock@gmail.com
 Generates the figures for flatland.
 =#
 
-include("examples/flatland.jl")
+#include("examples/flatland.jl")
 
 # examples of shapes
+
 
 square = Square((1, 1), l=2)
 rectangle = Rectangle((2, 6), l=1, w=2.5)

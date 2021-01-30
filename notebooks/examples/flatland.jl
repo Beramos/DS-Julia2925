@@ -513,7 +513,7 @@ function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
     while true
         trials += 1
         for (i, shape) in enumerate(shapes)
-            randplace!(shape, xlims, ylims; rotate)
+            randplace!(shape, xlims, ylims; rotate=rotate)
             # any intersection with previous shapes: start again
             overlap = false
             for j in 1:i-1
@@ -530,7 +530,7 @@ end
 
 function rejection_sampling(shape, n, xlims, ylims; rotate=true)
     shapes = [deepcopy(shape) for i in 1:n]
-    trials = rejection_sampling!(shapes, xlims, ylims; rotate)
+    trials = rejection_sampling!(shapes, xlims, ylims; rotate=rotate)
     return shapes, trials
 end
 

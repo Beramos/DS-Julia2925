@@ -827,7 +827,7 @@ begin
    q_triatria = Question(;
 		description=md"""
 
-**Two triangles intersecting ⭐️⭐️⭐️⭐️⭐️**
+**Two triangles intersecting (efficient) ⭐️⭐️⭐️⭐️⭐️**
 ```julia
 	Base.intersect(shape1::Triangle, shape2::Triangle)
 ```
@@ -859,7 +859,12 @@ Complete the function `intersect(shape1, shape2)` that checks whether there is a
 
 The efficiency and the process of checking intersection is very different for each shape and each combination of two shapes. Complete **at least one** of the following combinations.""",
 	questions = [q_circle, q_recrec, q_triatria, q_general],
-	hints=[]
+	hints=[
+		hint(md"Checking overlapping bounding boxes is very efficient"),
+		hint(md"For most shapes: overlapping bounding boxes is a required, but not sufficient condition for overlap"),
+		hint(md"[Very good hint](https://i.imgur.com/TpIStMK.png)")
+		
+		]
 	)
 end
 
@@ -1085,7 +1090,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╟─b8ed26f2-633b-11eb-380e-9379b0f4697f
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╟─22f63a5e-633a-11eb-27c7-27fcabc7bc6f
-# ╟─f3ea648e-633b-11eb-3444-317a4eb5b8ea
+# ╠═f3ea648e-633b-11eb-3444-317a4eb5b8ea
 # ╠═5368c46e-633e-11eb-0d98-b1ccb37cc7f8
 # ╠═f65ab7b8-633c-11eb-1606-75583b69677c
 # ╟─e6efb632-6338-11eb-2e22-eb0b1ff577c4
