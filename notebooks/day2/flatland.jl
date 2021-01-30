@@ -224,12 +224,36 @@ begin
 	lw(shape::Square) = shape.l, shape.l
 end
 
-# ╔═╡ 5dc9c05c-6334-11eb-0ea3-29a7300ebf74
+# ╔═╡ 94ec5382-6335-11eb-100c-15d70f27e703
 
 
-# ╔═╡ 2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
-md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
-The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave."
+# ╔═╡ 3d67d61a-6243-11eb-1f83-49032ad146da
+mutable struct Circle <: Shape
+    x::Float64
+    y::Float64
+    R::Float64
+    function Circle((x, y); R=1.0)
+        return missing # replace this with the correct statement
+    end
+end
+
+# ╔═╡ 5dcdba4e-6335-11eb-19d2-2d10ae81fa39
+begin
+   test_circle = @safe Circle((1.0, 1.0)) !== missing
+
+   q_circle_con = Question(;
+			description=md"""
+`Circle`'s are pretty straightforward, having a center and a radius.
+			""")
+	
+   qb_circle_con = QuestionBlock(;
+	title=md"**Circles ⭐️⭐️** $(checkbox2(test_circle)) ",
+	questions = [q_circle_con]
+	)
+end
+
+# ╔═╡ 4ce7abea-6335-11eb-1657-a3ee8986d55e
+
 
 # ╔═╡ 33757f2c-6243-11eb-11c2-ab5bbd90aa6b
 mutable struct RegularPolygon{N} <: Shape 
@@ -239,28 +263,40 @@ mutable struct RegularPolygon{N} <: Shape
     θ::Float64  # angle
     function RegularPolygon((x, y), n::Int; R=1.0, θ=0.0)
         @assert n ≥ 3 "polygons need a minimum of three corners"
-        return missing
+        return missing # replace this with the correct statement
     end
 end
 
-# ╔═╡ 381d19b8-6243-11eb-2477-5f0e919ff7bd
-md"`Circle`'s are pretty straightforward, having a center and a radius."
+# ╔═╡ 6d06ddfc-6334-11eb-2995-81333ac5e1cd
+begin
+   test_poly = @safe RegularPolygon((1.0, 1.0), 5) !== missing
 
-# ╔═╡ 3d67d61a-6243-11eb-1f83-49032ad146da
-mutable struct Circle <: Shape
-    x::Float64
-    y::Float64
-    R::Float64
-    function Circle((x, y); R=1.0)
-        return missing
-    end
+   q_poly_con = Question(;
+			description=md"""
+Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
+The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave.
+
+Can you complete the inner constructor for the polygon type? This is a little more challenging since it is a **parametric composite type** where `N` is the number of corners.
+			""")
+	
+   qb_poly_con = QuestionBlock(;
+	title=md"**Regular polygons ⭐️⭐️⭐️** $(checkbox2(test_poly)) ",
+	questions = [q_poly_con],
+	hints=[hint(md"`new{n}(...)`")]
+	)
 end
+
+# ╔═╡ bbbe4c9a-6335-11eb-1dc7-55ddf17887f4
+
 
 # ╔═╡ 4234b198-6243-11eb-2cfa-6102bfd9b896
-md"Triangles are described by their three points. Its center will be computed when needed."
+md"Triangles will be described by their three points. Its center will be computed when needed."
 
 # ╔═╡ 473d9b5c-6243-11eb-363d-23108e81eb93
 abstract type AbstractTriangle <: Shape end
+
+# ╔═╡ ce3393a8-6335-11eb-06e9-af93a3794902
+md"This one is for free:"
 
 # ╔═╡ 50e45ac6-6243-11eb-27f9-d5e7d0e1dc01
 mutable struct Triangle <: AbstractTriangle
@@ -861,13 +897,16 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╟─501f9828-6334-11eb-0f2a-ebaa1d5b0f46
 # ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
 # ╠═1b129bf4-6243-11eb-1fa2-d7bd5563a1b4
-# ╠═5dc9c05c-6334-11eb-0ea3-29a7300ebf74
-# ╟─2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
-# ╠═33757f2c-6243-11eb-11c2-ab5bbd90aa6b
-# ╟─381d19b8-6243-11eb-2477-5f0e919ff7bd
+# ╟─94ec5382-6335-11eb-100c-15d70f27e703
+# ╟─5dcdba4e-6335-11eb-19d2-2d10ae81fa39
 # ╠═3d67d61a-6243-11eb-1f83-49032ad146da
+# ╟─4ce7abea-6335-11eb-1657-a3ee8986d55e
+# ╟─6d06ddfc-6334-11eb-2995-81333ac5e1cd
+# ╠═33757f2c-6243-11eb-11c2-ab5bbd90aa6b
+# ╟─bbbe4c9a-6335-11eb-1dc7-55ddf17887f4
 # ╟─4234b198-6243-11eb-2cfa-6102bfd9b896
 # ╠═473d9b5c-6243-11eb-363d-23108e81eb93
+# ╟─ce3393a8-6335-11eb-06e9-af93a3794902
 # ╠═50e45ac6-6243-11eb-27f9-d5e7d0e1dc01
 # ╟─dad14258-6309-11eb-0a9a-37c0386c8cb4
 # ╠═55de4f76-6243-11eb-1445-a54d01242f64
