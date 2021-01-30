@@ -352,12 +352,6 @@ shape1 ∩ shape2  # \cap<TAB>
 
 Base.in((x, y), s::Circle) = (s.x - x)^2 + (s.y - y)^2 ≤ s.R^2
 
-function Base.in((x, y), s::AbstractRectangle)
-    xc, yc = center(s)
-    l, w = lw(shape)
-    return (xc - 0.5l ≤ x ≤ xc + 0.5l) && (yc - 0.5w ≤ y ≤ yc + 0.5w)
-end
-
 crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
 
 """
@@ -451,8 +445,6 @@ function Base.intersect(shape1::Triangle, shape2::Triangle)
             linecross((p3, p2), (q1, q3))
 end
     
-
-
 function Base.intersect(shape1::Circle, shape2::Circle)
     c1 = center(shape1)
     c2 = center(shape2)
