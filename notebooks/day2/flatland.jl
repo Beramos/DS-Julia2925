@@ -51,22 +51,43 @@ plot all your shapes (provided you implemented all the helper functions).
 Implementing such shapes can have various exciting applications, such as making a drawing tool or a ray tracer. Our
 end goal is to implement a simulator of a toy statistical physics system. Here, we simulate a system with inert particles, leading to self-organization.
 Our simple rejection sampling algorithm that we will use is computationally very demanding, an ideal case study for Julia!
+"""
 
+# ╔═╡ 7189b1ee-62ef-11eb-121a-8d7bb3df52c3
+md"""
 ## Assignments
+"""
 
-- [ ] add the correct *inner* constructor to your type;
-- [ ] complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
-- [ ] complete `center` to return the center of mass of the shape;
-- [ ] complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
-- [ ] complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
-- [ ] complete `area`, this computes the area of your shape;
-- [ ] complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
-- [ ] complete the function `in`, to check whether a point is in your shape;
-- [ ] complete `intersect`, to check whether two shapes overlap;
-- [ ] complete `randplace!`, which randomly moves and rotates a shape within a box;
-- [ ] complete the rejection sampling algorithm and experiment with your shape(s).
+# ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+checkbox(test::Bool)= test ? "✅" : "◯";
 
-Note: You will need to create specifice methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
+# ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
+md"""
+ $(checkbox(false)) add the correct *inner* constructor to your type;
+
+
+ $(checkbox(false)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
+
+
+ $(checkbox(false)) complete `center` to return the center of mass of the shape;
+ 
+ $(checkbox(false)) complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
+ 
+ $(checkbox(false)) complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
+ 
+ $(checkbox(false)) complete `area`, this computes the area of your shape;
+ 
+ $(checkbox(false)) complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
+ 
+ $(checkbox(false)) complete the function `in`, to check whether a point is in your shape;
+ 
+ $(checkbox(false)) complete `intersect`, to check whether two shapes overlap;
+ 
+ $(checkbox(false)) complete `randplace!`, which randomly moves and rotates a shape within a box;
+ 
+ $(checkbox(false)) complete the rejection sampling algorithm and experiment with your shape(s).
+ 
+Note: You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
 
 # ╔═╡ d65b61ba-6242-11eb-030d-b18a7518731b
@@ -80,8 +101,8 @@ abstract type Shape end
 
 # ╔═╡ e7e43620-6242-11eb-1e2e-65874fe8e293
 md"""
- `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axes.
-They have a `l`ength and `w`idth attribute, in addtion to an `x` and `y` for their center.
+ `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axis.
+They have a `l`ength and `w`idth attribute, in addition to an `x` and `y` for their center.
 
 
 """
@@ -111,8 +132,11 @@ begin
 	end
 end
 
+# ╔═╡ 06520b30-62f4-11eb-2b90-1fcb3053945e
+md"So we have defined a composite Rectangle type with an inner constructor to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0. Using multiple dispatch allows to defined multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`) assuming that the rectangle is aligned with the axes."
+
 # ╔═╡ 12ddaece-6243-11eb-1e9d-2be312d2e22d
-md"Squares are special cases."
+md"Squares are a special case of rectangle."
 
 # ╔═╡ 16666cac-6243-11eb-0e0f-dd0d0ec53926
 mutable struct Square <: AbstractRectangle
@@ -134,7 +158,7 @@ begin
 end
 
 # ╔═╡ 2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
-md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it it tilted.
+md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
 The order of the polygon is part of its parametric type, so we give the compiler some hint how it will behave."
 
 # ╔═╡ 33757f2c-6243-11eb-11c2-ab5bbd90aa6b
@@ -150,7 +174,7 @@ mutable struct RegularPolygon{N} <: Shape
 end
 
 # ╔═╡ 381d19b8-6243-11eb-2477-5f0e919ff7bd
-md"`Circle`s are pretty straightforward, having a center and a radius."
+md"`Circle`'s are pretty straightforward, having a center and a radius."
 
 # ╔═╡ 3d67d61a-6243-11eb-1f83-49032ad146da
 mutable struct Circle <: Shape
@@ -163,7 +187,7 @@ mutable struct Circle <: Shape
 end
 
 # ╔═╡ 4234b198-6243-11eb-2cfa-6102bfd9b896
-md"Triangles are described by its three points. Its center is computed when needed."
+md"Triangles are described by their three points. Its center will be computed when needed."
 
 # ╔═╡ 473d9b5c-6243-11eb-363d-23108e81eb93
 abstract type AbstractTriangle <: Shape end
@@ -476,12 +500,16 @@ end
 # ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
 # ╠═23bcbb02-62ef-11eb-27f9-13ed327ac098
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
-# ╠═b1d21552-6242-11eb-2665-c9232be7026e
+# ╟─b1d21552-6242-11eb-2665-c9232be7026e
+# ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
+# ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
+# ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 # ╠═d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╠═e7e43620-6242-11eb-1e2e-65874fe8e293
 # ╠═f4b05730-6242-11eb-0e24-51d4c60dc451
 # ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
+# ╠═06520b30-62f4-11eb-2b90-1fcb3053945e
 # ╠═12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
 # ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
