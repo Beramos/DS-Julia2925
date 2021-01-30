@@ -497,6 +497,9 @@ begin
 	end
 end
 
+# ╔═╡ c16c36f6-6339-11eb-20d4-27ef9f74b747
+
+
 # ╔═╡ 5de0c912-6244-11eb-13fd-bfd8328191a6
 md"""
 ## x,y-bounding
@@ -727,28 +730,34 @@ Here, we want to perform some geometric checks.
 (x, y) in shape
 ```
 should return a Boolean whether the point is in the shape.
-
-Similarly, we want to check whether two shapes overlap (partially):
-
-```julia
-intersect(shape1, shape2)
-```
-
-By completing these functions, the following mathematical syntax should also work:
-
-```julia
-(x, y) ∈ shape  # \in<TAB>
-shape1 ∩ shape2  # \cap<TAB>
-```
-
-We have defined some functions you might find useful.
 """
 
-# ╔═╡ dc124df4-6248-11eb-199a-dd4627122715
-hint(md"Maybe you can perform a very rapid check to immediately see whether two shapes cannot possibly overlap?")
+# ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
+begin
+   test_in = @safe in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5)))
 
-# ╔═╡ 0381fbba-6248-11eb-3e80-b37137438531
-crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
+   q_in = Question(;
+			description=md"""
+			Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.""")
+	
+   qb_in = QuestionBlock(;
+	title=md"**Is point in shape? $(checkbox2(test_in))**",
+	questions = [q_in],
+	hints=[
+		hint(md"It has something to do with the center..."),
+		hint(md"... but also with the edges"),
+		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
+	]
+	)
+end
+
+# ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
+#=begin
+	function Base.in((x, y), s::Shape)
+		# compute something
+		return missing
+	end
+end=#
 
 # ╔═╡ 150f1dae-6248-11eb-276f-9bbf7eba58fd
 """
@@ -764,8 +773,138 @@ function same_side((a, b), p, q)
 	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
 end
 
-# ╔═╡ 165b9192-6248-11eb-3c29-c7a8c166f731
-same_side(((0, 0), (1, 1)), (0.6, 0.7), (12, 30))
+# ╔═╡ 711e0588-6306-11eb-31a9-7b029ac90071
+function Base.in(q, shape::Shape)
+    corns = corners(shape)
+    n = ncorners(shape)
+    c = center(shape)
+    # check if q is always on the same side as the center
+    for i in 1:n-1
+        !same_side((corns[i], corns[i+1]), c, q) && return false
+    end
+    !same_side((corns[end], corns[1]), c, q) && return false
+    return true
+end
+
+# ╔═╡ b8ed26f2-633b-11eb-380e-9379b0f4697f
+md"Too prove that this function works:" 
+
+# ╔═╡ f4873fce-6249-11eb-0140-871354ca5430
+let
+	# verfication
+	points_all = [1randn(2) for i in 1:1_000]
+	points =filter(p->p ∈ myshape, points_all)
+	scatter(first.(points_all), last.(points_all), opacity=0.1, color=:lightgrey, label="all")
+	scatter!(first.(points), last.(points), label="out")
+	plot!(myshape, alpha=0.2)
+end
+
+# ╔═╡ 22f63a5e-633a-11eb-27c7-27fcabc7bc6f
+
+
+# ╔═╡ f3ea648e-633b-11eb-3444-317a4eb5b8ea
+begin
+   q_circle = Question(;
+			description=md"""
+
+**Two circles intersecting ⭐️**
+```julia
+	Base.intersect(shape1::Circle, shape2::Circle)
+```
+
+""")
+	
+   q_recrec = Question(;
+		description=md"""
+
+**Rectangle intersecting another rectangle ⭐️**
+```julia
+	Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle)
+```
+
+""")
+	
+   q_triatria = Question(;
+		description=md"""
+
+**Two triangles intersecting ⭐️⭐️⭐️⭐️⭐️**
+```julia
+	Base.intersect(shape1::Triangle, shape2::Triangle)
+```
+
+""")
+	
+   q_general = Question(;
+		description=md"""
+
+**Any two shapes intersecting ⭐️⭐️⭐️**
+```julia
+	Base.intersect(shape1::T, shape2::T) where {T<:Shape}
+```
+
+""")
+	
+	
+	
+   qb_inter = QuestionBlock(;
+	title=md"**Intersection between shapes?**",
+	description=md"""
+Similarly, we want to check whether two shapes overlap (partially):
+
+```julia
+intersect(shape1, shape2)
+```
+
+Complete the function `intersect(shape1, shape2)` that checks whether there is a partial overlap (intersection) between two shapes
+
+The efficiency and the process of checking intersection is very different for each shape and each combination of two shapes. Complete **at least one** of the following combinations.""",
+	questions = [q_circle, q_recrec, q_triatria, q_general],
+	hints=[
+		hint(md"It has something to do with the center..."),
+		hint(md"... but also with the edges"),
+		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
+	]
+	)
+end
+
+# ╔═╡ 5368c46e-633e-11eb-0d98-b1ccb37cc7f8
+#=begin
+	function Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle)
+		return missing
+	end
+	
+	function Base.intersect(shape1::Circle, shape2::Circle)
+		return missing
+	end
+
+	function Base.intersect(shape1::Triangle, shape2::Triangle)
+		return missing
+	end
+    
+
+	function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
+		return missing
+	end
+	
+end=#
+
+# ╔═╡ f65ab7b8-633c-11eb-1606-75583b69677c
+function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
+    (shape1.x - shape2.x)^2 + (shape1.y - shape2.y)^2 > (shape1.R + shape2.R)^2 && return false
+    return center(shape1) ∈ shape2 ||
+            center(shape2) ∈ shape1 ||
+            any(c->c ∈ shape2, corners(shape1)) ||
+            any(c->c ∈ shape1, corners(shape2))
+end
+
+# ╔═╡ e6efb632-6338-11eb-2e22-eb0b1ff577c4
+
+
+# ╔═╡ 91273cd2-6248-11eb-245c-abb6269f916b
+md"Note, Julia will parse composite arguments:"
+
+# ╔═╡ 0381fbba-6248-11eb-3e80-b37137438531
+crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
 
 # ╔═╡ 653af7c6-6248-11eb-2a7b-fbf7550ef92b
 """
@@ -785,18 +924,6 @@ end
 # ╔═╡ 6aa3519a-6248-11eb-193d-a3537f7d3bd0
 linecross(((0, 0), (1, 1)), ((0, 1), (1, 0)))
 
-# ╔═╡ 91273cd2-6248-11eb-245c-abb6269f916b
-md"Note, Julia will parse composite arguments:"
-
-# ╔═╡ e9a82498-6248-11eb-0f36-bbbdc5580c8d
-@inline function boundboxes_overlap(shape1::Shape, shape2::Shape)
-    (xmin1, xmax1), (xmin2, xmax2) = xlim(shape1), xlim(shape2)
-    (ymin1, ymax1), (ymin2, ymax2)  = ylim(shape1), ylim(shape2)
-    # check for x and y overlap
-    return (xmin1 ≤ xmin2 ≤ xmax1 || xmin1 ≤ xmax2 ≤ xmax1 || xmin2 ≤ xmin1 ≤ xmax2) &&
-            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 ||ymin2 ≤ ymin1 ≤ ymax2)
-end
-
 # ╔═╡ ab9775d2-6248-11eb-360a-8b1e048d5717
 let
 	p1 = (0, 0)
@@ -806,36 +933,17 @@ let
 	linecross((p1, p2), (q1, q2))
 end
 
-# ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
-#=begin
-	function Base.in((x, y), s::Shape)
-		# compute something
-		return missing
-	end
-end=#
+# ╔═╡ e21b0f1c-633b-11eb-3609-9b9dae71c915
+md"""
+By completing these functions, the following mathematical syntax should also work:
 
-# ╔═╡ 711e0588-6306-11eb-31a9-7b029ac90071
-function Base.in(q, shape::Shape)
-    corns = corners(shape)
-    n = ncorners(shape)
-    c = center(shape)
-    # check if q is always on the same side as the center
-    for i in 1:n-1
-        !same_side((corns[i], corns[i+1]), c, q) && return false
-    end
-    !same_side((corns[end], corns[1]), c, q) && return false
-    return true
-end
+```julia
+(x, y) ∈ shape  # \in<TAB>
+shape1 ∩ shape2  # \cap<TAB>
+```
 
-# ╔═╡ f4873fce-6249-11eb-0140-871354ca5430
-let
-	# verfication
-	points_all = [1randn(2) for i in 1:1_000]
-	points =filter(p->p ∈ myshape, points_all)
-	scatter(first.(points_all), last.(points_all), opacity=0.1, color=:lightgrey, label="all")
-	scatter!(first.(points), last.(points), label="out")
-	plot!(myshape, alpha=0.2)
-end
+We have defined some functions you might find useful.
+"""
 
 # ╔═╡ f97bf1c0-6247-11eb-1acc-e30068a277d0
 md"""
@@ -927,6 +1035,7 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═55486b2a-6304-11eb-09ac-b703d0c772ba
 # ╠═ddf0ac38-6243-11eb-3a1d-cd39d70b2ee0
 # ╠═ecc9a53e-6243-11eb-2784-ed46ccbcadd2
+# ╟─c16c36f6-6339-11eb-20d4-27ef9f74b747
 # ╟─5de0c912-6244-11eb-13fd-bfd8328191a6
 # ╟─9ef18fda-6244-11eb-3751-5344dff96d3e
 # ╠═a89bdba6-6244-11eb-0b83-c1c64e4de17d
@@ -956,18 +1065,23 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╠═287a7506-6247-11eb-2bad-0778802c00d5
 # ╟─01d899e6-6305-11eb-017b-27bb2c104ef5
 # ╟─221e09a2-6247-11eb-12a8-a13c0a2f96e7
-# ╠═dc124df4-6248-11eb-199a-dd4627122715
-# ╠═0381fbba-6248-11eb-3e80-b37137438531
-# ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
-# ╠═165b9192-6248-11eb-3c29-c7a8c166f731
-# ╠═653af7c6-6248-11eb-2a7b-fbf7550ef92b
-# ╠═6aa3519a-6248-11eb-193d-a3537f7d3bd0
-# ╠═91273cd2-6248-11eb-245c-abb6269f916b
-# ╠═e9a82498-6248-11eb-0f36-bbbdc5580c8d
-# ╠═ab9775d2-6248-11eb-360a-8b1e048d5717
+# ╟─6851ebb2-6339-11eb-2ab7-39e07c4e3154
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
 # ╠═711e0588-6306-11eb-31a9-7b029ac90071
+# ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
+# ╟─b8ed26f2-633b-11eb-380e-9379b0f4697f
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
+# ╟─22f63a5e-633a-11eb-27c7-27fcabc7bc6f
+# ╠═f3ea648e-633b-11eb-3444-317a4eb5b8ea
+# ╠═5368c46e-633e-11eb-0d98-b1ccb37cc7f8
+# ╠═f65ab7b8-633c-11eb-1606-75583b69677c
+# ╟─e6efb632-6338-11eb-2e22-eb0b1ff577c4
+# ╠═91273cd2-6248-11eb-245c-abb6269f916b
+# ╠═0381fbba-6248-11eb-3e80-b37137438531
+# ╠═653af7c6-6248-11eb-2a7b-fbf7550ef92b
+# ╠═6aa3519a-6248-11eb-193d-a3537f7d3bd0
+# ╠═ab9775d2-6248-11eb-360a-8b1e048d5717
+# ╠═e21b0f1c-633b-11eb-3609-9b9dae71c915
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
 # ╠═3651df40-6308-11eb-26e0-b5d70db4ad20
