@@ -423,7 +423,7 @@ A protein (polypeptide chain) is a sequence of amino acids, small molecules with
 
 ![source: technology networks.com](https://cdn.technologynetworks.com/tn/images/thumbs/webp/640_360/essential-amino-acids-chart-abbreviations-and-structure-324357.webp?v=10459598)
 
-In bioinformatics, the 20 common amino acids are denoted by 20 capital letters, `A` for alanina, `C` for cysteine, etc. Many interesting local properties can be computed by looking at local properties of amino acids. For example, the (now largely outdated) **Chou-Fasman method** for the prediction the local three-dimensional shape of a protein ($\alpha$-helix or $\beta$-sheet) uses a sliding window to check if regions are enriched for amino acids associated with $\alpha$-helices or $\beta$-sheets.
+In bioinformatics, the 20 common amino acids are denoted by 20 capital letters, `A` for alanine, `C` for cysteine, etc. Many interesting local properties can be computed by looking at local properties of amino acids. For example, the (now largely outdated) **Chou-Fasman method** for the prediction the local three-dimensional shape of a protein ($\alpha$-helix or $\beta$-sheet) uses a sliding window to check if regions are enriched for amino acids associated with $\alpha$-helices or $\beta$-sheets.
 
 We will study a protein using a sliding window analysis by making use of the **amino acid z-scales**. These are three physicochemical properties of an amino acid. 
 
@@ -638,7 +638,7 @@ typeof(bird_original)
 eltype(bird_original)
 
 # ╔═╡ 131c000e-5a8f-11eb-0ab1-d55894321001
-md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array. and because of the type system, a lot of interesting feature work out of the box."
+md"So an image is basically a two-dimensional array of Colors. Which means it can be processed just like any other array. and because of the type system, a lot of interesting features work out of the box."
 
 # ╔═╡ 134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
 md"Lets the define a function to reduce the size of the image"
@@ -826,11 +826,11 @@ end
 begin 	
 	q121 = Question(
 		description=md"""
-		Kernels emphasise certain features in images and often they have a directionality. K_x and K_y are known as [Sobol filters](https://en.wikipedia.org/wiki/Sobel_operator) and form the basis of edge detection. Which is just a combination of K₂ (x-direction) and K₃ (y-direction),
+		Kernels emphasise certain features in images and often they have a directionality. `K_x` and `K_y` are known as [Sobol filters](https://en.wikipedia.org/wiki/Sobel_operator) and form the basis of edge detection. Which is just a combination of `K₂` (x-direction) and `K₃` (y-direction),
 		
 		$$G = \sqrt{G_x^2 + G_y^2}\, ,$$
 		
-		which is the square-root of the sum of the squared convolution with the K_x kernel and the K_y kernel. Implement edge detection and test it on the our bird. 
+		which is the square-root of the sum of the squared convolution with the `K_x` kernel and the `K_y` kernel. Implement edge detection and test it on the our bird. 
 		"""
 		)
 				
@@ -1090,7 +1090,7 @@ begin
 	qb7 = QuestionBlock(
 		title=md"**Question: evolving the array**",
 		description = md"""
-		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states tranistion simultaneously from the initial state to the next state.
+		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states transition simultaneously from the initial state to the next state.
 		""",
 		questions = [q71, q72],
 		hints= [
