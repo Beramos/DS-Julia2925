@@ -5,10 +5,31 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ 63f5861e-6244-11eb-268b-a16bc3f8265c
-using DSJulia, LinearAlgebra
+using LinearAlgebra
 
 # ╔═╡ dfc779ee-6246-11eb-240b-4dc7a7d95641
 using Plots, RecipesBase
+
+# ╔═╡ 23bcbb02-62ef-11eb-27f9-13ed327ac098
+# edit the code below to set your name and UGent username
+
+student = (name = "Joel Janssen", email = "Joel.Janssen@UGent.be");
+
+# press the ▶ button in the bottom right of this cell to run your edits
+# or use Shift+Enter
+
+# you might need to wait until all other cells in this notebook have completed running. 
+# scroll down the page to see what's up
+
+# ╔═╡ 1657b9b2-62ef-11eb-062e-4758f9ea1075
+begin 
+	using DSJulia;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
+
+	Submission by: **_$(student.name)_**
+	"""
+end
 
 # ╔═╡ b1d21552-6242-11eb-2665-c9232be7026e
 md"""
@@ -452,6 +473,8 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
 end
 
 # ╔═╡ Cell order:
+# ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
+# ╠═23bcbb02-62ef-11eb-27f9-13ed327ac098
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
 # ╠═b1d21552-6242-11eb-2665-c9232be7026e
 # ╠═d65b61ba-6242-11eb-030d-b18a7518731b
