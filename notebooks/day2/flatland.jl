@@ -45,6 +45,8 @@ end
 md"""
 # Flatland
 
+![](https://i.imgur.com/ex7JS3Z.png)
+
 ## Introduction and goal
 In this notebook, we will implement a variety of two-dimensional geometric shapes.
 The different shapes might have drastically different representations. For example, we can describe a rectangle
