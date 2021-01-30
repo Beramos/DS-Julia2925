@@ -859,11 +859,7 @@ Complete the function `intersect(shape1, shape2)` that checks whether there is a
 
 The efficiency and the process of checking intersection is very different for each shape and each combination of two shapes. Complete **at least one** of the following combinations.""",
 	questions = [q_circle, q_recrec, q_triatria, q_general],
-	hints=[
-		hint(md"It has something to do with the center..."),
-		hint(md"... but also with the edges"),
-		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
-	]
+	hints=[]
 	)
 end
 
@@ -898,13 +894,13 @@ function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
 end
 
 # ╔═╡ e6efb632-6338-11eb-2e22-eb0b1ff577c4
-
-
-# ╔═╡ 91273cd2-6248-11eb-245c-abb6269f916b
-md"Note, Julia will parse composite arguments:"
+md"We have defined some functions you might find useful:"
 
 # ╔═╡ 0381fbba-6248-11eb-3e80-b37137438531
 crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
+
+# ╔═╡ 91273cd2-6248-11eb-245c-abb6269f916b
+md"Note, Julia will parse composite arguments:"
 
 # ╔═╡ 653af7c6-6248-11eb-2a7b-fbf7550ef92b
 """
@@ -924,14 +920,8 @@ end
 # ╔═╡ 6aa3519a-6248-11eb-193d-a3537f7d3bd0
 linecross(((0, 0), (1, 1)), ((0, 1), (1, 0)))
 
-# ╔═╡ ab9775d2-6248-11eb-360a-8b1e048d5717
-let
-	p1 = (0, 0)
-	p2 = (1, 1)
-	q1 = (0, 1)
-	q2 = (1, 0)
-	linecross((p1, p2), (q1, q2))
-end
+# ╔═╡ 51bca412-6340-11eb-3f38-8bfc8377715b
+
 
 # ╔═╡ e21b0f1c-633b-11eb-3609-9b9dae71c915
 md"""
@@ -941,8 +931,6 @@ By completing these functions, the following mathematical syntax should also wor
 (x, y) ∈ shape  # \in<TAB>
 shape1 ∩ shape2  # \cap<TAB>
 ```
-
-We have defined some functions you might find useful.
 """
 
 # ╔═╡ f97bf1c0-6247-11eb-1acc-e30068a277d0
@@ -951,6 +939,21 @@ md"""
 
 Finally, `randplace!` takes a shape, rotates it randomly and moves it randomly within the bounds of the limits `(xmin, xmax)` and `(ymin, ymax)`. Note that the **whole** shape should be within these bounds, not only the center!
 """
+
+# ╔═╡ 97c8cd32-6340-11eb-1d6d-b7d364c0c987
+begin
+   q_rand = Question(;
+			description=md"""
+			Complete the function `randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)` that places a shape at a random location withing a given bounding box. Can you define it in such a way that it also gives a random rotation to the shape?""")
+	
+   qb_rand = QuestionBlock(;
+	title=md"**Random**",
+	questions = [q_rand],
+	hints=[
+
+	]
+	)
+end
 
 # ╔═╡ 8d73b66c-624e-11eb-0a52-2309ef897b1c
 #=function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
@@ -972,6 +975,16 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     dy = (dymax - dymin) * rand() + dymin
     move!(shape, (dx, dy))
     return shape
+end
+
+# ╔═╡ 3e0a2e20-6341-11eb-3c23-a38b04c89b37
+md"Testing if the function works:"
+
+# ╔═╡ 0ee778d2-6341-11eb-10b0-7146fbbc71ff
+begin
+	# verification
+	my_shapes = [randplace!(deepcopy(myshape), (-10,10),(-10,10)) for i in 1:100] 
+	plotshapes(my_shapes, alpha=0.2)
 end
 
 # ╔═╡ 2338ef6a-630b-11eb-1837-431b567ad619
@@ -1072,17 +1085,20 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╟─b8ed26f2-633b-11eb-380e-9379b0f4697f
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╟─22f63a5e-633a-11eb-27c7-27fcabc7bc6f
-# ╠═f3ea648e-633b-11eb-3444-317a4eb5b8ea
+# ╟─f3ea648e-633b-11eb-3444-317a4eb5b8ea
 # ╠═5368c46e-633e-11eb-0d98-b1ccb37cc7f8
 # ╠═f65ab7b8-633c-11eb-1606-75583b69677c
 # ╟─e6efb632-6338-11eb-2e22-eb0b1ff577c4
-# ╠═91273cd2-6248-11eb-245c-abb6269f916b
 # ╠═0381fbba-6248-11eb-3e80-b37137438531
+# ╠═91273cd2-6248-11eb-245c-abb6269f916b
 # ╠═653af7c6-6248-11eb-2a7b-fbf7550ef92b
 # ╠═6aa3519a-6248-11eb-193d-a3537f7d3bd0
-# ╠═ab9775d2-6248-11eb-360a-8b1e048d5717
-# ╠═e21b0f1c-633b-11eb-3609-9b9dae71c915
+# ╟─51bca412-6340-11eb-3f38-8bfc8377715b
+# ╟─e21b0f1c-633b-11eb-3609-9b9dae71c915
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
+# ╠═97c8cd32-6340-11eb-1d6d-b7d364c0c987
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
 # ╠═3651df40-6308-11eb-26e0-b5d70db4ad20
+# ╟─3e0a2e20-6341-11eb-3c23-a38b04c89b37
+# ╠═0ee778d2-6341-11eb-10b0-7146fbbc71ff
 # ╠═2338ef6a-630b-11eb-1837-431b567ad619
