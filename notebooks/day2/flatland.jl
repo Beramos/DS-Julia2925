@@ -68,6 +68,20 @@ md"""
 ## Assignments
 """
 
+# ╔═╡ f8b080fe-6309-11eb-17aa-fb098fc00b11
+md"""
+
+| shape  | difficulty   |
+|---|---|
+| `Rectangle`  |  ⭐️   |
+| `Square`  |  ⭐️   |
+|  `Circle` | ⭐️ ⭐️   |
+|`RegularPolygon` | ⭐️ ⭐️ ⭐️ |
+|`Triangle` | ⭐️ ⭐️ ⭐️ ⭐️ |
+|`Quadrilateral` | ⭐️ ⭐️ ⭐️ ⭐️ ⭐️ |
+
+"""
+
 # ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 checkbox(test::Bool)= test ? "✅" : "◯";
 
@@ -128,7 +142,7 @@ begin
 		l::Float64
 		w::Float64
 		function Rectangle((x, y); l=1.0, w=1.0)
-			return new(x, y, l, w)
+			return missing
 		end
 	end
 	
@@ -154,7 +168,7 @@ mutable struct Square <: AbstractRectangle
     y::Float64
     l::Float64
     function Square((x, y); l=1.0)
-        return new(x, y, l)
+        return missing
     end
 end
 
@@ -169,7 +183,7 @@ end
 
 # ╔═╡ 2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
 md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
-The order of the polygon is part of its parametric type, so we give the compiler some hint how it will behave."
+The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave."
 
 # ╔═╡ 33757f2c-6243-11eb-11c2-ab5bbd90aa6b
 mutable struct RegularPolygon{N} <: Shape 
@@ -179,7 +193,7 @@ mutable struct RegularPolygon{N} <: Shape
     θ::Float64  # angle
     function RegularPolygon((x, y), n::Int; R=1.0, θ=0.0)
         @assert n ≥ 3 "polygons need a minimum of three corners"
-        return new{n}(x, y, R, θ)
+        return missing
     end
 end
 
@@ -192,7 +206,7 @@ mutable struct Circle <: Shape
     y::Float64
     R::Float64
     function Circle((x, y); R=1.0)
-        return new(x, y, R)
+        return missing
     end
 end
 
@@ -212,6 +226,9 @@ mutable struct Triangle <: AbstractTriangle
     y3::Float64
     Triangle((x1, y1), (x2, y2), (x3, y3)) = new(x1, x2, x3, y1, y2, y3)
 end
+
+# ╔═╡ dad14258-6309-11eb-0a9a-37c0386c8cb4
+md"Define some examples."
 
 # ╔═╡ 55de4f76-6243-11eb-1445-a54d01242f64
 rect = Rectangle((1, 2), l=1, w=2)
@@ -665,6 +682,7 @@ end
 # ╟─b1d21552-6242-11eb-2665-c9232be7026e
 # ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 # ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
+# ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
 # ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
@@ -676,13 +694,14 @@ end
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
 # ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
 # ╠═1b129bf4-6243-11eb-1fa2-d7bd5563a1b4
-# ╠═2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
+# ╟─2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
 # ╠═33757f2c-6243-11eb-11c2-ab5bbd90aa6b
-# ╠═381d19b8-6243-11eb-2477-5f0e919ff7bd
+# ╟─381d19b8-6243-11eb-2477-5f0e919ff7bd
 # ╠═3d67d61a-6243-11eb-1f83-49032ad146da
-# ╠═4234b198-6243-11eb-2cfa-6102bfd9b896
+# ╟─4234b198-6243-11eb-2cfa-6102bfd9b896
 # ╠═473d9b5c-6243-11eb-363d-23108e81eb93
 # ╠═50e45ac6-6243-11eb-27f9-d5e7d0e1dc01
+# ╠═dad14258-6309-11eb-0a9a-37c0386c8cb4
 # ╠═55de4f76-6243-11eb-1445-a54d01242f64
 # ╠═5b6b9854-6243-11eb-2d5b-f3e41ecf2914
 # ╠═5f120f1a-6243-11eb-1448-cb12a75680b0
@@ -691,7 +710,7 @@ end
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
 # ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
 # ╟─755a6186-62fd-11eb-03e1-0173111f293f
-# ╠═7c80d608-6243-11eb-38ba-f97f7476b245
+# ╟─7c80d608-6243-11eb-38ba-f97f7476b245
 # ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
