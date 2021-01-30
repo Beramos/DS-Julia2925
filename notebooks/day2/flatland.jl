@@ -4,6 +4,15 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
 # ╔═╡ 63f5861e-6244-11eb-268b-a16bc3f8265c
 using LinearAlgebra
 
@@ -64,7 +73,7 @@ checkbox(test::Bool)= test ? "✅" : "◯";
 
 # ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
 md"""
- $(checkbox(false)) add the correct *inner* constructor to your type;
+ $(checkbox(true)) add the correct *inner* constructor to your type (see below);
 
 
  $(checkbox(false)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
@@ -88,7 +97,7 @@ md"""
  
  $(checkbox(false)) complete the rejection sampling algorithm and experiment with your shape(s).
  
-Note: You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
+**Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
 
 # ╔═╡ d65b61ba-6242-11eb-030d-b18a7518731b
@@ -102,7 +111,7 @@ abstract type Shape end
 
 # ╔═╡ e7e43620-6242-11eb-1e2e-65874fe8e293
 md"""
- `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axis.
+ `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axes.
 They have a `l`ength and `w`idth attribute, in addition to an `x` and `y` for their center.
 
 
@@ -134,7 +143,7 @@ begin
 end
 
 # ╔═╡ 06520b30-62f4-11eb-2b90-1fcb3053945e
-md"So we have defined a composite Rectangle type with an inner constructor to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0. Using multiple dispatch allows to defined multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`) assuming that the rectangle is aligned with the axes."
+md"So we have defined a composite Rectangle type with an inner constructor to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0. Using multiple dispatch allows to defined multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes."
 
 # ╔═╡ 12ddaece-6243-11eb-1e9d-2be312d2e22d
 md"Squares are a special case of rectangle."
@@ -222,8 +231,32 @@ hex = RegularPolygon((1.2, 3), 6)
 # ╔═╡ 7b785b7a-6243-11eb-31c2-9d9deea78842
 circle = Circle((10, 10))
 
-# ╔═╡ 9b94fb66-6243-11eb-2635-6b2021c741f0
-myshape = missing
+# ╔═╡ 755a6186-62fd-11eb-03e1-0173111f293f
+
+md"""**Select the shape you want to develop.** 
+
+Although operations are more challenging to define for some shapes, they are roughly ordered in increasing difficulty.
+
+My shape type: $(@bind myshapeType Select(["Square", "Rectangle", "Circle", "Polygon{N}", "Triangle"]);)
+
+"""
+
+# ╔═╡ b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+begin 
+	if myshapeType == "Square"
+		myshape = square
+	elseif myshapeType == "Rectangle"
+		myshape = rect
+	elseif myshapeType == "Circle"
+		myshape = circle
+	elseif myshapeType == "Polygon{N}"
+		myshape = pent  # needs to be more general WIP
+	elseif myshapeType == "Triangle"
+		myshape = triangle  # needs to be more general WIP
+	else 
+		myshape = missing
+	end
+end;
 
 # ╔═╡ 7c80d608-6243-11eb-38ba-f97f7476b245
 md"""
@@ -236,6 +269,36 @@ begin
 	ncorners(::Circle) = 0  # this one is for free!
 	ncorners(shape::Shape) = missing
 	
+end
+
+# ╔═╡ 62e7e05e-62fe-11eb-1611-61274c5498cc
+begin 	
+	q_cc1 = Question(
+			description = md"""
+		
+			
+			```julia
+			ncorners(shape::Shape)
+			```
+			that returns the number of corners.
+
+			""",
+			validators = @safe[
+				ncorners
+			]
+		)
+	
+	qb_cc = QuestionBlock(;
+		title=md"**Corners and center**",
+		description = md"""
+
+	Complete the following functions for your shape ($myshapeType)
+
+		""",
+		questions = [q_cc1]
+	)
+	
+	validate(qb_cc, tracker)
 end
 
 # ╔═╡ ac423fa8-6243-11eb-1385-a395d208c42d
@@ -498,19 +561,19 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
 end
 
 # ╔═╡ Cell order:
-# ╠═1657b9b2-62ef-11eb-062e-4758f9ea1075
+# ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
 # ╠═23bcbb02-62ef-11eb-27f9-13ed327ac098
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
 # ╟─b1d21552-6242-11eb-2665-c9232be7026e
-# ╠═7189b1ee-62ef-11eb-121a-8d7bb3df52c3
+# ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 # ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
-# ╠═d65b61ba-6242-11eb-030d-b18a7518731b
+# ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
-# ╠═e7e43620-6242-11eb-1e2e-65874fe8e293
+# ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
 # ╠═f4b05730-6242-11eb-0e24-51d4c60dc451
 # ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
-# ╠═06520b30-62f4-11eb-2b90-1fcb3053945e
+# ╟─06520b30-62f4-11eb-2b90-1fcb3053945e
 # ╠═12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
 # ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
@@ -528,8 +591,10 @@ end
 # ╠═64fcb6a0-6243-11eb-1b35-437e8e0bfac8
 # ╠═668f568a-6243-11eb-3f01-adf1b603e0e4
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
-# ╠═9b94fb66-6243-11eb-2635-6b2021c741f0
+# ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+# ╟─755a6186-62fd-11eb-03e1-0173111f293f
 # ╠═7c80d608-6243-11eb-38ba-f97f7476b245
+# ╠═62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
 # ╠═ddf0ac38-6243-11eb-3a1d-cd39d70b2ee0
