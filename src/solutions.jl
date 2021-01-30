@@ -110,3 +110,6 @@ estimatepi2(n) = 4count(x-> x ≤ 1.0, sum(rand(n, 2).^2, dims=2)) / n
 
 ### Vandermonde
 vandermonde(α, n) = [αᵢ^j for αᵢ in α, j in 0:n-1]
+
+
+

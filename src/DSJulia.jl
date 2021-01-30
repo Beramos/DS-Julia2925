@@ -32,5 +32,6 @@ module DSJulia
     export Solutions
     module Solutions
         include("solutions.jl")
+        include("solutions_flatland.jl")
     end
 end

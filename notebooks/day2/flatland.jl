@@ -4,11 +4,42 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
 # ╔═╡ 63f5861e-6244-11eb-268b-a16bc3f8265c
-using DSJulia, LinearAlgebra
+using LinearAlgebra
 
 # ╔═╡ dfc779ee-6246-11eb-240b-4dc7a7d95641
 using Plots, RecipesBase
+
+# ╔═╡ 23bcbb02-62ef-11eb-27f9-13ed327ac098
+# edit the code below to set your name and UGent username
+
+student = (name = "Joel Janssen", email = "Joel.Janssen@UGent.be");
+
+# press the ▶ button in the bottom right of this cell to run your edits
+# or use Shift+Enter
+
+# you might need to wait until all other cells in this notebook have completed running. 
+# scroll down the page to see what's up
+
+# ╔═╡ 1657b9b2-62ef-11eb-062e-4758f9ea1075
+begin 
+	using DSJulia;
+	using PlutoUI;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
+
+	Submission by: **_$(student.name)_**
+	"""
+end
 
 # ╔═╡ b1d21552-6242-11eb-2665-c9232be7026e
 md"""
@@ -30,22 +61,43 @@ plot all your shapes (provided you implemented all the helper functions).
 Implementing such shapes can have various exciting applications, such as making a drawing tool or a ray tracer. Our
 end goal is to implement a simulator of a toy statistical physics system. Here, we simulate a system with inert particles, leading to self-organization.
 Our simple rejection sampling algorithm that we will use is computationally very demanding, an ideal case study for Julia!
+"""
 
+# ╔═╡ 7189b1ee-62ef-11eb-121a-8d7bb3df52c3
+md"""
 ## Assignments
+"""
 
-- [ ] add the correct *inner* constructor to your type;
-- [ ] complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
-- [ ] complete `center` to return the center of mass of the shape;
-- [ ] complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
-- [ ] complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
-- [ ] complete `area`, this computes the area of your shape;
-- [ ] complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
-- [ ] complete the function `in`, to check whether a point is in your shape;
-- [ ] complete `intersect`, to check whether two shapes overlap;
-- [ ] complete `randplace!`, which randomly moves and rotates a shape within a box;
-- [ ] complete the rejection sampling algorithm and experiment with your shape(s).
+# ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+checkbox(test::Bool)= test ? "✅" : "◯";
 
-Note: You will need to create specifice methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
+# ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
+md"""
+ $(checkbox(true)) add the correct *inner* constructor to your type (see below);
+
+
+ $(checkbox(false)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
+
+
+ $(checkbox(false)) complete `center` to return the center of mass of the shape;
+ 
+ $(checkbox(false)) complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
+ 
+ $(checkbox(false)) complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
+ 
+ $(checkbox(false)) complete `area`, this computes the area of your shape;
+ 
+ $(checkbox(false)) complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
+ 
+ $(checkbox(false)) complete the function `in`, to check whether a point is in your shape;
+ 
+ $(checkbox(false)) complete `intersect`, to check whether two shapes overlap;
+ 
+ $(checkbox(false)) complete `randplace!`, which randomly moves and rotates a shape within a box;
+ 
+ $(checkbox(false)) complete the rejection sampling algorithm and experiment with your shape(s).
+ 
+**Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
 
 # ╔═╡ d65b61ba-6242-11eb-030d-b18a7518731b
@@ -60,7 +112,7 @@ abstract type Shape end
 # ╔═╡ e7e43620-6242-11eb-1e2e-65874fe8e293
 md"""
  `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axes.
-They have a `l`ength and `w`idth attribute, in addtion to an `x` and `y` for their center.
+They have a `l`ength and `w`idth attribute, in addition to an `x` and `y` for their center.
 
 
 """
@@ -90,8 +142,11 @@ begin
 	end
 end
 
+# ╔═╡ 06520b30-62f4-11eb-2b90-1fcb3053945e
+md"So we have defined a composite Rectangle type with an inner constructor to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0. Using multiple dispatch allows to defined multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes."
+
 # ╔═╡ 12ddaece-6243-11eb-1e9d-2be312d2e22d
-md"Squares are special cases."
+md"Squares are a special case of rectangle."
 
 # ╔═╡ 16666cac-6243-11eb-0e0f-dd0d0ec53926
 mutable struct Square <: AbstractRectangle
@@ -113,7 +168,7 @@ begin
 end
 
 # ╔═╡ 2ba1f3e6-6243-11eb-0f18-ef5e21e01a15
-md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it it tilted.
+md"Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
 The order of the polygon is part of its parametric type, so we give the compiler some hint how it will behave."
 
 # ╔═╡ 33757f2c-6243-11eb-11c2-ab5bbd90aa6b
@@ -129,7 +184,7 @@ mutable struct RegularPolygon{N} <: Shape
 end
 
 # ╔═╡ 381d19b8-6243-11eb-2477-5f0e919ff7bd
-md"`Circle`s are pretty straightforward, having a center and a radius."
+md"`Circle`'s are pretty straightforward, having a center and a radius."
 
 # ╔═╡ 3d67d61a-6243-11eb-1f83-49032ad146da
 mutable struct Circle <: Shape
@@ -142,7 +197,7 @@ mutable struct Circle <: Shape
 end
 
 # ╔═╡ 4234b198-6243-11eb-2cfa-6102bfd9b896
-md"Triangles are described by its three points. Its center is computed when needed."
+md"Triangles are described by their three points. Its center will be computed when needed."
 
 # ╔═╡ 473d9b5c-6243-11eb-363d-23108e81eb93
 abstract type AbstractTriangle <: Shape end
@@ -165,7 +220,7 @@ rect = Rectangle((1, 2), l=1, w=2)
 square = Square((0, 1))
 
 # ╔═╡ 5f120f1a-6243-11eb-1448-cb12a75680b0
-triangle = Triangle((1, 2), (4, 5), (7, -10))
+triangle = Triangle((-0.1, 0.5), (1, 2), (1, -0.5))
 
 # ╔═╡ 64fcb6a0-6243-11eb-1b35-437e8e0bfac8
 pent = RegularPolygon((0, 0), 5)
@@ -176,8 +231,32 @@ hex = RegularPolygon((1.2, 3), 6)
 # ╔═╡ 7b785b7a-6243-11eb-31c2-9d9deea78842
 circle = Circle((10, 10))
 
-# ╔═╡ 9b94fb66-6243-11eb-2635-6b2021c741f0
-myshape = missing
+# ╔═╡ 755a6186-62fd-11eb-03e1-0173111f293f
+
+md"""**Select the shape you want to develop.** 
+
+Although operations are more challenging to define for some shapes, they are roughly ordered in increasing difficulty.
+
+My shape type: $(@bind myshapeType Select(["Square", "Rectangle", "Circle", "RegularPolygon{N}", "Triangle"]);)
+
+"""
+
+# ╔═╡ b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+begin 
+	if myshapeType == "Square"
+		myshape = square
+	elseif myshapeType == "Rectangle"
+		myshape = rect
+	elseif myshapeType == "Circle"
+		myshape = circle
+	elseif myshapeType == "RegularPolygon{N}"
+		myshape = pent  # needs to be more general WIP
+	elseif myshapeType == "Triangle"
+		myshape = triangle  # needs to be more general WIP
+	else 
+		myshape = missing
+	end
+end;
 
 # ╔═╡ 7c80d608-6243-11eb-38ba-f97f7476b245
 md"""
@@ -185,28 +264,129 @@ md"""
 Some very basic functions to get or generate the corners and centers of your shapes. The corners are returned as a list of tuples, e.g. `[(x1, y1), (x2, y2),...]`.
 """
 
-# ╔═╡ a005992e-6243-11eb-3e29-61c19c6e5c7c
-begin
-	ncorners(::Circle) = 0  # this one is for free!
-	ncorners(shape::Shape) = missing
+# ╔═╡ 62e7e05e-62fe-11eb-1611-61274c5498cc
+begin 	
+	q_cc1 = Question(
+			description = md"""
+			**The number of corners**
+			
+			```julia
+			ncorners(shape::myShape)
+			```
+			that returns the number of corners.
+		
+
+			"""
+		)
 	
+	q_cc2 = Question(
+		description = md"""
+		**The corners**
+
+		```julia
+		corners(shape::myShape)
+		```
+		that returns the coordinates of the corners.
+
+		"""
+	)
+	
+	q_cc3 = Question(
+		description = md"""
+		**The center**
+
+		```julia
+		center(shape::myShape)
+		```
+		that returns the center.
+
+		"""
+	)
+	
+	q_cc4 = Question(
+		description = md"""
+		**The outline**
+
+		```julia
+		xycoords(shape::Shape)
+		```
+		xycoords returns two vectors of the outline: xcoords and ycoords, for `Circle`, you can specify the number of points to take (50 by default). For a lot of shapes this is just another representation of the corners.
+
+		"""
+	)
+	
+	qb_cc = QuestionBlock(;
+		title=md"**Corners and center**",
+		description = md"""
+
+	Complete the following functions for your shape ($myshapeType)
+
+		""",
+		questions = [q_cc1, q_cc2, q_cc3, q_cc4]
+	)
+	
+	#validate(qb_cc, tracker)
 end
 
+# ╔═╡ a005992e-6243-11eb-3e29-61c19c6e5c7c
+#=begin
+	ncorners(::Circle) = 0  # this one is for free!
+	ncorners(shape::Shape) = missing # leave this default 
+	#...add your own ncorners
+	
+end=#
+
 # ╔═╡ ac423fa8-6243-11eb-1385-a395d208c42d
-begin
+#=begin
 	function corners(shape::Shape)
 		return missing
+	end
+end=#
+
+# ╔═╡ 55486b2a-6304-11eb-09ac-b703d0c772ba
+begin 
+	ncorners(::AbstractRectangle) = 4
+	ncorners(::AbstractTriangle) = 3
+	ncorners(::Circle) = 0
+	ncorners(::RegularPolygon{N}) where {N} = N
+
+	function corners(shape::AbstractRectangle)
+		x, y = center(shape)
+		l, w = lw(shape)
+		return [(x+l/2, y+w/2), (x-l/2, y+w/2), (x-l/2, y-w/2), (x+l/2, y-w/2)]
+	end
+
+	function corners(shape::RegularPolygon)
+		x, y = center(shape)
+		θ = shape.θ
+		R = shape.R
+		n = ncorners(shape)
+		return [(x+R*cos(t+θ), y+R*sin(t+θ)) for t in range(0, step=2π/n, length=n)]
+	end
+
+	function corners(shape::Triangle)
+		return [(shape.x1, shape.y1), (shape.x2, shape.y2), (shape.x3, shape.y3)]
+	end
+
+	corners(shape::Circle) = []
+	
+	center(shape::Shape) = shape.x, shape.y
+	function center(shape::Triangle)
+    	(x1, y1), (x2, y2), (x3, y3) = corners(shape)
+    	return ((x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3)
 	end
 end
 
 # ╔═╡ ddf0ac38-6243-11eb-3a1d-cd39d70b2ee0
-begin
+#=begin
 	center(shape::Shape) = (missing, missing)
-end
+end=#
 
 # ╔═╡ ecc9a53e-6243-11eb-2784-ed46ccbcadd2
 begin
-	xycoords(s::Shape) = missing, missing
+	#xycoords(shape::Shape) = missing, missing
+	xycoords(s::Shape) = [first(p) for p in corners(s)], [last(p) for p in corners(s)]
+
 
 	function xycoords(shape::Circle; n=50)
 		# compute `n` points of the circle
@@ -235,7 +415,7 @@ begin
 end
 
 # ╔═╡ bd706964-6244-11eb-1d9d-2b60e53cdce1
-md"This returns the bounding box, as the smallest rectangle that can completely contain your shape."
+md"This should return the bounding box, as the smallest rectangle that can completely contain your shape."
 
 # ╔═╡ b91e1e62-6244-11eb-1045-0770fa92e040
 boundingbox(shape::Shape) = missing
@@ -244,7 +424,7 @@ boundingbox(shape::Shape) = missing
 md"""
 ## Area
 
-Next, we compute the area of our shapes.
+Next, let us compute the area of our shapes.
 """
 
 # ╔═╡ f69370bc-6244-11eb-290e-fdd4d7cc826a
@@ -258,6 +438,9 @@ begin
 	area(shape::Shape) = missing
 end
 
+# ╔═╡ 230dd290-6303-11eb-0f55-311ef2b9541e
+
+
 # ╔═╡ 36cc0492-6246-11eb-38dd-4f42fb7066dc
 md"""
 ## Moving, rotating and scaling
@@ -266,8 +449,11 @@ Important: the functions work *in-place*, meaning that the modify your object (t
 
 For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
 
-Note: rotations are in radials, so between $0$ and $2\pi$.
+**Note**: rotations are in radials, so between $0$ and $2\pi$.
 """
+
+# ╔═╡ 317f43b8-6303-11eb-2d92-1b9457a68912
+
 
 # ╔═╡ 83c6d25c-6246-11eb-1a24-57e20f5e7262
 begin
@@ -327,8 +513,14 @@ md"Let's look!"
 # ╔═╡ 16d0ea9c-6247-11eb-12c6-1709f6d0ac99
 plot(myshape)
 
+# ╔═╡ 6bae2128-6303-11eb-34f2-1dfa96e46ae6
+md"This is how it should look like,"
+
 # ╔═╡ 287a7506-6247-11eb-2bad-0778802c00d5
 plot(myshape, color="pink")
+
+# ╔═╡ 01d899e6-6305-11eb-017b-27bb2c104ef5
+
 
 # ╔═╡ 221e09a2-6247-11eb-12a8-a13c0a2f96e7
 md"""
@@ -339,15 +531,15 @@ Here, we want to perform some geometric checks.
 ```julia
 (x, y) in shape
 ```
-should return a Boolean whether the point.
+should return a Boolean whether the point is in the shape.
 
-Similarly, we want to check whether two shapes overlap (partly):
+Similarly, we want to check whether two shapes overlap (partially):
 
 ```julia
 intersect(shape1, shape2)
 ```
 
-By completing these functions, the following more mathematical syntax should also work:
+By completing these functions, the following mathematical syntax should also work:
 
 ```julia
 (x, y) ∈ shape  # \in<TAB>
@@ -358,7 +550,7 @@ We have defined some functions you might find useful.
 """
 
 # ╔═╡ dc124df4-6248-11eb-199a-dd4627122715
-hint(md"Maybe you can perform very rapid checks to immediately check whether two shapes cannot possibly overlap?")
+hint(md"Maybe you can perform a very rapid check to immediately see whether two shapes cannot possibly overlap?")
 
 # ╔═╡ 0381fbba-6248-11eb-3e80-b37137438531
 crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
@@ -420,18 +612,33 @@ let
 end
 
 # ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
-begin
+#=begin
 	function Base.in((x, y), s::Shape)
 		# compute something
 		return missing
 	end
+end=#
+
+# ╔═╡ 711e0588-6306-11eb-31a9-7b029ac90071
+function Base.in(q, shape::Shape)
+    corns = corners(shape)
+    n = ncorners(shape)
+    c = center(shape)
+    # check if q is always on the same side as the center
+    for i in 1:n-1
+        !same_side((corns[i], corns[i+1]), c, q) && return false
+    end
+    !same_side((corns[end], corns[1]), c, q) && return false
+    return true
 end
 
 # ╔═╡ f4873fce-6249-11eb-0140-871354ca5430
 let
 	# verfication
-	points = filter(p->p ∈ myshape, [5randn(2) for i in 1:10_000])
-	scatter(first.(points), last.(points))
+	points_all = [1randn(2) for i in 1:1_000]
+	points =filter(p->p ∈ myshape, points_all)
+	scatter(first.(points_all), last.(points_all), opacity=0.1, color=:lightgrey, label="all")
+	scatter!(first.(points), last.(points), label="out")
 	plot!(myshape, alpha=0.2)
 end
 
@@ -446,19 +653,25 @@ Finally, `randplace!` takes a shape, rotates it randomly and moves it randomly w
 function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     # random rotation
     
-    # random tranlation within bound
+    # random translation within bound
     
     return shape
 end
 
 # ╔═╡ Cell order:
+# ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
+# ╠═23bcbb02-62ef-11eb-27f9-13ed327ac098
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
-# ╠═b1d21552-6242-11eb-2665-c9232be7026e
-# ╠═d65b61ba-6242-11eb-030d-b18a7518731b
+# ╟─b1d21552-6242-11eb-2665-c9232be7026e
+# ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
+# ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
+# ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+# ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
-# ╠═e7e43620-6242-11eb-1e2e-65874fe8e293
+# ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
 # ╠═f4b05730-6242-11eb-0e24-51d4c60dc451
 # ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
+# ╟─06520b30-62f4-11eb-2b90-1fcb3053945e
 # ╠═12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
 # ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
@@ -476,34 +689,41 @@ end
 # ╠═64fcb6a0-6243-11eb-1b35-437e8e0bfac8
 # ╠═668f568a-6243-11eb-3f01-adf1b603e0e4
 # ╠═7b785b7a-6243-11eb-31c2-9d9deea78842
-# ╠═9b94fb66-6243-11eb-2635-6b2021c741f0
+# ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
+# ╟─755a6186-62fd-11eb-03e1-0173111f293f
 # ╠═7c80d608-6243-11eb-38ba-f97f7476b245
+# ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
+# ╠═55486b2a-6304-11eb-09ac-b703d0c772ba
 # ╠═ddf0ac38-6243-11eb-3a1d-cd39d70b2ee0
 # ╠═ecc9a53e-6243-11eb-2784-ed46ccbcadd2
-# ╠═5de0c912-6244-11eb-13fd-bfd8328191a6
-# ╠═9ef18fda-6244-11eb-3751-5344dff96d3e
+# ╟─5de0c912-6244-11eb-13fd-bfd8328191a6
+# ╟─9ef18fda-6244-11eb-3751-5344dff96d3e
 # ╠═a89bdba6-6244-11eb-0b83-c1c64e4de17d
 # ╠═b1372784-6244-11eb-0279-27fd755cda6a
-# ╠═bd706964-6244-11eb-1d9d-2b60e53cdce1
+# ╟─bd706964-6244-11eb-1d9d-2b60e53cdce1
 # ╠═b91e1e62-6244-11eb-1045-0770fa92e040
-# ╠═d60f8ca4-6244-11eb-2055-4551e4c10906
-# ╠═f69370bc-6244-11eb-290e-fdd4d7cc826a
-# ╠═69780926-6245-11eb-3442-0dc8aea8cb73
+# ╟─d60f8ca4-6244-11eb-2055-4551e4c10906
+# ╟─f69370bc-6244-11eb-290e-fdd4d7cc826a
+# ╟─69780926-6245-11eb-3442-0dc8aea8cb73
 # ╠═ebf4a45a-6244-11eb-0965-197f536f8e87
-# ╠═36cc0492-6246-11eb-38dd-4f42fb7066dc
+# ╟─230dd290-6303-11eb-0f55-311ef2b9541e
+# ╟─36cc0492-6246-11eb-38dd-4f42fb7066dc
+# ╟─317f43b8-6303-11eb-2d92-1b9457a68912
 # ╠═83c6d25c-6246-11eb-1a24-57e20f5e7262
 # ╠═a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
 # ╠═b907e8fc-6246-11eb-0beb-bb44930d033c
-# ╠═d08ab6d0-6246-11eb-08a8-152f9802cdfc
+# ╟─d08ab6d0-6246-11eb-08a8-152f9802cdfc
 # ╠═dfc779ee-6246-11eb-240b-4dc7a7d95641
 # ╠═e30d10d2-6246-11eb-1d59-332b5916712e
 # ╠═e7e90744-6246-11eb-157c-cf67e8619d6e
 # ╠═1aec9fc2-6247-11eb-2942-edc370918f9e
 # ╠═16d0ea9c-6247-11eb-12c6-1709f6d0ac99
+# ╠═6bae2128-6303-11eb-34f2-1dfa96e46ae6
 # ╠═287a7506-6247-11eb-2bad-0778802c00d5
-# ╠═221e09a2-6247-11eb-12a8-a13c0a2f96e7
+# ╟─01d899e6-6305-11eb-017b-27bb2c104ef5
+# ╟─221e09a2-6247-11eb-12a8-a13c0a2f96e7
 # ╠═dc124df4-6248-11eb-199a-dd4627122715
 # ╠═0381fbba-6248-11eb-3e80-b37137438531
 # ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
@@ -514,6 +734,7 @@ end
 # ╠═e9a82498-6248-11eb-0f36-bbbdc5580c8d
 # ╠═ab9775d2-6248-11eb-360a-8b1e048d5717
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
+# ╠═711e0588-6306-11eb-31a9-7b029ac90071
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
