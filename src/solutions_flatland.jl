@@ -326,35 +326,6 @@ function scale!(shape::Triangle, a)
     return shape
 end
 
-# plotting utilities
-
-
-import Plots, RecipesBase
-
-#=
-OK, let's take a look at our shapes! We use `RecipesBase` to allow plotting.
-This falls back on `xycoords` (can you see how it works?), so make sure this method is operational.
-=#
-
-@recipe function f(s::Shape)
-    xguide --> "x"
-    yguide --> "y"
-    label --> ""
-    aspect_ratio := :equal
-    seriestype := :shape
-    x, y = xycoords(s)
-    return x, y
-end
-
-
-function plotshapes(shapes; kwargs...)
-    p = Plots.plot(;kwargs...)
-    Plots.plot!.(shapes)
-    return p
-end
-
-
-
 # in and interaction
 
 #=

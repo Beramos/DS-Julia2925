@@ -24,6 +24,7 @@ student = (name = "Joel Janssen", email = "Joel.Janssen@UGent.be");
 # ╔═╡ 1657b9b2-62ef-11eb-062e-4758f9ea1075
 begin 
 	using DSJulia;
+	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
 
@@ -497,11 +498,11 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
 end
 
 # ╔═╡ Cell order:
-# ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
+# ╠═1657b9b2-62ef-11eb-062e-4758f9ea1075
 # ╠═23bcbb02-62ef-11eb-27f9-13ed327ac098
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
 # ╟─b1d21552-6242-11eb-2665-c9232be7026e
-# ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
+# ╠═7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 # ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 # ╠═d65b61ba-6242-11eb-030d-b18a7518731b
