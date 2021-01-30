@@ -33,6 +33,7 @@ module DSJulia
     # Solutions
     export Solutions
     module Solutions
+        using Colors, Images
         include("solutions.jl")
     end
 
