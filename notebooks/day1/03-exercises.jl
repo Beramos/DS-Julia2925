@@ -230,7 +230,7 @@ noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) +  σ * rand();
 md"We use the convolution function we defined to construct a moving_average function,"
 
 # ╔═╡ f94e2e6c-598e-11eb-041a-0b6a068e464c
-moving_average(f::Function, t, w) = Solutions.convolve_1d(f.(t), ones(w).*1/w);
+moving_average(f::Function, t, w) = convolve_1d(f.(t), ones(w).*1/w);
 
 # ╔═╡ 4e45e43e-598f-11eb-0a0a-2fa636748f7c
 @bind wₑ Slider(1:2:43, default=3)
@@ -277,9 +277,6 @@ function triangle_weights(m)
 	# complete and replace [0.0]
 	return [0.0]
 end	
-
-# ╔═╡ 212e302e-5dbc-11eb-393f-63f57a3d9d1d
-triangle_weights(7) ≈ Solution.triangle_weights(7)
 
 # ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
 function gaussian_weights(m; σ=4)
@@ -356,6 +353,9 @@ begin
 
 		""",
 		questions = @safe[q31, q32, q33],
+		hints = [
+			hint(md"Don't forget the meaning of `m`!")	
+		]
 	)
 	
 	validate(qb3, tracker)
@@ -551,7 +551,7 @@ begin
 				]
 				)],
 		hints = [
-			hint(md"Try too increase the window size for clearer results.")
+			hint(md"Try to increase the window size for clearer results.")
 		]
 	)
 	validate(q_ps, tracker)
@@ -907,7 +907,7 @@ md"The rules can be represented as a unsigned integer `UInt8` which takes a valu
 rule = 110 |> UInt8
 
 # ╔═╡ fabce6b2-59cc-11eb-2181-43fe08fcbab9
-println(rule) # check command line
+@terminal println(rule)
 
 # ╔═╡ 05973498-59cd-11eb-2d56-7dd28db4b8e5
 
@@ -1022,7 +1022,7 @@ md"Now that we have this working it is easy to generate and visualise the transi
 > Hint: expand the output for a prettier overview of the rules."
 
 # ╔═╡ be013232-59d4-11eb-360e-e97b6c388991
-@bind rule_number Slider(1:256, default=110)
+@bind rule_number Slider(0:255, default=110)
 
 # ╔═╡ 428af062-59d5-11eb-3cf7-99533810e83c
 md"Rule: $rule_number"
@@ -1262,7 +1262,6 @@ end
 # ╠═14cb3b5e-5a58-11eb-2a5a-0b8713107549
 # ╟─b31400fc-5db4-11eb-2430-fd1ea1008280
 # ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
-# ╠═212e302e-5dbc-11eb-393f-63f57a3d9d1d
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
 # ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
