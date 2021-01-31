@@ -71,7 +71,8 @@ plot!(t3, alpha=0.5)
 plot!(boundingbox(t1), ls=:dash, color="red", fillcolor=nothing)
 plot!(boundingbox(t2), ls=:dash, color="red", fillcolor=nothing)
 plot!(boundingbox(t3), ls=:dash, color="red", fillcolor=nothing)
-title!("Overlaping bounding boxes is a required, but not sufficient condition for overlap")
+title!("Overlaping bounding boxes is a required,
+    but not sufficient condition for overlap")
 
 # examples
 
