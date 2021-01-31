@@ -496,7 +496,7 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
 end
 
 #=
-
+## Simulating a system of shapes
 
 Suppose we want to use our shape(s) to study a system of non-interacting particles.
 Here, we assume that the shapes are rigid and cannot overlap.
@@ -537,7 +537,6 @@ ylims = (0, 80)
 
 function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
     trials = 0
-    success = false
     n = length(shapes)
     while true
         trials += 1
