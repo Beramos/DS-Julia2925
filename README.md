@@ -13,24 +13,15 @@ In case you do not want to install julia and jump straight in the course materia
 1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.5.3.
 2. Yes, it is that simple :zap:
 
-### First time running 
-Download or clone this repository, navigate to the files and open the Julia REPL,
+### Running the notebooks
+Download or clone this repository, open the Julia REPL and navigate to the folder
 
 ```julia
-import Pkg
-Pkg.activate(".")
-Pkg.instantiate()
-```
-to install the dependencies.
-
-### Opening the notebooks
-Open the Julia REPL
-
-```julia
-julia launcher.jl
+cd("path/to/DS-Julia2925/")
+include("launcher.jl")
 ```
 
-This should open a browser window with the Pluto notebooks.
+This should open a browser window with the Pluto notebooks. The first time it can take a while since it is installing all the dependencies.
 
 ## Meta
 Authors: Bram De Jaegher, Michiel Stock, Daan Van Hauwermeiren
