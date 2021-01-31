@@ -647,6 +647,9 @@ delete!(scores, "humans")  # removing a key, earth was destroyed
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
 md"## 4. Exercises"
 
+# ╔═╡ ee9069e2-63a7-11eb-12b9-97ae270506f4
+hint(md"Remember, `.` is not only used for decimals...")
+
 # ╔═╡ 3de1f1aa-58bd-11eb-2ffc-0de292b13840
 function riemannsum(f, a, b; n=100)
     missing
@@ -699,7 +702,7 @@ which is the sum of the function $f(x)$ evaluated over an array of x-values in t
 		
 $$\Delta x = \cfrac{(b-a)}{n}$$
 
-Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.		
+Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.
 
 	""",
 	questions = [q1, q2, q3]
@@ -1096,6 +1099,7 @@ md""" ## 5. References
 # ╠═3fc787d6-5a76-11eb-06e9-5378d27ce011
 # ╟─ebb09172-4c58-11eb-1cc9-91193c57677d
 # ╟─3aa37510-58bb-11eb-2ecb-37ce4428269c
+# ╟─ee9069e2-63a7-11eb-12b9-97ae270506f4
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
 # ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
@@ -1112,4 +1116,4 @@ md""" ## 5. References
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
-# ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
+# ╟─2e7973b6-4d0f-11eb-107c-cdaf349428c0
