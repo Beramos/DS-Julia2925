@@ -391,7 +391,7 @@ clip(x) = missing
 begin
    q2 = Question(
 			description=md"""
-			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, without making use of the functions `min` and `max`.
+			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, **without** making use of the functions `min` and `max`.
 
 			Open assignments always return `missing`. 
 			""",
@@ -736,7 +736,7 @@ Some nifty basic macros are `@time` and `@show`. `@time` prints the cpu time and
 md"""The `@show` macro is often useful for debugging purposes. It displays both the expression to be evaluated and its result, finally returning the value of the result."""
 
 # ╔═╡ a686e67e-4ac2-11eb-228e-23524a3ddc59
-@show 1 + 1
+@terminal @show 1 + 1
 
 # ╔═╡ d50cced2-500d-11eb-2dcc-21fc50825f43
 md"We will provide more examples tomorrow!"
@@ -1156,7 +1156,7 @@ end
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
-# ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
