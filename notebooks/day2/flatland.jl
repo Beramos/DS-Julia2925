@@ -254,9 +254,6 @@ end;
 # ╔═╡ ca5302b2-6337-11eb-2e98-efb764a792a4
 tester
 
-# ╔═╡ fc921d8c-6335-11eb-042e-f19d918c0a4e
-
-
 # ╔═╡ 7c80d608-6243-11eb-38ba-f97f7476b245
 md"""
 ## Corners and center
@@ -653,6 +650,23 @@ Here, we want to perform some geometric checks.
 should return a Boolean whether the point is in the shape.
 """
 
+# ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
+begin
+   q_in = Question(;
+			description=md"""
+			Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.""")
+	
+   qb_in = QuestionBlock(;
+	title=md"**Is point in shape? ⭐️⭐️⭐️**",
+	questions = [q_in],
+	hints=[
+		hint(md"It has something to do with the center..."),
+		hint(md"... but also with the edges"),
+		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
+	]
+	)
+end
+
 # ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
 #=begin
 	function Base.in((x, y), s::Shape)
@@ -853,7 +867,7 @@ begin
 			Complete the function `randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)` that places a shape at a random location withing a given bounding box. Can you define it in such a way that it also gives a random rotation to the shape?""")
 	
    qb_rand = QuestionBlock(;
-	title=md"**Random**",
+	title=md"**Assignment: random placement⭐️⭐️⭐️**",
 	questions = [q_rand],
 	hints=[
 
@@ -1019,9 +1033,6 @@ md"""
 **Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
 
-# ╔═╡ d25a94cc-63c1-11eb-24a5-4900be887605
-test11
-
 # ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
 begin
    test_rect = @safe Rectangle((1.0, 1.0)) !== missing
@@ -1111,25 +1122,6 @@ Next, let us compute the area of our shapes.
 	)
 end
 
-# ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
-begin
-   test_in = @safe in((0.5, 0), Triangle((-0.1, 0.5), (1, 2), (1, -0.5)))
-
-   q_in = Question(;
-			description=md"""
-			Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.""")
-	
-   qb_in = QuestionBlock(;
-	title=md"**Is point in shape? $(checkbox2(test_in))**",
-	questions = [q_in],
-	hints=[
-		hint(md"It has something to do with the center..."),
-		hint(md"... but also with the edges"),
-		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
-	]
-	)
-end
-
 # ╔═╡ e5a7eee2-63a5-11eb-0267-499409488b19
 md"Function to place `n` copies of a given `shape`:"
 
@@ -1150,7 +1142,6 @@ end
 # ╠═7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
 # ╠═3a961b6e-62f1-11eb-250b-13a3f6f17eaa
-# ╠═d25a94cc-63c1-11eb-24a5-4900be887605
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
@@ -1185,7 +1176,6 @@ end
 # ╟─b6a4c98a-6300-11eb-0542-ab324d8e4d7e
 # ╟─5a61e0da-6338-11eb-2a58-ad06aae62940
 # ╟─ca5302b2-6337-11eb-2e98-efb764a792a4
-# ╟─fc921d8c-6335-11eb-042e-f19d918c0a4e
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
 # ╟─58eb84be-63c3-11eb-09f5-6d16973c7aa7
 # ╟─57dee25a-63c3-11eb-0c7a-bfb1ac79bc7b
@@ -1226,14 +1216,14 @@ end
 # ╠═287a7506-6247-11eb-2bad-0778802c00d5
 # ╟─01d899e6-6305-11eb-017b-27bb2c104ef5
 # ╟─221e09a2-6247-11eb-12a8-a13c0a2f96e7
-# ╠═6851ebb2-6339-11eb-2ab7-39e07c4e3154
+# ╟─6851ebb2-6339-11eb-2ab7-39e07c4e3154
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
 # ╠═711e0588-6306-11eb-31a9-7b029ac90071
 # ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
 # ╟─b8ed26f2-633b-11eb-380e-9379b0f4697f
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╟─22f63a5e-633a-11eb-27c7-27fcabc7bc6f
-# ╠═f3ea648e-633b-11eb-3444-317a4eb5b8ea
+# ╟─f3ea648e-633b-11eb-3444-317a4eb5b8ea
 # ╠═5368c46e-633e-11eb-0d98-b1ccb37cc7f8
 # ╠═f65ab7b8-633c-11eb-1606-75583b69677c
 # ╟─e6efb632-6338-11eb-2e22-eb0b1ff577c4
@@ -1244,7 +1234,7 @@ end
 # ╟─51bca412-6340-11eb-3f38-8bfc8377715b
 # ╟─e21b0f1c-633b-11eb-3609-9b9dae71c915
 # ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
-# ╠═97c8cd32-6340-11eb-1d6d-b7d364c0c987
+# ╟─97c8cd32-6340-11eb-1d6d-b7d364c0c987
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
 # ╠═3651df40-6308-11eb-26e0-b5d70db4ad20
 # ╟─3e0a2e20-6341-11eb-3c23-a38b04c89b37
