@@ -1020,11 +1020,65 @@ end
 md"""
 ## Simulating a system of shapes
 
-Suppose we want to use our shape(s) to study a system of non-interacting particles. Here, we assume that the shapes are hard and cannot overlap. There are no forces that attract or repel particles. Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
+Suppose we want to use our shape(s) to study a system of non-interacting particles.
+Here, we assume that the shapes are rigid and cannot overlap.
+There are no forces that attract or repel particles.
+Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
 
-One approach to study systems of particles is to model the dynamics of every particle and keep track of all collisions and so on.
+One approach to study systems of particles is to model every particle's dynamics, keep track of all collisions, etc.
+We will do something more ingenious: we will use ideas from statistical physics.
+Namely, every valid state (i.e., no shapes overlap and all shapes are within the box) is equally likely.
+So instead of simulating the system, we will take samples from it!
+These samples are equivalent to random 'snapshots' of a more complex simulation.
+Pretty cool, right?
+
+To generate the samples, we will use [rejection sampling](https://en.wikipedia.org/wiki/Rejection_sampling).
+Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
+More concretely, we follow the following steps:
+1. generate all the shapes you want to place;
+2. randomly place the shapes into the box (using `randplace!`);
+3. from the moment a single shape overlaps with another shape, you have to start entirely anew to step 2.
+
+The last point is crucial! If you place a shape that overlaps an earlier shape,
+it is insufficient to redistribute that shape. **You have to start over completely.** Only then will you generate correct samples.
+
+The inputs of our function implementing the above algorithm are:
+- `shapes`: a list of your shapes (same type, but not necessarily with the same dimensions);
+- `xlims`, `ylims`: tuples outlining the box;
+The function works inplace, and returns the number of trials needed to generate a valid sample.
+This quantity is relevant by itself (it is related to the partition function of the Boltzmann distribution), but we will only use it for diagnostic purposes.
+
+As you might imagine, this algorithm is still very computationally expensive.
+Try with about 20 shapes, and work yourself up to more extensive examples.
+Try a mixture of small and large shapes. You should see some self-organization going on!
 
 """
+
+# ╔═╡ 965b578e-63a5-11eb-2cf4-690ec58e939d
+xlims = (0, 100)
+
+# ╔═╡ 961ea26c-63a5-11eb-1227-4bcaf4778d82
+ylims = (0, 80)
+
+# ╔═╡ a30ded16-63a5-11eb-35f2-2b1ff724eb54
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
+    # place all the shapes one-by-one, such that they don't overlap
+	# the moment you find a single conflict, you have to start over again
+	
+	return shapes, trials
+    
+end
+
+# ╔═╡ e5a7eee2-63a5-11eb-0267-499409488b19
+md"Function to place `n` copies of a given `shape`:"
+
+# ╔═╡ de6124d2-63a5-11eb-1145-5b11f5f1c0f4
+function rejection_sampling(shape, n, xlims, ylims)
+    shapes = [deepcopy(shape) for i in 1:n]
+    trials = rejection_sampling!(shapes, xlims, ylims)
+    return shapes, trials
+end
+
 
 # ╔═╡ Cell order:
 # ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
@@ -1130,3 +1184,8 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╟─3e0a2e20-6341-11eb-3c23-a38b04c89b37
 # ╠═0ee778d2-6341-11eb-10b0-7146fbbc71ff
 # ╠═2338ef6a-630b-11eb-1837-431b567ad619
+# ╠═965b578e-63a5-11eb-2cf4-690ec58e939d
+# ╠═961ea26c-63a5-11eb-1227-4bcaf4778d82
+# ╠═a30ded16-63a5-11eb-35f2-2b1ff724eb54
+# ╠═e5a7eee2-63a5-11eb-0267-499409488b19
+# ╠═de6124d2-63a5-11eb-1145-5b11f5f1c0f4
