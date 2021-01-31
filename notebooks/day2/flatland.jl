@@ -227,7 +227,7 @@ hex = RegularPolygon((1.2, 3), 6)
 circle = Circle((10, 10))
 
 # ╔═╡ 5a61e0da-6338-11eb-2a58-ad06aae62940
-md"""**Select one of the shapes you have to developed.** 
+md"""**Select one of the shapes you have developed.** 
 
 My shape type: $(@bind myshapeType Select(["Square", "Rectangle", "Circle", "RegularPolygon{N}", "Triangle"]))
 
@@ -260,6 +260,14 @@ tester
 # ╔═╡ 7c80d608-6243-11eb-38ba-f97f7476b245
 md"""
 ## Corners and center
+
+"""
+
+# ╔═╡ 58eb84be-63c3-11eb-09f5-6d16973c7aa7
+md"![](https://i.imgur.com/6cKB1xr.png)"
+
+# ╔═╡ 57dee25a-63c3-11eb-0c7a-bfb1ac79bc7b
+md"""
 Some very basic functions to get or generate the corners and centers of your shapes. The corners are returned as a list of tuples, e.g. `[(x1, y1), (x2, y2), ...]`.
 """
 
@@ -315,7 +323,7 @@ begin
 	)
 	
 	qb_cc = QuestionBlock(;
-		title=md"**Corners and center**",
+		title=md"**Assignment: corners and center**",
 		description = md"""
 
 	Complete the following functions for your shape ($myshapeType)
@@ -399,7 +407,13 @@ end
 # ╔═╡ 5de0c912-6244-11eb-13fd-bfd8328191a6
 md"""
 ## x,y-bounding
+"""
 
+# ╔═╡ fe48d2f0-63c2-11eb-12f7-d5a8d6d0ce27
+md"![](https://i.imgur.com/G7worze.png)"
+
+# ╔═╡ fd5e137a-63c2-11eb-21de-6d35f697ba99
+md"""
 The fuctions below yield the outer limits of the x and y axes of your shape. Can you complete the methods with a oneliner?
 """
 
@@ -1154,6 +1168,8 @@ end
 # ╟─ca5302b2-6337-11eb-2e98-efb764a792a4
 # ╟─fc921d8c-6335-11eb-042e-f19d918c0a4e
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
+# ╟─58eb84be-63c3-11eb-09f5-6d16973c7aa7
+# ╠═57dee25a-63c3-11eb-0c7a-bfb1ac79bc7b
 # ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
@@ -1162,6 +1178,8 @@ end
 # ╠═ecc9a53e-6243-11eb-2784-ed46ccbcadd2
 # ╟─c16c36f6-6339-11eb-20d4-27ef9f74b747
 # ╟─5de0c912-6244-11eb-13fd-bfd8328191a6
+# ╟─fe48d2f0-63c2-11eb-12f7-d5a8d6d0ce27
+# ╟─fd5e137a-63c2-11eb-21de-6d35f697ba99
 # ╟─9ef18fda-6244-11eb-3751-5344dff96d3e
 # ╠═a89bdba6-6244-11eb-0b83-c1c64e4de17d
 # ╠═b1372784-6244-11eb-0279-27fd755cda6a
