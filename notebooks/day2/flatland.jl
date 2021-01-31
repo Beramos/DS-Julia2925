@@ -412,13 +412,19 @@ md"""
 # ╔═╡ fe48d2f0-63c2-11eb-12f7-d5a8d6d0ce27
 md"![](https://i.imgur.com/G7worze.png)"
 
-# ╔═╡ fd5e137a-63c2-11eb-21de-6d35f697ba99
-md"""
-The fuctions below yield the outer limits of the x and y axes of your shape. Can you complete the methods with a oneliner?
-"""
-
-# ╔═╡ 9ef18fda-6244-11eb-3751-5344dff96d3e
-hint(md"The function `extrema` could be useful here...")
+# ╔═╡ aa186788-63c3-11eb-1bd1-d138d586e8b6
+begin
+   q_bound = Question(;
+			description=md"""
+The fuctions below is supposed to yield the outer limits of the x and y axes of your shape. Can you complete the methods with a oneliner?
+""")
+	
+   qb_bound = QuestionBlock(;
+	title=md"**Assignment: bounding box ⭐️⭐️**",
+	questions = [q_bound],
+	hints=[hint(md"The function `extrema` could be useful here...")]
+	)
+end
 
 # ╔═╡ a89bdba6-6244-11eb-0b83-c1c64e4de17d
 #=begin
@@ -465,16 +471,29 @@ end
 # ╔═╡ 36cc0492-6246-11eb-38dd-4f42fb7066dc
 md"""
 ## Moving, rotating and scaling
+"""
 
+# ╔═╡ ed4bfad2-63c6-11eb-0292-73c34e4d34a6
+md"![](https://i.imgur.com/nUlpTDA.png)"
+
+# ╔═╡ 285930b8-63c7-11eb-372b-edc4a4ed0d0a
+begin
+   q_mrs = Question(;
+			description=md"""
+
+Next, let us define some translation, rotation and scaling operations on the shapes.
+		
 Important: the functions work *in-place*, meaning that the modify your object (that is why use use `mutable` structures).
 
 For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
 
 **Note**: rotations are in radials, so between $0$ and $2\pi$.
-"""
-
-# ╔═╡ 317f43b8-6303-11eb-2d92-1b9457a68912
-
+			""")
+	
+   qb_mrs = QuestionBlock(;
+	title=md"**Assignment: I like to move it ⭐️⭐️⭐️**",
+	questions = [q_mrs])
+end
 
 # ╔═╡ 83c6d25c-6246-11eb-1a24-57e20f5e7262
 #=begin
@@ -1083,7 +1102,7 @@ Next, let us compute the area of our shapes.
 			""")
 	
    qb_area = QuestionBlock(;
-	title=md"**Area 925 ⭐️** $(checkbox2(test_circle)) ",
+	title=md"**Assignment: Area ⭐️** $(checkbox2(test_circle)) ",
 	questions = [q_area],
 	hints= [
 		hint(md"The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}$$."),
@@ -1169,7 +1188,7 @@ end
 # ╟─fc921d8c-6335-11eb-042e-f19d918c0a4e
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
 # ╟─58eb84be-63c3-11eb-09f5-6d16973c7aa7
-# ╠═57dee25a-63c3-11eb-0c7a-bfb1ac79bc7b
+# ╟─57dee25a-63c3-11eb-0c7a-bfb1ac79bc7b
 # ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
@@ -1179,8 +1198,7 @@ end
 # ╟─c16c36f6-6339-11eb-20d4-27ef9f74b747
 # ╟─5de0c912-6244-11eb-13fd-bfd8328191a6
 # ╟─fe48d2f0-63c2-11eb-12f7-d5a8d6d0ce27
-# ╟─fd5e137a-63c2-11eb-21de-6d35f697ba99
-# ╟─9ef18fda-6244-11eb-3751-5344dff96d3e
+# ╟─aa186788-63c3-11eb-1bd1-d138d586e8b6
 # ╠═a89bdba6-6244-11eb-0b83-c1c64e4de17d
 # ╠═b1372784-6244-11eb-0279-27fd755cda6a
 # ╟─bd706964-6244-11eb-1d9d-2b60e53cdce1
@@ -1191,7 +1209,8 @@ end
 # ╠═ebf4a45a-6244-11eb-0965-197f536f8e87
 # ╟─230dd290-6303-11eb-0f55-311ef2b9541e
 # ╟─36cc0492-6246-11eb-38dd-4f42fb7066dc
-# ╟─317f43b8-6303-11eb-2d92-1b9457a68912
+# ╟─ed4bfad2-63c6-11eb-0292-73c34e4d34a6
+# ╟─285930b8-63c7-11eb-372b-edc4a4ed0d0a
 # ╠═83c6d25c-6246-11eb-1a24-57e20f5e7262
 # ╠═a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
 # ╠═b907e8fc-6246-11eb-0beb-bb44930d033c
