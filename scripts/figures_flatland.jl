@@ -12,6 +12,7 @@ include("examples/flatland.jl")
 
 # examples of shapes
 
+
 square = Square((1, 1), l=2)
 rectangle = Rectangle((2, 6), l=1, w=2.5)
 circle = Circle((-2, 1), R=1)
@@ -26,6 +27,8 @@ plot!(pentagon, label="pentagon")
 plot!(hexagon, label="hexagon")
 plot!(triangle, label="triangle")
 title!("Some shapes")
+savefig("../img/boundingbox.svg")
+savefig("../img/boundingbox.png")
 
 # outline of regular polygon
 
@@ -73,6 +76,10 @@ plot!(boundingbox(t2), ls=:dash, color="red", fillcolor=nothing)
 plot!(boundingbox(t3), ls=:dash, color="red", fillcolor=nothing)
 title!("Overlaping bounding boxes is a required,
     but not sufficient condition for overlap")
+#title!("Overlaping bounding boxes is a required, but not sufficient condition for overlap")
+savefig("../img/boundingbox.svg")
+savefig("../img/boundingbox.png")
+
 
 # examples
 
