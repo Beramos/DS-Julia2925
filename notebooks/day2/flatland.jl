@@ -706,7 +706,7 @@ begin
    q_general = Question(;
 		description=md"""
 
-**Any two shapes intersecting ⭐️⭐️⭐️**
+**Any two shapes intersecting (naive) ⭐️⭐️⭐️**
 ```julia
 	Base.intersect(shape1::T, shape2::T) where {T<:Shape}
 ```
@@ -730,7 +730,7 @@ The efficiency and the process of checking intersection is very different for ea
 	questions = [q_circle, q_recrec, q_triatria, q_general],
 	hints=[
 		hint(md"Checking overlapping bounding boxes is very efficient"),
-		hint(md"For most shapes: overlapping bounding boxes is a required, but not sufficient condition for overlap"),
+		hint(md"For most shapes: overlapping bounding boxes is a required, but not a sufficient condition for overlap"),
 		hint(md"[Very good hint](https://i.imgur.com/TpIStMK.png)")
 		
 		]
@@ -850,6 +850,92 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     return shape
 end
 
+# ╔═╡ 3e0a2e20-6341-11eb-3c23-a38b04c89b37
+md"Testing if the function works:"
+
+# ╔═╡ 0ee778d2-6341-11eb-10b0-7146fbbc71ff
+begin
+	# verification
+	my_shapes = [randplace!(deepcopy(myshape), (-10,10),(-10,10)) for i in 1:100] 
+	plotshapes(my_shapes, alpha=0.2)
+end
+
+# ╔═╡ 2338ef6a-630b-11eb-1837-431b567ad619
+md"""
+## Simulating a system of shapes
+
+Suppose we want to use our shape(s) to study a system of non-interacting particles.
+Here, we assume that the shapes are rigid and cannot overlap.
+There are no forces that attract or repel particles.
+Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
+
+One approach to study systems of particles is to model every particle's dynamics, keep track of all collisions, etc.
+We will do something more ingenious: we will use ideas from statistical physics.
+Namely, every valid state (i.e., no shapes overlap and all shapes are within the box) is equally likely.
+So instead of simulating the system, we will take samples from it!
+These samples are equivalent to random 'snapshots' of a more complex simulation.
+Pretty cool, right?
+
+To generate the samples, we will use [rejection sampling](https://en.wikipedia.org/wiki/Rejection_sampling).
+Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
+More concretely, we follow the following steps:
+1. generate all the shapes you want to place;
+2. randomly place the shapes into the box (using `randplace!`);
+3. from the moment a single shape overlaps with another shape, you have to start entirely anew to step 2.
+
+The last point is crucial! If you place a shape that overlaps an earlier shape,
+it is insufficient to redistribute that shape. **You have to start over completely.** Only then will you generate correct samples.
+
+The inputs of our function implementing the above algorithm are:
+- `shapes`: a list of your shapes (same type, but not necessarily with the same dimensions);
+- `xlims`, `ylims`: tuples outlining the box;
+The function works inplace, and returns the number of trials needed to generate a valid sample.
+This quantity is relevant by itself (it is related to the partition function of the Boltzmann distribution), but we will only use it for diagnostic purposes.
+
+As you might imagine, this algorithm is still very computationally expensive.
+Try with about 20 shapes, and work yourself up to more extensive examples.
+Try a mixture of small and large shapes. You should see some self-organization going on!
+
+"""
+
+# ╔═╡ 965b578e-63a5-11eb-2cf4-690ec58e939d
+xlims = (0, 100)
+
+# ╔═╡ 961ea26c-63a5-11eb-1227-4bcaf4778d82
+ylims = (0, 80)
+
+# ╔═╡ a30ded16-63a5-11eb-35f2-2b1ff724eb54
+#=function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
+    # place all the shapes one-by-one, such that they don't overlap
+	# the moment you find a single conflict, you have to start over again
+	
+	return shapes, trials
+    
+end=#
+
+# ╔═╡ dc2db006-63c1-11eb-34de-39eda074c645
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
+    trials = 0
+    success = false
+    n = length(shapes)
+    while true
+        trials += 1
+        for (i, shape) in enumerate(shapes)
+            randplace!(shape, xlims, ylims; rotate=rotate)
+            # any intersection with previous shapes: start again
+            overlap = false
+            for j in 1:i-1
+                if intersect(shape, shapes[j])
+                    overlap = true
+                    break
+                end
+            end
+            overlap && break
+            i==n && return trials
+        end
+    end
+end
+
 # ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 begin 
 	checkbox(test::Bool)= test ? "✅" : "◯"
@@ -867,6 +953,8 @@ begin
 	test8 = @safe !ismissing(in((0.5, 0), myshape))
 	test9 = @safe !ismissing(intersect(myshape, myshape))
 	test10 = @safe !ismissing(randplace!(myshape, (0.0, 1.0), (0.0, 1.0)))
+	test11 = @safe rejection_sampling!([deepcopy(myshape) for i in 1:2], (0, 100), (0, 100)) |> !ismissing
+ 
 end;
 
 # ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
@@ -893,10 +981,13 @@ md"""
  
  $(checkbox(test10)) complete `randplace!`, which randomly moves and rotates a shape within a box;
  
- $(checkbox(false)) complete the rejection sampling algorithm and experiment with your shape(s).
+ $(checkbox(test11)) complete the rejection sampling algorithm and experiment with your shape(s).
  
 **Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
+
+# ╔═╡ d25a94cc-63c1-11eb-24a5-4900be887605
+test11
 
 # ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
 begin
@@ -1006,69 +1097,6 @@ begin
 	)
 end
 
-# ╔═╡ 3e0a2e20-6341-11eb-3c23-a38b04c89b37
-md"Testing if the function works:"
-
-# ╔═╡ 0ee778d2-6341-11eb-10b0-7146fbbc71ff
-begin
-	# verification
-	my_shapes = [randplace!(deepcopy(myshape), (-10,10),(-10,10)) for i in 1:100] 
-	plotshapes(my_shapes, alpha=0.2)
-end
-
-# ╔═╡ 2338ef6a-630b-11eb-1837-431b567ad619
-md"""
-## Simulating a system of shapes
-
-Suppose we want to use our shape(s) to study a system of non-interacting particles.
-Here, we assume that the shapes are rigid and cannot overlap.
-There are no forces that attract or repel particles.
-Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
-
-One approach to study systems of particles is to model every particle's dynamics, keep track of all collisions, etc.
-We will do something more ingenious: we will use ideas from statistical physics.
-Namely, every valid state (i.e., no shapes overlap and all shapes are within the box) is equally likely.
-So instead of simulating the system, we will take samples from it!
-These samples are equivalent to random 'snapshots' of a more complex simulation.
-Pretty cool, right?
-
-To generate the samples, we will use [rejection sampling](https://en.wikipedia.org/wiki/Rejection_sampling).
-Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
-More concretely, we follow the following steps:
-1. generate all the shapes you want to place;
-2. randomly place the shapes into the box (using `randplace!`);
-3. from the moment a single shape overlaps with another shape, you have to start entirely anew to step 2.
-
-The last point is crucial! If you place a shape that overlaps an earlier shape,
-it is insufficient to redistribute that shape. **You have to start over completely.** Only then will you generate correct samples.
-
-The inputs of our function implementing the above algorithm are:
-- `shapes`: a list of your shapes (same type, but not necessarily with the same dimensions);
-- `xlims`, `ylims`: tuples outlining the box;
-The function works inplace, and returns the number of trials needed to generate a valid sample.
-This quantity is relevant by itself (it is related to the partition function of the Boltzmann distribution), but we will only use it for diagnostic purposes.
-
-As you might imagine, this algorithm is still very computationally expensive.
-Try with about 20 shapes, and work yourself up to more extensive examples.
-Try a mixture of small and large shapes. You should see some self-organization going on!
-
-"""
-
-# ╔═╡ 965b578e-63a5-11eb-2cf4-690ec58e939d
-xlims = (0, 100)
-
-# ╔═╡ 961ea26c-63a5-11eb-1227-4bcaf4778d82
-ylims = (0, 80)
-
-# ╔═╡ a30ded16-63a5-11eb-35f2-2b1ff724eb54
-function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
-    # place all the shapes one-by-one, such that they don't overlap
-	# the moment you find a single conflict, you have to start over again
-	
-	return shapes, trials
-    
-end
-
 # ╔═╡ e5a7eee2-63a5-11eb-0267-499409488b19
 md"Function to place `n` copies of a given `shape`:"
 
@@ -1089,6 +1117,7 @@ end
 # ╠═7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
 # ╠═3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+# ╠═d25a94cc-63c1-11eb-24a5-4900be887605
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
@@ -1183,9 +1212,10 @@ end
 # ╠═3651df40-6308-11eb-26e0-b5d70db4ad20
 # ╟─3e0a2e20-6341-11eb-3c23-a38b04c89b37
 # ╠═0ee778d2-6341-11eb-10b0-7146fbbc71ff
-# ╠═2338ef6a-630b-11eb-1837-431b567ad619
+# ╟─2338ef6a-630b-11eb-1837-431b567ad619
 # ╠═965b578e-63a5-11eb-2cf4-690ec58e939d
 # ╠═961ea26c-63a5-11eb-1227-4bcaf4778d82
 # ╠═a30ded16-63a5-11eb-35f2-2b1ff724eb54
+# ╠═dc2db006-63c1-11eb-34de-39eda074c645
 # ╠═e5a7eee2-63a5-11eb-0267-499409488b19
 # ╠═de6124d2-63a5-11eb-1145-5b11f5f1c0f4
