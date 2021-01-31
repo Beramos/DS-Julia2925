@@ -1027,10 +1027,15 @@ One approach to study systems of particles is to model the dynamics of every par
 """
 
 # ╔═╡ c7847ace-63a1-11eb-2292-4126c8ab896c
-
+#=function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
+	return missing
+end =#
 
 # ╔═╡ c7eaecb8-63a2-11eb-2373-dda5e4f45412
-
+#=function rejection_sampling(shape, n, xlims, ylims; rotate=true)
+    shapes = [deepcopy(shape) for i in 1:n]
+    trials = rejection_sampling!(shapes, xlims, ylims; rotate=rotate)
+return =#
 
 # ╔═╡ ad52192c-63a1-11eb-3052-e7135215540e
 function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
@@ -1057,7 +1062,7 @@ end
 
 # ╔═╡ 911d3dc8-63a0-11eb-166d-9741d631824b
 begin
-	test_triangle = @safe Triangle((-4, 1), (-1, -1), (-8, 1) )
+	test_triangle = @safe Triangle((-4, 1), (-1, -1), (-8, 1))
     
 	rs_tester = @safe rejection_sampling!([deepcopy(test_triangle) for i in 1:10], (0, 100), (0, 100)) |> !ismissing
  
