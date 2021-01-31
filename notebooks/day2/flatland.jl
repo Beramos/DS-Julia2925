@@ -1022,9 +1022,106 @@ md"""
 
 Suppose we want to use our shape(s) to study a system of non-interacting particles. Here, we assume that the shapes are hard and cannot overlap. There are no forces that attract or repel particles. Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
 
-One approach to study systems of particles is to model the dynamics of every particle and keep track of all collisions and so on.
+One approach to study systems of particles is to model the dynamics of every particle and keep track of all collisions and so on. In statistical physics there is also another approach using [rejection sampling](https://towardsdatascience.com/simulate-any-distribution-with-rejection-sampling-ebe4e66cc068). The idea is rather simple, we would like to know how many shapes fit within an area. So we start of by randomly placing a shape in a **random location** with a **random orientation**. The next step is to add a second shape, keep placing shapes until the new shape intersects with one of the previous shapes.
 
 """
+
+# ╔═╡ c7847ace-63a1-11eb-2292-4126c8ab896c
+
+
+# ╔═╡ c7eaecb8-63a2-11eb-2373-dda5e4f45412
+
+
+# ╔═╡ ad52192c-63a1-11eb-3052-e7135215540e
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
+    trials = 0
+    success = false
+    n = length(shapes)
+    while true
+        trials += 1
+        for (i, shape) in enumerate(shapes)
+            randplace!(shape, xlims, ylims; rotate=rotate)
+            # any intersection with previous shapes: start again
+            overlap = false
+            for j in 1:i-1
+                if intersect(shape, shapes[j])
+                    overlap = true
+                    break
+                end
+            end
+            overlap && break
+            i==n && return trials
+        end
+    end
+end
+
+# ╔═╡ 911d3dc8-63a0-11eb-166d-9741d631824b
+begin
+	test_triangle = @safe Triangle((-4, 1), (-1, -1), (-8, 1) )
+    
+	rs_tester = @safe rejection_sampling!([deepcopy(test_triangle) for i in 1:10], (0, 100), (0, 100)) |> !ismissing
+ 
+	
+
+	q_rs1 = Question(;
+			description=md"""
+		Write a rejection sampling function that tries to fit a vector of `shapes` within a rectangle `xlims`, `ylims` so that none of the shapes intersect with each other. Make use of `randplace!` and `interect`. Complete the function `rejection_sampling!` below and plot some of the results you obtain. *We advice you to keep the number of shapes < 50 in a rather large domain or else it will take a long time too find a solution.* Of course experiment with this you can always interupt the kernel by pressing the interrupt button at the bottom of the cell ◼.
+		""")
+	
+	q_rs2 = QuestionOptional{Easy}(;
+			description=md"""
+		Complete the function `rejection_sampling` with the same functionality of `rejection_sampling` but instead of providing a vector of shapes the same shape is repeated `n-times`. 
+		""")
+	
+	q_rs3 = QuestionOptional{Intermediate}(;
+			description=md"""
+		It should not be too difficult to extend rejection_sampling! so that instead any shape can be used as domain.  
+		""")
+
+	qb_rs = QuestionBlock(;
+	title=md"**Statistical physics for dummies** $(checkbox2(rs_tester))",
+	questions = [q_rs1, q_rs2, q_rs3],
+	hints=[
+		hint(md"""
+		```
+		- For each shape in shapes:
+			- randomly place shape
+			- check if it intersects with the already placed shapes
+				- if not proceed to the next shape
+				- otherwise restart 
+			- stop when all shapes have been placed.
+		```
+
+		"""),
+		hint(md"Are all shapes oriented in the same direction? Use `deepcopy()` when copying an object.")
+	]
+	)
+end
+
+# ╔═╡ 061e6934-63a2-11eb-277c-1fc6954c7bbe
+function rejection_sampling(shape, n, xlims, ylims; rotate=true)
+    shapes = [deepcopy(shape) for i in 1:n]
+    trials = rejection_sampling!(shapes, xlims, ylims; rotate=rotate)
+    return shapes, trials
+end
+
+# ╔═╡ e906befe-63a4-11eb-1bff-3d7b3fa364f2
+begin 
+	set_shapes = [Triangle((-4, 1), (-1, -1), (-8, 1)) for i in 1:25]
+	append!(set_shapes, [Triangle((-10, 1), (-1, -1), (4, 4)) for i in 1:10])
+end
+
+# ╔═╡ d356ced0-63a4-11eb-339c-b97770d9b6c1
+trials = rejection_sampling!(set_shapes, (0, 100), (0, 100))
+
+# ╔═╡ cc068d78-63a4-11eb-0d0a-c7540a82f61e
+plotshapes(set_shapes, title="$(length(set_shapes)) triangles\n $trials trials")
+
+# ╔═╡ fa0c4602-63a1-11eb-0b4f-4dc0ee429fc5
+#shapes1, trials1 = rejection_sampling(triangle, 100, (0, 100), (0, 100))
+
+# ╔═╡ 0c6683e4-63a2-11eb-1be8-f3602df63bb4
+#plotshapes(shapes1, title="$(length(shapes1)) triangles\n $trials1 trials")
 
 # ╔═╡ Cell order:
 # ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
@@ -1130,3 +1227,13 @@ One approach to study systems of particles is to model the dynamics of every par
 # ╟─3e0a2e20-6341-11eb-3c23-a38b04c89b37
 # ╠═0ee778d2-6341-11eb-10b0-7146fbbc71ff
 # ╠═2338ef6a-630b-11eb-1837-431b567ad619
+# ╠═911d3dc8-63a0-11eb-166d-9741d631824b
+# ╠═c7847ace-63a1-11eb-2292-4126c8ab896c
+# ╠═c7eaecb8-63a2-11eb-2373-dda5e4f45412
+# ╠═ad52192c-63a1-11eb-3052-e7135215540e
+# ╠═061e6934-63a2-11eb-277c-1fc6954c7bbe
+# ╠═e906befe-63a4-11eb-1bff-3d7b3fa364f2
+# ╠═d356ced0-63a4-11eb-339c-b97770d9b6c1
+# ╠═cc068d78-63a4-11eb-0d0a-c7540a82f61e
+# ╠═fa0c4602-63a1-11eb-0b4f-4dc0ee429fc5
+# ╠═0c6683e4-63a2-11eb-1be8-f3602df63bb4
