@@ -27,6 +27,7 @@ module DSJulia
     include("admonition.jl")
     include("question.jl")
     include("grading.jl")
+    include("flatland.jl")
 
     # Solutions
     export Solutions
