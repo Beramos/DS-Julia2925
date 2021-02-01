@@ -115,13 +115,13 @@ begin
 					Solutions.weighted_mean(arr_mean_float, arr_weights)		
 			],
 			description = md"""
-		So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the that a measurement error for each point. In this case, we might want to give a weigth inversely proportional to the measurement error. 
+		So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the measurement error for each point. In this case, it is sensible to give a weigth inversely proportional to the measurement error. 
 		
 		In general, the weighted mean is computed as:
 		
 		$$\sum_{i=1}^n w_ix_i\,,$$
 
-		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they sum to 1.
+		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they add up to 1.
 
 		Implement the weighted mean. Do it in a one-liner.
 		"""
@@ -129,7 +129,7 @@ begin
 			
 
 	qb_mean = QuestionBlock(;
-		title=md"**Question: the mean and weighted mean**",
+		title=md"**Assignment: the mean and weighted mean**",
 		description = md"""
 
 
@@ -141,7 +141,7 @@ begin
 end
 
 # ╔═╡ a657c556-4835-11eb-12c3-398890e70105
-md"We compute the mean again, now using the information that the numbers were collected consequently and that we give a weight linearly proportional to the position,
+md"We compute the mean again, now using the information that the numbers were collected subsequently and that we give a weight linearly proportional to the position (points further away have a lower contribution to the mean),
 
 $$w_i = \cfrac{i}{\sum_j^n j} \, .$$
 
@@ -197,7 +197,7 @@ begin
 			
 
 	qb_1d = QuestionBlock(;
-		title=md"**Question: one-dimensional convolution**",
+		title=md"**Assignment: one-dimensional convolution**",
 		description = md"""
 
 		Implement the one-dimensional convolution,
@@ -255,12 +255,9 @@ end
 QuestionBlock(;
 	title=md"**Task:**",
 	description = md"""
-	Explore this filtering technique by changing the number of weights. Try to understand the how the `moving_average` function works.
+	Explore this filtering technique by changing the number of weights. Try to understand how the `moving_average` function behaves.
 	"""
 )
-
-# ╔═╡ 14cb3b5e-5a58-11eb-2a5a-0b8713107549
-md"Your answer here...."
 
 # ╔═╡ b31400fc-5db4-11eb-2430-fd1ea1008280
 
@@ -404,9 +401,6 @@ begin
 	)
 
 end
-
-# ╔═╡ 696e252a-4862-11eb-2752-9d7bbd0a4b7d
-
 
 # ╔═╡ d2321a9c-5996-11eb-0380-47aa8ec777af
 
@@ -559,6 +553,9 @@ end
 
 # ╔═╡ 17e7750e-49c4-11eb-2106-65d47b16308c
 proteinsw = protein_sliding_window(spike_sars2, m, zscales3)
+
+# ╔═╡ 236f1ee8-64e2-11eb-1e60-234754d2c10e
+
 
 # ╔═╡ 0b847e26-4aa8-11eb-0038-d7698df1c41c
 md"""
@@ -837,7 +834,7 @@ begin
 	qb12 = QuestionBlock(;
 		title=md"**Optional question: testing some cool kernels**",
 		description = md"""
-Different kernels can do really really cool things. Test and implement the following kernels.
+Different kernels can do really cool things. Test and implement the following kernels,
 
 ```julia
 K₁ = [0 -1 0;   # test on blurry bird and original bird
@@ -885,7 +882,7 @@ end
 
 # ╔═╡ 4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 md"""
-### Application 3: Elementary cellular automata
+### Elementary cellular automata
 
 *This is an optional but highly interesting application for the fast workers.*
 
@@ -967,6 +964,9 @@ bitstring(rule>>0)
 
 # ╔═╡ 781d38a8-59d4-11eb-28f9-9358f132782c
 [getbinarydigit(rule, i) for i in 7:-1:0]  # counting all positions
+
+# ╔═╡ 8b6b45c6-64e2-11eb-3662-7de5e25e6faf
+
 
 # ╔═╡ 00f6e42c-59d4-11eb-31c7-d5aa0105e7cf
 getbinarydigit(rule, 4true+2true+1true+1)
@@ -1052,6 +1052,9 @@ Dict(
 	for r in [true, false]
 				)									
 
+# ╔═╡ 95ce684a-64e2-11eb-211b-e198b0016152
+
+
 # ╔═╡ 924461c0-2bf3-11eb-2390-71bad2541463
 function update1dca!(xnew, x, rule::Integer)
 	return missing
@@ -1068,8 +1071,8 @@ begin
 	
 	q71 = Question(
 			description=md"""
-		Complete `update1dca!(xnew, x, rule::Integer)` that performs a single iteration of the cellular automate given an initial state array `x`, and overwrites the new state array `xnew`, given a certain rule integer 
-		$(fyi(md"`!` is often used as suffix to a julia function to denote an inplace operation. The function itself changes the input arguments directly. `!` is a naming convention and does not fulfil an actual functionality")).
+		Complete `update1dca!(xnew, x, rule::Integer)` that performs a single iteration of the cellular automata given an initial state array `x`, and overwrites the new state array `xnew`, given a certain rule integer.
+		$(fyi(md"`!` is often used as suffix to a julia function to denote an inplace operation. The function itself changes the input arguments directly. `!` is a naming convention and does not fulfill an actual functionality"))
 		
 			""", 
 			validators = @safe[
@@ -1143,7 +1146,7 @@ begin
 	qb8 = QuestionBlock(
 		title=md"**Question: simulating the cellular automata**",
 		description = md"""
-		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states tranistion simultaneously from the initial state to the next state.
+		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states transition simultaneously from the initial state to the next state.
 		""",
 		questions = [q81, q82],
 		hints= [
@@ -1197,104 +1200,110 @@ begin
 	q91 = Question(
 			description=md""" After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Luckily, the employees used the same initial bitstring for all products (*3681110060*).
 		
-		Can you find the product code for this box of milk **XXX** *3128863161*.
+		Can you find the product code for this box of milk **XXX** *3128863161*?
 		
 		$(pl2_ex9)
 		
-			
-		Complete the function `scan_barcode` that reads a bitstring (barcode) and find the matching product code. The bitstring is given by 
+		The binary form of the barcode is provided below.
 			""", 
 			validators = @safe[product_code_milk == parse(Int, "$rule2_ex9$init_Int2_ex9")])
 	
 	qb9 = QuestionBlock(
 		title=md"**Optional question: Barcode bonanza**",
 		description = md"""
-		A simple barcode is data represented by varying the widths and spacings of parallel lines. However this is just an array of binary values that correspondent to a integer number.
+		A simple barcode is data represented by varying the widths and spacings of parallel lines. However this is just an array of binary values that correspondent to an integer number.
 		
 		![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/220px-UPC-A-036000291452.svg.png)
 		
 		The laser scanner reads the barcode and converts the binary number to an integer which is the product code, a pretty simple and robust system.
 		
-		A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is not a little convoluted,		
+		A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is a little convoluted,		
 			
-		The number corresponding to a barcode is the **rule number** followed by *initial 32-bit array encoded as an integer*. The barcode is generated by taking the rule number and evolving the initial condition for 50 iterations.
+		The number corresponding to a barcode is the **rule number** followed by the *initial 32-bit array encoded as an integer* (initial condition). The barcode is generated by taking the rule number and evolving the initial condition for 50 iterations.
 		
 		As an example this barcode corresponds to the number: 
 		**$(rule_ex9)** *3128863161*
 		
 		$(pl_ex9)
 		
+		
+		Which is *3128863161* converted to a bitstring as initial array iterated for 50 iterations using rule: $(rule_ex9)
 		""",
 		questions = [q91],
 	)
 	validate(qb9)
 end
 
+# ╔═╡ 46449848-64e3-11eb-0bf4-c9211b41c68d
+barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0];
+
+# ╔═╡ 6ce4b636-64e3-11eb-16c9-77e7498a7109
+
+
 # ╔═╡ Cell order:
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
-# ╠═2411c6ca-2bdd-11eb-050c-0399b3b0d7af
+# ╟─2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
-# ╠═e1147d4e-2bee-11eb-0150-d7af1f51f842
-# ╠═c7cd636e-5db2-11eb-2895-cd474cc85d18
+# ╟─e1147d4e-2bee-11eb-0150-d7af1f51f842
+# ╟─c7cd636e-5db2-11eb-2895-cd474cc85d18
 # ╠═f272855c-3c9e-11eb-1919-6b7301b15699
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
-# ╠═a657c556-4835-11eb-12c3-398890e70105
+# ╟─a657c556-4835-11eb-12c3-398890e70105
 # ╠═181c4246-4836-11eb-0368-61b2998f5424
 # ╠═94a950fe-4835-11eb-029c-b70de72c20e6
 # ╟─52706c6a-4836-11eb-09a8-53549f16f5c2
 # ╠═4dc28cdc-4836-11eb-316f-43c04639da2a
 # ╟─8b4c6880-4837-11eb-0ff7-573dd18a9664
-# ╠═b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
+# ╟─b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
 # ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
-# ╠═7945ed1c-598c-11eb-17da-af9a36c6a68c
+# ╟─7945ed1c-598c-11eb-17da-af9a36c6a68c
 # ╠═546beebe-598d-11eb-1717-c9687801e647
-# ╠═f39d88f6-5994-11eb-041c-012af6d3bae6
+# ╟─f39d88f6-5994-11eb-041c-012af6d3bae6
 # ╠═f94e2e6c-598e-11eb-041a-0b6a068e464c
 # ╟─0563fba2-5994-11eb-2d81-f70d10092ad7
 # ╠═4e45e43e-598f-11eb-0a0a-2fa636748f7c
 # ╠═8e53f108-598d-11eb-127f-ddd5be0ec899
 # ╠═c6e0a656-5dbb-11eb-0ce7-598f4fb85bee
 # ╟─99a7e070-5995-11eb-0c53-51fc82db2e93
-# ╠═22261bf2-5995-11eb-2d52-932589333c47
-# ╠═14cb3b5e-5a58-11eb-2a5a-0b8713107549
+# ╟─22261bf2-5995-11eb-2d52-932589333c47
 # ╟─b31400fc-5db4-11eb-2430-fd1ea1008280
-# ╠═64bf7f3a-58f0-11eb-1782-0d33a2b615e0
+# ╟─64bf7f3a-58f0-11eb-1782-0d33a2b615e0
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
 # ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
-# ╠═2b07134c-598c-11eb-155a-6b28a98e76ca
-# ╠═ff3241be-4861-11eb-0c1c-2bd093e3cbe9
+# ╟─2b07134c-598c-11eb-155a-6b28a98e76ca
+# ╟─ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 # ╠═c962de82-3c9e-11eb-13df-d5dec37bb2c0
 # ╠═31e39938-3c9f-11eb-0341-53670c2e93e1
 # ╠═caef0432-3c9f-11eb-2006-8ff54211b2b3
 # ╠═b3ec8362-482d-11eb-2df4-2343ee17444a
 # ╠═8a996336-2bde-11eb-10a3-cb0046ed5de9
-# ╠═cb9945f6-5995-11eb-3b10-937cde05fa31
-# ╠═696e252a-4862-11eb-2752-9d7bbd0a4b7d
+# ╟─cb9945f6-5995-11eb-3b10-937cde05fa31
 # ╠═d2321a9c-5996-11eb-0380-47aa8ec777af
 # ╟─36f73086-5dbc-11eb-250a-775130b479ae
-# ╠═b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
+# ╟─b7ba4ed8-2bf1-11eb-24ee-731940d1c29f
 # ╠═87610484-3ca1-11eb-0e74-8574e946dd9f
 # ╠═9c82d5ea-3ca1-11eb-3575-f1893df8f129
 # ╠═a4ccb496-3ca1-11eb-0e7a-87620596eec1
-# ╠═9f62891c-49c2-11eb-3bc8-47f5d2e008cc
-# ╠═328385ca-49c3-11eb-0977-c79b31a6caaf
+# ╟─9f62891c-49c2-11eb-3bc8-47f5d2e008cc
+# ╟─328385ca-49c3-11eb-0977-c79b31a6caaf
 # ╠═c924a5f6-2bf1-11eb-3d37-bb63635624e9
 # ╠═7e96f0d6-5999-11eb-3673-43f7f1fa0113
-# ╠═19a98dd4-599e-11eb-2b1c-172e00137e6c
+# ╟─19a98dd4-599e-11eb-2b1c-172e00137e6c
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
-# ╠═0b847e26-4aa8-11eb-0038-d7698df1c41c
+# ╟─236f1ee8-64e2-11eb-1e60-234754d2c10e
+# ╟─0b847e26-4aa8-11eb-0038-d7698df1c41c
 # ╠═e3f4c82a-5a8d-11eb-3d7d-fd30c0e4a134
-# ╠═c3a51344-5a8e-11eb-015f-bd9aa28aa6eb
+# ╟─c3a51344-5a8e-11eb-015f-bd9aa28aa6eb
 # ╠═c3ac56e0-5a8e-11eb-3520-279c4ba47034
-# ╠═c3dc3798-5a8e-11eb-178d-fb98d87768bf
+# ╟─c3dc3798-5a8e-11eb-178d-fb98d87768bf
 # ╠═c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
 # ╠═c41426f8-5a8e-11eb-1d49-11c52375a7a0
-# ╠═c41f1cb6-5a8e-11eb-326c-db30e518a702
+# ╟─c41f1cb6-5a8e-11eb-326c-db30e518a702
 # ╠═c44eb368-5a8e-11eb-26cd-d9ba694ac760
 # ╠═c4541a1a-5a8e-11eb-3b09-c3adb3794723
 # ╠═c48a7a24-5a8e-11eb-2151-f5b99da0039b
@@ -1309,18 +1318,18 @@ end
 # ╠═12c9c136-5a8f-11eb-3d91-5d121b8999d5
 # ╠═12fd8282-5a8f-11eb-136c-6df77b026bd4
 # ╠═13185c4c-5a8f-11eb-1164-cf745ddb0111
-# ╠═131c000e-5a8f-11eb-0ab1-d55894321001
-# ╠═134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
-# ╠═134edde4-5a8f-11eb-117f-455e04acc27d
+# ╟─131c000e-5a8f-11eb-0ab1-d55894321001
+# ╟─134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
+# ╟─134edde4-5a8f-11eb-117f-455e04acc27d
 # ╠═13807912-5a8f-11eb-3ca2-09030ee978ab
 # ╠═aba77250-5a8e-11eb-0db1-9f2d8fc726e9
 # ╠═6d5de3b8-5dbc-11eb-1fc4-8df16c6c04b7
 # ╠═1dfc943e-5a8f-11eb-336b-15b40b9fe412
-# ╠═1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
+# ╟─1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
 # ╠═1e2ac624-5a8f-11eb-1372-05ca0cbe828d
-# ╠═1e2ebef0-5a8f-11eb-2a6c-2bc3dffc6c73
-# ╠═1e5db70a-5a8f-11eb-0984-6ff8e3030923
-# ╠═4d434b48-5a91-11eb-2df8-9d2ea289878e
+# ╟─1e2ebef0-5a8f-11eb-2a6c-2bc3dffc6c73
+# ╟─1e5db70a-5a8f-11eb-0984-6ff8e3030923
+# ╟─4d434b48-5a91-11eb-2df8-9d2ea289878e
 # ╠═d1851bbe-5a91-11eb-3ae4-fddeff381c1b
 # ╠═f5574a90-5a90-11eb-3100-dd98e3375390
 # ╠═ca0748ee-5e2e-11eb-0199-45a98c0645f2
@@ -1328,51 +1337,55 @@ end
 # ╠═f589c15a-5a90-11eb-2a69-fba0819a4993
 # ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
 # ╠═f58d5af4-5a90-11eb-3d93-5712bfd9920a
-# ╠═a588a356-5a95-11eb-27e8-cb8d394b6ff6
+# ╟─a588a356-5a95-11eb-27e8-cb8d394b6ff6
 # ╠═f80ab6ba-5e2f-11eb-276c-31bbd5b0fee9
 # ╠═e5042bac-5e2f-11eb-28bb-dbf653abca17
 # ╠═516b1e7c-5e35-11eb-2ef5-4fa72c35878e
 # ╠═520771bc-5e35-11eb-0252-bfc7d76872f1
 # ╠═52a87820-5e35-11eb-0392-85957277f21a
-# ╠═4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
-# ╠═b0bd61f0-49f9-11eb-0e6b-69539bc34be8
+# ╟─4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
+# ╟─b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
 # ╠═fabce6b2-59cc-11eb-2181-43fe08fcbab9
 # ╠═05973498-59cd-11eb-2d56-7dd28db4b8e5
-# ╠═c61755a6-49f9-11eb-05a0-01d914d305f3
+# ╟─c61755a6-49f9-11eb-05a0-01d914d305f3
 # ╠═a6e7441a-482e-11eb-1edb-6bd1daa00390
-# ╠═bec6e3d2-59c8-11eb-0ddb-79795043942d
-# ╠═6e184088-59c9-11eb-22db-a5858eab786d
-# ╠═1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
-# ╠═2d4e9afe-59cc-11eb-3033-05d9b684b399
+# ╟─bec6e3d2-59c8-11eb-0ddb-79795043942d
+# ╟─6e184088-59c9-11eb-22db-a5858eab786d
+# ╟─1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
+# ╟─2d4e9afe-59cc-11eb-3033-05d9b684b399
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
 # ╠═426f1666-5d87-11eb-108d-f19f928b345b
 # ╠═1d526a40-5d87-11eb-1984-3bd5b6ccfb89
 # ╠═781d38a8-59d4-11eb-28f9-9358f132782c
-# ╠═1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
+# ╟─8b6b45c6-64e2-11eb-3662-7de5e25e6faf
+# ╟─1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
 # ╠═00f6e42c-59d4-11eb-31c7-d5aa0105e7cf
 # ╠═d2e5787c-59d2-11eb-1bbd-d79672ab8f1b
 # ╠═38e6a67c-49fa-11eb-287f-91a836f5752c
-# ╠═511661de-59d5-11eb-16f5-4dbdf4e93ab2
+# ╟─511661de-59d5-11eb-16f5-4dbdf4e93ab2
 # ╟─428af062-59d5-11eb-3cf7-99533810e83c
 # ╟─be013232-59d4-11eb-360e-e97b6c388991
 # ╟─a808b2d0-5aff-11eb-036f-fd32a1dc92fc
 # ╠═4776ccca-482f-11eb-1194-398046ab944a
 # ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
-# ╠═1afb9a16-5d8a-11eb-1ed5-875084953542
+# ╟─1afb9a16-5d8a-11eb-1ed5-875084953542
 # ╠═90f543e4-5d89-11eb-27c0-8572a859c1b5
-# ╠═e46a3f52-5a5a-11eb-1d41-d7d031131d7e
+# ╟─95ce684a-64e2-11eb-211b-e198b0016152
+# ╟─e46a3f52-5a5a-11eb-1d41-d7d031131d7e
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
 # ╠═405a1036-2bf5-11eb-11f9-a1a714dbf7e1
 # ╠═6405f574-2bf5-11eb-3656-d7b9c94f145a
 # ╟─e8ddcd80-5f1c-11eb-00bb-6badc5a9ffaa
-# ╠═2faf6176-5a5e-11eb-241d-4383971500e3
+# ╟─2faf6176-5a5e-11eb-241d-4383971500e3
 # ╠═756ef0e0-2bf5-11eb-107c-8d1c65eacc45
 # ╠═e1dd7abc-2bf5-11eb-1f5a-0f46c7405dd5
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 # ╠═fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 # ╠═95dbe546-5f18-11eb-34d3-0fb6e14302e0
 # ╟─333d2a1a-5f4c-11eb-188a-bb221700e8a0
-# ╠═36786d6e-5a65-11eb-0fa2-81b69989c39e
+# ╟─36786d6e-5a65-11eb-0fa2-81b69989c39e
 # ╠═caefe5ac-5f4d-11eb-2591-67b5515e1bd4
+# ╠═46449848-64e3-11eb-0bf4-c9211b41c68d
+# ╠═6ce4b636-64e3-11eb-16c9-77e7498a7109
