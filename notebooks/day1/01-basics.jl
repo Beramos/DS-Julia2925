@@ -962,7 +962,7 @@ qb_mm = QuestionBlock(;
 	""",
 	questions = [q_mm1],
 	hints= [
-			hint(md"Make sure you to check both CH₃- and -CH₃"),
+			hint(md"Make sure you to check both endpoints CH₃-, -CH₃ and -CO-COOH or COOH-CO-, etc."),
 			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """)
 		]
 )

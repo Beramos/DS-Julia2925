@@ -65,6 +65,53 @@ function printgrid()
   println(s)
 end
 
+### Molecular mass spectrometry
+f1(s) = replace(s, "-CH3"=> "-COOH") |> s -> replace(s, "CH3-"=> "COOH-")
+f2(s) = replace(s, "-CO-COOH"=> "") |> s -> replace(s, "COOH-CO-"=> "")
+	
+function f3(molecule)
+  if length(molecule) < 4
+    molecule = "CH4"
+    return molecule
+  end
+  
+  if molecule[1:4] == "CH2-"
+    molecule = "CH3-" * molecule[5:end]
+  end
+  if molecule[end-3:end] == "-CH2"
+    molecule = molecule[1:end-4] * "-CH3"
+  end
+  return molecule
+end
+
+f4(s) = replace(s, "-CH2-CH2-"=> "-CO-")
+	
+function f5(molecule)
+  if molecule[1:3] == "CO-"
+    molecule = "COOH-" * molecule[4:end]
+  end
+  
+  if molecule[end-2:end] == "-CO" 
+    molecule = molecule[1:end-3] * "-COOH"
+  end
+  return molecule
+end 
+	
+f6(s) = replace(s, "CO-CO-CO" => "CO-CH2-CO")
+	
+function cycle(molecule)
+  molecule |> f1 |> f2 |> f3 |> f4 |> f5 |> f6
+end
+	
+function degrade(molecule)
+  mol_prev = ""
+  while mol_prev !== molecule
+    mol_prev = molecule
+    molecule = cycle(molecule)
+  end
+  return molecule
+end
+
 # WIP bigprint
 
 #= Notebook 2: collections =# 
