@@ -919,11 +919,44 @@ qb7 = QuestionBlock(;
 )
 end
 
+# ╔═╡ e2583a06-6479-11eb-091b-8be70024930d
+
+
+# ╔═╡ 1f588828-6477-11eb-0c70-557f130c6785
+function degrade(molecule)
+	return missing # replace this with the correct code
+end
+
 # ╔═╡ e6217d50-63de-11eb-28d8-452aeffc956c
 begin 
-q_mm1 = Question(validators = @safe[], 
-					description = md"""Happy with their discovery (less happy with the odours coming from their machine), the scientist take out a small vial... We wonder what would the stable molecule obtain from this very expensive bottle filled with the molecule `verylongium`.""")	
+
+molecule1_mm = "CH3-CH2-CH2-CH2-CH2-COOH"
+molecule2_mm = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3"
 	
+test1_mm = 	@safe[molecule1_mm |> Solutions.degrade == molecule1_mm |> degrade] 
+
+q_mm1 = Question(validators = test1_mm, 
+					description = md"""Happy with their discovery (less happy with the odours coming from their machine), the scientist take out a small vial... We wonder what would be the stable molecule obtained from this very expensive bottle filled with the molecule `verylongium`.""")
+
+q_mm2 = Question(validators = @safe[], 
+		description = md""" All of the sudded you hear, *\"Eureka!\"* from the other end of the corridor. It appears the chemical engineers finally figured out how to get their molecular generator working. The machine generates random molecules with a set number of carbon atoms `N`. They even show you how it works (see `generator` below), it is quite simple actually. 
+		
+The engineers would like to analyse the molecules they generate, using the mass spectroscopy machine. They do not only want to know which molecules are obtained after degradation but also want to see the spread of the molecular weight of the degradation product. 
+		
+Degrade *1000* molecules containing *12* carbon atoms, compute the molecular weight of each component and plot a histogram that depicts the relative frequency to the molecular weight of these components.
+		
+| Group | Molecular weight (g/mol) |
+|-------|--------------------------|
+| CH4   | 16.0                     |
+| CH3   | 15.0                     |
+| CH2   | 14.0                     |
+| CO    | 28.0                     |
+| OH    | 17.0                     |	
+""")
+
+	
+	
+
 	
 qb_mm = QuestionBlock(;
 	title=md"**Question 8: Molecular mass spectroscopy**",
@@ -938,6 +971,7 @@ qb_mm = QuestionBlock(;
 	4. The first *-CH₂-CH₂-* wil react to *CO*;
 	5. *CO* at the endpoints will be converted to *COOH*;
 	6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
+	7. If the *CH2* or *CH3* is left at the very end, *CH4* is formed.
 
 	This degradation pattern is repeated until a stable molecule is obtained.
 	
@@ -946,97 +980,66 @@ qb_mm = QuestionBlock(;
 		
 	with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH will degrade following this degradation pattern,
 		
-	- Cycle 1: Step 1: CH₃ will turn into COOH: COOH-CH2-CH2-CH2-CH2-COOH
-	- Cycle 1: Step2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH
-	- Cycle 1: Step3: No unstable CH₂ ends:  COOH-CH2-CH2-CH2-CH2-COOH
-	- Cycle 1: Step4: Reaction of the first -CH₂-CH₂- to CO: COOH-CO-CH2-CH2-COOH
+	- Cycle 1: Step 1: CH₃ will turn into COOH: COOH-CH2-CH2-CH2-CH2-COOH.
+	- Cycle 1: Step2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH.
+	- Cycle 1: Step3: No unstable CH₂ ends:  COOH-CH2-CH2-CH2-CH2-COOH.
+	- Cycle 1: Step4: Reaction of the first -CH₂-CH₂- to CO: COOH-CO-CH2-CH2-COOH.
 	- Cycle 1: Steps 5 & 6 do not change the molecule and a new cycle is repeated
-	- Cycle 2: Step 1 does not change the molecule
-	- Cycle 2: Step 2 removes a single CO-COOH: CH2-CH2-COOH
-	- Cycle 2: Step 3: changes the molecule to: CH3-CH2-COOH
+	- Cycle 2: Step 1 does not change the molecule.
+	- Cycle 2: Step 2 removes a single CO-COOH: CH2-CH2-COOH.
+	- Cycle 2: Step 3: changes the molecule to: CH3-CH2-COOH.
 	- ...
 	- Cycle 3: step 1: changes the molecule CH3-CH2-COOH to **COOH-CH2-COOH**.
 	
 	  Additional cycles will not further degrade the structure of the molecule and can be considered final. Caproic acid degraded into [malonic acid](https://en.wikipedia.org/wiki/Malonic_acid) (COOH-CH2-COOH)
 
 	""",
-	questions = [q_mm1],
+	questions = [q_mm1, q_mm2],
 	hints= [
 			hint(md"Make sure you to check both endpoints CH₃-, -CH₃ and -CO-COOH or COOH-CO-, etc."),
 			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """)
 		]
 )
+	validate(qb_mm)
 end
-
-# ╔═╡ c3939458-63e3-11eb-22a8-6b901881f817
-begin
-	f1(s) = replace(s, "-CH3"=> "-COOH") |> s -> replace(s, "CH3-"=> "COOH-")
-	f2(s) = replace(s, "-CO-COOH"=> "") |> s -> replace(s, "COOH-CO-"=> "")
-	
-	function f3(molecule)
-		if length(molecule) < 4
-			molecule = "CH4"
-			return molecule
-		end
-		
-		if molecule[1:4] == "CH2-"
-			molecule = "CH3-" * molecule[5:end]
-		end
-		if molecule[end-3:end] == "-CH2"
-			molecule = molecule[1:end-4] * "-CH3"
-		end
-		return molecule
-	end
-
-	f4(s) = replace(s, "-CH2-CH2-"=> "-CO-")
-	
-	function f5(molecule)
-		if molecule[1:3] == "CO-"
-			molecule = "COOH-" * molecule[4:end]
-		end
-		
-		if molecule[end-2:end] == "-CO" 
-			molecule = molecule[1:end-3] * "-COOH"
-		end
-		return molecule
-	end 
-	
-	f6(s) = replace(s, "CO-CO-CO" => "CO-CH2-CO")
-	
-	function cycle(molecule)
-		molecule |> f1 |> f2 |> f3 |> f4 |> f5 |> f6
-	end
-	
-	function degrade(molecule)
-		mol_prev = ""
-		while mol_prev !== molecule
-			mol_prev = molecule
-			molecule =  cycle(molecule)
-		end
-		return molecule
-	end
-end
-
-# ╔═╡ 58cb2d50-6471-11eb-3ec7-6571cecdf6ff
-caproic = "CH3-CH2-CH2-CH2-CH2-COOH" |> degrade
 
 # ╔═╡ 4d0e1d60-6476-11eb-154e-d9cc3bf284c2
-caproic_acid = "CH3-CH2-CH2-CH2-CH2-COOH" |> degrade
+caproic_acid = "CH3-CH2-CH2-CH2-CH2-COOH"
 
 # ╔═╡ 5167ded6-6463-11eb-3279-0dd226fae82e
-verylongium = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3" |> degrade
+verylongium = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3" 
 
-# ╔═╡ 1f588828-6477-11eb-0c70-557f130c6785
-#=function degrade(molecule)
-	return missing # replace this with the correct code
-end =#
+# ╔═╡ c4d03faa-647d-11eb-3a84-d7b2d53e4720
 
-# ╔═╡ db3961aa-6468-11eb-1fba-adfc62da4f7e
-begin 
-	function generate(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
-		return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
-	end
+
+# ╔═╡ c42f69f6-647d-11eb-143b-2f0ab33616e7
+
+
+# ╔═╡ c55ed390-647d-11eb-22d5-33fbae27a2bb
+function generator(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
+	return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
 end
+
+# ╔═╡ 23db2764-647e-11eb-37dd-a34db2ff0fcd
+generator(6) #try rerunning this cell multiple times
+
+# ╔═╡ 989d0dd2-647a-11eb-3123-39786452714a
+C12 = [generator(12) for i in 1:1000];
+
+# ╔═╡ 061e4894-647b-11eb-06db-310d02463b80
+function molecular_weight(molecule)
+	return count("CH3", molecule)* 15.0 +
+			count("CH4", molecule) * 16.0 +
+			count("CH2", molecule) * 14.0 +
+			count("CO", molecule) * 28.0 +
+			count("OH", molecule) * 17
+end
+
+# ╔═╡ 5bcda4e6-647c-11eb-3bd8-198e50fe280b
+histogram(C12 .|> molecular_weight, normalize=true, xlabel="Molecular weight (g/mol" ,ylabel = "Relative frequency (-)", label="", color=:Grey)
+
+# ╔═╡ 0507186a-647a-11eb-07cf-ebf32bdff5b0
+
 
 # ╔═╡ 448ef88e-4ad2-11eb-20d6-17a51d665ef9
 function print_grid()
@@ -1279,13 +1282,19 @@ end
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╠═42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
+# ╟─e2583a06-6479-11eb-091b-8be70024930d
 # ╠═e6217d50-63de-11eb-28d8-452aeffc956c
-# ╠═58cb2d50-6471-11eb-3ec7-6571cecdf6ff
-# ╠═c3939458-63e3-11eb-22a8-6b901881f817
+# ╠═1f588828-6477-11eb-0c70-557f130c6785
 # ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
 # ╠═5167ded6-6463-11eb-3279-0dd226fae82e
-# ╠═1f588828-6477-11eb-0c70-557f130c6785
-# ╠═db3961aa-6468-11eb-1fba-adfc62da4f7e
+# ╠═c4d03faa-647d-11eb-3a84-d7b2d53e4720
+# ╟─c42f69f6-647d-11eb-143b-2f0ab33616e7
+# ╠═c55ed390-647d-11eb-22d5-33fbae27a2bb
+# ╠═23db2764-647e-11eb-37dd-a34db2ff0fcd
+# ╠═989d0dd2-647a-11eb-3123-39786452714a
+# ╠═061e4894-647b-11eb-06db-310d02463b80
+# ╠═5bcda4e6-647c-11eb-3bd8-198e50fe280b
+# ╟─0507186a-647a-11eb-07cf-ebf32bdff5b0
 # ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207
