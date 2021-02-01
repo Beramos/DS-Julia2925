@@ -977,9 +977,9 @@ q_mm1 = Question(validators = test1_mm,
 					description = md"""Happy with their discovery (less happy with the odours coming from their machine), the scientist take out a small vial... We wonder what would be the stable molecule obtained from this very expensive bottle filled with the molecule `verylongium`.""")
 
 q_mm2 = Question(validators = test2_mm, 
-		description = md""" All of the sudded you hear, *\"Eureka!\"* from the other end of the corridor. It appears the chemical engineers finally figured out how to get their molecular generator working. The machine generates random molecules with a set number of carbon atoms `N`. They even show you how it works (see `generator` below), it is quite simple actually. 
+		description = md""" All of the sudded you hear, *\"Eureka!\"* from the other end of the corridor. It appears the chemical engineers finally figured out how to get their molecular generator working. This machine creates random molecules with a set number of carbon atoms `N`. They even show you how it works (see `generator` below), it is quite simple actually (try to understand which string manupilation are being used here). 
 		
-The engineers would like to analyse the molecules they generate, using the mass spectroscopy machine. They do not only want to know which molecules are obtained after degradation but also want to see the spread of the molecular weight of the degradation product. 
+The engineers would like you to analyse the molecules they generate, using the mass spectroscopy machine. They do not only want to know which molecules are obtained after degradation but also want to see the spread of the molecular weight of the degradation product. 
 		
 Degrade *1000* molecules containing *12* carbon atoms, compute the molecular weight of each component and plot a histogram that depicts the relative frequency to the molecular weight of these components.
 		
@@ -996,14 +996,10 @@ Degrade *1000* molecules containing *12* carbon atoms, compute the molecular wei
 	
 	)
 
-	
-	
-
-	
 qb_mm = QuestionBlock(;
 	title=md"**Question 8: Molecular mass spectroscopy**",
 	description = md"""
-	Analytical chemists at the Ghent University have discovered a new analytical technique where organic molecules are partially burned into smaller molecules. These oxidised molecules can be detected via acetatometry. 
+	Analytical chemists at Ghent University have discovered a new analytical technique where organic molecules are partially burned into smaller molecules. These oxidised molecules can then be detected via acetatometry. 
 		
 	An organic molecule entering the analyser will always follow the same degradation pattern and subsequently,
 	
@@ -1020,7 +1016,7 @@ qb_mm = QuestionBlock(;
 	Let's take caproic acid for example,
 		![](https://i.imgur.com/xsb9tGR.png)
 		
-	with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH will degrade following this degradation pattern,
+	with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH, caproic acid will degrade following this pattern,
 		
 	- Cycle 1: Step 1: CH₃ will turn into COOH: COOH-CH2-CH2-CH2-CH2-COOH.
 	- Cycle 1: Step2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH.
@@ -1033,13 +1029,15 @@ qb_mm = QuestionBlock(;
 	- ...
 	- Cycle 3: step 1: changes the molecule CH3-CH2-COOH to **COOH-CH2-COOH**.
 	
-	  Additional cycles will not further degrade the structure of the molecule and can be considered final. Caproic acid degraded into [malonic acid](https://en.wikipedia.org/wiki/Malonic_acid) (COOH-CH2-COOH)
+	  Additional cycles will not further degrade the structure of the molecule and can be considered stable. Caproic acid degraded into [malonic acid](https://en.wikipedia.org/wiki/Malonic_acid) (COOH-CH2-COOH)
 
 	""",
 	questions = [q_mm1, q_mm2],
 	hints= [
 			hint(md"Make sure you to check both endpoints CH₃-, -CH₃ and -CO-COOH or COOH-CO-, etc."),
-			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """)
+			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """),
+			hint(md"""For part 2: use the function `histogram` from the Plots library"""),
+			hint(md"""Type \"histogram\", put your cursor on histogram and open the "Live docs", to find informaiton on how to use the histogram function.""")
 		]
 )
 	validate(qb_mm)
