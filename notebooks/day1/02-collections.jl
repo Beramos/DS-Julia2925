@@ -196,7 +196,7 @@ md"What the first index again? And how to access the last element? If you forgot
 first(names), last(names)
 
 # ╔═╡ 354fa70c-5a74-11eb-31fc-ad21a845d3b0
-fyi(md"Pluto might not execute the lines of code in order. As you are chaning `names` later on, it the results might be a bit unexpected.")
+fyi(md"Pluto might not execute the lines of code in order. As you are changing `names` later on, the results might be a bit unexpected.")
 
 # ╔═╡ 56f5f21e-4c1e-11eb-004e-f19aa9029b01
 md"### Types and arrays"
@@ -247,31 +247,60 @@ Float64[1, 2, 3]
 
 # ╔═╡ 3d0107c4-4c1f-11eb-1b5b-ed954348d0aa
 md"""### Initialisation
-Arrays can be initialized in all the classic, very Pythonesque ways.
+Arrays can be initialised in all the classic, very Pythonesque ways.
 
 
 """
 
+# ╔═╡ ad79420c-64a2-11eb-0ab3-4dfce430f6c3
+begin
+
+qb_ai = QuestionBlock(;
+	title=md"**Assignment: array intialisation**",
+	description = md"""
+	
+	Test the following statements.
+	
+	```julia
+	C = []  # empty
+
+	zeros(5)      # row vector of 5 zeroes
+
+	ones(3,3)     # 3×3 matrix of 1's, will be discussed later on
+
+	fill(0.5, 10) # in case you want to fill a matrix with a specific value
+		
+	rand(2)       # row vector of 2 random floats [0,1]
+		
+	randn(2)      # same but normally-distributed random numbers
+		
+	rand(Bool, 10)  # specify the type, many packages overload rand for other stuff
+		
+	```
+	""")
+
+end
+
 # ╔═╡ 4b3317da-4c1f-11eb-19d5-03570c4d65df
-C = []  # empty
+
 
 # ╔═╡ 503c9da0-4c1f-11eb-292a-db7b8ce9f458
-zeros(5)      # row vector of 5 zeroes
+
 
 # ╔═╡ 503d455c-4c1f-11eb-3af2-8f200db1fd30
-ones(3,3)     # 3×3 matrix of 1's, will be discussed later on
+
 
 # ╔═╡ 504d8aca-4c1f-11eb-3600-d77038b0f2bc
-fill(0.5, 10) # in case you want to fill a matrix with a specific value
+
 
 # ╔═╡ 505874a8-4c1f-11eb-1132-3bbba81ae1db
-rand(2)    # row vector of 2 random floats [0,1]
+
 
 # ╔═╡ 5071c430-4c1f-11eb-226b-634abae6082f
-randn(2)   # same but normally-distributed random numbers
+
 
 # ╔═╡ c2ccb916-5a72-11eb-16d9-15283727d6cf
-rand(Bool, 10)  # specifiy the type, many packages overload rand for other stuff
+
 
 # ╔═╡ 52a8a6ec-4c1f-11eb-386c-a99ef05b41b0
 md"Often it is better to provide a specific type for initialization. For numeric elements `Float64` is the default."
@@ -975,6 +1004,7 @@ md""" ## 5. References
 # ╟─0fd48034-4c1f-11eb-06a9-0d7353b2a0d6
 # ╠═2262e4fc-4c1f-11eb-07b8-0b9732b93d86
 # ╟─3d0107c4-4c1f-11eb-1b5b-ed954348d0aa
+# ╟─ad79420c-64a2-11eb-0ab3-4dfce430f6c3
 # ╠═4b3317da-4c1f-11eb-19d5-03570c4d65df
 # ╠═503c9da0-4c1f-11eb-292a-db7b8ce9f458
 # ╠═503d455c-4c1f-11eb-3af2-8f200db1fd30
