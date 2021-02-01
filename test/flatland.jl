@@ -42,5 +42,26 @@
         @test circle ∩ Flatland.Circle((2, 2), R=0.5)
         @test !(circle ∩ Flatland.Circle((5, 3), R=0.5))
     end
+
+    @testset "Circle" begin
+        pent = Flatland.RegularPolygon((1, 1), 5, R=1)
+
+        @test Flatland.ncorners(pent) == 5
+        @test Flatland.center(pent) == (1, 1)
+
+        @test Flatland.xlim(pent)[1] ≥ 0
+        @test Flatland.ylim(pent)[1] ≥ 0
+
+        @test Flatland.xlim(pent)[2] ≤ 2
+        @test Flatland.ylim(pent)[2] ≤ 2
+
+        @test Flatland.area(Flatland.RegularPolygon((1, 1), 1000_000, R=1)) ≈ π 
+
+        @test (0.5, 0.5) ∈ pent
+        @test (7, 0.1) ∉ pent
+
+        @test pent ∩ Flatland.RegularPolygon((2, 2), 5, R=1)
+        @test !(pent ∩ Flatland.RegularPolygon((8, 1), 5, R=1/2))
+end
 end
 
