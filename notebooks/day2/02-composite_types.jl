@@ -4,25 +4,42 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ 372d3cf2-6173-11eb-356e-23c959c3fd89
+# edit the code below to set your name and UGent username
+
+student = (name = "Sam Janssen", email = "Sam.Janssen@UGent.be");
+
+# press the ▶ button in the bottom right of this cell to run your edits
+# or use Shift+Enter
+
+# you might need to wait until all other cells in this notebook have completed running. 
+# scroll down the page to see what's up
+
 # ╔═╡ eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
-using DSJulia
+begin 
+	using DSJulia;
+	tracker = ProgressTracker(student.name, student.email);
+	md"""
+	Submission by: **_$(student.name)_**
+	"""
+end
 
 # ╔═╡ 70be3952-5d8c-11eb-1509-b3f7077d57e0
 md"""
 # Composite and parametric types
 
-In the previous notebook, we have seen that we can easily extend the type system with our own types in the hierarchy. The interesting thing is to have the concrete 'leafs' on this tree contain data that can be used in the functions.
+The previous notebook showed that it is easy to extend the type system with our own types in the hierarchy. The interesting thing is to have the concrete 'leafs' on this tree contain data that can be used in the functions.
 
-## Paramametric types
+## Composite types
 
-Composite types, sometimes call records, structs or object, can store several values in its *fields*.
+Composite types, sometimes call records, structs (matlab) or object (python), can store several values in its *fields*.
 
-When defining a new composite type, we can choose them to be mutable or immuatble:
+When defining a new composite type, we can choose them to be mutable or immutable:
 - mutable types are defined using `mutable struct ... end`, they allow the fields to be changed after the object is created;
-- immuatble types are defined similarly using `mutable struct ... end`, after creating the object its fields cannot be changed.
-Mutable types are a bit more flexible, though might be a somewhat less safe and are more difficult to work with. As the compiler
-knows everything in advance, it might better optimize for immutable types. Which one you choose depends on your application, though
-generally immuatable types are the better choice!
+- immutable types are defined similarly using `struct ... end`, after creating the object its fields cannot be changed (immutable by default).
+Mutable types are a bit more flexible, though might be less safe and are more difficult to work with. As the compiler
+knows everything in advance, it often optimizes better for immutable types. The choice depends on the application, though
+generally immutable types are the better choice!
 
 As an example, let us define an agent type for an ecological individual-based model (IBM). We create the abstract type `Agent` for which we
 can then specify several children types.
@@ -43,10 +60,10 @@ mutable struct Prey <: Agent
 end
 
 # ╔═╡ bcacf89e-5d8c-11eb-0077-e5761b8855a3
-md"Notice the type annotation for `id`, which we choose to always reprsenent by an integer."
+md"Notice the type annotation for `id`, which we choose to always represent by an integer."
 
 # ╔═╡ c7a077ba-5d8c-11eb-08bb-07c343ea8ab1
-md"Defining a composite type immediately a constructor available."
+md"After defining a composite type, a constructor for that type is immediately available. A constructor is a function to instantiate a type."
 
 # ╔═╡ cd0d8636-5d8c-11eb-19f9-4da4550d306f
 deer = Prey(1, (0.5, 1.9))
@@ -60,11 +77,14 @@ fieldnames(Prey)
 # ╔═╡ dac11770-5d8c-11eb-1058-2d043e172931
 md"The fields can be accessed easily:"
 
+# ╔═╡ 61c43794-6174-11eb-1545-2db114b929e4
+deer.pos
+
 # ╔═╡ e7b9023a-5d8c-11eb-1387-cfa7c41ab6ca
 fyi(md"This is just syntactic sugar for `getfield`, e.g. `getfield(deer, :id)`")
 
 # ╔═╡ fb6e62d4-5d8c-11eb-34f3-bf3df7cd4cb3
-md"Similarly, a predator type can be defined. In addition to an id and position, which each agent has, they also have a size, determining its mobility."
+md"Similarly, a predator type can be defined. In addition to an `id` and `position`, which each agent has, they also have a size, determining its mobility."
 
 # ╔═╡ 01fe6f9a-5d8d-11eb-0519-03aefcd587bb
 mutable struct Predator <: Agent
@@ -77,7 +97,7 @@ end
 wolf = Predator(2, (0.0, 0.0), 40.0)  # 40 kg wolf
 
 # ╔═╡ 18d04a36-5d8d-11eb-1986-693eaad5d5be
-md"Using the `.` syntax for accessing the fields is not very tidy! We should define custom getter functions
+md"Using the `.` syntax for accessing the fields is very \"object-oriented\" and not  very juliaesque! We should define custom getter functions
 for the user to access the relevant fields. We could define `id` and `position` methods to get the respective
 fields for the two agents. However, since these fields should be defined for every `Agent` type, we can just create
 these for the Agent type!"
@@ -104,7 +124,7 @@ size(wolf)
 md"Here, we had to import `size` because we are extending a function from the `Base` library to work with a new type (doing something vastly different than its original function)."
 
 # ╔═╡ 47049bf0-5d8d-11eb-18c2-733287b69420
-md"Similarly, we can program behaviour between the agents."
+md"Similarly, we can program the interaction behaviour between the agents."
 
 # ╔═╡ 50f17586-5d8d-11eb-0eec-579467b787d0
 begin
@@ -114,20 +134,21 @@ begin
 end
 
 # ╔═╡ 585995ae-5d8d-11eb-256f-bd8e9eb52063
-md"We have chosen the default behaviour that two Agents of unspecified types do not interact at al, this will now be the case when a prey meets other prey, a predator an other predator or a new third type comes into the equation."
+md"We have chosen the default behaviour that two Agents of unspecified types do not interact at all, this will now be the case when a prey meets other prey, a predator an other predator or a new third type comes into the equation."
 
 # ╔═╡ 62e49c94-5d8d-11eb-39ac-f30febf282ff
 fyi(md"Since in these simple examples, the `interact` methods do not use their arguments, merely perform type checking, we could have written this as `interact(::Agent,::Agent) = ...` etc.")
 
 # ╔═╡ 6e8548b4-5d8d-11eb-3fcc-45cb005e5c5e
 md"""
-## Paramtric types
+## Parametric types
 
 Sometimes we want more flexiblility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
 numeric datatypes, `Int`, `Int8`, `Float6`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
-*parametric types*, types that depend on another type.
+*parametric types*, types that **depend** on another type.
 
 For example, consider a 2-dimensional coordinate:
+(x,y)
 """
 
 # ╔═╡ cf6dea8c-5d8d-11eb-3f54-4d947305f5e5
@@ -137,12 +158,12 @@ begin
 		y::T
 	end
 	
-# PASTE HERE YOUR CONSTRUCTORS!
+# PASTE YOUR CONSTRUCTORS HERE!
 
 end
 
 # ╔═╡ d305007e-5d8d-11eb-2505-3347d7d1a561
-md"Here, each coordinate of the type `Point` has two attributes, `x` and `y`, of the same type. The specific type of Point can vary."
+md"Here, each coordinate of the type `Point` has two attributes, `x` and `y`, of the same type. The specific type of `Point` can vary."
 
 # ╔═╡ d84355d4-5d8d-11eb-2c2c-21daf0364c21
 p = Point(1.0, 2.0)
@@ -172,7 +193,7 @@ p isa Point{Int}  # obviously not true
 p isa Point{Real}  # unexpectedly not true!
 
 # ╔═╡ 17022b06-5d8e-11eb-391b-7194962a2c18
-md"The above observation is very important! Even though `Float16 <: Real`, this does not hold for the corresponding parametric types."
+md"The observations above is very important! Even though `Float16 <: Real`, this does not hold for the corresponding parametric types."
 
 # ╔═╡ 393e2f9e-5d8e-11eb-11d7-511c32ce6e48
 Point(1, 2.0)  # should error initially, but will be fixed later in the notebook!
@@ -197,7 +218,7 @@ Constructors are functions that create new objects.
 
 ### Outer constructors
 
-We have already seen that when creating a new `struc`, this immediately initiates the constructor (e.g., `Point(1.0, 2.0)`). These can also be made explicitly:
+We have already seen that when creating a new `struct`, this immediately initiates the constructor (e.g., `Point(1.0, 2.0)`). These can also be made explicitly:
 
 ```julia
 Point(x::T, y::T) where {T<:Real} = Point{T}(x,y)
@@ -216,7 +237,7 @@ Point(1.2)
 # ╔═╡ 9d4b9eee-5d8f-11eb-07bb-557415e4ac4a
 md"""
 
-The line above yield an error, because there is no constructor method when two inputs are of a different type. The following constructors will resolve such cases satisfactory.
+The line above yields an error, because there is no constructor method when two inputs are of a different type. The following constructors will resolve such cases satisfactorily.
 
 ```julia
 Point(x::Real, y::Real) = Point(promote(x, y)...)
@@ -264,9 +285,9 @@ fyi(md"For parametric types, the `new` keyword should be type annotated. So, for
 # ╔═╡ 46df4eb0-5d90-11eb-1fdf-f34a7bcb7191
 md"""
 
-## Illustration: iterators
+## Example: iterators
 
-We can extend Julia by making use of establised interfaces, such as for iterators like `a:b`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
+We can extend Julia by making use of establised interfaces, such as for iterators like `1:0.1:10`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
 """
 
 # ╔═╡ a4a1cb18-5d90-11eb-08ee-8570368a056b
@@ -319,7 +340,7 @@ sum(Squares(18093))  # much faster now!
 # ╔═╡ 579e3828-5d91-11eb-1d33-b94628d61fc0
 md"""
 
-## Illustration: custom matrices
+## Example: custom matrices
 
 Similarly, we can make our very own matrix types. Consider the Strang matrix, a [tridiagonal matrix](https://en.wikipedia.org/wiki/Tridiagonal_matrix) with 2 on the main diagonal, and -1 on the first diagonal below and above the main diagonal. 
 """
@@ -353,6 +374,9 @@ v = randn(1000)
 # ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
 S * v  # works, but slow
 
+# ╔═╡ 310d8966-6176-11eb-1b23-9d942f197fbd
+md"Luckily there is a trick to computing the product of a tridiagonal matrix and a vector:"
+
 # ╔═╡ 276e9af4-5d92-11eb-1399-993570859698
 function Base.:*(S::Strang, v::Vector)
     n = length(v)
@@ -369,21 +393,8 @@ end
 # ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
 S * v  # fast (linear time in v)
 
-# ╔═╡ 3fd82400-5d92-11eb-2b2d-67535d4733e6
-md"""
-## Exercise: wizarding currency
-
-
-The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
-
-Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
-
-Also, overload the function `+` to add two instances of `WizCur` and the `>` and `<` operators to compare two instances of wizarding currency.
-
-The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry has 3 Galleons, 1 Sickle, and 7 Knuts pocket change. Who has the most money? How many do they have together?
-
-HINT: you might find `%` and `div` useful here.
-"""
+# ╔═╡ cf146bf4-6177-11eb-1eaa-c35efde57b3e
+md"## Exercises"
 
 # ╔═╡ 3ae60e88-5d94-11eb-0c50-1d74ea104758
 struct WizCur
@@ -427,18 +438,47 @@ money_harry = missing
 # ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
 dungbomb_fund = money_ron + money_harry
 
-# ╔═╡ d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
-md"""
-## Exercise: Vandermonde matrix
+# ╔═╡ dd0b7c7a-6177-11eb-2cb7-8b194a75d776
+begin 
+		
+	q_wc = Question(
+		validators = @safe[
+			Solutions.WizCur(732, 19, 0) |> Solutions.galleons == 
+				WizCur(732, 19, 0) |> galleons,
+			Solutions.WizCur(732, 19, 0) |> Solutions.knuts == 
+				WizCur(732, 19, 0) |> knuts,		
+			Solutions.WizCur(732, 19, 0) |> Solutions.sickles == 
+					WizCur(732, 19, 0) |> sickles,					
+			galleons(dungbomb_fund) == Solutions.galleons(Solutions.dungbomb_fund),
+			sickles(dungbomb_fund) == Solutions.sickles(Solutions.dungbomb_fund),
+			knuts(dungbomb_fund) == Solutions.knuts(Solutions.dungbomb_fund)
+		]
+	)
+	
+	qb_wc = QuestionBlock(
+		title=md"**Exercise: wizarding currency**",
+		description = md"""
+			
 
-The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
 
-$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
+Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
 
-$$V_{i,j} = \alpha_i^{j-1}$$
+Also, overload the function `+` to add two instances of `WizCur` and the `>` and `<` operators to compare two instances of wizarding currency.
 
-Complete the implementation to store and process this matrix.
-"""
+The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry has 3 Galleons, 1 Sickle, and 7 Knuts pocket change. Who has the most money? How many do they have together?
+		""",
+		hints = [
+			hint(md"You might find `%` and `div` useful here.")
+		],
+		questions = [q_wc]
+	)
+		validate(qb_wc, tracker)
+	
+end
+
+# ╔═╡ 392228e2-617d-11eb-09a5-c9e5649356eb
+
 
 # ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
 begin
@@ -450,6 +490,40 @@ begin
 
 	# take length of α as a default value of m
 	Vandermonde(α::Vector{<:Number}) = missing
+end
+
+# ╔═╡ 902f4dfe-617d-11eb-2957-71130adca3ae
+begin 	
+	q_vm = Question(
+		validators = @safe[
+			
+			Solutions.Vandermonde(Solutions.α, length(Solutions.α)) ==
+				Vandermonde(Solutions.α, length(Solutions.α)),
+			
+			Solutions.Vandermonde(Solutions.α) == Vandermonde(Solutions.α),
+			
+			Solutions.Vandermonde(Solutions.α)[1] == Vandermonde(Solutions.α)[1],
+			
+			size(Solutions.Vandermonde(Solutions.α)) == 
+				size(Vandermonde(Solutions.α))
+		]
+	)
+	
+	qb_vm = QuestionBlock(
+		title=md"**Exercise: Vandermonde matrix**",
+		description = md"""
+		The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+
+		$${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
+
+		$$V_{i,j} = \alpha_i^{j-1}$$
+
+		Complete the implementation to store and process this matrix.
+		""",
+		questions = [q_vm]
+	)
+		validate(qb_vm, tracker)
+	
 end
 
 # ╔═╡ bd91a60e-5d93-11eb-09d4-830ca69439bf
@@ -464,16 +538,26 @@ Base.getindex(V::Vandermonde, i, j) = missing
 # ╔═╡ d107c75e-5d93-11eb-0e6f-097b1291e460
 V = Vandermonde(α, 4)
 
-# ╔═╡ ebe6cec6-5d93-11eb-25fd-2f614f1a7576
-md"""
-The determinant of a Vandermonde matrix is easy to compute:
+# ╔═╡ 7f02b0a0-617f-11eb-1263-91423840def3
 
-$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
 
-Overload this for the Vandermonde matrix!
+# ╔═╡ f01448f0-617d-11eb-1829-0fcfe19b3115
+begin 
+	qb_dvm = QuestionBlock(
+		title=md"**Exercise: determinant of a Vandermonde matrix**",
+		description = md"""
+		The determinant of a Vandermonde matrix is easy to compute:
 
-HINT: `prod`
-"""
+		$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
+
+		Overload this for the Vandermonde matrix!
+
+		""",
+		hints = [
+			hint(md"`prod`")
+		]
+	)
+end
 
 # ╔═╡ d2a076ea-5d93-11eb-216e-f5c37d330b40
 import LinearAlgebra
@@ -482,7 +566,8 @@ import LinearAlgebra
 LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ Cell order:
-# ╠═eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
+# ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
+# ╟─eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
 # ╠═70be3952-5d8c-11eb-1509-b3f7077d57e0
 # ╠═acd7de0c-5d8c-11eb-120a-8b79f2b8eb3b
 # ╠═af8c6460-5d8c-11eb-3ba8-c16e8855e992
@@ -493,6 +578,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═ce25e25c-5d8c-11eb-2e8e-b5b1e7350d70
 # ╠═d672cc72-5d8c-11eb-2c06-0341181e3a3d
 # ╠═dac11770-5d8c-11eb-1058-2d043e172931
+# ╠═61c43794-6174-11eb-1545-2db114b929e4
 # ╠═e7b9023a-5d8c-11eb-1387-cfa7c41ab6ca
 # ╠═fb6e62d4-5d8c-11eb-34f3-bf3df7cd4cb3
 # ╠═01fe6f9a-5d8d-11eb-0519-03aefcd587bb
@@ -561,9 +647,11 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═11630c02-5d92-11eb-1746-4dabf327fbbe
 # ╠═1e65cb9c-5d92-11eb-3526-332169917fd9
 # ╠═201f59ee-5d92-11eb-33ae-51904d249dd4
+# ╠═310d8966-6176-11eb-1b23-9d942f197fbd
 # ╠═276e9af4-5d92-11eb-1399-993570859698
 # ╠═300a8428-5d92-11eb-188b-05d00df4f6a7
-# ╠═3fd82400-5d92-11eb-2b2d-67535d4733e6
+# ╠═cf146bf4-6177-11eb-1eaa-c35efde57b3e
+# ╠═dd0b7c7a-6177-11eb-2cb7-8b194a75d776
 # ╠═3ae60e88-5d94-11eb-0c50-1d74ea104758
 # ╠═48301af2-5d94-11eb-0019-7737667c9cea
 # ╠═4ea80eda-5d94-11eb-3882-21a41d2d65f8
@@ -576,12 +664,14 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═9eab40be-5d94-11eb-0c59-21f5824fb812
 # ╠═a137e0f8-5d94-11eb-2209-73acad549307
 # ╠═a79ba114-5d94-11eb-16ae-9906c6cdf54f
-# ╠═d46616f4-5d92-11eb-1a1d-d3e4a99dbbab
+# ╟─392228e2-617d-11eb-09a5-c9e5649356eb
+# ╠═902f4dfe-617d-11eb-2957-71130adca3ae
 # ╠═d448a2e0-5d92-11eb-18a6-9ff817992154
 # ╠═bd91a60e-5d93-11eb-09d4-830ca69439bf
 # ╠═c2ecfec8-5d93-11eb-2640-07bc07f3da98
 # ╠═cb3e91cc-5d93-11eb-020c-d73c10131755
 # ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
-# ╠═ebe6cec6-5d93-11eb-25fd-2f614f1a7576
+# ╟─7f02b0a0-617f-11eb-1263-91423840def3
+# ╠═f01448f0-617d-11eb-1829-0fcfe19b3115
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
