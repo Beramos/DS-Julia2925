@@ -10,7 +10,7 @@ using Plots
 # ╔═╡ e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # edit the code below to set your name and UGent username
 
-student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
+student = (name = "Jenke Janssen", email = "Jenke.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -33,8 +33,8 @@ end
 md"""
 # Notebook 1: Getting up and running
 
-First of all, _welcome to the course, **$(student[:name])**!
-"""
+First of all, welcome to the course, **$(student[:name])**! We hope you enjoy the ride.
+""" 
 
 # ╔═╡ 0f47f5b2-4aba-11eb-2e5a-b10407e3f928
 
@@ -99,6 +99,31 @@ md"variable assignment"
 # ╔═╡ 93b5a126-4ab7-11eb-2f67-290ed869d44a
 x = 2
 
+# ╔═╡ 353efeea-6492-11eb-3d09-353d4dae491a
+md"In the Pluto notebook environment you are currently working in, it is not possible to define the same variable in two cells. However, this is not standard Julia behaviour. You can see that redefining a variable is possible,"
+
+# ╔═╡ 92f57780-6492-11eb-1264-bbef04a8ae99
+begin
+	variable1 = 2.0
+	variable1 = 4.0
+end;
+
+# ╔═╡ a17ebeba-6492-11eb-07ba-f516a990affc
+variable1
+
+# ╔═╡ 3055711a-6493-11eb-252b-7f5d99115551
+md"""
+```julia
+begin
+ statement1
+ statement2
+end
+```
+
+Enable to wrap multiple statements, since only single-line statements are allowed in this notebook environment.
+
+"""
+
 # ╔═╡ 962ae6d2-4ab7-11eb-14a2-c76a2221f544
 τ = 1 / 37  # unicode variable names are allowed
 
@@ -142,7 +167,7 @@ println("The answer to $mystery is $(3*2*7)")
 md"... but take a look at the terminal window."
 
 # ╔═╡ 97b7f7d8-61aa-11eb-2bf6-739bd5f2e941
-md"So the [Stdout](https://www.computerhope.com/jargon/s/stdout.htm) is printed to the terminal window and not the notebooks. We can use the @terminal macro of our own making to circumvent this. More on macros tomorrow!"
+md"So the [Stdout](https://www.computerhope.com/jargon/s/stdout.htm) is printed to the terminal window and not the notebooks. We can use the @terminal macro of our own making to circumvent this. More on macros tomorrow! What you need to know now is that the macro @terminal does some additional processing to the statement is proceeds."
 
 # ╔═╡ dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
 @terminal println("The answer to $mystery is $(3*2*7)")
@@ -663,7 +688,7 @@ square(2.0)
 square("ni")   # the multiplication of strings is defined as a concatenation
 
 # ╔═╡ 1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
-@terminal square(4)
+@terminal square(4) #... nothing is printed, obviously
 
 # ╔═╡ 226417c2-4ac2-11eb-2914-196461e2b40e
 @terminal square(4.)
@@ -1101,7 +1126,7 @@ qb8 = QuestionBlock(;
 end
 
 # ╔═╡ Cell order:
-# ╠═f089cbaa-4ab9-11eb-09d1-05f49911487f
+# ╟─f089cbaa-4ab9-11eb-09d1-05f49911487f
 # ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # ╟─fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
 # ╟─0f47f5b2-4aba-11eb-2e5a-b10407e3f928
@@ -1124,6 +1149,10 @@ end
 # ╠═9d2708ca-5a6c-11eb-1c0f-473f0e2b5363
 # ╟─8c14cb9a-4ab7-11eb-0666-b1d4aca00f97
 # ╠═93b5a126-4ab7-11eb-2f67-290ed869d44a
+# ╟─353efeea-6492-11eb-3d09-353d4dae491a
+# ╠═92f57780-6492-11eb-1264-bbef04a8ae99
+# ╠═a17ebeba-6492-11eb-07ba-f516a990affc
+# ╠═3055711a-6493-11eb-252b-7f5d99115551
 # ╠═962ae6d2-4ab7-11eb-14a2-c76a2221f544
 # ╟─98d48302-4ab7-11eb-2397-710d0ae425f7
 # ╠═cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
@@ -1243,8 +1272,8 @@ end
 # ╠═fa9b3266-4ac1-11eb-153a-87c6a1124890
 # ╠═fa9d43b2-4ac1-11eb-33fc-a37503cedabf
 # ╟─0dbe0c34-500e-11eb-2633-67d8dc6b24c8
-# ╟─900da226-500e-11eb-3f1c-5582ed0cf749
-# ╟─b24bee9a-500e-11eb-2130-45b78bbebdec
+# ╠═900da226-500e-11eb-3f1c-5582ed0cf749
+# ╠═b24bee9a-500e-11eb-2130-45b78bbebdec
 # ╟─c8cf6520-500e-11eb-2dd3-4507a3994a83
 # ╠═19402512-500f-11eb-3ea7-c3d1c52025d6
 # ╟─6dc0eaae-500f-11eb-3051-37d870366201
@@ -1291,7 +1320,7 @@ end
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
 # ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
-# ╠═42f24f58-4ac3-11eb-06b5-ebc015c17520
+# ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
 # ╟─e2583a06-6479-11eb-091b-8be70024930d
 # ╟─e6217d50-63de-11eb-28d8-452aeffc956c
