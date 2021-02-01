@@ -9,7 +9,9 @@ Launches the Pluto notebooks for the project
 =#
 
 cd("notebooks")
-import Pkg; Pkg.activate("."); Pkg.instantiate();
+import Pkg; Pkg.activate("."); 
+Pkg.instantiate(); 
+Pkg.add(url="https://github.com/Beramos/DS-Julia2925");
 
 using Pluto
 Pluto.run()
