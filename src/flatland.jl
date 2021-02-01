@@ -1,66 +1,8 @@
-#=
-Created on 05/01/2021 20:52:11
-Last update: 01/02/2020
-
-@author: Michiel Stock
-michielfmstock@gmail.com
-
-Implementation of basic shapes as an introduction of the type system.
-=#
-
-#=
-# Flatland
-
-## Introduction and goal
-In this notebook, we will implement a variety of two-dimensional geometric shapes.
-The different shapes might have drastically different representations. For example, we can describe a rectangle
-by the coordinates of its center, its length and its width. A triangle, on the other hand,
-is more naturally represented by its three points. Similarly, computing the area of a rectangle or a triangle
-involves two different formulas. The nice thing about Julia is that you can hide this complexity from the users.
-You have to create your structures, subtypes of the abstract `Shape` type and have custom methods that will work
-for each type!
-
-Below, we suggest a variety of shapes, each with its unique representation. For this assignment, you have to complete **one**
-type and make sure all the provided functions `corners`, `area`, `move!`, `rotate!`,... work. Using `PlottingRecipes`, you can easily
-plot all your shapes (provided you implemented all the helper functions).
-
-Implementing such shapes can have various exciting applications, such as making a drawing tool or a ray tracer. Our
-end goal is to implement a simulator of a toy statistical physics system. Here, we simulate a system with inert particles, leading to self-organization.
-Our simple rejection sampling algorithm that we will use is computationally very demanding, an ideal case study for Julia!
-
-## Assignments
-
-- [ ] add the correct *inner* constructor to your type;
-- [ ] complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
-- [ ] complete `center` to return the center of mass of the shape;
-- [ ] complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
-- [ ] complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
-- [ ] complete `area`, this computes the area of your shape;
-- [ ] complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
-- [ ] complete the function `in`, to check whether a point is in your shape;
-- [ ] complete `intersect`, to check whether two shapes overlap;
-- [ ] complete `randplace!`, which randomly moves and rotates a shape within a box;
-- [ ] complete the rejection sampling algorithm and experiment with your shape(s).
-
-Note: You will need to create specifice methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
-=#
+module Flatland
 
 using LinearAlgebra
 
-# TYPES
-# -----
-
-# We define all kinds of shapes. 
-
 abstract type Shape end
-
-#=
- `AbstractRectangle` is for simple rectangles and squares, for which the sides are always aligned with the axes.
-They have a `l`ength and `w`idth attribute, in addtion to an `x` and `y` for their center.
-
-For the constructors, we follow the convention: `Shape((x,y); kwargs)` where `kwargs` are the keyword arguments determining
-the shape.
-=#
 
 abstract type AbstractRectangle <: Shape end
 
@@ -83,8 +25,6 @@ function Rectangle((xmin, xmax), (ymin, ymax))
     return Rectangle((x, y), l=l, w=w)
 end
 
-# Squares are special cases
-
 mutable struct Square <: AbstractRectangle
     x::Float64
     y::Float64
@@ -94,14 +34,8 @@ mutable struct Square <: AbstractRectangle
     end
 end
 
-# This small function to get `l` and `w` will allow you to treat `Square` and `Rectangle` the same!
 lw(shape::Rectangle) = shape.l, shape.w
 lw(shape::Square) = shape.l, shape.l
-
-#=
-Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it it tilted.
-The order of the polygon is part of its parametric type, so we give the compiler some hint how it will behave.
-=#
 
 mutable struct RegularPolygon{N} <: Shape 
     x::Float64
@@ -127,10 +61,6 @@ mutable struct Circle <: Shape
     end
 end
 
-#=
-Triangles are described by its three points. It's center is computed when needed.
-=#
-
 abstract type AbstractTriangle <: Shape end
 
 mutable struct Triangle <: AbstractTriangle
@@ -143,15 +73,6 @@ mutable struct Triangle <: AbstractTriangle
     Triangle((x1, y1), (x2, y2), (x3, y3)) = new(x1, x2, x3, y1, y2, y3)
 end
 
-# examples
-
-rect = Rectangle((1, 2), l=1, w=2)
-square = Square((0, 1))
-triangle = Triangle((1, 2), (4, 5), (7, -10))
-pent = RegularPolygon((0, 0), 5)
-circle = Circle((10, 10))
-
-# corners and center
 
 ncorners(::AbstractRectangle) = 4
 ncorners(::AbstractTriangle) = 3
@@ -322,7 +243,7 @@ end
 # plotting utilities
 
 
-using Plots, RecipesBase
+using RecipesBase
 
 #=
 OK, let's take a look at our shapes! We use `RecipesBase` to allow plotting.
@@ -339,38 +260,6 @@ This falls back on `xycoords` (can you see how it works?), so make sure this met
     return x, y
 end
 
-
-function plotshapes(shapes; kwargs...)
-    p = plot(;kwargs...)
-    plot!.(shapes)
-    return p
-end
-
-
-
-# in and interaction
-
-#=
-Here, we want to perform some geometric checks. 
-
-```julia
-(x, y) in shape
-```
-should return a Boolean whether the point.
-
-Similarly, we want to check whether two shapes overlap (partly):
-
-```julia
-intersect(shape1, shape2)
-```
-
-By completing these functions, the following more mathematical syntax should also work:
-
-```julia
-(x, y) ∈ shape  # \in<TAB>
-shape1 ∩ shape2  # \cap<TAB>
-```
-=#
 
 Base.in((x, y), s::Circle) = (s.x - x)^2 + (s.y - y)^2 ≤ s.R^2
 
@@ -495,46 +384,6 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     return shape
 end
 
-#=
-## Simulating a system of shapes
-
-Suppose we want to use our shape(s) to study a system of non-interacting particles.
-Here, we assume that the shapes are rigid and cannot overlap.
-There are no forces that attract or repel particles.
-Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
-
-One approach to study systems of particles is to model every particle's dynamics, keep track of all collisions, etc.
-We will do something more ingenious: we will use ideas from statistical physics.
-Namely, every valid state (i.e., no shapes overlap and all shapes are within the box) is equally likely.
-So instead of simulating the system, we will take samples from it!
-These samples are equivalent to random 'snapshots' of a more complex simulation.
-Pretty cool, right?
-
-To generate the samples, we will use [rejection sampling](https://en.wikipedia.org/wiki/Rejection_sampling).
-Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
-More concretely, we follow the following steps:
-1. generate all the shapes you want to place;
-2. randomly place the shapes into the box (using `randplace!`);
-3. from the moment a single shape overlaps with another shape, you have to start entirely anew to step 2.
-
-The last point is crucial! If you place a shape that overlaps an earlier shape,
-it is insufficient to redistribute that shape. **You have to start over completely.** Only then will you generate correct samples.
-
-The inputs of our function implementing the above algorithm are:
-- `shapes`: a list of your shapes (same type, but not necessarily with the same dimensions);
-- `xlims`, `ylims`: tuples outlining the box;
-The function works inplace, and returns the number of trials needed to generate a valid sample.
-This quantity is relevant by itself (it is related to the partition function of the Boltzmann distribution), but we will only use it for diagnostic purposes.
-
-As you might imagine, this algorithm is still very computationally expensive.
-Try with about 20 shapes, and work yourself up to more extensive examples.
-Try a mixture of small and large shapes. You should see some self-organization going on!
-=#
-
-
-xlims = (0, 100)
-ylims = (0, 80)
-
 function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
     trials = 0
     n = length(shapes)
@@ -564,4 +413,4 @@ function rejection_sampling(shape, n, xlims, ylims)
     return shapes, trials
 end
 
-
+end
