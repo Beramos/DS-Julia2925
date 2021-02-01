@@ -333,51 +333,17 @@ begin
 end
 
 # ╔═╡ a005992e-6243-11eb-3e29-61c19c6e5c7c
-#=begin
+begin
 	ncorners(::Circle) = 0  # this one is for free!
 	ncorners(shape::Shape) = missing # leave this default 
 	#...add your own ncorners
 	
-end=#
+end
 
 # ╔═╡ ac423fa8-6243-11eb-1385-a395d208c42d
-#=begin
+begin
 	function corners(shape::Shape)
 		return missing
-	end
-end=#
-
-# ╔═╡ 55486b2a-6304-11eb-09ac-b703d0c772ba
-begin 
-	ncorners(::AbstractRectangle) = 4
-	ncorners(::AbstractTriangle) = 3
-	ncorners(::Circle) = 0
-	ncorners(::RegularPolygon{N}) where {N} = N
-
-	function corners(shape::AbstractRectangle)
-		x, y = center(shape)
-		l, w = lw(shape)
-		return [(x+l/2, y+w/2), (x-l/2, y+w/2), (x-l/2, y-w/2), (x+l/2, y-w/2)]
-	end
-
-	function corners(shape::RegularPolygon)
-		x, y = center(shape)
-		θ = shape.θ
-		R = shape.R
-		n = ncorners(shape)
-		return [(x+R*cos(t+θ), y+R*sin(t+θ)) for t in range(0, step=2π/n, length=n)]
-	end
-
-	function corners(shape::Triangle)
-		return [(shape.x1, shape.y1), (shape.x2, shape.y2), (shape.x3, shape.y3)]
-	end
-
-	corners(shape::Circle) = []
-	
-	center(shape::Shape) = shape.x, shape.y
-	function center(shape::Triangle)
-    	(x1, y1), (x2, y2), (x3, y3) = corners(shape)
-    	return ((x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3)
 	end
 end
 
@@ -424,33 +390,20 @@ The fuctions below is supposed to yield the outer limits of the x and y axes of 
 end
 
 # ╔═╡ a89bdba6-6244-11eb-0b83-c1c64e4de17d
-#=begin
+begin
 	xlim(shape::Shape) = missing
-end=#
+end
 
 # ╔═╡ b1372784-6244-11eb-0279-27fd755cda6a
-#=begin
+begin
 	ylim(shape::Shape) = missing
-end=#
+end
 
 # ╔═╡ bd706964-6244-11eb-1d9d-2b60e53cdce1
 md"This should return the bounding box, as the smallest rectangle that can completely contain your shape."
 
 # ╔═╡ b91e1e62-6244-11eb-1045-0770fa92e040
-#boundingbox(shape::Shape) = missing
-
-# ╔═╡ 7acf19a2-6309-11eb-12dd-ed2563b9ccb7
-begin
-	xlim(shape::Shape) = extrema(xycoords(shape)[1])
-	xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
-	xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
-
-	ylim(shape::Shape) = extrema(xycoords(shape)[2])
-	ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
-	ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
-
-	boundingbox(shape::Shape) = Rectangle(xlim(shape), ylim(shape))
-end
+boundingbox(shape::Shape) = missing
 
 # ╔═╡ d60f8ca4-6244-11eb-2055-4551e4c10906
 md"""
@@ -493,105 +446,32 @@ For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
 end
 
 # ╔═╡ 83c6d25c-6246-11eb-1a24-57e20f5e7262
-#=begin
+begin
 	function move!(shape::Shape, (dx, dx))
 		# move the shape
 		return shape
 	end
-end=#
+end
 
 # ╔═╡ a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
-#=begin
+begin
 	function rotate!(shape::Shape, dθ)
 		# rotate the shape, counterclockwise
 		return shape
 	end
-end=#
+end
 
 # ╔═╡ b907e8fc-6246-11eb-0beb-bb44930d033c
-#=begin
+begin
 	function scale!(shape::Shape, a)
 		@assert a > 0 "scaling has to be a positive number"
 		# scale with a factor a
 		return shape
 	end
-end=#
-
-# ╔═╡ d6dd39be-6308-11eb-34bd-d16118d85051
-begin
-	
-	function move!(shape::Shape, (dx, dy))
-    shape.x += dx
-    shape.y += dy
 end
 
-function move!(shape::Triangle, (dx, dy))
-    shape.x1 += dx
-    shape.x2 += dx
-    shape.x3 += dx
-    shape.y1 += dy
-    shape.y2 += dy
-    shape.y3 += dy
-    shape
-end
+# ╔═╡ 2d7a63cc-64db-11eb-0a4c-bb7771af8b14
 
-rotate!(shape::Union{Circle,AbstractRectangle}, dθ) = shape
-
-function rotate!(shape::RegularPolygon, dθ)
-    shape.θ += dθ
-    shape
-end
-
-
-function rotate!(shape::Triangle, dθ)
-    xc, yc = center(shape)
-    # center triangle
-    move!(shape, (-xc, -yc))
-    (x1, y1), (x2, y2), (x3, y3) = corners(shape)
-    cosdθ = cos(dθ)
-    sindθ = sin(dθ)
-    shape.x1 = x1 * cos(dθ) - y1 * sin(dθ)
-    shape.x2 = x2 * cos(dθ) - y2 * sin(dθ)
-    shape.x3 = x3 * cos(dθ) - y3 * sin(dθ)
-    shape.y1 = y1 * cos(dθ) + x1 * sin(dθ)
-    shape.y2 = y2 * cos(dθ) + x2 * sin(dθ)
-    shape.y3 = y3 * cos(dθ) + x3 * sin(dθ)
-    # set to original position
-    move!(shape, (xc, yc))
-    shape
-end
-
-function scale!(shape::Union{Circle,RegularPolygon}, a)
-    @assert a > 0 "scaling has to be a positive number"
-    shape.R *= a
-end
-
-function scale!(shape::Rectangle, a)
-    @assert a > 0 "scaling has to be a positive number"
-    shape.w *= a
-    shape.l *= a
-end
-
-function scale!(shape::Square, a)
-    @assert a > 0 "scaling has to be a positive number"
-    shape.w *= a
-end
-
-function scale!(shape::Triangle, a)
-    @assert a > 0 "scaling has to be a positive number"
-    xc, yc = center(shape)
-    move!(shape, (-xc, -yc))
-    shape.x1 *= a
-    shape.x2 *= a
-    shape.x3 *= a
-    shape.y1 *= a
-    shape.y2 *= a
-    shape.y3 *= a
-    move!(shape, (xc, yc))
-    return shape
-end
-	
-end
 
 # ╔═╡ d08ab6d0-6246-11eb-08a8-152f9802cdfc
 md"""
@@ -668,12 +548,12 @@ begin
 end
 
 # ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
-#=begin
+begin
 	function Base.in((x, y), s::Shape)
 		# compute something
 		return missing
 	end
-end=#
+end
 
 # ╔═╡ 150f1dae-6248-11eb-276f-9bbf7eba58fd
 """
@@ -687,19 +567,6 @@ function same_side((a, b), p, q)
     n = (a[2] - b[2], b[1] - a[1])
     # check if they are on both sides by projection
 	return sign(n ⋅ (p .- a)) == sign(n ⋅ (q .-a ))
-end
-
-# ╔═╡ 711e0588-6306-11eb-31a9-7b029ac90071
-function Base.in(q, shape::Shape)
-    corns = corners(shape)
-    n = ncorners(shape)
-    c = center(shape)
-    # check if q is always on the same side as the center
-    for i in 1:n-1
-        !same_side((corns[i], corns[i+1]), c, q) && return false
-    end
-    !same_side((corns[end], corns[1]), c, q) && return false
-    return true
 end
 
 # ╔═╡ b8ed26f2-633b-11eb-380e-9379b0f4697f
@@ -785,7 +652,7 @@ The efficiency and the process of checking intersection is very different for ea
 end
 
 # ╔═╡ 5368c46e-633e-11eb-0d98-b1ccb37cc7f8
-#=begin
+begin
 	function Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle)
 		return missing
 	end
@@ -803,14 +670,6 @@ end
 		return missing
 	end
 	
-end=#
-
-# ╔═╡ f65ab7b8-633c-11eb-1606-75583b69677c
-function Base.intersect(shape1::T, shape2::T) where {T<:Shape}
-    return center(shape1) ∈ shape2 ||
-            center(shape2) ∈ shape1 ||
-            any(c->c ∈ shape2, corners(shape1)) ||
-            any(c->c ∈ shape1, corners(shape2))
 end
 
 # ╔═╡ e6efb632-6338-11eb-2e22-eb0b1ff577c4
@@ -876,24 +735,11 @@ begin
 end
 
 # ╔═╡ 8d73b66c-624e-11eb-0a52-2309ef897b1c
-#=function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
+function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     # random rotation
     
     # random translation within bound
     
-    return shape
-end=#
-
-# ╔═╡ 3651df40-6308-11eb-26e0-b5d70db4ad20
-function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
-    # random rotation
-    rotate && rotate!(shape, 2π * rand())
-    # random tranlation within bound
-    dxmin, dxmax = (xmin, xmax) .- xlim(shape)
-    dymin, dymax = (ymin, ymax) .- ylim(shape)
-    dx = (dxmax - dxmin) * rand() + dxmin
-    dy = (dymax - dymin) * rand() + dymin
-    move!(shape, (dx, dy))
     return shape
 end
 
@@ -952,35 +798,12 @@ xlims = (0, 100)
 ylims = (0, 80)
 
 # ╔═╡ a30ded16-63a5-11eb-35f2-2b1ff724eb54
-#=function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
     # place all the shapes one-by-one, such that they don't overlap
 	# the moment you find a single conflict, you have to start over again
 	
 	return shapes, trials
     
-end=#
-
-# ╔═╡ dc2db006-63c1-11eb-34de-39eda074c645
-function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
-    trials = 0
-    success = false
-    n = length(shapes)
-    while true
-        trials += 1
-        for (i, shape) in enumerate(shapes)
-            randplace!(shape, xlims, ylims; rotate=rotate)
-            # any intersection with previous shapes: start again
-            overlap = false
-            for j in 1:i-1
-                if intersect(shape, shapes[j])
-                    overlap = true
-                    break
-                end
-            end
-            overlap && break
-            i==n && return trials
-        end
-    end
 end
 
 # ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
@@ -1139,9 +962,9 @@ end
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
 # ╟─b1d21552-6242-11eb-2665-c9232be7026e
 # ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
-# ╠═7545c788-62f0-11eb-3f6e-01deeaf990e0
+# ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
-# ╠═3a961b6e-62f1-11eb-250b-13a3f6f17eaa
+# ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
@@ -1153,7 +976,7 @@ end
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
 # ╟─abc99468-6333-11eb-1a9d-e50f8e56e468
 # ╟─501f9828-6334-11eb-0f2a-ebaa1d5b0f46
-# ╠═23ea0a46-6243-11eb-145a-b38e34969cfd
+# ╟─23ea0a46-6243-11eb-145a-b38e34969cfd
 # ╠═1b129bf4-6243-11eb-1fa2-d7bd5563a1b4
 # ╟─94ec5382-6335-11eb-100c-15d70f27e703
 # ╟─5dcdba4e-6335-11eb-19d2-2d10ae81fa39
@@ -1182,7 +1005,6 @@ end
 # ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
-# ╠═55486b2a-6304-11eb-09ac-b703d0c772ba
 # ╠═ddf0ac38-6243-11eb-3a1d-cd39d70b2ee0
 # ╠═ecc9a53e-6243-11eb-2784-ed46ccbcadd2
 # ╟─c16c36f6-6339-11eb-20d4-27ef9f74b747
@@ -1193,7 +1015,6 @@ end
 # ╠═b1372784-6244-11eb-0279-27fd755cda6a
 # ╟─bd706964-6244-11eb-1d9d-2b60e53cdce1
 # ╠═b91e1e62-6244-11eb-1045-0770fa92e040
-# ╠═7acf19a2-6309-11eb-12dd-ed2563b9ccb7
 # ╟─d60f8ca4-6244-11eb-2055-4551e4c10906
 # ╟─94cbef4e-6348-11eb-030f-d7a9debdd305
 # ╠═ebf4a45a-6244-11eb-0965-197f536f8e87
@@ -1204,45 +1025,41 @@ end
 # ╠═83c6d25c-6246-11eb-1a24-57e20f5e7262
 # ╠═a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
 # ╠═b907e8fc-6246-11eb-0beb-bb44930d033c
-# ╠═d6dd39be-6308-11eb-34bd-d16118d85051
+# ╟─2d7a63cc-64db-11eb-0a4c-bb7771af8b14
 # ╟─d08ab6d0-6246-11eb-08a8-152f9802cdfc
 # ╠═dfc779ee-6246-11eb-240b-4dc7a7d95641
 # ╠═e30d10d2-6246-11eb-1d59-332b5916712e
 # ╠═e7e90744-6246-11eb-157c-cf67e8619d6e
-# ╠═1aec9fc2-6247-11eb-2942-edc370918f9e
+# ╟─1aec9fc2-6247-11eb-2942-edc370918f9e
 # ╠═8bdc61b0-6330-11eb-3e9a-15412fecf8af
 # ╠═16d0ea9c-6247-11eb-12c6-1709f6d0ac99
-# ╠═6bae2128-6303-11eb-34f2-1dfa96e46ae6
+# ╟─6bae2128-6303-11eb-34f2-1dfa96e46ae6
 # ╠═287a7506-6247-11eb-2bad-0778802c00d5
 # ╟─01d899e6-6305-11eb-017b-27bb2c104ef5
 # ╟─221e09a2-6247-11eb-12a8-a13c0a2f96e7
 # ╟─6851ebb2-6339-11eb-2ab7-39e07c4e3154
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
-# ╠═711e0588-6306-11eb-31a9-7b029ac90071
 # ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
 # ╟─b8ed26f2-633b-11eb-380e-9379b0f4697f
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╟─22f63a5e-633a-11eb-27c7-27fcabc7bc6f
 # ╟─f3ea648e-633b-11eb-3444-317a4eb5b8ea
 # ╠═5368c46e-633e-11eb-0d98-b1ccb37cc7f8
-# ╠═f65ab7b8-633c-11eb-1606-75583b69677c
 # ╟─e6efb632-6338-11eb-2e22-eb0b1ff577c4
 # ╠═0381fbba-6248-11eb-3e80-b37137438531
-# ╠═91273cd2-6248-11eb-245c-abb6269f916b
+# ╟─91273cd2-6248-11eb-245c-abb6269f916b
 # ╠═653af7c6-6248-11eb-2a7b-fbf7550ef92b
 # ╠═6aa3519a-6248-11eb-193d-a3537f7d3bd0
 # ╟─51bca412-6340-11eb-3f38-8bfc8377715b
 # ╟─e21b0f1c-633b-11eb-3609-9b9dae71c915
-# ╠═f97bf1c0-6247-11eb-1acc-e30068a277d0
+# ╟─f97bf1c0-6247-11eb-1acc-e30068a277d0
 # ╟─97c8cd32-6340-11eb-1d6d-b7d364c0c987
 # ╠═8d73b66c-624e-11eb-0a52-2309ef897b1c
-# ╠═3651df40-6308-11eb-26e0-b5d70db4ad20
 # ╟─3e0a2e20-6341-11eb-3c23-a38b04c89b37
 # ╠═0ee778d2-6341-11eb-10b0-7146fbbc71ff
 # ╟─2338ef6a-630b-11eb-1837-431b567ad619
 # ╠═965b578e-63a5-11eb-2cf4-690ec58e939d
 # ╠═961ea26c-63a5-11eb-1227-4bcaf4778d82
 # ╠═a30ded16-63a5-11eb-35f2-2b1ff724eb54
-# ╠═dc2db006-63c1-11eb-34de-39eda074c645
-# ╠═e5a7eee2-63a5-11eb-0267-499409488b19
+# ╟─e5a7eee2-63a5-11eb-0267-499409488b19
 # ╠═de6124d2-63a5-11eb-1145-5b11f5f1c0f4
