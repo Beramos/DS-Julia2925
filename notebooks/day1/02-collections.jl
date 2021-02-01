@@ -467,7 +467,7 @@ E * R
 md"### Element-wise operations"
 
 # ╔═╡ ee779c1a-4c4a-11eb-1894-d743aeff7f44
-md"""This is the Julian way since functions act on the objects, and element-wise operatios are done with "dot" operations. For every function or binary operation like `^` there is a "dot" operation `.^` to perform element-by-element exponentiation on arrays."""
+md"""This is the Julian way since functions act on the objects, and element-wise operations are done with "dot" operations. For every function or binary operation like `^` there is a "dot" operation `.^` to perform element-by-element exponentiation on arrays."""
 
 # ╔═╡ 0697987c-4c4b-11eb-3052-df54b72dec52
 T = [10 10 10; 20 20 20]
@@ -489,10 +489,13 @@ Did you notice that dot-operations are also applicable to functions, even user-d
 # ╔═╡ 32351fb8-4c4b-11eb-058b-5bb348e8dfb7
 T.^2 .+ cos.(T) == @. T^2 + cos(T)
 
+# ╔═╡ be557eda-64a3-11eb-1562-35ad48531ebd
+
+
 # ╔═╡ eed4faca-4c1f-11eb-3e6c-b342b48080eb
 md""" ### Intermezzo: Colors.jl and Images.jl
 
-As has been mentioned before, everything has a type. We also know that functions can behave differently for each type. With this in mind, let us look at two interesting packages. *Colors.jl*
+As has been mentioned before, everything has a type. We also know that functions can behave differently for each type. With this in mind, let us look at two interesting packages. *Colors.jl* and *Images.jl*
 """
 
 # ╔═╡ 42254aa6-4f37-11eb-001b-f78d5383e36f
@@ -529,13 +532,20 @@ sqr_img = img[1:1500, 201:1700]
 md"Because of this type system, a lot of interesting feature work out of the box."
 
 # ╔═╡ 8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
-@bind brightness html"<input type=range min=0.0 max=300.0>"
+md"""
+☼ 
+$(@bind brightness html"<input type=range min=0.0 max=300.0>")
+☾
+"""
 
 # ╔═╡ ac62d6e0-5a74-11eb-1538-09d157738257
 brightness
 
 # ╔═╡ d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
 img[1:1500, 201:1700]./(brightness/100)
+
+# ╔═╡ 21db9766-64a4-11eb-3ec1-4956431e7a09
+
 
 # ╔═╡ 5064c592-4c4b-11eb-0dee-5186caf2b1f6
 md"### Higher dimensional arrays"
@@ -547,7 +557,7 @@ md"Matrices can be generalized to multiple dimensions."
 H = rand(3, 3, 3)
 
 # ╔═╡ bf6b9fc4-5a74-11eb-2676-bda580c65877
-md"That is all there is to, feel free to create arrays of any dimension."
+md"That is all there is to see about matrices, feel free to create arrays of any dimension."
 
 # ╔═╡ 6e7d5a94-4c4b-11eb-3e2d-353177d6bca5
 md"### Ranges"
@@ -565,7 +575,7 @@ md"Or by increasing in steps:"
 str = 1:3:20
 
 # ╔═╡ 9483861e-4c4b-11eb-156b-2501ef2c54d0
-md"Similar to the `range` function in Python, the object that is created is not an array, but an iterator. This is actually the term used in Python. Julia has many different types and structs, which behave a particular way. Types of `UnitRange` only store the beginning and end value (and stepsize in the case of `StepRange`). But functions are overloaded such that it acts as arrays."
+md"Similar to the `range` function in Python, the object that is created is not an array, but an iterator. This is actually the term used in Python. Julia has many different types and structs, which behave a particular way. Types of `UnitRange` only store the beginning and end value (and stepsize in the case of `StepRange`). But functions are overloaded such that it acts as an array. This can really improve the execution speed since the conversion from `Range` to explicit array is only performed where it is necessary and avoids copying large matrices from function to function."
 
 # ╔═╡ 9fd1be0a-4c4b-11eb-299b-f7f0d8797f71
 @terminal let
@@ -606,6 +616,9 @@ md"`StepRange` and `UnitRange` also work with floats."
 
 # ╔═╡ 0bec2d28-4c58-11eb-0a51-95bf50bbfd79
 0:0.1:10
+
+# ╔═╡ ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
+
 
 # ╔═╡ 0fd08728-4c58-11eb-1b71-c9710d398fab
 md"## 3. Other collections"
@@ -739,6 +752,9 @@ Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the 
 	validate(qb1, tracker)
 end
 
+# ╔═╡ c1e377c4-64a4-11eb-3e7f-b163cb465057
+
+
 # ╔═╡ 75d14674-58ba-11eb-3868-172fc00a0eb8
 function markdowntable(table, header)
 	missing
@@ -806,13 +822,16 @@ begin
 		questions = [q71, q72],
 		hints = [
 			hint(md""" The `join` and `repeat`-functions might come in handy """),
-			hint(md""" The @assert macro should get you close to solving the second part."""),
+			hint(md""" The `@assert` macro should get you close to solving the second part."""),
 		]
 		
 	)
 	
 	validate(qb70, tracker)
 end
+
+# ╔═╡ dc6a4870-64a4-11eb-328f-41e5dbcd0a3b
+
 
 # ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 function mydet(A)
@@ -853,6 +872,9 @@ qb2 = QuestionBlock(;
 )
 	validate(qb2, tracker)
 end
+
+# ╔═╡ e5293248-64a4-11eb-0d30-53a15bec0d01
+
 
 # ╔═╡ cb20fffe-58cf-11eb-1b65-49699f2d3699
 function estimatepi(n)
@@ -926,6 +948,9 @@ begin
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
 
+# ╔═╡ 00121c4e-64a5-11eb-2993-61c695c4e6a1
+
+
 # ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
 vandermonde(α, n) = missing
 
@@ -954,6 +979,9 @@ $V = [\alpha_i^{j-1}] .$
 )
 	validate(qb1)
 end
+
+# ╔═╡ 16ec4ee4-64a5-11eb-26f3-15313b8b5acb
+
 
 # ╔═╡ 2e7973b6-4d0f-11eb-107c-cdaf349428c0
 md""" ## 5. References
@@ -1030,7 +1058,7 @@ md""" ## 5. References
 # ╠═0cfc84ca-4c23-11eb-124b-5397430fd203
 # ╠═4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
 # ╠═562b751e-4c23-11eb-2b8f-73f710bf3520
-# ╠═5ed7284a-4c23-11eb-1451-0ff763f52bc7
+# ╟─5ed7284a-4c23-11eb-1451-0ff763f52bc7
 # ╟─0186eab2-4c24-11eb-0ff6-d7f8af343647
 # ╠═097e96e8-4c24-11eb-24c4-31f4d23d3238
 # ╠═0b9bad58-4c24-11eb-26a8-1d04d7b2be61
@@ -1066,6 +1094,7 @@ md""" ## 5. References
 # ╠═2146ac4c-4c4b-11eb-288f-edb3eacff0eb
 # ╟─28f5c018-4c4b-11eb-3530-8b592f2abeda
 # ╠═32351fb8-4c4b-11eb-058b-5bb348e8dfb7
+# ╟─be557eda-64a3-11eb-1562-35ad48531ebd
 # ╟─eed4faca-4c1f-11eb-3e6c-b342b48080eb
 # ╠═fbde6364-4f30-11eb-1ece-712293996c04
 # ╠═42254aa6-4f37-11eb-001b-f78d5383e36f
@@ -1083,6 +1112,7 @@ md""" ## 5. References
 # ╟─8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
 # ╠═ac62d6e0-5a74-11eb-1538-09d157738257
 # ╠═d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
+# ╟─21db9766-64a4-11eb-3ec1-4956431e7a09
 # ╟─5064c592-4c4b-11eb-0dee-5186caf2b1f6
 # ╟─598980b8-4c4b-11eb-0c5b-b7064b189e97
 # ╠═5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
@@ -1105,6 +1135,7 @@ md""" ## 5. References
 # ╠═3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
 # ╟─03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 # ╠═0bec2d28-4c58-11eb-0a51-95bf50bbfd79
+# ╟─ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
 # ╟─0fd08728-4c58-11eb-1b71-c9710d398fab
 # ╟─2c6097f4-4c58-11eb-0807-d5d8cbfbd62c
 # ╟─9505a4d4-4c58-11eb-1e2e-0d080437fa23
@@ -1132,18 +1163,23 @@ md""" ## 5. References
 # ╟─ee9069e2-63a7-11eb-12b9-97ae270506f4
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
+# ╟─c1e377c4-64a4-11eb-3e7f-b163cb465057
 # ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
+# ╟─dc6a4870-64a4-11eb-328f-41e5dbcd0a3b
 # ╟─b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
+# ╟─e5293248-64a4-11eb-0d30-53a15bec0d01
 # ╟─c6e16d7a-58cf-11eb-32a4-3372939066e3
 # ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
-# ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
+# ╟─04aff640-58bb-11eb-1bb6-69ad9fc32314
 # ╟─69dc67fa-4cff-11eb-331e-25ffdced4323
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
+# ╟─00121c4e-64a5-11eb-2993-61c695c4e6a1
 # ╟─b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
+# ╟─16ec4ee4-64a5-11eb-26f3-15313b8b5acb
 # ╟─2e7973b6-4d0f-11eb-107c-cdaf349428c0
