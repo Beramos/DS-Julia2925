@@ -21,6 +21,7 @@ student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
 begin 
 	using DSJulia;
+	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
 
@@ -139,6 +140,12 @@ println("The answer to $mystery is $(3*2*7)")
 
 # ╔═╡ 7592f8a2-4ac0-11eb-375c-61c915380eeb
 md"... but take a look at the terminal window."
+
+# ╔═╡ 97b7f7d8-61aa-11eb-2bf6-739bd5f2e941
+md"So the [Stdout](https://www.computerhope.com/jargon/s/stdout.htm) is printed to the terminal window and not the notebooks. We can use the @terminal macro of our own making to circumvent this. More on macros tomorrow!"
+
+# ╔═╡ dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
+@terminal println("The answer to $mystery is $(3*2*7)")
 
 # ╔═╡ abf00a78-4ab8-11eb-1063-1bf4905ca250
 md"""
@@ -384,7 +391,7 @@ clip(x) = missing
 begin
    q2 = Question(
 			description=md"""
-			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, without making use of the functions `min` and `max`.
+			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, **without** making use of the functions `min` and `max`.
 
 			Open assignments always return `missing`. 
 			""",
@@ -414,21 +421,27 @@ md"## 4. Looping"
 characters = ["Harry", "Ron", "Hermione"]
 
 # ╔═╡ 3ef3faf8-4ac0-11eb-1965-fd23413e29f3
-for char in characters
-  println("Character $char")
+@terminal begin
+	for char in characters
+	  println("Character $char")
+	end
 end
 
 # ╔═╡ 4118016e-4ac0-11eb-18bf-5de326782c87
-for (i, char) in enumerate(characters)
-  println("$i. $char")
+@terminal begin
+	for (i, char) in enumerate(characters)
+	  println("$i. $char")
+	end
 end
 
 # ╔═╡ 4119fbca-4ac0-11eb-1ea9-0bdd324214c5
 pets = ["Hedwig", "Pig", "Crookhanks"]
 
 # ╔═╡ 4139bf3c-4ac0-11eb-2b63-77a513149351
-for (char, pet) in zip(characters, pets)
-  println("$char has $pet as a pet")
+@terminal begin
+	for (char, pet) in zip(characters, pets)
+	  println("$char has $pet as a pet")
+	end
 end
 
 # ╔═╡ a1d4127c-4ac0-11eb-116f-79c6ee58f524
@@ -438,12 +451,14 @@ md"Strings can also be looped"
 getme = "a shrubbery"
 
 # ╔═╡ ac35b796-4ac0-11eb-3bc5-5ff4350d5452
-for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
-  println("$letter")
+@terminal begin
+	for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
+	  println("$letter")
+	end
 end
 
 # ╔═╡ b18e55ae-4ac0-11eb-1455-21b83b7c61d5
-let 
+@terminal let 
 	n = 16757676187786;
 	steps = 0
 	while n > 1
@@ -648,10 +663,10 @@ square(2.0)
 square("ni")   # the multiplication of strings is defined as a concatenation
 
 # ╔═╡ 1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
-square(4)
+@terminal square(4)
 
 # ╔═╡ 226417c2-4ac2-11eb-2914-196461e2b40e
-square(4.)
+@terminal square(4.)
 
 # ╔═╡ 3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
 md"More about types in the next section!"
@@ -715,13 +730,13 @@ Some nifty basic macros are `@time` and `@show`. `@time` prints the cpu time and
 """
 
 # ╔═╡ 85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
-@time square(10)  #Don't forget that printing happens in the terminal windows
+@terminal @time square(10)
 
 # ╔═╡ a11c2898-4ac2-11eb-24d3-6f8060b5fd65
 md"""The `@show` macro is often useful for debugging purposes. It displays both the expression to be evaluated and its result, finally returning the value of the result."""
 
 # ╔═╡ a686e67e-4ac2-11eb-228e-23524a3ddc59
-@show 1 + 1
+@terminal @show 1 + 1
 
 # ╔═╡ d50cced2-500d-11eb-2dcc-21fc50825f43
 md"We will provide more examples tomorrow!"
@@ -988,6 +1003,8 @@ end
 # ╟─6b6eb954-4ab8-11eb-17f9-ef3445d359a3
 # ╠═94e3eb74-4ab8-11eb-1b27-573dd2f02b1d
 # ╟─7592f8a2-4ac0-11eb-375c-61c915380eeb
+# ╟─97b7f7d8-61aa-11eb-2bf6-739bd5f2e941
+# ╠═dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
 # ╟─abf00a78-4ab8-11eb-1063-1bf4905ca250
 # ╠═be220a48-4ab8-11eb-1cd4-db99cd9db066
 # ╠═cadaf948-4ab8-11eb-3110-259768055e85
@@ -1116,7 +1133,7 @@ end
 # ╠═cacb7254-4f2f-11eb-1daa-1bc04678835c
 # ╠═cc48bc9a-4f2f-11eb-134c-71bd8a944943
 # ╠═d9f28c04-4f2f-11eb-0255-1965fb8f07b5
-# ╟─dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
+# ╠═dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
 # ╟─de48a3f6-4f2f-11eb-314b-493546c37a21
 # ╟─6da71180-4ac2-11eb-1cac-410bd1cce70c
 # ╠═85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
@@ -1139,7 +1156,7 @@ end
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
-# ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
