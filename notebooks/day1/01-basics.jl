@@ -927,6 +927,34 @@ function degrade(molecule)
 	return missing # replace this with the correct code
 end
 
+# ╔═╡ 4d0e1d60-6476-11eb-154e-d9cc3bf284c2
+caproic_acid = "CH3-CH2-CH2-CH2-CH2-COOH"
+
+# ╔═╡ 5167ded6-6463-11eb-3279-0dd226fae82e
+verylongium = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3" 
+
+# ╔═╡ c4d03faa-647d-11eb-3a84-d7b2d53e4720
+
+
+# ╔═╡ c42f69f6-647d-11eb-143b-2f0ab33616e7
+
+
+# ╔═╡ c55ed390-647d-11eb-22d5-33fbae27a2bb
+function generator(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
+	return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
+end
+
+# ╔═╡ 23db2764-647e-11eb-37dd-a34db2ff0fcd
+generator(6) #try rerunning this cell multiple times
+
+# ╔═╡ 989d0dd2-647a-11eb-3123-39786452714a
+C12 = [generator(12) for i in 1:10]
+
+# ╔═╡ 061e4894-647b-11eb-06db-310d02463b80
+function molecular_weight(molecule)
+	return missing
+end
+
 # ╔═╡ e6217d50-63de-11eb-28d8-452aeffc956c
 begin 
 
@@ -934,11 +962,21 @@ molecule1_mm = "CH3-CH2-CH2-CH2-CH2-COOH"
 molecule2_mm = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3"
 	
 test1_mm = 	@safe[molecule1_mm |> Solutions.degrade == molecule1_mm |> degrade] 
+	
+molecule1_mm = "CH3-CH2-CH2-CH2-CH2-COOH"
+molecule2_mm = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3"
+	
+test2_mm = 	@safe[
+		molecule1_mm |> Solutions.molecular_weight == 
+			molecule1_mm |> molecular_weight,
+		molecule2_mm |> Solutions.molecular_weight == 
+			molecule2_mm |> molecular_weight,		
+		] 
 
 q_mm1 = Question(validators = test1_mm, 
 					description = md"""Happy with their discovery (less happy with the odours coming from their machine), the scientist take out a small vial... We wonder what would be the stable molecule obtained from this very expensive bottle filled with the molecule `verylongium`.""")
 
-q_mm2 = Question(validators = @safe[], 
+q_mm2 = Question(validators = test2_mm, 
 		description = md""" All of the sudded you hear, *\"Eureka!\"* from the other end of the corridor. It appears the chemical engineers finally figured out how to get their molecular generator working. The machine generates random molecules with a set number of carbon atoms `N`. They even show you how it works (see `generator` below), it is quite simple actually. 
 		
 The engineers would like to analyse the molecules they generate, using the mass spectroscopy machine. They do not only want to know which molecules are obtained after degradation but also want to see the spread of the molecular weight of the degradation product. 
@@ -1007,40 +1045,11 @@ qb_mm = QuestionBlock(;
 	validate(qb_mm)
 end
 
-# ╔═╡ 4d0e1d60-6476-11eb-154e-d9cc3bf284c2
-caproic_acid = "CH3-CH2-CH2-CH2-CH2-COOH"
+# ╔═╡ 89a9ad00-6489-11eb-2a2d-bfa18af103ab
+#Plotting
 
-# ╔═╡ 5167ded6-6463-11eb-3279-0dd226fae82e
-verylongium = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3" 
+# ╔═╡ 8ab56dcc-6489-11eb-16a4-b7d12003ed99
 
-# ╔═╡ c4d03faa-647d-11eb-3a84-d7b2d53e4720
-
-
-# ╔═╡ c42f69f6-647d-11eb-143b-2f0ab33616e7
-
-
-# ╔═╡ c55ed390-647d-11eb-22d5-33fbae27a2bb
-function generator(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
-	return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
-end
-
-# ╔═╡ 23db2764-647e-11eb-37dd-a34db2ff0fcd
-generator(6) #try rerunning this cell multiple times
-
-# ╔═╡ 989d0dd2-647a-11eb-3123-39786452714a
-C12 = [generator(12) for i in 1:1000];
-
-# ╔═╡ 061e4894-647b-11eb-06db-310d02463b80
-function molecular_weight(molecule)
-	return count("CH3", molecule)* 15.0 +
-			count("CH4", molecule) * 16.0 +
-			count("CH2", molecule) * 14.0 +
-			count("CO", molecule) * 28.0 +
-			count("OH", molecule) * 17
-end
-
-# ╔═╡ 5bcda4e6-647c-11eb-3bd8-198e50fe280b
-histogram(C12 .|> molecular_weight, normalize=true, xlabel="Molecular weight (g/mol" ,ylabel = "Relative frequency (-)", label="", color=:Grey)
 
 # ╔═╡ 0507186a-647a-11eb-07cf-ebf32bdff5b0
 
@@ -1287,7 +1296,7 @@ end
 # ╠═42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
 # ╟─e2583a06-6479-11eb-091b-8be70024930d
-# ╠═e6217d50-63de-11eb-28d8-452aeffc956c
+# ╟─e6217d50-63de-11eb-28d8-452aeffc956c
 # ╠═1f588828-6477-11eb-0c70-557f130c6785
 # ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
 # ╠═5167ded6-6463-11eb-3279-0dd226fae82e
@@ -1297,7 +1306,8 @@ end
 # ╠═23db2764-647e-11eb-37dd-a34db2ff0fcd
 # ╠═989d0dd2-647a-11eb-3123-39786452714a
 # ╠═061e4894-647b-11eb-06db-310d02463b80
-# ╠═5bcda4e6-647c-11eb-3bd8-198e50fe280b
+# ╠═89a9ad00-6489-11eb-2a2d-bfa18af103ab
+# ╠═8ab56dcc-6489-11eb-16a4-b7d12003ed99
 # ╟─0507186a-647a-11eb-07cf-ebf32bdff5b0
 # ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
