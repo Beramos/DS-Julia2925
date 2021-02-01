@@ -63,4 +63,4 @@ V = Vandermonde(α, 4)
 
 using LinearAlgebra
 
-LinearAlgebra.det(V::Vandermonde) = ((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod
+LinearAlgebra.det(V::Vandermonde) = ((xi - xj) for (i, xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod

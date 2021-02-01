@@ -8,6 +8,13 @@ michielfmstock@gmail.com
 Implementation of basic shapes as an introduction of the type system.
 =#
 
+#=______________________
+|                       |
+|         Flatland      |
+|_______________________|
+=#
+
+
 #=
 # Flatland
 
@@ -319,35 +326,6 @@ function scale!(shape::Triangle, a)
     return shape
 end
 
-# plotting utilities
-
-
-using Plots, RecipesBase
-
-#=
-OK, let's take a look at our shapes! We use `RecipesBase` to allow plotting.
-This falls back on `xycoords` (can you see how it works?), so make sure this method is operational.
-=#
-
-@recipe function f(s::Shape)
-    xguide --> "x"
-    yguide --> "y"
-    label --> ""
-    aspect_ratio := :equal
-    seriestype := :shape
-    x, y = xycoords(s)
-    return x, y
-end
-
-
-function plotshapes(shapes; kwargs...)
-    p = plot(;kwargs...)
-    plot!.(shapes)
-    return p
-end
-
-
-
 # in and interaction
 
 #=
@@ -373,12 +351,6 @@ shape1 ∩ shape2  # \cap<TAB>
 =#
 
 Base.in((x, y), s::Circle) = (s.x - x)^2 + (s.y - y)^2 ≤ s.R^2
-
-function Base.in((x, y), s::AbstractRectangle)
-    xc, yc = center(s)
-    l, w = lw(shape)
-    return (xc - 0.5l ≤ x ≤ xc + 0.5l) && (yc - 0.5w ≤ y ≤ yc + 0.5w)
-end
 
 crossprod((x1, y1), (x2, y2)) = x1 * y2 - x2 * y1
 
@@ -441,7 +413,7 @@ end
     (ymin1, ymax1), (ymin2, ymax2)  = ylim(shape1), ylim(shape2)
     # check for x and y overlap
     return (xmin1 ≤ xmin2 ≤ xmax1 || xmin1 ≤ xmax2 ≤ xmax1 || xmin2 ≤ xmin1 ≤ xmax2) &&
-            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 || ymin2 ≤ ymin1 ≤ ymax2)
+            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 ||ymin2 ≤ ymin1 ≤ ymax2)
 end
 
 Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle) = boundboxes_overlap(shape1, shape2)
@@ -473,8 +445,6 @@ function Base.intersect(shape1::Triangle, shape2::Triangle)
             linecross((p3, p2), (q1, q3))
 end
     
-
-
 function Base.intersect(shape1::Circle, shape2::Circle)
     c1 = center(shape1)
     c2 = center(shape2)

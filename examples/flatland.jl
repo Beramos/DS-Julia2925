@@ -1,6 +1,6 @@
 #=
 Created on 05/01/2021 20:52:11
-Last update: 29/01/2020
+Last update: 01/02/2020
 
 @author: Michiel Stock
 michielfmstock@gmail.com
@@ -128,7 +128,7 @@ mutable struct Circle <: Shape
 end
 
 #=
-Triangles are described by its three points. Its center is computed when needed.
+Triangles are described by its three points. It's center is computed when needed.
 =#
 
 abstract type AbstractTriangle <: Shape end
@@ -158,6 +158,8 @@ ncorners(::AbstractTriangle) = 3
 ncorners(::Circle) = 0
 ncorners(::RegularPolygon{N}) where {N} = N
 
+
+
 function corners(shape::AbstractRectangle)
     x, y = center(shape)
     l, w = lw(shape)
@@ -175,8 +177,6 @@ end
 function corners(shape::Triangle)
     return [(shape.x1, shape.y1), (shape.x2, shape.y2), (shape.x3, shape.y3)]
 end
-
-corners(shape::Circle) = []
 
 center(shape::Shape) = shape.x, shape.y
 
@@ -198,18 +198,18 @@ end
 # x,y-bounding
 
 #=
-The fuctions below yield the outer limits of the x and y axes of your shape. Can you complete the methods with a oneliner?
+The fuctions below yield the outer limits of the x and y axes of your shape. Can you complete the method as a oneliner?
 
 Hint: The function `extrema` could be useful here...
 =#
 
 xlim(shape::Shape) = extrema(xycoords(shape)[1])
 xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
-xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
+xlim(shape::AbstractRectangle) = (shape.x - 0.5shape.l, shape.x + 0.5shape.l)
 
 ylim(shape::Shape) = extrema(xycoords(shape)[2])
 ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
-ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
+ylim(shape::AbstractRectangle) = (shape.y - 0.5lw(shape)[2], shape.y + 0.5lw(shape)[2])
 
 boundingbox(shape::Shape) = Rectangle(xlim(shape), ylim(shape))
 
@@ -374,8 +374,8 @@ shape1 ∩ shape2  # \cap<TAB>
 
 Base.in((x, y), s::Circle) = (s.x - x)^2 + (s.y - y)^2 ≤ s.R^2
 
-function Base.in((x, y), s::AbstractRectangle)
-    xc, yc = center(s)
+function Base.in((x, y), shape::AbstractRectangle)
+    xc, yc = center(shape)
     l, w = lw(shape)
     return (xc - 0.5l ≤ x ≤ xc + 0.5l) && (yc - 0.5w ≤ y ≤ yc + 0.5w)
 end
@@ -416,14 +416,6 @@ function Base.in(q, s::Triangle)
             same_side((p3, p1), p2, q)
 end
 
-function Base.in((x,y), shape::AbstractRectangle)
-    xmin, xmax = xlim(shape)
-    xmin ≤ x ≤ xmax || return false
-    ymin, ymax = ylim(shape)
-    ymin ≤ y ≤ ymax || return false
-    return true
-end
-
 function Base.in(q, shape::Shape)
     corns = corners(shape)
     n = ncorners(shape)
@@ -441,7 +433,7 @@ end
     (ymin1, ymax1), (ymin2, ymax2)  = ylim(shape1), ylim(shape2)
     # check for x and y overlap
     return (xmin1 ≤ xmin2 ≤ xmax1 || xmin1 ≤ xmax2 ≤ xmax1 || xmin2 ≤ xmin1 ≤ xmax2) &&
-            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 || ymin2 ≤ ymin1 ≤ ymax2)
+            (ymin1 ≤ ymin2 ≤ ymax1 || ymin1 ≤ ymax2 ≤ ymax1 ||ymin2 ≤ ymin1 ≤ ymax2)
 end
 
 Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle) = boundboxes_overlap(shape1, shape2)
@@ -503,17 +495,53 @@ function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
     return shape
 end
 
+#=
+## Simulating a system of shapes
 
-# Generating an image
+Suppose we want to use our shape(s) to study a system of non-interacting particles.
+Here, we assume that the shapes are rigid and cannot overlap.
+There are no forces that attract or repel particles.
+Such studies might be of interest in nanoscience, molecular dynamics or self-organization of complex systems.
 
-function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
+One approach to study systems of particles is to model every particle's dynamics, keep track of all collisions, etc.
+We will do something more ingenious: we will use ideas from statistical physics.
+Namely, every valid state (i.e., no shapes overlap and all shapes are within the box) is equally likely.
+So instead of simulating the system, we will take samples from it!
+These samples are equivalent to random 'snapshots' of a more complex simulation.
+Pretty cool, right?
+
+To generate the samples, we will use [rejection sampling](https://en.wikipedia.org/wiki/Rejection_sampling).
+Here, we will randomly place shapes within the box until we are lucky and found one that does not overlap.
+More concretely, we follow the following steps:
+1. generate all the shapes you want to place;
+2. randomly place the shapes into the box (using `randplace!`);
+3. from the moment a single shape overlaps with another shape, you have to start entirely anew to step 2.
+
+The last point is crucial! If you place a shape that overlaps an earlier shape,
+it is insufficient to redistribute that shape. **You have to start over completely.** Only then will you generate correct samples.
+
+The inputs of our function implementing the above algorithm are:
+- `shapes`: a list of your shapes (same type, but not necessarily with the same dimensions);
+- `xlims`, `ylims`: tuples outlining the box;
+The function works inplace, and returns the number of trials needed to generate a valid sample.
+This quantity is relevant by itself (it is related to the partition function of the Boltzmann distribution), but we will only use it for diagnostic purposes.
+
+As you might imagine, this algorithm is still very computationally expensive.
+Try with about 20 shapes, and work yourself up to more extensive examples.
+Try a mixture of small and large shapes. You should see some self-organization going on!
+=#
+
+
+xlims = (0, 100)
+ylims = (0, 80)
+
+function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims)
     trials = 0
-    success = false
     n = length(shapes)
     while true
         trials += 1
         for (i, shape) in enumerate(shapes)
-            randplace!(shape, xlims, ylims; rotate=rotate)
+            randplace!(shape, xlims, ylims)
             # any intersection with previous shapes: start again
             overlap = false
             for j in 1:i-1
@@ -523,14 +551,16 @@ function rejection_sampling!(shapes::Vector{<:Shape}, xlims, ylims; rotate=true)
                 end
             end
             overlap && break
-            i==n && return trials
+            i==n && return shapes, trials
         end
     end
 end
 
-function rejection_sampling(shape, n, xlims, ylims; rotate=true)
+# function to place `n` copies of a given `shape`.
+
+function rejection_sampling(shape, n, xlims, ylims)
     shapes = [deepcopy(shape) for i in 1:n]
-    trials = rejection_sampling!(shapes, xlims, ylims; rotate=rotate)
+    trials = rejection_sampling!(shapes, xlims, ylims)
     return shapes, trials
 end
 
