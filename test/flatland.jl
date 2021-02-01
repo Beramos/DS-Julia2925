@@ -24,5 +24,23 @@
         @test rect ∩ Flatland.Rectangle((2, 2), l=2, w=2)
         @test !(rect ∩ Flatland.Rectangle((4, 2), l=2, w=2))
     end
+
+    @testset "Circle" begin
+        circle = Flatland.Circle((1, 1), R=1)
+
+        @test Flatland.ncorners(circle) == 0
+        @test Flatland.center(circle) == (1, 1)
+
+        @test Flatland.xlim(circle) == (0, 2)
+        @test Flatland.ylim(circle) == (0, 2)
+
+        @test Flatland.area(circle) ≈ π
+
+        @test (0.5, 0.5) ∈ circle
+        @test (7, 0.1) ∉ circle
+
+        @test circle ∩ Flatland.Circle((2, 2), R=0.5)
+        @test !(circle ∩ Flatland.Circle((5, 3), R=0.5))
+    end
 end
 
