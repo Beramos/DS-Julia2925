@@ -65,6 +65,38 @@ function printgrid()
   println(s)
 end
 
+#= Notebook 1 extra:  =# 
+
+function simulate_path(space, offset, down=1)
+  x, y = 1, 1
+  n, m = size(space)
+  n_trees = 0
+  for y in 1:down:n
+    n_trees += space[y,x]
+    x += offset
+    while x > m
+      x -= m
+    end
+  end
+  return n_trees
+end
+
+# n_trees = simulate_path(map, 3)
+n_trees = 254
+# product_all_trees = simulate_path(space, 1) * simulate_path(space, 3) * simulate_path(space, 5) * simulate_path(space, 7) * simulate_path(space, 1, 2)
+product_all_trees = 1666768320
+# answers to advanced solution:
+#goingdowntheslope(3, 1, slope)
+#slopestyles = (
+#    (1, 1), 
+#    (3, 1), 
+#    (5, 1), 
+#    (7, 1), 
+#    (1, 2), 
+#)
+#prod([goingdowntheslope(direction..., slope) for direction in slopestyles])
+
+
 # WIP bigprint
 
 #= Notebook 2: collections =# 
