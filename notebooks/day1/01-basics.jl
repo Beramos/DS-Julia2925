@@ -952,7 +952,11 @@ Degrade *1000* molecules containing *12* carbon atoms, compute the molecular wei
 | CH2   | 14.0                     |
 | CO    | 28.0                     |
 | OH    | 17.0                     |	
-""")
+
+		
+"""
+	
+	)
 
 	
 	

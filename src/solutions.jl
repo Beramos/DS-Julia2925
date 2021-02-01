@@ -112,8 +112,12 @@ function degrade(molecule)
   return molecule
 end
 
-function generate(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
-	return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
+function molecular_weight(molecule)
+	return count("CH3", molecule)* 15.0 +
+			count("CH4", molecule) * 16.0 +
+			count("CH2", molecule) * 14.0 +
+			count("CO", molecule) * 28.0 +
+			count("OH", molecule) * 17
 end
 
 # WIP bigprint
