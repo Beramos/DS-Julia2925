@@ -1,6 +1,6 @@
 #=
 Created on 05/01/2021 20:52:11
-Last update: 29/01/2020
+Last update: 01/02/2020
 
 @author: Michiel Stock
 michielfmstock@gmail.com
@@ -205,11 +205,11 @@ Hint: The function `extrema` could be useful here...
 
 xlim(shape::Shape) = extrema(xycoords(shape)[1])
 xlim(shape::Circle) = (shape.x - shape.R, shape.x + shape.R)
-xlim(shape::AbstractRectangle) = (shape.x - shape.l, shape.x + shape.l)
+xlim(shape::AbstractRectangle) = (shape.x - 0.5shape.l, shape.x + 0.5shape.l)
 
 ylim(shape::Shape) = extrema(xycoords(shape)[2])
 ylim(shape::Circle) = (shape.y - shape.R, shape.y + shape.R)
-ylim(shape::AbstractRectangle) = (shape.y - lw(shape)[2], shape.y + lw(shape)[2])
+ylim(shape::AbstractRectangle) = (shape.y - 0.5lw(shape)[2], shape.y + 0.5lw(shape)[2])
 
 boundingbox(shape::Shape) = Rectangle(xlim(shape), ylim(shape))
 
