@@ -922,7 +922,7 @@ end
 # ╔═╡ e6217d50-63de-11eb-28d8-452aeffc956c
 begin 
 q_mm1 = Question(validators = @safe[], 
-					description = md"""What is the stable molecule obtain from the molecule `verylongium`, defined below?""")	
+					description = md"""Happy with their discovery (less happy with the odours coming from their machine), the scientist take out a small vial... We wonder what would the stable molecule obtain from this very expensive bottle filled with the molecule `verylongium`.""")	
 	
 	
 qb_mm = QuestionBlock(;
@@ -939,25 +939,25 @@ qb_mm = QuestionBlock(;
 	5. *CO* at the endpoints will be converted to *COOH*;
 	6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
 
-	This degradation pattern is repaeted until a stable molecule is obtained.
+	This degradation pattern is repeated until a stable molecule is obtained.
 	
 	Let's take caproic acid for example,
 		![](https://i.imgur.com/xsb9tGR.png)
 		
 	with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH will degrade following this degradation pattern,
 		
-	- Cycle 1: Step 1: CH₃ will turn into *COOH*: COOH-CH2-CH2-CH2-CH2-COOH
-	- Cycle 1: Step2: No *CO-COOH* to remove: COOH-CH2-CH2-CH2-CH2-COOH
-	- Cycle 1: Step3: No unstable *CH₂* ends:  COOH-CH2-CH2-CH2-CH2-COOH
-	- Cycle 1: Step4: Reaction of the first *-CH₂-CH₂-* to CO: COOH-CO-CH2-CH2-COOH
+	- Cycle 1: Step 1: CH₃ will turn into COOH: COOH-CH2-CH2-CH2-CH2-COOH
+	- Cycle 1: Step2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH
+	- Cycle 1: Step3: No unstable CH₂ ends:  COOH-CH2-CH2-CH2-CH2-COOH
+	- Cycle 1: Step4: Reaction of the first -CH₂-CH₂- to CO: COOH-CO-CH2-CH2-COOH
 	- Cycle 1: Steps 5 & 6 do not change the molecule and a new cycle is repeated
 	- Cycle 2: Step 1 does not change the molecule
-	- Cycle 2: Step 2 removes a single *CO-COOH*: CH2-CH2-COOH
+	- Cycle 2: Step 2 removes a single CO-COOH: CH2-CH2-COOH
 	- Cycle 2: Step 3: changes the molecule to: CH3-CH2-COOH
 	- ...
 	- Cycle 3: step 1: changes the molecule CH3-CH2-COOH to **COOH-CH2-COOH**.
 	
-	  Additional cycles will not further degrade the structure of the molecule and can be cosidered final. 		
+	  Additional cycles will not further degrade the structure of the molecule and can be considered final. Caproic acid degraded into [malonic acid](https://en.wikipedia.org/wiki/Malonic_acid) (COOH-CH2-COOH)
 
 	""",
 	questions = [q_mm1],
