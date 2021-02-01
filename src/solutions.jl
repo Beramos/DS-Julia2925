@@ -112,6 +112,10 @@ function degrade(molecule)
   return molecule
 end
 
+function generate(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
+	return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
+end
+
 # WIP bigprint
 
 #= Notebook 2: collections =# 
