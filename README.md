@@ -23,5 +23,10 @@ include("launcher.jl")
 
 This should open a browser window with the Pluto notebooks. The first time it can take a while since it is installing all the dependencies.
 
+## Contact
+UGent Doctoral School member and Julia questions? Chat with us on Gitter!
+
+[![Gitter](https://badges.gitter.im/DS-Julia2925/community.svg)](https://gitter.im/DS-Julia2925/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 ## Meta
 Authors: Bram De Jaegher, Michiel Stock, Daan Van Hauwermeiren
