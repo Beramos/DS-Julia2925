@@ -919,6 +919,125 @@ qb7 = QuestionBlock(;
 )
 end
 
+# ╔═╡ e6217d50-63de-11eb-28d8-452aeffc956c
+begin 
+q_mm1 = Question(validators = @safe[], 
+					description = md"""What is the stable molecule obtain from the molecule `verylongium`, defined below?""")	
+	
+	
+qb_mm = QuestionBlock(;
+	title=md"**Question 8: Molecular mass spectroscopy**",
+	description = md"""
+	Analytical chemists at the Ghent University have discovered a new analytical technique where organic molecules are partially burned into smaller molecules. These oxidised molecules can be detected via acetatometry. 
+		
+	An organic molecule entering the analyser will always follow the same degradation pattern and subsequently,
+	
+	1. *CH₃*-endpoints will turn into *COOH*;
+	2. *CO-COOH*-endpoints are unstable and will evaporate;
+	3. Any *CH₂*-endpoints are unstable and will turn into *CH₃*;
+	4. The first *-CH₂-CH₂-* wil react to *CO*;
+	5. *CO* at the endpoints will be converted to *COOH*;
+	6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
+
+	This degradation pattern is repaeted until a stable molecule is obtained.
+	
+	Let's take caproic acid for example,
+		![](https://i.imgur.com/xsb9tGR.png)
+		
+	with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH will degrade following this degradation pattern,
+		
+	- Cycle 1: Step 1: CH₃ will turn into *COOH*: COOH-CH2-CH2-CH2-CH2-COOH
+	- Cycle 1: Step2: No *CO-COOH* to remove: COOH-CH2-CH2-CH2-CH2-COOH
+	- Cycle 1: Step3: No unstable *CH₂* ends:  COOH-CH2-CH2-CH2-CH2-COOH
+	- Cycle 1: Step4: Reaction of the first *-CH₂-CH₂-* to CO: COOH-CO-CH2-CH2-COOH
+	- Cycle 1: Steps 5 & 6 do not change the molecule and a new cycle is repeated
+	- Cycle 2: Step 1 does not change the molecule
+	- Cycle 2: Step 2 removes a single *CO-COOH*: CH2-CH2-COOH
+	- Cycle 2: Step 3: changes the molecule to: CH3-CH2-COOH
+	- ...
+	- Cycle 3: step 1: changes the molecule CH3-CH2-COOH to **COOH-CH2-COOH**.
+	
+	  Additional cycles will not further degrade the structure of the molecule and can be cosidered final. 		
+
+	""",
+	questions = [q_mm1],
+	hints= [
+			hint(md"Make sure you to check both CH₃- and -CH₃"),
+			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """)
+		]
+)
+end
+
+# ╔═╡ c3939458-63e3-11eb-22a8-6b901881f817
+begin
+	f1(s) = replace(s, "-CH3"=> "-COOH") |> s -> replace(s, "CH3-"=> "COOH-")
+	f2(s) = replace(s, "-CO-COOH"=> "") |> s -> replace(s, "COOH-CO-"=> "")
+	
+	function f3(molecule)
+		if length(molecule) < 4
+			molecule = "CH4"
+			return molecule
+		end
+		
+		if molecule[1:4] == "CH2-"
+			molecule = "CH3-" * molecule[5:end]
+		end
+		if molecule[end-3:end] == "-CH2"
+			molecule = molecule[1:end-4] * "-CH3"
+		end
+		return molecule
+	end
+
+	f4(s) = replace(s, "-CH2-CH2-"=> "-CO-")
+	
+	function f5(molecule)
+		if molecule[1:3] == "CO-"
+			molecule = "COOH-" * molecule[4:end]
+		end
+		
+		if molecule[end-2:end] == "-CO" 
+			molecule = molecule[1:end-3] * "-COOH"
+		end
+		return molecule
+	end 
+	
+	f6(s) = replace(s, "CO-CO-CO" => "CO-CH2-CO")
+	
+	function cycle(molecule)
+		molecule |> f1 |> f2 |> f3 |> f4 |> f5 |> f6
+	end
+	
+	function degrade(molecule)
+		mol_prev = ""
+		while mol_prev !== molecule
+			mol_prev = molecule
+			molecule =  cycle(molecule)
+		end
+		return molecule
+	end
+end
+
+# ╔═╡ 58cb2d50-6471-11eb-3ec7-6571cecdf6ff
+caproic = "CH3-CH2-CH2-CH2-CH2-COOH" |> degrade
+
+# ╔═╡ 4d0e1d60-6476-11eb-154e-d9cc3bf284c2
+caproic_acid = "CH3-CH2-CH2-CH2-CH2-COOH" |> degrade
+
+# ╔═╡ 5167ded6-6463-11eb-3279-0dd226fae82e
+verylongium = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3" |> degrade
+
+# ╔═╡ 1f588828-6477-11eb-0c70-557f130c6785
+#=function degrade(molecule)
+	return missing # replace this with the correct code
+end =#
+
+# ╔═╡ db3961aa-6468-11eb-1fba-adfc62da4f7e
+begin 
+	function generate(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
+		return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
+	end
+end
+
 # ╔═╡ 448ef88e-4ad2-11eb-20d6-17a51d665ef9
 function print_grid()
 	missing
@@ -938,7 +1057,7 @@ oq9 = QuestionOptional{Easy}(validators = [print_big_grid() == "+ - - - - + - - 
 		description = md"Write a function that draws a similar grid with four rows and four columns.")
 	
 qb8 = QuestionBlock(;
-	title=md"**Question 8: grid print**",
+	title=md"**Question 9: grid print**",
 	description = md"""
 	Complete the function `printgrid` that draws a grid like the following:
 	```
@@ -1158,8 +1277,15 @@ end
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
 # ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
-# ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
+# ╠═42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
+# ╠═e6217d50-63de-11eb-28d8-452aeffc956c
+# ╠═58cb2d50-6471-11eb-3ec7-6571cecdf6ff
+# ╠═c3939458-63e3-11eb-22a8-6b901881f817
+# ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
+# ╠═5167ded6-6463-11eb-3279-0dd226fae82e
+# ╠═1f588828-6477-11eb-0c70-557f130c6785
+# ╠═db3961aa-6468-11eb-1fba-adfc62da4f7e
 # ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207
