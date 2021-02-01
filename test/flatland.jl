@@ -3,7 +3,7 @@
 @testset "flatland" begin
     import DSJulia.Flatland
 
-    @testset "Rectangle" begin
+    @testset "rectangle" begin
         rect = Flatland.Rectangle((1, 1), l=2, w=2)
         square = Flatland.Square((2.0, 1), l=2)
 
@@ -25,7 +25,7 @@
         @test !(rect ∩ Flatland.Rectangle((4, 2), l=2, w=2))
     end
 
-    @testset "Circle" begin
+    @testset "circle" begin
         circle = Flatland.Circle((1, 1), R=1)
 
         @test Flatland.ncorners(circle) == 0
@@ -43,7 +43,7 @@
         @test !(circle ∩ Flatland.Circle((5, 3), R=0.5))
     end
 
-    @testset "Circle" begin
+    @testset "pregular polygons" begin
         pent = Flatland.RegularPolygon((1, 1), 5, R=1)
 
         @test Flatland.ncorners(pent) == 5
@@ -63,5 +63,24 @@
         @test pent ∩ Flatland.RegularPolygon((2, 2), 5, R=1)
         @test !(pent ∩ Flatland.RegularPolygon((8, 1), 5, R=1/2))
 end
+
+
+    @testset "triangle" begin
+        triangle = Flatland.Triangle((0, 0), (1, 0), (0.5, 0.5))
+
+        @test Flatland.ncorners(triangle) == 3
+        @test all(Flatland.center(triangle) .≈ (0.5, 0.5/3))
+
+        @test all(Flatland.xlim(triangle) .≈ (0, 1))
+        @test all(Flatland.ylim(triangle) .≈ (0, 0.5))
+
+        @test Flatland.area(triangle) ≈ 0.25
+
+        @test (0.5, 0.3) ∈ triangle
+        @test (0.1, 0.2) ∉ triangle
+
+        @test triangle ∩ Flatland.Triangle((0.25, 0.25), (0.5, 1.5), (1.5, 1.5))
+        @test !(triangle ∩ Flatland.Triangle((3, 4), (2, 2), (1.5, 1.5)))
+    end
 end
 
