@@ -334,8 +334,7 @@ md"To make this an iterator, we just have to extend the `iterate` function of `B
 Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
 
 # ╔═╡ da6cc5b8-5d90-11eb-07ff-db8bdb504054
-# check REPL
-for i in Squares(7)
+@terminal for i in Squares(7)
     println(i)
 end
 
@@ -636,49 +635,49 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═3422d2fc-654b-11eb-37c8-93a84229ab21
 # ╠═340538c8-654b-11eb-3733-272fb9a8f106
 # ╠═b1525c16-654b-11eb-0428-43008354b402
-# ╠═6e8548b4-5d8d-11eb-3fcc-45cb005e5c5e
+# ╟─6e8548b4-5d8d-11eb-3fcc-45cb005e5c5e
 # ╠═cf6dea8c-5d8d-11eb-3f54-4d947305f5e5
-# ╠═d305007e-5d8d-11eb-2505-3347d7d1a561
+# ╟─d305007e-5d8d-11eb-2505-3347d7d1a561
 # ╠═d84355d4-5d8d-11eb-2c2c-21daf0364c21
 # ╠═db651312-5d8d-11eb-09f1-bb693144d8f7
 # ╠═8b7688ce-5d8e-11eb-0100-dd2712247ff6
 # ╠═9c0f7916-5d8e-11eb-15cd-11badf9f9c01
-# ╠═dd5706ec-5d8d-11eb-29df-75170b547cf8
+# ╟─dd5706ec-5d8d-11eb-29df-75170b547cf8
 # ╠═e799c73e-5d8d-11eb-3df4-13dbef13a342
 # ╠═eb563ede-5d8d-11eb-1e91-55bd3b36f4eb
 # ╠═fc2d5c92-5d8d-11eb-08c3-29d0478f1884
 # ╠═072f2382-5d8e-11eb-377a-d39d0821559e
-# ╠═17022b06-5d8e-11eb-391b-7194962a2c18
+# ╟─17022b06-5d8e-11eb-391b-7194962a2c18
 # ╠═393e2f9e-5d8e-11eb-11d7-511c32ce6e48
-# ╠═4b262a72-5d8e-11eb-02bb-5fb2bd07f280
+# ╟─4b262a72-5d8e-11eb-02bb-5fb2bd07f280
 # ╠═605779e6-5d8e-11eb-3e08-c7420ef76aba
 # ╠═6646eb5c-5d8e-11eb-1e01-f3011c4230de
 # ╠═6960f8d2-5d8e-11eb-0215-2de7b54e3081
-# ╠═8321136a-5d8e-11eb-0da2-e750b81d7ce9
+# ╟─8321136a-5d8e-11eb-0da2-e750b81d7ce9
 # ╠═e246757e-5d8e-11eb-313c-61a63246cf9a
 # ╠═ecc14f96-5d8f-11eb-2b18-cb23fad26b6e
-# ╠═9d4b9eee-5d8f-11eb-07bb-557415e4ac4a
-# ╠═142666de-5d90-11eb-3231-efe53ddc9b0d
+# ╟─9d4b9eee-5d8f-11eb-07bb-557415e4ac4a
+# ╟─142666de-5d90-11eb-3231-efe53ddc9b0d
 # ╠═27fcaede-5d90-11eb-1cea-91fcc4b6b0fe
 # ╠═2a224fde-5d90-11eb-1c46-3fd248350914
 # ╠═2c937298-5d90-11eb-06e6-ab70b9d3701e
-# ╠═2efe030e-5d90-11eb-38ae-092222d3a8d4
-# ╠═46df4eb0-5d90-11eb-1fdf-f34a7bcb7191
+# ╟─2efe030e-5d90-11eb-38ae-092222d3a8d4
+# ╟─46df4eb0-5d90-11eb-1fdf-f34a7bcb7191
 # ╠═a4a1cb18-5d90-11eb-08ee-8570368a056b
-# ╠═aca1c930-5d90-11eb-29d9-954e097bbe3b
+# ╟─aca1c930-5d90-11eb-29d9-954e097bbe3b
 # ╠═a9502b64-5d90-11eb-144c-3d7ce0949e67
 # ╠═da6cc5b8-5d90-11eb-07ff-db8bdb504054
 # ╠═e3759d4c-5d90-11eb-0bea-bb4247623ec2
 # ╠═07998440-5d91-11eb-1a65-8de428eac89c
-# ╠═0b8980aa-5d91-11eb-385b-71568ec0e325
+# ╟─0b8980aa-5d91-11eb-385b-71568ec0e325
 # ╠═192d9fd4-5d91-11eb-1cb9-c706aad03480
 # ╠═1fa68c72-5d91-11eb-1102-c18460e92ee6
-# ╠═26a70358-5d91-11eb-0241-699b5dc4783f
+# ╟─26a70358-5d91-11eb-0241-699b5dc4783f
 # ╠═2270e790-5d91-11eb-20e5-29905f232734
-# ╠═2cbe2370-5d91-11eb-130a-5da52d1a62c8
+# ╟─2cbe2370-5d91-11eb-130a-5da52d1a62c8
 # ╠═49f1d98c-5d91-11eb-1657-f320e9fcdc0e
 # ╠═4cb68744-5d91-11eb-2b3e-e7df55888c93
-# ╠═579e3828-5d91-11eb-1d33-b94628d61fc0
+# ╟─579e3828-5d91-11eb-1d33-b94628d61fc0
 # ╠═e9a99a00-5d91-11eb-2c50-8be452cab83f
 # ╠═ec62c35c-5d91-11eb-3773-b9385f312f7f
 # ╠═efb0b460-5d91-11eb-2534-496df689dc60
@@ -688,10 +687,10 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═11630c02-5d92-11eb-1746-4dabf327fbbe
 # ╠═1e65cb9c-5d92-11eb-3526-332169917fd9
 # ╠═201f59ee-5d92-11eb-33ae-51904d249dd4
-# ╠═310d8966-6176-11eb-1b23-9d942f197fbd
+# ╟─310d8966-6176-11eb-1b23-9d942f197fbd
 # ╠═276e9af4-5d92-11eb-1399-993570859698
 # ╠═300a8428-5d92-11eb-188b-05d00df4f6a7
-# ╠═cf146bf4-6177-11eb-1eaa-c35efde57b3e
+# ╟─cf146bf4-6177-11eb-1eaa-c35efde57b3e
 # ╠═dd0b7c7a-6177-11eb-2cb7-8b194a75d776
 # ╠═3ae60e88-5d94-11eb-0c50-1d74ea104758
 # ╠═48301af2-5d94-11eb-0019-7737667c9cea
