@@ -188,7 +188,7 @@ md"We can check the entire subtree of a type using the function `subtypetree`"
 
 # ╔═╡ 972154f6-6536-11eb-08a8-e3fc98623177
 function subtypetree(roottype, level=1, last=false)
-	level == 1 && println(roottype)
+	level == 1 && println(split(string(roottype),".")[end])
 	for (index, s) in enumerate(subtypes(roottype))
 	
 		if index < length(subtypes(roottype))
@@ -204,6 +204,24 @@ function subtypetree(roottype, level=1, last=false)
 
 	end
 end
+
+# ╔═╡ e50c3f36-653c-11eb-0eb4-cf44af78e44c
+@terminal subtypetree(Real)
+
+# ╔═╡ 3d1db2de-6549-11eb-2649-2d96659813f6
+md"It does not need to be complicate though,"
+
+# ╔═╡ 46eaafee-6549-11eb-2e36-c9e566d3f3ba
+function subtypetreesimple(roottype, level=1)
+	level == 1 && println(roottype)
+	for s in subtypes(roottype)
+			println(" "^((level-1)*4) * string(s))
+			subtypetreesimple(s, level + 1)
+	end
+end
+
+# ╔═╡ 6cbd4874-6549-11eb-296e-af4a43d53223
+@terminal subtypetreesimple(Real)
 
 # ╔═╡ 4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 md"""
@@ -550,29 +568,6 @@ begin
 	abstract type Talc <: Mohs end
 end
 
-# ╔═╡ aa2eda62-6547-11eb-20de-3121ecb4843c
-function subtypetree(roottype::Mohs, level=1, last=false)
-	println("I'm this version")
-	level == 1 && println(roottype)
-	for (index, s) in enumerate(subtypes(roottype))
-	
-		if index < length(subtypes(roottype))
-			println(join(fill("│  ", level-1-1*last))* 
-				join(fill("   ", 1*last)) * "├──" * split(string(s),".")[end])
-
-			subtypetree(s, level + 1, false)
-		else
-			println(join(fill("│  ", level-1-1*last))* 
-				join(fill("   ", 1*last)) * "└──" * split(string(s),".")[end])
-			subtypetree(s, level + 1, true)
-		end
-
-	end
-end
-
-# ╔═╡ e50c3f36-653c-11eb-0eb4-cf44af78e44c
-@terminal subtypetree(Real)
-
 # ╔═╡ 0884f752-6018-11eb-2eb3-d1cd317dceb3
 md"You can see, it is a pretty flat hierarchy"
 
@@ -748,6 +743,9 @@ end
 # ╟─34ca6158-4e75-11eb-3d51-330952c9b3dd
 # ╠═972154f6-6536-11eb-08a8-e3fc98623177
 # ╠═e50c3f36-653c-11eb-0eb4-cf44af78e44c
+# ╟─3d1db2de-6549-11eb-2649-2d96659813f6
+# ╠═46eaafee-6549-11eb-2e36-c9e566d3f3ba
+# ╠═6cbd4874-6549-11eb-296e-af4a43d53223
 # ╟─4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 # ╠═66292626-4e78-11eb-331b-0563b2110605
 # ╠═704b2ebe-4e78-11eb-1583-d10e0aeb2b8d
@@ -805,7 +803,6 @@ end
 # ╟─178a5f96-6016-11eb-0314-010203c5fedf
 # ╟─4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 # ╟─d668a692-6017-11eb-2f28-e9b00762b92d
-# ╠═aa2eda62-6547-11eb-20de-3121ecb4843c
 # ╟─fb1d0b9a-6017-11eb-0ba1-67e204f150fd
 # ╠═b487a776-4e7e-11eb-291b-e900e6e1a2f6
 # ╟─0884f752-6018-11eb-2eb3-d1cd317dceb3
