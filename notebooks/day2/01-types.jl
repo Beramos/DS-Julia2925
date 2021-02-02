@@ -186,17 +186,24 @@ end
 # ╔═╡ 34ca6158-4e75-11eb-3d51-330952c9b3dd
 md"We can check the entire subtree of a type using the function `subtypetree`"
 
-# ╔═╡ 8fae9e4a-4e75-11eb-0346-377e9f09ecce
-function subtypetree(roottype, level=1, indent=4)
+# ╔═╡ 972154f6-6536-11eb-08a8-e3fc98623177
+function subtypetree(roottype, level=1, last=false)
 	level == 1 && println(roottype)
-	for s in subtypes(roottype)
-		println(join(fill(" ", level * indent)) * string(s))
-		subtypetree(s, level + 1, indent)
+	for (index, s) in enumerate(subtypes(roottype))
+	
+		if index < length(subtypes(roottype))
+			println(join(fill("│  ", level-1-1*last))* 
+				join(fill("   ", 1*last)) * "├──" * split(string(s),".")[end])
+
+			subtypetree(s, level + 1, false)
+		else
+			println(join(fill("│  ", level-1-1*last))* 
+				join(fill("   ", 1*last)) * "└──" * split(string(s),".")[end])
+			subtypetree(s, level + 1, true)
+		end
+
 	end
 end
-
-# ╔═╡ dc511e7e-4e75-11eb-1fcc-c5c98e8613a1
-subtypetree(Real)  # check the terminal!
 
 # ╔═╡ 4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 md"""
@@ -285,6 +292,9 @@ begin
 	validate(qb_sparse, tracker)
 end
 
+# ╔═╡ 9a33c306-653c-11eb-3373-01e90d12b246
+
+
 # ╔═╡ 03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 md"""
 ## Methods and dispatch
@@ -335,12 +345,14 @@ methods(sum)
 # ╔═╡ 9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
 begin 
 	QuestionBlock(
-		title=md"**Question:**",
+		title=md"**Did I break something?**",
 		description = md"""
-		*did I break something?*
 		
 		check how many methods there are associated with the humble multiplication operator `*`.
-		"""
+		""",
+		hints = [
+			hint(md"You might want to print this one to the terminal.")
+		]
 	)
 end
 
@@ -538,11 +550,34 @@ begin
 	abstract type Talc <: Mohs end
 end
 
+# ╔═╡ aa2eda62-6547-11eb-20de-3121ecb4843c
+function subtypetree(roottype::Mohs, level=1, last=false)
+	println("I'm this version")
+	level == 1 && println(roottype)
+	for (index, s) in enumerate(subtypes(roottype))
+	
+		if index < length(subtypes(roottype))
+			println(join(fill("│  ", level-1-1*last))* 
+				join(fill("   ", 1*last)) * "├──" * split(string(s),".")[end])
+
+			subtypetree(s, level + 1, false)
+		else
+			println(join(fill("│  ", level-1-1*last))* 
+				join(fill("   ", 1*last)) * "└──" * split(string(s),".")[end])
+			subtypetree(s, level + 1, true)
+		end
+
+	end
+end
+
+# ╔═╡ e50c3f36-653c-11eb-0eb4-cf44af78e44c
+@terminal subtypetree(Real)
+
 # ╔═╡ 0884f752-6018-11eb-2eb3-d1cd317dceb3
 md"You can see, it is a pretty flat hierarchy"
 
 # ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
-subtypetree(Mohs)  # check the terminal!
+@terminal subtypetree(Mohs)  # check the terminal!
 
 # ╔═╡ 443ecf72-6018-11eb-1a7a-e75e9596e4bd
 md"Next, let us define a function `mohs_scale` that dispatches on the different abstract types (minerals) and returns a hardness value"
@@ -680,20 +715,20 @@ end
 
 # ╔═╡ Cell order:
 # ╠═e9576706-600e-11eb-1e10-e3bac02a254e
-# ╠═fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
-# ╠═4ec271b0-4e73-11eb-2660-6b8bd637d7ee
-# ╠═a1f2d06e-4e73-11eb-3afd-1353def71700
+# ╟─fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
+# ╟─4ec271b0-4e73-11eb-2660-6b8bd637d7ee
+# ╟─a1f2d06e-4e73-11eb-3afd-1353def71700
 # ╠═c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
 # ╟─bd994d64-600e-11eb-1ab3-ed6317b7c211
 # ╠═b844d568-4e73-11eb-3de9-4158b0bdca12
 # ╠═c662744a-4e73-11eb-1bfc-6daaf7282285
 # ╠═cae803e2-4e73-11eb-13e0-23abccf86bac
 # ╠═cc606026-4e73-11eb-3576-5d301a771a5a
-# ╠═d3803112-4e73-11eb-2018-f72ffb7f6ec6
-# ╠═e8fe2832-4e78-11eb-3fd6-a3f1f0c0892a
+# ╟─d3803112-4e73-11eb-2018-f72ffb7f6ec6
+# ╟─e8fe2832-4e78-11eb-3fd6-a3f1f0c0892a
 # ╠═f533012c-4e78-11eb-0f45-3b47f088c9c6
-# ╠═f69d89ba-4e73-11eb-3ab9-9179ea7e3217
-# ╠═de3de7fc-4e73-11eb-2ff6-1560481f7ee5
+# ╟─f69d89ba-4e73-11eb-3ab9-9179ea7e3217
+# ╟─de3de7fc-4e73-11eb-2ff6-1560481f7ee5
 # ╟─910c8e0e-600f-11eb-2558-57040714937b
 # ╠═e1c8cf4a-4e73-11eb-27be-d702064a0182
 # ╠═e56a46c6-4e73-11eb-1748-1b6fe5ab0376
@@ -701,7 +736,7 @@ end
 # ╠═ec2ab2be-4e73-11eb-1a22-010439761432
 # ╠═efa205b4-4e73-11eb-1647-e9dcab5f7b7a
 # ╠═f3b5a778-4e73-11eb-1d3c-11ae19713eca
-# ╠═a0cecb24-4e74-11eb-3634-cd8dd628e9ec
+# ╟─a0cecb24-4e74-11eb-3634-cd8dd628e9ec
 # ╟─200d8d36-6012-11eb-0171-8bc2511e18f1
 # ╠═b31fe65a-4e74-11eb-0414-35f2be687c7f
 # ╠═c2ac0c48-4e74-11eb-10b0-91ad620fefcd
@@ -710,49 +745,50 @@ end
 # ╠═cb066442-4e74-11eb-35e7-ed38d4bd8bbf
 # ╠═ce3d5380-4e74-11eb-3d9d-5f34cbbae118
 # ╟─66343826-6012-11eb-109c-17c7a582cbc8
-# ╠═34ca6158-4e75-11eb-3d51-330952c9b3dd
-# ╠═8fae9e4a-4e75-11eb-0346-377e9f09ecce
-# ╠═dc511e7e-4e75-11eb-1fcc-c5c98e8613a1
-# ╠═4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
+# ╟─34ca6158-4e75-11eb-3d51-330952c9b3dd
+# ╠═972154f6-6536-11eb-08a8-e3fc98623177
+# ╠═e50c3f36-653c-11eb-0eb4-cf44af78e44c
+# ╟─4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 # ╠═66292626-4e78-11eb-331b-0563b2110605
 # ╠═704b2ebe-4e78-11eb-1583-d10e0aeb2b8d
 # ╠═c3c40df2-4e78-11eb-3d4a-5fdfdf173da3
 # ╠═cd32e96c-4e78-11eb-0b48-5767421c7875
-# ╠═40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
+# ╟─40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
 # ╠═99228eee-5b24-11eb-385e-7507ca20ae0e
-# ╠═ba39991a-5b24-11eb-260b-439bcde4c153
+# ╟─ba39991a-5b24-11eb-260b-439bcde4c153
 # ╠═35e53434-5b25-11eb-10b7-e993e9477c8c
 # ╠═71111ea6-5b25-11eb-2553-4d15ff3271d6
 # ╠═92dc7a4e-5b25-11eb-1518-8182216f24ec
-# ╠═aa26b46c-4e78-11eb-24d8-7fdce7c94fff
+# ╟─aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 # ╠═815b0436-4e78-11eb-13d4-0dc6531e34f2
 # ╠═570c85bc-4e79-11eb-0249-891cf205d623
 # ╠═370d59fc-6013-11eb-0918-715fb28f9056
-# ╠═4495802e-6013-11eb-22fa-03f635d30a7b
+# ╟─4495802e-6013-11eb-22fa-03f635d30a7b
 # ╠═6756d6ac-4e79-11eb-21ab-4776195c9d3b
 # ╠═e6f31ad8-4e79-11eb-11f4-2936cb039f8d
-# ╠═03766a5c-4e75-11eb-12ad-cb2e9468e0d2
+# ╟─9a33c306-653c-11eb-3373-01e90d12b246
+# ╟─03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 # ╟─63166056-6014-11eb-09c4-e5a44d37095f
 # ╠═2dff8c88-4e75-11eb-050b-7152e82ac10d
 # ╠═7c2b6dc0-4e76-11eb-1d78-553df82d9100
 # ╠═d2a4a32c-5b02-11eb-3839-8108c4965931
 # ╠═32d64b6e-4e75-11eb-0a2a-27214f217f70
-# ╠═861ba4c6-4e76-11eb-3d2b-bfabbd143df2
+# ╟─861ba4c6-4e76-11eb-3d2b-bfabbd143df2
 # ╠═8d5f7d8e-4e76-11eb-28ba-bdec03a3e150
 # ╟─b4fac50a-6015-11eb-16d4-594858d78b3e
-# ╠═9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
+# ╟─9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
 # ╠═b18d0532-4e76-11eb-2e8a-2bee580533cc
 # ╟─b3d15950-6015-11eb-1909-c127822a4a83
-# ╠═cd2eaafc-4e76-11eb-245a-e9898d3d57a4
+# ╟─cd2eaafc-4e76-11eb-245a-e9898d3d57a4
 # ╟─002fdec6-6015-11eb-0e89-c7d020826cf9
 # ╠═db1bb4c8-4e76-11eb-2756-3f6ce778acc0
 # ╠═ff755bf8-4e76-11eb-205f-d52529ae50ed
 # ╠═03932e5e-4e77-11eb-3769-635cc33c3c4d
 # ╠═0b4f99ea-4e77-11eb-29fc-632788d179a3
 # ╠═2a0b220a-4e77-11eb-1da7-2978422c11f4
-# ╠═bf91e40a-4e77-11eb-14f1-754b1ce5130e
+# ╟─bf91e40a-4e77-11eb-14f1-754b1ce5130e
 # ╠═e1a88a70-4e76-11eb-2486-e1d2f4211792
-# ╠═622b8382-6015-11eb-17fb-3352c73a0d10
+# ╟─622b8382-6015-11eb-17fb-3352c73a0d10
 # ╠═76fe9fc4-4e77-11eb-3bc7-2dfbdff8dfc8
 # ╠═7aa14c94-4e77-11eb-25c7-fb0103267b06
 # ╠═7f3a5336-4e77-11eb-2ad6-3d889dc75ac0
@@ -764,14 +800,15 @@ end
 # ╠═938d8b1e-4e77-11eb-03d3-9b88c7cab3c1
 # ╠═96f6fef2-4e77-11eb-2ec4-399472d86a60
 # ╟─a35e6072-6015-11eb-3107-97235db2c766
-# ╠═812cfe48-4e7a-11eb-32e6-c918bbe3e602
+# ╟─812cfe48-4e7a-11eb-32e6-c918bbe3e602
 # ╟─15bb7eb6-6016-11eb-01d2-0be88279db7e
-# ╠═178a5f96-6016-11eb-0314-010203c5fedf
+# ╟─178a5f96-6016-11eb-0314-010203c5fedf
 # ╟─4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 # ╟─d668a692-6017-11eb-2f28-e9b00762b92d
-# ╠═fb1d0b9a-6017-11eb-0ba1-67e204f150fd
+# ╠═aa2eda62-6547-11eb-20de-3121ecb4843c
+# ╟─fb1d0b9a-6017-11eb-0ba1-67e204f150fd
 # ╠═b487a776-4e7e-11eb-291b-e900e6e1a2f6
-# ╠═0884f752-6018-11eb-2eb3-d1cd317dceb3
+# ╟─0884f752-6018-11eb-2eb3-d1cd317dceb3
 # ╠═24588124-6018-11eb-24d1-f9c7759f4c8f
 # ╟─443ecf72-6018-11eb-1a7a-e75e9596e4bd
 # ╠═1aea83a8-4e7f-11eb-2d06-c3e550c4e1b9
@@ -781,19 +818,19 @@ end
 # ╠═e36b2aa8-6018-11eb-0582-997ba8b7eae7
 # ╠═b5339e22-6018-11eb-38b6-352602a85cdd
 # ╠═fc0f2e92-6018-11eb-0b45-49fdec301609
-# ╠═02e57e74-6019-11eb-3e35-1d2b4d61b283
+# ╟─02e57e74-6019-11eb-3e35-1d2b4d61b283
 # ╠═6e429164-4e7f-11eb-1829-0582f1417815
 # ╠═ad6e9d8e-4e7f-11eb-1e33-efcee699f2a0
 # ╠═9d1c94ba-4e7f-11eb-060e-d1bc9683af92
-# ╠═8dc6a6ce-6019-11eb-1cd5-d1c1c118f4ee
+# ╟─8dc6a6ce-6019-11eb-1cd5-d1c1c118f4ee
 # ╠═73f66dc6-6019-11eb-06b8-7db54f428e12
 # ╠═ee370b50-4e7f-11eb-1ce0-d1bdb3e41ae2
-# ╠═1117c600-4e80-11eb-3231-4383d700f760
+# ╟─1117c600-4e80-11eb-3231-4383d700f760
 # ╠═07a19574-4e80-11eb-38fa-8d3463dfd700
 # ╟─af5bdeb4-6019-11eb-2265-a9b81e01d9c0
-# ╠═84a0f49c-4e7c-11eb-14f2-452e57f2e414
+# ╟─84a0f49c-4e7c-11eb-14f2-452e57f2e414
 # ╠═99c4f3c8-4e7c-11eb-3d4a-33ba8d495eb2
-# ╠═cba6d4cc-5b03-11eb-265d-3f08117b0e8d
+# ╟─cba6d4cc-5b03-11eb-265d-3f08117b0e8d
 # ╠═d913cd92-4e7c-11eb-11e1-3d7539af7fed
 # ╠═4f107d88-4e7d-11eb-3e49-f54ecf5163da
 # ╠═8331c8b0-4e7d-11eb-0690-8bbae3ed086a
