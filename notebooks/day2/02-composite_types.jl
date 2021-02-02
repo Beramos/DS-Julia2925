@@ -32,7 +32,7 @@ The previous notebook showed that it is easy to extend the type system with our 
 
 ## Composite types
 
-Composite types, sometimes call records, structs (matlab) or object (python), can store several values in its *fields*.
+Composite types, sometimes call records, structs (matlab) or objects (python), can store several values in its *fields*.
 
 When defining a new composite type, we can choose them to be mutable or immutable:
 - mutable types are defined using `mutable struct ... end`, they allow the fields to be changed after the object is created;
@@ -138,6 +138,38 @@ md"We have chosen the default behaviour that two Agents of unspecified types do 
 
 # ╔═╡ 62e49c94-5d8d-11eb-39ac-f30febf282ff
 fyi(md"Since in these simple examples, the `interact` methods do not use their arguments, merely perform type checking, we could have written this as `interact(::Agent,::Agent) = ...` etc.")
+
+# ╔═╡ e5c61ace-654a-11eb-05be-79153b6222b6
+QuestionBlock(
+	title=md"**Assignment: the wildlife**",
+	description = md"""
+	Test a few random wild life encounters.
+	"""
+)
+
+# ╔═╡ 5c141870-654b-11eb-26f3-4b58b0b2e25d
+mutable struct Neutral <: Agent end
+
+# ╔═╡ 4d2d4e6c-654b-11eb-02c5-698af6d43b37
+fly = Neutral()
+
+# ╔═╡ 6f69292e-654b-11eb-012e-317c7b2f33ea
+wolf
+
+# ╔═╡ 78f6ea1c-654b-11eb-217e-6da9345f2fe3
+deer
+
+# ╔═╡ 7ea3de2a-654b-11eb-18c2-0fa369696cb9
+fauna = [fly, wolf, deer]
+
+# ╔═╡ 3422d2fc-654b-11eb-37c8-93a84229ab21
+rand(fauna)
+
+# ╔═╡ 340538c8-654b-11eb-3733-272fb9a8f106
+#... interact
+
+# ╔═╡ b1525c16-654b-11eb-0428-43008354b402
+
 
 # ╔═╡ 6e8548b4-5d8d-11eb-3fcc-45cb005e5c5e
 md"""
@@ -568,33 +600,42 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╔═╡ Cell order:
 # ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
 # ╟─eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
-# ╠═70be3952-5d8c-11eb-1509-b3f7077d57e0
+# ╟─70be3952-5d8c-11eb-1509-b3f7077d57e0
 # ╠═acd7de0c-5d8c-11eb-120a-8b79f2b8eb3b
-# ╠═af8c6460-5d8c-11eb-3ba8-c16e8855e992
+# ╟─af8c6460-5d8c-11eb-3ba8-c16e8855e992
 # ╠═b96a33b8-5d8c-11eb-01de-439f53cdc355
-# ╠═bcacf89e-5d8c-11eb-0077-e5761b8855a3
-# ╠═c7a077ba-5d8c-11eb-08bb-07c343ea8ab1
+# ╟─bcacf89e-5d8c-11eb-0077-e5761b8855a3
+# ╟─c7a077ba-5d8c-11eb-08bb-07c343ea8ab1
 # ╠═cd0d8636-5d8c-11eb-19f9-4da4550d306f
-# ╠═ce25e25c-5d8c-11eb-2e8e-b5b1e7350d70
+# ╟─ce25e25c-5d8c-11eb-2e8e-b5b1e7350d70
 # ╠═d672cc72-5d8c-11eb-2c06-0341181e3a3d
-# ╠═dac11770-5d8c-11eb-1058-2d043e172931
+# ╟─dac11770-5d8c-11eb-1058-2d043e172931
 # ╠═61c43794-6174-11eb-1545-2db114b929e4
-# ╠═e7b9023a-5d8c-11eb-1387-cfa7c41ab6ca
-# ╠═fb6e62d4-5d8c-11eb-34f3-bf3df7cd4cb3
+# ╟─e7b9023a-5d8c-11eb-1387-cfa7c41ab6ca
+# ╟─fb6e62d4-5d8c-11eb-34f3-bf3df7cd4cb3
 # ╠═01fe6f9a-5d8d-11eb-0519-03aefcd587bb
 # ╠═05ae1a2a-5d8d-11eb-0ed8-496f48194232
-# ╠═18d04a36-5d8d-11eb-1986-693eaad5d5be
+# ╟─18d04a36-5d8d-11eb-1986-693eaad5d5be
 # ╠═1df0419c-5d8d-11eb-3444-d5741bf10d32
 # ╠═234dd2e4-5d8d-11eb-366c-c15474da799f
-# ╠═23f7e8c4-5d8d-11eb-04af-b5e268c13a14
-# ╠═330d2090-5d8d-11eb-1003-a52a078514b2
+# ╟─23f7e8c4-5d8d-11eb-04af-b5e268c13a14
+# ╟─330d2090-5d8d-11eb-1003-a52a078514b2
 # ╠═375bf8d8-5d8d-11eb-1a49-69905d38effe
 # ╠═39d6d5c4-5d8d-11eb-0e07-11d891ff87a3
-# ╠═3f5740f6-5d8d-11eb-19c3-ddedf6003e53
-# ╠═47049bf0-5d8d-11eb-18c2-733287b69420
+# ╟─3f5740f6-5d8d-11eb-19c3-ddedf6003e53
+# ╟─47049bf0-5d8d-11eb-18c2-733287b69420
 # ╠═50f17586-5d8d-11eb-0eec-579467b787d0
-# ╠═585995ae-5d8d-11eb-256f-bd8e9eb52063
-# ╠═62e49c94-5d8d-11eb-39ac-f30febf282ff
+# ╟─585995ae-5d8d-11eb-256f-bd8e9eb52063
+# ╟─62e49c94-5d8d-11eb-39ac-f30febf282ff
+# ╟─e5c61ace-654a-11eb-05be-79153b6222b6
+# ╠═5c141870-654b-11eb-26f3-4b58b0b2e25d
+# ╠═4d2d4e6c-654b-11eb-02c5-698af6d43b37
+# ╠═6f69292e-654b-11eb-012e-317c7b2f33ea
+# ╠═78f6ea1c-654b-11eb-217e-6da9345f2fe3
+# ╠═7ea3de2a-654b-11eb-18c2-0fa369696cb9
+# ╠═3422d2fc-654b-11eb-37c8-93a84229ab21
+# ╠═340538c8-654b-11eb-3733-272fb9a8f106
+# ╠═b1525c16-654b-11eb-0428-43008354b402
 # ╠═6e8548b4-5d8d-11eb-3fcc-45cb005e5c5e
 # ╠═cf6dea8c-5d8d-11eb-3f54-4d947305f5e5
 # ╠═d305007e-5d8d-11eb-2505-3347d7d1a561
