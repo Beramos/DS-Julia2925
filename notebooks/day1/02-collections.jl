@@ -184,7 +184,7 @@ names[3:6]
 md"and slicing with assignment too."
 
 # ╔═╡ 4db9d648-4c1e-11eb-1063-e78c78ef5c4b
-names[end-1:end] = ["Slartibartfast","The Whale and the Bowl of Petunias"]
+names[end-1:end] = ["Slartibartfast", "The Whale and the Bowl of Petunias"]
 
 # ╔═╡ 4fb1a53e-4c1e-11eb-381b-1f86a5ed97a1
 names
@@ -208,7 +208,7 @@ md"Julia arrays can be of mixed type."
 Y = [42, "Universe", []]
 
 # ╔═╡ 8a0e3e36-4c1e-11eb-0ec0-d19fdc3c89d8
-md"The type of the array changes depending on the elements that make up the array. With `Any` being the most general type."
+md"The type of the array changes depending on the elements that make up the array. With `Any` being the most general type. Working with such general objects is not efficient though. In practice, your code will become as slow as Python."
 
 # ╔═╡ 90d3dc80-4c1e-11eb-2a11-3fe581f0b5f7
 typeof(Y)
@@ -378,6 +378,12 @@ md"Let's add a dimension and go to 2D Arrays, matrices. It is all quite straight
 # ╔═╡ 097e96e8-4c24-11eb-24c4-31f4d23d3238
 P = [0 1 1; 2 3 5; 8 13 21; 34 55 89]
 
+# ╔═╡ 028be3bc-661f-11eb-251e-73abd3abb9fe
+size(P)
+
+# ╔═╡ 08e5589e-661f-11eb-262a-dd917f77f56b
+size(P, 1)  # size first dimention
+
 # ╔═╡ 0b9bad58-4c24-11eb-26a8-1d04d7b2be61
 P[3,2]  # indexing
 
@@ -542,7 +548,7 @@ $(@bind brightness html"<input type=range min=0.0 max=300.0>")
 brightness
 
 # ╔═╡ d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
-img[1:1500, 201:1700]./(brightness/100)
+img[1:1500, 201:1700] ./ (brightness/100)
 
 # ╔═╡ 21db9766-64a4-11eb-3ec1-4956431e7a09
 
@@ -597,7 +603,7 @@ md"All values can be obtained using `collect`:"
 collect(str)
 
 # ╔═╡ b3035158-4c4b-11eb-1b8d-1fc4070fa132
-md"Such implicit objects can be processed much smarter than naive structures. Compare!"
+md"Such implicit objects can be processed much smarter than naive structures. Compare! (You might need to run the lines of code again as not to measure compile time."
 
 # ╔═╡ c4575438-4c4b-11eb-1da2-97acca3f3e99
 @elapsed sum((i for i in 1:100_000_000))
@@ -609,13 +615,16 @@ md"Note that we use round brackets to create our own iterator, where every eleme
 @elapsed sum(1:100_000_000)   
 
 # ╔═╡ 3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
-sum(1:100_000_000)  == sum((i for i in 1:100_000_000))
+sum(1:100_000_000) == sum((i for i in 1:100_000_000))
 
 # ╔═╡ 03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 md"`StepRange` and `UnitRange` also work with floats."
 
 # ╔═╡ 0bec2d28-4c58-11eb-0a51-95bf50bbfd79
 0:0.1:10
+
+# ╔═╡ 6aa73154-661f-11eb-2b88-578eb2dd2ec2
+(0:1:100) / 10  # equivalent
 
 # ╔═╡ ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
 
@@ -642,7 +651,7 @@ pop!(tupleware)
 fyi(md"In contrast to arrays however, the types at positions should not be the same, since the compiler will create a new type for every combination!")
 
 # ╔═╡ 8245e46e-5a75-11eb-2d0a-27ef6a1f2492
-mixedtuple = (9, "negen")
+mixedtuple = (9, "nine")
 
 # ╔═╡ 942b88b4-5a75-11eb-3e7b-4534bf4a7b12
 typeof(mixedtuple)
@@ -1061,6 +1070,8 @@ md""" ## 5. References
 # ╟─5ed7284a-4c23-11eb-1451-0ff763f52bc7
 # ╟─0186eab2-4c24-11eb-0ff6-d7f8af343647
 # ╠═097e96e8-4c24-11eb-24c4-31f4d23d3238
+# ╠═028be3bc-661f-11eb-251e-73abd3abb9fe
+# ╠═08e5589e-661f-11eb-262a-dd917f77f56b
 # ╠═0b9bad58-4c24-11eb-26a8-1d04d7b2be61
 # ╠═0b9d0bf8-4c24-11eb-2beb-0763c66e6a20
 # ╟─b9a9a730-5a73-11eb-0d17-7bf1aa935697
@@ -1135,6 +1146,7 @@ md""" ## 5. References
 # ╠═3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
 # ╟─03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 # ╠═0bec2d28-4c58-11eb-0a51-95bf50bbfd79
+# ╠═6aa73154-661f-11eb-2b88-578eb2dd2ec2
 # ╟─ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
 # ╟─0fd08728-4c58-11eb-1b71-c9710d398fab
 # ╟─2c6097f4-4c58-11eb-0807-d5d8cbfbd62c
@@ -1145,7 +1157,7 @@ md""" ## 5. References
 # ╟─56e8f6b4-5a75-11eb-3eeb-ffec491be69c
 # ╠═8245e46e-5a75-11eb-2d0a-27ef6a1f2492
 # ╠═942b88b4-5a75-11eb-3e7b-4534bf4a7b12
-# ╠═7bc7bdf4-4c58-11eb-1fd8-376ac6da5ab2
+# ╟─7bc7bdf4-4c58-11eb-1fd8-376ac6da5ab2
 # ╠═74d97654-4c58-11eb-344b-8d6df24323d5
 # ╟─9bb1e83a-5a75-11eb-0fcc-59f6cc50bf6a
 # ╠═bcd5696a-5a75-11eb-0ec1-f116216aa682

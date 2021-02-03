@@ -145,7 +145,7 @@ md"We compute the mean again, now using the information that the numbers were co
 
 $$w_i = \cfrac{i}{\sum_j^n j} \, .$$
 
-Example,
+For example,
 
 $$[w_1, w_2, w_3] = [1/3, 2/3, 3/3]\, .$$
 
@@ -901,7 +901,7 @@ So each of these rules can be represented by an 8-bit integer. Let us try to exp
 md"The rules can be represented as a unsigned integer `UInt8` which takes a value between 0 and 255."
 
 # ╔═╡ b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
-rule = 110 |> UInt8
+rule = UInt8(110)
 
 # ╔═╡ fabce6b2-59cc-11eb-2181-43fe08fcbab9
 @terminal println(rule)
@@ -955,12 +955,6 @@ begin
 	)
 	validate(qb5)
 end
-
-# ╔═╡ 426f1666-5d87-11eb-108d-f19f928b345b
-bitstring(rule)
-
-# ╔═╡ 1d526a40-5d87-11eb-1984-3bd5b6ccfb89
-bitstring(rule>>0)
 
 # ╔═╡ 781d38a8-59d4-11eb-28f9-9358f132782c
 [getbinarydigit(rule, i) for i in 7:-1:0]  # counting all positions
@@ -1032,7 +1026,7 @@ md"Click on the small triangle to view the transitions."
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
 Dict(
-	(l=l, s=s, r=r) => Solutions.nextstate(l, s, r, rule)
+	(l=l, s=s, r=r) => nextstate(l, s, r, rule)
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
@@ -1264,7 +1258,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─f39d88f6-5994-11eb-041c-012af6d3bae6
 # ╠═f94e2e6c-598e-11eb-041a-0b6a068e464c
 # ╟─0563fba2-5994-11eb-2d81-f70d10092ad7
-# ╠═4e45e43e-598f-11eb-0a0a-2fa636748f7c
+# ╟─4e45e43e-598f-11eb-0a0a-2fa636748f7c
 # ╠═8e53f108-598d-11eb-127f-ddd5be0ec899
 # ╠═c6e0a656-5dbb-11eb-0ce7-598f4fb85bee
 # ╟─99a7e070-5995-11eb-0c53-51fc82db2e93
@@ -1355,8 +1349,6 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
 # ╟─2d4e9afe-59cc-11eb-3033-05d9b684b399
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
-# ╠═426f1666-5d87-11eb-108d-f19f928b345b
-# ╠═1d526a40-5d87-11eb-1984-3bd5b6ccfb89
 # ╠═781d38a8-59d4-11eb-28f9-9358f132782c
 # ╟─8b6b45c6-64e2-11eb-3662-7de5e25e6faf
 # ╟─1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
@@ -1367,11 +1359,11 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─428af062-59d5-11eb-3cf7-99533810e83c
 # ╟─be013232-59d4-11eb-360e-e97b6c388991
 # ╟─a808b2d0-5aff-11eb-036f-fd32a1dc92fc
-# ╠═4776ccca-482f-11eb-1194-398046ab944a
-# ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
+# ╟─4776ccca-482f-11eb-1194-398046ab944a
+# ╟─5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 # ╟─1afb9a16-5d8a-11eb-1ed5-875084953542
 # ╠═90f543e4-5d89-11eb-27c0-8572a859c1b5
-# ╟─95ce684a-64e2-11eb-211b-e198b0016152
+# ╠═95ce684a-64e2-11eb-211b-e198b0016152
 # ╟─e46a3f52-5a5a-11eb-1d41-d7d031131d7e
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
