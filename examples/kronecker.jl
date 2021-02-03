@@ -13,7 +13,7 @@ struct Kronecker{T,TA,TB} <: AbstractMatrix{T}
     B::TB  # second matrix
     # constructor
     function Kronecker(A::TA, B::TB) where {TA<:AbstractMatrix,TB<:AbstractMatrix}
-        T = promote(eltype(A), eltype(B)) |> first  # general type
+        T = promote_type(eltype(A), eltype(B))  # general type
         return new{T,TA,TB}(A, B)
     end
 end
@@ -35,11 +35,11 @@ A = rand(Bool, 100, 100)
 B = randn(50, 50)
 
 K = A ⊗ B
-kron(A, B)
+Kdense = kron(A, B)  # native julia version
 
 Base.inv(K::Kronecker) = Kronecker(inv(K.A), inv(K.B))
 
 @time inv(K)
-@time inv(kron(A, B))
+@time inv(Kdense)
 
 
