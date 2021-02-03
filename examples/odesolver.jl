@@ -8,7 +8,7 @@ michielfmstock@gmail.com
 Here, we illustrate type-based dispatch, using the type system
 =#
 
-using Plots
+
 
 abstract type ODESolver end
 
@@ -42,5 +42,6 @@ f′(t, y) = -y + sin(t * y)
 y_euler = solve_ode(f′, (0, 10), 1.0, 0.1, Euler())
 y_second_order = solve_ode(f′, (0, 10), 1.0, 0.1, SecondOrder())
 
-plot(y_euler, label="Euler")
+
+plot(y_euler, label="Euler", xlabel="t", ylabel="y")
 plot!(y_second_order, label="second order")
