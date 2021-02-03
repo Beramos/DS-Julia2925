@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.12.20
 
 using Markdown
 using InteractiveUtils
@@ -344,6 +344,9 @@ end
 # ╔═╡ 07998440-5d91-11eb-1a65-8de428eac89c
 sum(Squares(18093))
 
+# ╔═╡ e11b0b10-6621-11eb-0bdb-f3719cc92a20
+@elapsed sum(Squares(18093))
+
 # ╔═╡ 0b8980aa-5d91-11eb-385b-71568ec0e325
 md"Let's give the compiler some additional information!"
 
@@ -360,13 +363,16 @@ md"Now this works:"
 collect(Squares(4))
 
 # ╔═╡ 2cbe2370-5d91-11eb-130a-5da52d1a62c8
-md"I remember there is a fancy formula to compute the sum of squared natural numbers."
+md"I remember there is a fancy formula to compute the sum of squared natural numbers. Uncomment it to activate!"
 
 # ╔═╡ 49f1d98c-5d91-11eb-1657-f320e9fcdc0e
-Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
+#Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
 
 # ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
 sum(Squares(18093))  # much faster now!
+
+# ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
+@elapsed sum(Squares(18093))
 
 # ╔═╡ 579e3828-5d91-11eb-1d33-b94628d61fc0
 md"""
@@ -388,16 +394,25 @@ Base.size(S::Strang) = (S.n, S.n)
 Base.getindex(S::Strang, i, j) = i==j ? 2 : (abs(i - j) == 1 ?  -1 : 0)
 
 # ╔═╡ f3c3114c-5d91-11eb-1d37-6d97ea6d267f
-S = Strang(1000)  # holy cow! Looks like a real matrix!
+S = Strang(1000)  # holy cow! Looks just like a real matrix!
 
 # ╔═╡ 04dcda58-5d92-11eb-10ba-396947081338
 sum(S)  # works, but slow...
 
+# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
+@elapsed sum(S)
+
+# ╔═╡ 066901bc-6622-11eb-23ad-ed869adad36d
+md"Uncomment the line below."
+
 # ╔═╡ 0f878dea-5d92-11eb-0000-b7484532ee70
-Base.sum(S::Strang) = 2
+#Base.sum(S::Strang) = 2
 
 # ╔═╡ 11630c02-5d92-11eb-1746-4dabf327fbbe
 sum(S)
+
+# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
+@elapsed sum(S)
 
 # ╔═╡ 1e65cb9c-5d92-11eb-3526-332169917fd9
 v = randn(1000)
@@ -594,7 +609,7 @@ end
 import LinearAlgebra
 
 # ╔═╡ dc945902-5d93-11eb-1121-a7ae99c5862e
-LinearAlgebra.det(V::Vandermonde) = missing
+#LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ Cell order:
 # ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
@@ -669,6 +684,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╠═da6cc5b8-5d90-11eb-07ff-db8bdb504054
 # ╠═e3759d4c-5d90-11eb-0bea-bb4247623ec2
 # ╠═07998440-5d91-11eb-1a65-8de428eac89c
+# ╠═e11b0b10-6621-11eb-0bdb-f3719cc92a20
 # ╟─0b8980aa-5d91-11eb-385b-71568ec0e325
 # ╠═192d9fd4-5d91-11eb-1cb9-c706aad03480
 # ╠═1fa68c72-5d91-11eb-1102-c18460e92ee6
@@ -677,14 +693,18 @@ LinearAlgebra.det(V::Vandermonde) = missing
 # ╟─2cbe2370-5d91-11eb-130a-5da52d1a62c8
 # ╠═49f1d98c-5d91-11eb-1657-f320e9fcdc0e
 # ╠═4cb68744-5d91-11eb-2b3e-e7df55888c93
+# ╠═e99af5c0-6621-11eb-058b-45c3719930d0
 # ╟─579e3828-5d91-11eb-1d33-b94628d61fc0
 # ╠═e9a99a00-5d91-11eb-2c50-8be452cab83f
 # ╠═ec62c35c-5d91-11eb-3773-b9385f312f7f
 # ╠═efb0b460-5d91-11eb-2534-496df689dc60
 # ╠═f3c3114c-5d91-11eb-1d37-6d97ea6d267f
 # ╠═04dcda58-5d92-11eb-10ba-396947081338
+# ╠═fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
+# ╠═066901bc-6622-11eb-23ad-ed869adad36d
 # ╠═0f878dea-5d92-11eb-0000-b7484532ee70
 # ╠═11630c02-5d92-11eb-1746-4dabf327fbbe
+# ╠═046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
 # ╠═1e65cb9c-5d92-11eb-3526-332169917fd9
 # ╠═201f59ee-5d92-11eb-33ae-51904d249dd4
 # ╟─310d8966-6176-11eb-1b23-9d942f197fbd
