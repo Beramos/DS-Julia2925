@@ -134,6 +134,9 @@ unicode! In most Julia editing environments, unicode math symbols can be typed w
 
 """
 
+# ╔═╡ acb3b57a-661c-11eb-2c6a-99793a47ff29
+fyi(md"""Unsure what the LaTeX name for a symbol is or how to type an emoiji? Just copy-paste it in the REPL with a `?` at the beginning, e.g., `?ζ` and it will tell you how to type it.""")
+
 # ╔═╡ cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
 # type \alpha  and <TAB>
 
@@ -452,6 +455,9 @@ characters = ["Harry", "Ron", "Hermione"]
 	end
 end
 
+# ╔═╡ 3916f50e-661d-11eb-0829-cb3821836fdf
+md"We can use `enumerate` to generate an iterator of tuples containing the index and the values of an iterator."
+
 # ╔═╡ 4118016e-4ac0-11eb-18bf-5de326782c87
 @terminal begin
 	for (i, char) in enumerate(characters)
@@ -461,6 +467,9 @@ end
 
 # ╔═╡ 4119fbca-4ac0-11eb-1ea9-0bdd324214c5
 pets = ["Hedwig", "Pig", "Crookhanks"]
+
+# ╔═╡ 5ebe25c0-661d-11eb-389b-3d81570f7cf0
+md"`zip` binds two or more iterators and yield tuples of the pairs."
 
 # ╔═╡ 4139bf3c-4ac0-11eb-2b63-77a513149351
 @terminal begin
@@ -556,7 +565,7 @@ s.([1, 2, 3, 4, 5])  # This is an elements-wise execution of s()
 md"Maybe you are of the opinion that squaring a vector should automatically involve squaring the elements, or you might want to concatenate strings using `+`. Tomorrow we will learn to 'overload' functions to induce specific behaviour for specific datatypes!"
 
 # ╔═╡ 7b874424-4ac1-11eb-2d4e-0b4607559b8f
-md"""Keyword arguments are defined using a semicolon in the back signature and a default value can be assigned. "Keywords" assigned before the semicolon are default values but their keywords are not ignored."""
+md"""Keyword arguments are defined using a semicolon in the back signature and a default value can be assigned. "Keywords" assigned before a semicolon (`;`) are default values but their keywords are not ignored."""
 
 # ╔═╡ 86defe2a-4ac1-11eb-3c01-c5e671877212
 safelog(x, offset=0.1; base=10) = log(x + offset) / log(base)
@@ -575,8 +584,7 @@ md"""When functions have a variable number of arguments, one can use the *slurpi
 
 # ╔═╡ 944e1aaa-4ac1-11eb-0e23-41b1c5d0e889
 function mymean(X...)
-  m = zero(first(X))  # ensures to be the same type as x
-  # m = 0.0  # alternative that is less tidy
+  m = 0.0
   for x in X
 	m += x
   end
@@ -661,7 +669,7 @@ A particular powerful tool is creating a **pipeline**, i.e., using the output of
 md"The `.` syntax also works here and it is often useful to combine with anonymous functions."
 
 # ╔═╡ 8b57c506-500f-11eb-3114-55785eb593a7
-1:100 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
+1:1000 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
 
 # ╔═╡ fd171e0e-4ac1-11eb-09ea-337d17500149
 md"Specific functions can be generated if you have more information on the input type.
@@ -726,7 +734,7 @@ typeof(A)
 md"**multiple dispatch**"
 
 # ╔═╡ c8435740-4f2f-11eb-3046-3d45d5e0e805
- md"multiple dispatch is a concept where the behaviour of a function can be specified differently according to the type of the input arguments. Let's us look at an example,"
+md"Multiple dispatch is a concept where the behaviour of a function can be specified differently according to the type of the input arguments. Let's us look at an example,"
 
 # ╔═╡ cacb7254-4f2f-11eb-1daa-1bc04678835c
 begin 
@@ -842,7 +850,7 @@ end
 
 
 # ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
-time()
+present = time()
 
 # ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
 function since_epoch(t)
@@ -863,6 +871,9 @@ Write a script that reads the current time in nanoseconds (`time()`) and convert
 )
 	validate(qb5, tracker)
 end
+
+# ╔═╡ 40557d76-661e-11eb-3df0-659c6095285d
+since_epoch(present)
 
 # ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 
@@ -1152,9 +1163,10 @@ end
 # ╟─353efeea-6492-11eb-3d09-353d4dae491a
 # ╠═92f57780-6492-11eb-1264-bbef04a8ae99
 # ╠═a17ebeba-6492-11eb-07ba-f516a990affc
-# ╠═3055711a-6493-11eb-252b-7f5d99115551
+# ╟─3055711a-6493-11eb-252b-7f5d99115551
 # ╠═962ae6d2-4ab7-11eb-14a2-c76a2221f544
 # ╟─98d48302-4ab7-11eb-2397-710d0ae425f7
+# ╟─acb3b57a-661c-11eb-2c6a-99793a47ff29
 # ╠═cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
 # ╟─e2c5b558-4ab7-11eb-09be-b354fc56cc6e
 # ╠═ec754104-4ab7-11eb-2a44-557e4304dd43
@@ -1228,8 +1240,10 @@ end
 # ╟─2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
 # ╠═3896642a-4ac0-11eb-2c7c-4f376ab82217
 # ╠═3ef3faf8-4ac0-11eb-1965-fd23413e29f3
+# ╟─3916f50e-661d-11eb-0829-cb3821836fdf
 # ╠═4118016e-4ac0-11eb-18bf-5de326782c87
 # ╠═4119fbca-4ac0-11eb-1ea9-0bdd324214c5
+# ╟─5ebe25c0-661d-11eb-389b-3d81570f7cf0
 # ╠═4139bf3c-4ac0-11eb-2b63-77a513149351
 # ╟─a1d4127c-4ac0-11eb-116f-79c6ee58f524
 # ╠═a93b28e6-4ac0-11eb-074f-a7b64f43a194
@@ -1309,12 +1323,13 @@ end
 # ╠═cf35b2b2-4ac2-11eb-1ae6-5d3c108210df
 # ╠═d1010f88-4ac2-11eb-0fa9-0902fef0cf9f
 # ╟─0e63d722-4ac3-11eb-3740-d31b47a77912
-# ╠═a48be23a-57ff-11eb-1bc3-3d3e046ea67c
+# ╟─a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 # ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
 # ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
 # ╟─c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
+# ╠═40557d76-661e-11eb-3df0-659c6095285d
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
