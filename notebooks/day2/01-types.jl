@@ -81,7 +81,7 @@ md"These are all *concrete types*. Julia types are part of a hierarchical type s
 md"What is the type of `pi`?"
 
 # ╔═╡ f533012c-4e78-11eb-0f45-3b47f088c9c6
-typeofpi = typeof(pi)
+typeofpi = missing
 
 # ╔═╡ f69d89ba-4e73-11eb-3ab9-9179ea7e3217
 md"Concrete types (should) have a well-defined memory layout, for example `Float64` is  encoded using 64 bits while `Float32` is encoded using 32 bits and hence some computations can be executed quicker but less precise by the former. Abstract types on the other hand mainly encode a semantic meaning, any `Real` should behave as a real number (e.g., addition, division are defined)."
@@ -209,7 +209,7 @@ end
 @terminal subtypetree(Real)
 
 # ╔═╡ 3d1db2de-6549-11eb-2649-2d96659813f6
-md"It does not need to be complicate though,"
+md"It does not need to be complicated, though."
 
 # ╔═╡ 46eaafee-6549-11eb-2e36-c9e566d3f3ba
 function subtypetreesimple(roottype, level=1)
@@ -249,6 +249,9 @@ md"We have seen that you can add any type of float with any type of integer (dit
 # ╔═╡ 99228eee-5b24-11eb-385e-7507ca20ae0e
 promote(7.9, 79)
 
+# ╔═╡ 03133d24-6621-11eb-03d3-bb8970ab19f7
+promote_type(Float64, Int)  # find common type
+
 # ╔═╡ ba39991a-5b24-11eb-260b-439bcde4c153
 md"You see that `Float64` is the more general type, so both inputs are cast as floats and further processed by the function. That is why the their sum is a float: `7.9 + 79 = 86.9`. 
 
@@ -257,9 +260,6 @@ Of course, this also works with more complex composite types, such as matrices:
 
 # ╔═╡ 35e53434-5b25-11eb-10b7-e993e9477c8c
 [1 2; 3 4] + [0.0 1.0; 2.0 3.0]
-
-# ╔═╡ 71111ea6-5b25-11eb-2553-4d15ff3271d6
-
 
 # ╔═╡ 92dc7a4e-5b25-11eb-1518-8182216f24ec
 [0, 1.0, 2, 3]  # cast into a vector of floats
@@ -276,9 +276,6 @@ parse(Int, "42")
 
 # ╔═╡ 570c85bc-4e79-11eb-0249-891cf205d623
 parse(Float64, "0.999")
-
-# ╔═╡ 370d59fc-6013-11eb-0918-715fb28f9056
-
 
 # ╔═╡ 6756d6ac-4e79-11eb-21ab-4776195c9d3b
 bunchofnumbers = "1.728002758512114, 0.45540258865644284, 1.4067738604851092, 1.6549474922755167, -0.5281073122489854, 2.219250973007533, 0.8195027302254512, 1.8833469318073521, 0.7429034224663096, -0.8127686064960085, -0.14337850083375886, -1.477193046160141, 0.024525761924498457, 0.16097115910472956, -0.39278880092280993, 1.3988081686729814, -1.3316370350161346, 0.2791510437718087, 1.9834455917052212, -0.8616791621501649
@@ -305,6 +302,7 @@ begin
 		hints = [
 			hint(md" `rstrip` is a handy function."),
 			hint(md" `split` is a handy function."),
+			hint(md" Maybe we can use a pipe `|>`?"),
 		]
 	)
 	validate(qb_sparse, tracker)
@@ -340,7 +338,7 @@ begin
 end
 
 # ╔═╡ 2dff8c88-4e75-11eb-050b-7152e82ac10d
-mynewfun(x) = x^2 + x
+mynewfun(x) = x^2 .+ x
 
 # ╔═╡ 7c2b6dc0-4e76-11eb-1d78-553df82d9100
 
@@ -753,14 +751,13 @@ end
 # ╠═cd32e96c-4e78-11eb-0b48-5767421c7875
 # ╟─40a761c2-5b24-11eb-09a8-a5cd0bc4ab95
 # ╠═99228eee-5b24-11eb-385e-7507ca20ae0e
+# ╠═03133d24-6621-11eb-03d3-bb8970ab19f7
 # ╟─ba39991a-5b24-11eb-260b-439bcde4c153
 # ╠═35e53434-5b25-11eb-10b7-e993e9477c8c
-# ╠═71111ea6-5b25-11eb-2553-4d15ff3271d6
 # ╠═92dc7a4e-5b25-11eb-1518-8182216f24ec
 # ╟─aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 # ╠═815b0436-4e78-11eb-13d4-0dc6531e34f2
 # ╠═570c85bc-4e79-11eb-0249-891cf205d623
-# ╠═370d59fc-6013-11eb-0918-715fb28f9056
 # ╟─4495802e-6013-11eb-22fa-03f635d30a7b
 # ╠═6756d6ac-4e79-11eb-21ab-4776195c9d3b
 # ╠═e6f31ad8-4e79-11eb-11f4-2936cb039f8d
