@@ -870,7 +870,7 @@ q3 = Question(;
 
 Update `mydet` to compute the determinant of a general square matrix.
 """,
-	validators = @safe[det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
+	validators = @safe[det(M₁) ≈ mydet(M₁), det(M₂) ≈ mydet(M₂)]
 )
 		
 qb2 = QuestionBlock(;
