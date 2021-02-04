@@ -372,7 +372,7 @@ galleons(money::WizCur) = money.galleons
 sickles(money::WizCur) = money.sickles
 knuts(money::WizCur) = money.knuts
 
-moneyinknuts(money::WizCur) = 29*17galleons(money) + 17sickles(money) + knuts(money)
+moneyinknuts(money::WizCur) = 29*17galleons(money) + 29sickles(money) + knuts(money)
 
 function Base.show(io::IO, money::WizCur)
   print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
