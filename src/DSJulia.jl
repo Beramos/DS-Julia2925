@@ -29,11 +29,14 @@ module DSJulia
     include("admonition.jl")
     include("question.jl")
     include("grading.jl")
+    include("flatland.jl")
 
     # Solutions
     export Solutions
     module Solutions
+        using Colors, Images
         include("solutions.jl")
+        include("solutions_flatland.jl")
     end
 
     # Convenience macro for terminal printing in Pluto

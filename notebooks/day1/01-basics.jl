@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.12.20
 
 using Markdown
 using InteractiveUtils
@@ -10,7 +10,7 @@ using Plots
 # ╔═╡ e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # edit the code below to set your name and UGent username
 
-student = (name = "Jeanette Janssen", email = "Jeanette.Janssen@UGent.be");
+student = (name = "Jenke Janssen", email = "Jenke.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -33,8 +33,8 @@ end
 md"""
 # Notebook 1: Getting up and running
 
-First of all, _welcome to the course, **$(student[:name])**!
-"""
+First of all, welcome to the course, **$(student[:name])**! We hope you enjoy the ride.
+""" 
 
 # ╔═╡ 0f47f5b2-4aba-11eb-2e5a-b10407e3f928
 
@@ -99,6 +99,31 @@ md"variable assignment"
 # ╔═╡ 93b5a126-4ab7-11eb-2f67-290ed869d44a
 x = 2
 
+# ╔═╡ 353efeea-6492-11eb-3d09-353d4dae491a
+md"In the Pluto notebook environment you are currently working in, it is not possible to define the same variable in two cells. However, this is not standard Julia behaviour. You can see that redefining a variable is possible,"
+
+# ╔═╡ 92f57780-6492-11eb-1264-bbef04a8ae99
+begin
+	variable1 = 2.0
+	variable1 = 4.0
+end;
+
+# ╔═╡ a17ebeba-6492-11eb-07ba-f516a990affc
+variable1
+
+# ╔═╡ 3055711a-6493-11eb-252b-7f5d99115551
+md"""
+```julia
+begin
+ statement1
+ statement2
+end
+```
+
+Enable to wrap multiple statements, since only single-line statements are allowed in this notebook environment.
+
+"""
+
 # ╔═╡ 962ae6d2-4ab7-11eb-14a2-c76a2221f544
 τ = 1 / 37  # unicode variable names are allowed
 
@@ -108,6 +133,9 @@ md"""
 unicode! In most Julia editing environments, unicode math symbols can be typed when starting with a '\' and hitting '[TAB]'.
 
 """
+
+# ╔═╡ acb3b57a-661c-11eb-2c6a-99793a47ff29
+fyi(md"""Unsure what the LaTeX name for a symbol is or how to type an emoiji? Just copy-paste it in the REPL with a `?` at the beginning, e.g., `?ζ` and it will tell you how to type it.""")
 
 # ╔═╡ cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
 # type \alpha  and <TAB>
@@ -142,7 +170,7 @@ println("The answer to $mystery is $(3*2*7)")
 md"... but take a look at the terminal window."
 
 # ╔═╡ 97b7f7d8-61aa-11eb-2bf6-739bd5f2e941
-md"So the [Stdout](https://www.computerhope.com/jargon/s/stdout.htm) is printed to the terminal window and not the notebooks. We can use the @terminal macro of our own making to circumvent this. More on macros tomorrow!"
+md"So the [Stdout](https://www.computerhope.com/jargon/s/stdout.htm) is printed to the terminal window and not the notebooks. We can use the @terminal macro of our own making to circumvent this. More on macros tomorrow! What you need to know now is that the macro @terminal does some additional processing to the statement is proceeds."
 
 # ╔═╡ dcf78e38-61a7-11eb-1ac8-9927f5dca4f2
 @terminal println("The answer to $mystery is $(3*2*7)")
@@ -391,7 +419,7 @@ clip(x) = missing
 begin
    q2 = Question(
 			description=md"""
-			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, without making use of the functions `min` and `max`.
+			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, **without** making use of the functions `min` and `max`.
 
 			Open assignments always return `missing`. 
 			""",
@@ -421,21 +449,33 @@ md"## 4. Looping"
 characters = ["Harry", "Ron", "Hermione"]
 
 # ╔═╡ 3ef3faf8-4ac0-11eb-1965-fd23413e29f3
-for char in characters
-  println("Character $char")
+@terminal begin
+	for char in characters
+	  println("Character $char")
+	end
 end
 
+# ╔═╡ 3916f50e-661d-11eb-0829-cb3821836fdf
+md"We can use `enumerate` to generate an iterator of tuples containing the index and the values of an iterator."
+
 # ╔═╡ 4118016e-4ac0-11eb-18bf-5de326782c87
-for (i, char) in enumerate(characters)
-  println("$i. $char")
+@terminal begin
+	for (i, char) in enumerate(characters)
+	  println("$i. $char")
+	end
 end
 
 # ╔═╡ 4119fbca-4ac0-11eb-1ea9-0bdd324214c5
 pets = ["Hedwig", "Pig", "Crookhanks"]
 
+# ╔═╡ 5ebe25c0-661d-11eb-389b-3d81570f7cf0
+md"`zip` binds two or more iterators and yield tuples of the pairs."
+
 # ╔═╡ 4139bf3c-4ac0-11eb-2b63-77a513149351
-for (char, pet) in zip(characters, pets)
-  println("$char has $pet as a pet")
+@terminal begin
+	for (char, pet) in zip(characters, pets)
+	  println("$char has $pet as a pet")
+	end
 end
 
 # ╔═╡ a1d4127c-4ac0-11eb-116f-79c6ee58f524
@@ -445,12 +485,14 @@ md"Strings can also be looped"
 getme = "a shrubbery"
 
 # ╔═╡ ac35b796-4ac0-11eb-3bc5-5ff4350d5452
-for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
-  println("$letter")
+@terminal begin
+	for letter in getme  # or, equivalently, use `∈` instead of `in` to look like a mathematician!
+	  println("$letter")
+	end
 end
 
 # ╔═╡ b18e55ae-4ac0-11eb-1455-21b83b7c61d5
-let 
+@terminal let 
 	n = 16757676187786;
 	steps = 0
 	while n > 1
@@ -523,7 +565,7 @@ s.([1, 2, 3, 4, 5])  # This is an elements-wise execution of s()
 md"Maybe you are of the opinion that squaring a vector should automatically involve squaring the elements, or you might want to concatenate strings using `+`. Tomorrow we will learn to 'overload' functions to induce specific behaviour for specific datatypes!"
 
 # ╔═╡ 7b874424-4ac1-11eb-2d4e-0b4607559b8f
-md"""Keyword arguments are defined using a semicolon in the back signature and a default value can be assigned. "Keywords" assigned before the semicolon are default values but their keywords are not ignored."""
+md"""Keyword arguments are defined using a semicolon in the back signature and a default value can be assigned. "Keywords" assigned before a semicolon (`;`) are default values but their keywords are not ignored."""
 
 # ╔═╡ 86defe2a-4ac1-11eb-3c01-c5e671877212
 safelog(x, offset=0.1; base=10) = log(x + offset) / log(base)
@@ -542,8 +584,7 @@ md"""When functions have a variable number of arguments, one can use the *slurpi
 
 # ╔═╡ 944e1aaa-4ac1-11eb-0e23-41b1c5d0e889
 function mymean(X...)
-  m = zero(first(X))  # ensures to be the same type as x
-  # m = 0.0  # alternative that is less tidy
+  m = 0.0
   for x in X
 	m += x
   end
@@ -628,7 +669,7 @@ A particular powerful tool is creating a **pipeline**, i.e., using the output of
 md"The `.` syntax also works here and it is often useful to combine with anonymous functions."
 
 # ╔═╡ 8b57c506-500f-11eb-3114-55785eb593a7
-1:100 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
+1:1000 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
 
 # ╔═╡ fd171e0e-4ac1-11eb-09ea-337d17500149
 md"Specific functions can be generated if you have more information on the input type.
@@ -655,10 +696,10 @@ square(2.0)
 square("ni")   # the multiplication of strings is defined as a concatenation
 
 # ╔═╡ 1c0230f8-4ac2-11eb-32aa-e7a4b2ae9cff
-square(4)
+@terminal square(4) #... nothing is printed, obviously
 
 # ╔═╡ 226417c2-4ac2-11eb-2914-196461e2b40e
-square(4.)
+@terminal square(4.)
 
 # ╔═╡ 3daf4fa6-4ac2-11eb-0541-b98c2e97dfe4
 md"More about types in the next section!"
@@ -693,7 +734,7 @@ typeof(A)
 md"**multiple dispatch**"
 
 # ╔═╡ c8435740-4f2f-11eb-3046-3d45d5e0e805
- md"multiple dispatch is a concept where the behaviour of a function can be specified differently according to the type of the input arguments. Let's us look at an example,"
+md"Multiple dispatch is a concept where the behaviour of a function can be specified differently according to the type of the input arguments. Let's us look at an example,"
 
 # ╔═╡ cacb7254-4f2f-11eb-1daa-1bc04678835c
 begin 
@@ -722,13 +763,13 @@ Some nifty basic macros are `@time` and `@show`. `@time` prints the cpu time and
 """
 
 # ╔═╡ 85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
-@time square(10)  #Don't forget that printing happens in the terminal windows
+@terminal @time square(10)
 
 # ╔═╡ a11c2898-4ac2-11eb-24d3-6f8060b5fd65
 md"""The `@show` macro is often useful for debugging purposes. It displays both the expression to be evaluated and its result, finally returning the value of the result."""
 
 # ╔═╡ a686e67e-4ac2-11eb-228e-23524a3ddc59
-@show 1 + 1
+@terminal @show 1 + 1
 
 # ╔═╡ d50cced2-500d-11eb-2dcc-21fc50825f43
 md"We will provide more examples tomorrow!"
@@ -809,7 +850,7 @@ end
 
 
 # ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
-time()
+present = time()
 
 # ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
 function since_epoch(t)
@@ -830,6 +871,9 @@ Write a script that reads the current time in nanoseconds (`time()`) and convert
 )
 	validate(qb5, tracker)
 end
+
+# ╔═╡ 40557d76-661e-11eb-3df0-659c6095285d
+since_epoch(present)
 
 # ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 
@@ -911,6 +955,139 @@ qb7 = QuestionBlock(;
 )
 end
 
+# ╔═╡ e2583a06-6479-11eb-091b-8be70024930d
+
+
+# ╔═╡ 1f588828-6477-11eb-0c70-557f130c6785
+function degrade(molecule)
+	return missing # replace this with the correct code
+end
+
+# ╔═╡ 4d0e1d60-6476-11eb-154e-d9cc3bf284c2
+caproic_acid = "CH3-CH2-CH2-CH2-CH2-COOH"
+
+# ╔═╡ 5167ded6-6463-11eb-3279-0dd226fae82e
+verylongium = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3" 
+
+# ╔═╡ c4d03faa-647d-11eb-3a84-d7b2d53e4720
+
+
+# ╔═╡ c42f69f6-647d-11eb-143b-2f0ab33616e7
+
+
+# ╔═╡ c55ed390-647d-11eb-22d5-33fbae27a2bb
+function generator(N; tips=["CH3", "COOH"], backbone=["CH2", "CO"])
+	return rand(tips) * "-" * reduce(*,rand(backbone,N-2).* "-") * rand(tips)
+end
+
+# ╔═╡ 23db2764-647e-11eb-37dd-a34db2ff0fcd
+generator(6) #try rerunning this cell multiple times
+
+# ╔═╡ 989d0dd2-647a-11eb-3123-39786452714a
+C12 = [generator(12) for i in 1:10]
+
+# ╔═╡ 061e4894-647b-11eb-06db-310d02463b80
+function molecular_weight(molecule)
+	return missing
+end
+
+# ╔═╡ e6217d50-63de-11eb-28d8-452aeffc956c
+begin 
+
+molecule1_mm = "CH3-CH2-CH2-CH2-CH2-COOH"
+molecule2_mm = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3"
+	
+test1_mm = 	@safe[molecule1_mm |> Solutions.degrade == molecule1_mm |> degrade] 
+	
+molecule1_mm = "CH3-CH2-CH2-CH2-CH2-COOH"
+molecule2_mm = "COOH-CO-CO-CH2-CH2-CO-CO-CH2-CO-CO-CH2-CH2-CO-CH2-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CH2-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CH2-CO-CO-CH2-CH2-CO-CH2-CO-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CO-CO-CH2-CH2-CH2-CH2-CO-CH2-CH2-CO-CO-CO-CH2-CO-CH2-CH2-CH2-CO-CO-CO-CO-CO-CO-CH2-CH2-CH2-CO-CO-CO-CO-CH2-CH2-CH2-CO-CH2-CO-CO-CO-CO-CO-CH2-CO-CO-CH2-CH2-CH3"
+	
+test2_mm = 	@safe[
+		molecule1_mm |> Solutions.molecular_weight == 
+			molecule1_mm |> molecular_weight,
+		molecule2_mm |> Solutions.molecular_weight == 
+			molecule2_mm |> molecular_weight,		
+		] 
+
+q_mm1 = Question(validators = test1_mm, 
+					description = md"""Happy with their discovery (less happy with the odours coming from their machine), the scientist take out a small vial... We wonder what would be the stable molecule obtained from this very expensive bottle filled with the molecule `verylongium`.""")
+
+q_mm2 = Question(validators = test2_mm, 
+		description = md""" All of the sudded you hear, *\"Eureka!\"* from the other end of the corridor. It appears the chemical engineers finally figured out how to get their molecular generator working. This machine creates random molecules with a set number of carbon atoms `N`. They even show you how it works (see `generator` below), it is quite simple actually (try to understand which string manupilation are being used here). 
+		
+The engineers would like you to analyse the molecules they generate, using the mass spectroscopy machine. They do not only want to know which molecules are obtained after degradation but also want to see the spread of the molecular weight of the degradation product. 
+		
+Degrade *1000* molecules containing *12* carbon atoms, compute the molecular weight of each component and plot a histogram that depicts the relative frequency to the molecular weight of these components.
+		
+| Group | Molecular weight (g/mol) |
+|-------|--------------------------|
+| CH4   | 16.0                     |
+| CH3   | 15.0                     |
+| CH2   | 14.0                     |
+| CO    | 28.0                     |
+| OH    | 17.0                     |	
+
+		
+"""
+	
+	)
+
+qb_mm = QuestionBlock(;
+	title=md"**Question 8: Molecular mass spectroscopy**",
+	description = md"""
+	Analytical chemists at Ghent University have discovered a new analytical technique where organic molecules are partially burned into smaller molecules. These oxidised molecules can then be detected via acetatometry. 
+		
+	An organic molecule entering the analyser will always follow the same degradation pattern and subsequently,
+	
+	1. *CH₃*-endpoints will turn into *COOH*;
+	2. *CO-COOH*-endpoints are unstable and will evaporate;
+	3. Any *CH₂*-endpoints are unstable and will turn into *CH₃*;
+	4. The first *-CH₂-CH₂-* wil react to *CO*;
+	5. *CO* at the endpoints will be converted to *COOH*;
+	6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
+	7. If the *CH2* or *CH3* is left at the very end, *CH4* is formed.
+
+	This degradation pattern is repeated until a stable molecule is obtained.
+	
+	Let's take caproic acid for example,
+		![](https://i.imgur.com/xsb9tGR.png)
+		
+	with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH, caproic acid will degrade following this pattern,
+		
+	- Cycle 1: Step 1: CH₃ will turn into COOH: COOH-CH2-CH2-CH2-CH2-COOH.
+	- Cycle 1: Step2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH.
+	- Cycle 1: Step3: No unstable CH₂ ends:  COOH-CH2-CH2-CH2-CH2-COOH.
+	- Cycle 1: Step4: Reaction of the first -CH₂-CH₂- to CO: COOH-CO-CH2-CH2-COOH.
+	- Cycle 1: Steps 5 & 6 do not change the molecule and a new cycle is repeated
+	- Cycle 2: Step 1 does not change the molecule.
+	- Cycle 2: Step 2 removes a single CO-COOH: CH2-CH2-COOH.
+	- Cycle 2: Step 3: changes the molecule to: CH3-CH2-COOH.
+	- ...
+	- Cycle 3: step 1: changes the molecule CH3-CH2-COOH to **COOH-CH2-COOH**.
+	
+	  Additional cycles will not further degrade the structure of the molecule and can be considered stable. Caproic acid degraded into [malonic acid](https://en.wikipedia.org/wiki/Malonic_acid) (COOH-CH2-COOH)
+
+	""",
+	questions = [q_mm1, q_mm2],
+	hints= [
+			hint(md"Make sure you to check both endpoints CH₃-, -CH₃ and -CO-COOH or COOH-CO-, etc."),
+			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """),
+			hint(md"""For part 2: use the function `histogram` from the Plots library"""),
+			hint(md"""Type \"histogram\", put your cursor on histogram and open the "Live docs", to find informaiton on how to use the histogram function.""")
+		]
+)
+	validate(qb_mm)
+end
+
+# ╔═╡ 89a9ad00-6489-11eb-2a2d-bfa18af103ab
+#Plotting
+
+# ╔═╡ 8ab56dcc-6489-11eb-16a4-b7d12003ed99
+
+
+# ╔═╡ 0507186a-647a-11eb-07cf-ebf32bdff5b0
+
+
 # ╔═╡ 448ef88e-4ad2-11eb-20d6-17a51d665ef9
 function print_grid()
 	missing
@@ -930,7 +1107,7 @@ oq9 = QuestionOptional{Easy}(validators = [print_big_grid() == "+ - - - - + - - 
 		description = md"Write a function that draws a similar grid with four rows and four columns.")
 	
 qb8 = QuestionBlock(;
-	title=md"**Question 8: grid print**",
+	title=md"**Question 9: grid print**",
 	description = md"""
 	Complete the function `printgrid` that draws a grid like the following:
 	```
@@ -983,8 +1160,13 @@ end
 # ╠═9d2708ca-5a6c-11eb-1c0f-473f0e2b5363
 # ╟─8c14cb9a-4ab7-11eb-0666-b1d4aca00f97
 # ╠═93b5a126-4ab7-11eb-2f67-290ed869d44a
+# ╟─353efeea-6492-11eb-3d09-353d4dae491a
+# ╠═92f57780-6492-11eb-1264-bbef04a8ae99
+# ╠═a17ebeba-6492-11eb-07ba-f516a990affc
+# ╟─3055711a-6493-11eb-252b-7f5d99115551
 # ╠═962ae6d2-4ab7-11eb-14a2-c76a2221f544
 # ╟─98d48302-4ab7-11eb-2397-710d0ae425f7
+# ╟─acb3b57a-661c-11eb-2c6a-99793a47ff29
 # ╠═cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
 # ╟─e2c5b558-4ab7-11eb-09be-b354fc56cc6e
 # ╠═ec754104-4ab7-11eb-2a44-557e4304dd43
@@ -1058,8 +1240,10 @@ end
 # ╟─2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
 # ╠═3896642a-4ac0-11eb-2c7c-4f376ab82217
 # ╠═3ef3faf8-4ac0-11eb-1965-fd23413e29f3
+# ╟─3916f50e-661d-11eb-0829-cb3821836fdf
 # ╠═4118016e-4ac0-11eb-18bf-5de326782c87
 # ╠═4119fbca-4ac0-11eb-1ea9-0bdd324214c5
+# ╟─5ebe25c0-661d-11eb-389b-3d81570f7cf0
 # ╠═4139bf3c-4ac0-11eb-2b63-77a513149351
 # ╟─a1d4127c-4ac0-11eb-116f-79c6ee58f524
 # ╠═a93b28e6-4ac0-11eb-074f-a7b64f43a194
@@ -1093,7 +1277,7 @@ end
 # ╠═a6b95d62-4ac1-11eb-0c93-7fa0f6a120d5
 # ╠═ab006064-4ac1-11eb-32be-6557b8d45f32
 # ╟─b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
-# ╟─b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
+# ╠═b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
 # ╠═beafce06-4ac1-11eb-2431-1ffeba45716b
 # ╟─ec487488-4ac1-11eb-1be3-a93e41f78bf3
 # ╠═f88fee6c-4ac1-11eb-1671-43493122f061
@@ -1102,8 +1286,8 @@ end
 # ╠═fa9b3266-4ac1-11eb-153a-87c6a1124890
 # ╠═fa9d43b2-4ac1-11eb-33fc-a37503cedabf
 # ╟─0dbe0c34-500e-11eb-2633-67d8dc6b24c8
-# ╟─900da226-500e-11eb-3f1c-5582ed0cf749
-# ╟─b24bee9a-500e-11eb-2130-45b78bbebdec
+# ╠═900da226-500e-11eb-3f1c-5582ed0cf749
+# ╠═b24bee9a-500e-11eb-2130-45b78bbebdec
 # ╟─c8cf6520-500e-11eb-2dd3-4507a3994a83
 # ╠═19402512-500f-11eb-3ea7-c3d1c52025d6
 # ╟─6dc0eaae-500f-11eb-3051-37d870366201
@@ -1125,7 +1309,7 @@ end
 # ╠═cacb7254-4f2f-11eb-1daa-1bc04678835c
 # ╠═cc48bc9a-4f2f-11eb-134c-71bd8a944943
 # ╠═d9f28c04-4f2f-11eb-0255-1965fb8f07b5
-# ╟─dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
+# ╠═dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
 # ╟─de48a3f6-4f2f-11eb-314b-493546c37a21
 # ╟─6da71180-4ac2-11eb-1cac-410bd1cce70c
 # ╠═85b96ff0-4ac2-11eb-077f-cf4aad8a3c24
@@ -1145,13 +1329,28 @@ end
 # ╟─c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
+# ╠═40557d76-661e-11eb-3df0-659c6095285d
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
-# ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
+# ╟─e2583a06-6479-11eb-091b-8be70024930d
+# ╟─e6217d50-63de-11eb-28d8-452aeffc956c
+# ╠═1f588828-6477-11eb-0c70-557f130c6785
+# ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
+# ╠═5167ded6-6463-11eb-3279-0dd226fae82e
+# ╠═c4d03faa-647d-11eb-3a84-d7b2d53e4720
+# ╟─c42f69f6-647d-11eb-143b-2f0ab33616e7
+# ╠═c55ed390-647d-11eb-22d5-33fbae27a2bb
+# ╠═23db2764-647e-11eb-37dd-a34db2ff0fcd
+# ╠═989d0dd2-647a-11eb-3123-39786452714a
+# ╠═061e4894-647b-11eb-06db-310d02463b80
+# ╠═89a9ad00-6489-11eb-2a2d-bfa18af103ab
+# ╠═8ab56dcc-6489-11eb-16a4-b7d12003ed99
+# ╟─0507186a-647a-11eb-07cf-ebf32bdff5b0
 # ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207

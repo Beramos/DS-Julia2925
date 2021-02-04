@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.12.20
 
 using Markdown
 using InteractiveUtils
@@ -184,7 +184,7 @@ names[3:6]
 md"and slicing with assignment too."
 
 # ╔═╡ 4db9d648-4c1e-11eb-1063-e78c78ef5c4b
-names[end-1:end] = ["Slartibartfast","The Whale and the Bowl of Petunias"]
+names[end-1:end] = ["Slartibartfast", "The Whale and the Bowl of Petunias"]
 
 # ╔═╡ 4fb1a53e-4c1e-11eb-381b-1f86a5ed97a1
 names
@@ -196,7 +196,7 @@ md"What the first index again? And how to access the last element? If you forgot
 first(names), last(names)
 
 # ╔═╡ 354fa70c-5a74-11eb-31fc-ad21a845d3b0
-fyi(md"Pluto might not execute the lines of code in order. As you are chaning `names` later on, it the results might be a bit unexpected.")
+fyi(md"Pluto might not execute the lines of code in order. As you are changing `names` later on, the results might be a bit unexpected.")
 
 # ╔═╡ 56f5f21e-4c1e-11eb-004e-f19aa9029b01
 md"### Types and arrays"
@@ -208,7 +208,7 @@ md"Julia arrays can be of mixed type."
 Y = [42, "Universe", []]
 
 # ╔═╡ 8a0e3e36-4c1e-11eb-0ec0-d19fdc3c89d8
-md"The type of the array changes depending on the elements that make up the array. With `Any` being the most general type."
+md"The type of the array changes depending on the elements that make up the array. With `Any` being the most general type. Working with such general objects is not efficient though. In practice, your code will become as slow as Python."
 
 # ╔═╡ 90d3dc80-4c1e-11eb-2a11-3fe581f0b5f7
 typeof(Y)
@@ -247,31 +247,60 @@ Float64[1, 2, 3]
 
 # ╔═╡ 3d0107c4-4c1f-11eb-1b5b-ed954348d0aa
 md"""### Initialisation
-Arrays can be initialized in all the classic, very Pythonesque ways.
+Arrays can be initialised in all the classic, very Pythonesque ways.
 
 
 """
 
+# ╔═╡ ad79420c-64a2-11eb-0ab3-4dfce430f6c3
+begin
+
+qb_ai = QuestionBlock(;
+	title=md"**Assignment: array intialisation**",
+	description = md"""
+	
+	Test the following statements.
+	
+	```julia
+	C = []  # empty
+
+	zeros(5)      # row vector of 5 zeroes
+
+	ones(3,3)     # 3×3 matrix of 1's, will be discussed later on
+
+	fill(0.5, 10) # in case you want to fill a matrix with a specific value
+		
+	rand(2)       # row vector of 2 random floats [0,1]
+		
+	randn(2)      # same but normally-distributed random numbers
+		
+	rand(Bool, 10)  # specify the type, many packages overload rand for other stuff
+		
+	```
+	""")
+
+end
+
 # ╔═╡ 4b3317da-4c1f-11eb-19d5-03570c4d65df
-C = []  # empty
+
 
 # ╔═╡ 503c9da0-4c1f-11eb-292a-db7b8ce9f458
-zeros(5)      # row vector of 5 zeroes
+
 
 # ╔═╡ 503d455c-4c1f-11eb-3af2-8f200db1fd30
-ones(3,3)     # 3×3 matrix of 1's, will be discussed later on
+
 
 # ╔═╡ 504d8aca-4c1f-11eb-3600-d77038b0f2bc
-fill(0.5, 10) # in case you want to fill a matrix with a specific value
+
 
 # ╔═╡ 505874a8-4c1f-11eb-1132-3bbba81ae1db
-rand(2)    # row vector of 2 random floats [0,1]
+
 
 # ╔═╡ 5071c430-4c1f-11eb-226b-634abae6082f
-randn(2)   # same but normally-distributed random numbers
+
 
 # ╔═╡ c2ccb916-5a72-11eb-16d9-15283727d6cf
-rand(Bool, 10)  # specifiy the type, many packages overload rand for other stuff
+
 
 # ╔═╡ 52a8a6ec-4c1f-11eb-386c-a99ef05b41b0
 md"Often it is better to provide a specific type for initialization. For numeric elements `Float64` is the default."
@@ -349,6 +378,12 @@ md"Let's add a dimension and go to 2D Arrays, matrices. It is all quite straight
 # ╔═╡ 097e96e8-4c24-11eb-24c4-31f4d23d3238
 P = [0 1 1; 2 3 5; 8 13 21; 34 55 89]
 
+# ╔═╡ 028be3bc-661f-11eb-251e-73abd3abb9fe
+size(P)
+
+# ╔═╡ 08e5589e-661f-11eb-262a-dd917f77f56b
+size(P, 1)  # size first dimention
+
 # ╔═╡ 0b9bad58-4c24-11eb-26a8-1d04d7b2be61
 P[3,2]  # indexing
 
@@ -371,7 +406,7 @@ rand(Bool, 3, 3)
 md"It is important to know that arrays and other collections are copied by reference."
 
 # ╔═╡ 6191c72e-4c24-11eb-21bb-a59e880a3573
-let
+@terminal let
 	println(); println()
     P = [0 1 1; 2 3 5; 8 13 21; 34 55 89]
 	@show R = P
@@ -379,7 +414,7 @@ let
 	@show P[1, 1] = 42
 	println()
 	@show R
-end; # Check the terminal
+end
 
 # ╔═╡ 07220d0a-4c4a-11eb-0ae3-298cf03a0bf6
 md"`deepcopy()` can be used to make a fully dereferenced object."
@@ -438,7 +473,7 @@ E * R
 md"### Element-wise operations"
 
 # ╔═╡ ee779c1a-4c4a-11eb-1894-d743aeff7f44
-md"""This is the Julian way since functions act on the objects, and element-wise operatios are done with "dot" operations. For every function or binary operation like `^` there is a "dot" operation `.^` to perform element-by-element exponentiation on arrays."""
+md"""This is the Julian way since functions act on the objects, and element-wise operations are done with "dot" operations. For every function or binary operation like `^` there is a "dot" operation `.^` to perform element-by-element exponentiation on arrays."""
 
 # ╔═╡ 0697987c-4c4b-11eb-3052-df54b72dec52
 T = [10 10 10; 20 20 20]
@@ -460,10 +495,13 @@ Did you notice that dot-operations are also applicable to functions, even user-d
 # ╔═╡ 32351fb8-4c4b-11eb-058b-5bb348e8dfb7
 T.^2 .+ cos.(T) == @. T^2 + cos(T)
 
+# ╔═╡ be557eda-64a3-11eb-1562-35ad48531ebd
+
+
 # ╔═╡ eed4faca-4c1f-11eb-3e6c-b342b48080eb
 md""" ### Intermezzo: Colors.jl and Images.jl
 
-As has been mentioned before, everything has a type. We also know that functions can behave differently for each type. With this in mind, let us look at two interesting packages. *Colors.jl*
+As has been mentioned before, everything has a type. We also know that functions can behave differently for each type. With this in mind, let us look at two interesting packages. *Colors.jl* and *Images.jl*
 """
 
 # ╔═╡ 42254aa6-4f37-11eb-001b-f78d5383e36f
@@ -500,13 +538,20 @@ sqr_img = img[1:1500, 201:1700]
 md"Because of this type system, a lot of interesting feature work out of the box."
 
 # ╔═╡ 8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
-@bind brightness html"<input type=range min=0.0 max=300.0>"
+md"""
+☼ 
+$(@bind brightness html"<input type=range min=0.0 max=300.0>")
+☾
+"""
 
 # ╔═╡ ac62d6e0-5a74-11eb-1538-09d157738257
 brightness
 
 # ╔═╡ d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
-img[1:1500, 201:1700]./(brightness/100)
+img[1:1500, 201:1700] ./ (brightness/100)
+
+# ╔═╡ 21db9766-64a4-11eb-3ec1-4956431e7a09
+
 
 # ╔═╡ 5064c592-4c4b-11eb-0dee-5186caf2b1f6
 md"### Higher dimensional arrays"
@@ -518,7 +563,7 @@ md"Matrices can be generalized to multiple dimensions."
 H = rand(3, 3, 3)
 
 # ╔═╡ bf6b9fc4-5a74-11eb-2676-bda580c65877
-md"That is all there is to, feel free to create arrays of any dimension."
+md"That is all there is to see about matrices, feel free to create arrays of any dimension."
 
 # ╔═╡ 6e7d5a94-4c4b-11eb-3e2d-353177d6bca5
 md"### Ranges"
@@ -536,11 +581,13 @@ md"Or by increasing in steps:"
 str = 1:3:20
 
 # ╔═╡ 9483861e-4c4b-11eb-156b-2501ef2c54d0
-md"Similar to the `range` function in Python, the object that is created is not an array, but an iterator. This is actually the term used in Python. Julia has many different types and structs, which behave a particular way. Types of `UnitRange` only store the beginning and end value (and stepsize in the case of `StepRange`). But functions are overloaded such that it acts as arrays."
+md"Similar to the `range` function in Python, the object that is created is not an array, but an iterator. This is actually the term used in Python. Julia has many different types and structs, which behave a particular way. Types of `UnitRange` only store the beginning and end value (and stepsize in the case of `StepRange`). But functions are overloaded such that it acts as an array. This can really improve the execution speed since the conversion from `Range` to explicit array is only performed where it is necessary and avoids copying large matrices from function to function."
 
 # ╔═╡ 9fd1be0a-4c4b-11eb-299b-f7f0d8797f71
-for i in ur
-  println(i)
+@terminal let
+	for i in ur
+	  println(i)
+	end
 end
 
 # ╔═╡ a2104d08-4c4b-11eb-0ccc-b588e99a2057
@@ -556,7 +603,7 @@ md"All values can be obtained using `collect`:"
 collect(str)
 
 # ╔═╡ b3035158-4c4b-11eb-1b8d-1fc4070fa132
-md"Such implicit objects can be processed much smarter than naive structures. Compare!"
+md"Such implicit objects can be processed much smarter than naive structures. Compare! (You might need to run the lines of code again as not to measure compile time."
 
 # ╔═╡ c4575438-4c4b-11eb-1da2-97acca3f3e99
 @elapsed sum((i for i in 1:100_000_000))
@@ -568,13 +615,19 @@ md"Note that we use round brackets to create our own iterator, where every eleme
 @elapsed sum(1:100_000_000)   
 
 # ╔═╡ 3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
-sum(1:100_000_000)  == sum((i for i in 1:100_000_000))
+sum(1:100_000_000) == sum((i for i in 1:100_000_000))
 
 # ╔═╡ 03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 md"`StepRange` and `UnitRange` also work with floats."
 
 # ╔═╡ 0bec2d28-4c58-11eb-0a51-95bf50bbfd79
 0:0.1:10
+
+# ╔═╡ 6aa73154-661f-11eb-2b88-578eb2dd2ec2
+(0:1:100) / 10  # equivalent
+
+# ╔═╡ ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
+
 
 # ╔═╡ 0fd08728-4c58-11eb-1b71-c9710d398fab
 md"## 3. Other collections"
@@ -598,7 +651,7 @@ pop!(tupleware)
 fyi(md"In contrast to arrays however, the types at positions should not be the same, since the compiler will create a new type for every combination!")
 
 # ╔═╡ 8245e46e-5a75-11eb-2d0a-27ef6a1f2492
-mixedtuple = (9, "negen")
+mixedtuple = (9, "nine")
 
 # ╔═╡ 942b88b4-5a75-11eb-3e7b-4534bf4a7b12
 typeof(mixedtuple)
@@ -644,6 +697,9 @@ delete!(scores, "humans")  # removing a key, earth was destroyed
 
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
 md"## 4. Exercises"
+
+# ╔═╡ ee9069e2-63a7-11eb-12b9-97ae270506f4
+hint(md"Remember, `.` is not only used for decimals...")
 
 # ╔═╡ 3de1f1aa-58bd-11eb-2ffc-0de292b13840
 function riemannsum(f, a, b; n=100)
@@ -697,13 +753,16 @@ which is the sum of the function $f(x)$ evaluated over an array of x-values in t
 		
 $$\Delta x = \cfrac{(b-a)}{n}$$
 
-Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.		
+Complete the function `riemannsum(f, a, b,; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.
 
 	""",
 	questions = [q1, q2, q3]
 )
 	validate(qb1, tracker)
 end
+
+# ╔═╡ c1e377c4-64a4-11eb-3e7f-b163cb465057
+
 
 # ╔═╡ 75d14674-58ba-11eb-3868-172fc00a0eb8
 function markdowntable(table, header)
@@ -772,13 +831,16 @@ begin
 		questions = [q71, q72],
 		hints = [
 			hint(md""" The `join` and `repeat`-functions might come in handy """),
-			hint(md""" The @assert macro should get you close to solving the second part."""),
+			hint(md""" The `@assert` macro should get you close to solving the second part."""),
 		]
 		
 	)
 	
 	validate(qb70, tracker)
 end
+
+# ╔═╡ dc6a4870-64a4-11eb-328f-41e5dbcd0a3b
+
 
 # ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 function mydet(A)
@@ -808,7 +870,7 @@ q3 = Question(;
 
 Update `mydet` to compute the determinant of a general square matrix.
 """,
-	validators = @safe[det(M₁) == mydet(M₁), det(M₂) == mydet(M₂)]
+	validators = @safe[det(M₁) ≈ mydet(M₁), det(M₂) ≈ mydet(M₂)]
 )
 		
 qb2 = QuestionBlock(;
@@ -819,6 +881,9 @@ qb2 = QuestionBlock(;
 )
 	validate(qb2, tracker)
 end
+
+# ╔═╡ e5293248-64a4-11eb-0d30-53a15bec0d01
+
 
 # ╔═╡ cb20fffe-58cf-11eb-1b65-49699f2d3699
 function estimatepi(n)
@@ -892,6 +957,9 @@ begin
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
 
+# ╔═╡ 00121c4e-64a5-11eb-2993-61c695c4e6a1
+
+
 # ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
 vandermonde(α, n) = missing
 
@@ -920,6 +988,9 @@ $V = [\alpha_i^{j-1}] .$
 )
 	validate(qb1)
 end
+
+# ╔═╡ 16ec4ee4-64a5-11eb-26f3-15313b8b5acb
+
 
 # ╔═╡ 2e7973b6-4d0f-11eb-107c-cdaf349428c0
 md""" ## 5. References
@@ -970,6 +1041,7 @@ md""" ## 5. References
 # ╟─0fd48034-4c1f-11eb-06a9-0d7353b2a0d6
 # ╠═2262e4fc-4c1f-11eb-07b8-0b9732b93d86
 # ╟─3d0107c4-4c1f-11eb-1b5b-ed954348d0aa
+# ╟─ad79420c-64a2-11eb-0ab3-4dfce430f6c3
 # ╠═4b3317da-4c1f-11eb-19d5-03570c4d65df
 # ╠═503c9da0-4c1f-11eb-292a-db7b8ce9f458
 # ╠═503d455c-4c1f-11eb-3af2-8f200db1fd30
@@ -995,9 +1067,11 @@ md""" ## 5. References
 # ╠═0cfc84ca-4c23-11eb-124b-5397430fd203
 # ╠═4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
 # ╠═562b751e-4c23-11eb-2b8f-73f710bf3520
-# ╠═5ed7284a-4c23-11eb-1451-0ff763f52bc7
+# ╟─5ed7284a-4c23-11eb-1451-0ff763f52bc7
 # ╟─0186eab2-4c24-11eb-0ff6-d7f8af343647
 # ╠═097e96e8-4c24-11eb-24c4-31f4d23d3238
+# ╠═028be3bc-661f-11eb-251e-73abd3abb9fe
+# ╠═08e5589e-661f-11eb-262a-dd917f77f56b
 # ╠═0b9bad58-4c24-11eb-26a8-1d04d7b2be61
 # ╠═0b9d0bf8-4c24-11eb-2beb-0763c66e6a20
 # ╟─b9a9a730-5a73-11eb-0d17-7bf1aa935697
@@ -1031,6 +1105,7 @@ md""" ## 5. References
 # ╠═2146ac4c-4c4b-11eb-288f-edb3eacff0eb
 # ╟─28f5c018-4c4b-11eb-3530-8b592f2abeda
 # ╠═32351fb8-4c4b-11eb-058b-5bb348e8dfb7
+# ╟─be557eda-64a3-11eb-1562-35ad48531ebd
 # ╟─eed4faca-4c1f-11eb-3e6c-b342b48080eb
 # ╠═fbde6364-4f30-11eb-1ece-712293996c04
 # ╠═42254aa6-4f37-11eb-001b-f78d5383e36f
@@ -1048,6 +1123,7 @@ md""" ## 5. References
 # ╟─8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
 # ╠═ac62d6e0-5a74-11eb-1538-09d157738257
 # ╠═d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
+# ╟─21db9766-64a4-11eb-3ec1-4956431e7a09
 # ╟─5064c592-4c4b-11eb-0dee-5186caf2b1f6
 # ╟─598980b8-4c4b-11eb-0c5b-b7064b189e97
 # ╠═5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
@@ -1070,6 +1146,8 @@ md""" ## 5. References
 # ╠═3a6c466a-5a75-11eb-07e2-ffbf9ec3ffe4
 # ╟─03d82c7a-4c58-11eb-0071-bb9ea16bfbb3
 # ╠═0bec2d28-4c58-11eb-0a51-95bf50bbfd79
+# ╠═6aa73154-661f-11eb-2b88-578eb2dd2ec2
+# ╟─ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
 # ╟─0fd08728-4c58-11eb-1b71-c9710d398fab
 # ╟─2c6097f4-4c58-11eb-0807-d5d8cbfbd62c
 # ╟─9505a4d4-4c58-11eb-1e2e-0d080437fa23
@@ -1079,7 +1157,7 @@ md""" ## 5. References
 # ╟─56e8f6b4-5a75-11eb-3eeb-ffec491be69c
 # ╠═8245e46e-5a75-11eb-2d0a-27ef6a1f2492
 # ╠═942b88b4-5a75-11eb-3e7b-4534bf4a7b12
-# ╠═7bc7bdf4-4c58-11eb-1fd8-376ac6da5ab2
+# ╟─7bc7bdf4-4c58-11eb-1fd8-376ac6da5ab2
 # ╠═74d97654-4c58-11eb-344b-8d6df24323d5
 # ╟─9bb1e83a-5a75-11eb-0fcc-59f6cc50bf6a
 # ╠═bcd5696a-5a75-11eb-0ec1-f116216aa682
@@ -1094,20 +1172,26 @@ md""" ## 5. References
 # ╠═3fc787d6-5a76-11eb-06e9-5378d27ce011
 # ╟─ebb09172-4c58-11eb-1cc9-91193c57677d
 # ╟─3aa37510-58bb-11eb-2ecb-37ce4428269c
+# ╟─ee9069e2-63a7-11eb-12b9-97ae270506f4
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
+# ╟─c1e377c4-64a4-11eb-3e7f-b163cb465057
 # ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
+# ╟─dc6a4870-64a4-11eb-328f-41e5dbcd0a3b
 # ╟─b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
+# ╟─e5293248-64a4-11eb-0d30-53a15bec0d01
 # ╟─c6e16d7a-58cf-11eb-32a4-3372939066e3
 # ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
-# ╠═04aff640-58bb-11eb-1bb6-69ad9fc32314
+# ╟─04aff640-58bb-11eb-1bb6-69ad9fc32314
 # ╟─69dc67fa-4cff-11eb-331e-25ffdced4323
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
+# ╟─00121c4e-64a5-11eb-2993-61c695c4e6a1
 # ╟─b56686ec-4cfa-11eb-2b14-a5d49a137cc5
 # ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
-# ╠═2e7973b6-4d0f-11eb-107c-cdaf349428c0
+# ╟─16ec4ee4-64a5-11eb-26f3-15313b8b5acb
+# ╟─2e7973b6-4d0f-11eb-107c-cdaf349428c0
