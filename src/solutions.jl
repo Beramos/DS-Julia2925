@@ -213,9 +213,10 @@ function convolve_1d(x::Vector, w::Vector)
 
 	fill!(y, 0.0)
 	for (i, xj) in enumerate(x)
-		for (j, wj) in enumerate(w)
-			k = clamp(i + j - m, 1, n)
-			y[i] += w[j] * x[k]
+    for (j, wj) in enumerate(w)
+      k = j - m - 1
+      l = clamp(i - k, 1, n)
+			y[i] += w[j] * x[l]
 		end
 	end
 	return y
