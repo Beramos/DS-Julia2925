@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.12.20
 
 using Markdown
 using InteractiveUtils
@@ -38,6 +38,9 @@ begin
 		return smoothed
 	end
 end
+
+# ╔═╡ fd68ff9c-6735-11eb-3bda-535cbce1509e
+
 
 # ╔═╡ 5f1f35ba-6184-11eb-11ec-63a6acb353fe
 md"
@@ -282,7 +285,8 @@ This parameter combination was not part of the original set, so this will be com
 @terminal simulate_or_load(Dict(:derivativeOrder => 0, :degree => 9))
 
 # ╔═╡ Cell order:
-# ╟─ec6273de-60ed-11eb-23af-05a59d76f2d2
+# ╠═ec6273de-60ed-11eb-23af-05a59d76f2d2
+# ╟─fd68ff9c-6735-11eb-3bda-535cbce1509e
 # ╟─5f1f35ba-6184-11eb-11ec-63a6acb353fe
 # ╟─aa168338-60f1-11eb-1b4d-8b0a26902f90
 # ╠═9ed1673e-60f1-11eb-04f3-7dae7d556332
