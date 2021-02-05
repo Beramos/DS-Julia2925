@@ -43,7 +43,7 @@ end
 
 # ╔═╡ 5af8cfda-678f-11eb-0977-85d419805ccb
 md"""
-# Exercises: Convolution, images and cellular automata (part 1)
+# Exercises: convolution, images and cellular automata (part 1)
 
 We wrap up day 1 by exploring convolutions and similar operations on 1-D and 2-D (or even n-D!) matrices. Departing from some basic building blocks we will cover signal processing, image processing and cellular automata!
 
@@ -74,6 +74,9 @@ $$\frac{1}{n}\sum_{i=1}^n x_i\,.$$
 
 The function `mean` is not in the `Base` of Julia but can easily be imported from `StatsBase`. Let's implement it ourselves instead!
 """
+
+# ╔═╡ 406cef16-67a8-11eb-2aba-23415f96813f
+
 
 # ╔═╡ 2e95127c-6790-11eb-1dfb-efac567fa1cf
 function mean(x)
@@ -174,6 +177,9 @@ a vector $\mathbf{x}$ of length $n$ is transformed in a convolved vector $\mathb
 
 When computing convolutions (or in numerical computing in general) one has to be careful with the **boundary conditions**. We cannot compute the sum at the ends since the sum would exceed the vector $\mathbf{x}$. There are many sensible ways to resolve this, we will choose the simplest solution of using fixed boundaries by setting $y_i = x_i$ when $i< m$ or $i>n-m$.
 """
+
+# ╔═╡ 8533fd10-67a8-11eb-0489-a575230c1580
+
 
 # ╔═╡ cfb49686-6791-11eb-14a2-b34d6bae95b2
 function convolve_1d(x::Vector, w::Vector)
@@ -356,8 +362,11 @@ begin
 	validate(qb3, tracker)
 end
 
-# ╔═╡ ed17c610-6798-11eb-079b-9bc0b6d24a18
+# ╔═╡ be3996da-67a8-11eb-1041-afb0b6d92458
 
+
+# ╔═╡ ac7ae05a-67a8-11eb-1d3d-6da1cc61f2a9
+md"### Application 1: pandemic processing"
 
 # ╔═╡ 72b37606-679a-11eb-2244-e1bdda26f16b
 md"""
@@ -511,15 +520,51 @@ md"To be topical, let us try it on the tail spike protein of the SARS-CoV-2 viru
 # ╔═╡ d227d7a8-679a-11eb-0901-7301975405d7
 spike_sars2 = "MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT"
 
-# ╔═╡ d244ece6-679a-11eb-0981-7350df30ead7
+# ╔═╡ db647c82-67a8-11eb-379d-b1a395f0d94f
 m = 5
+
+# ╔═╡ d87b113e-67a8-11eb-2c53-630788d2bacf
+function protein_sliding_window(sequence, m, zscales)
+	return missing
+end
+
+# ╔═╡ d86372d6-67a8-11eb-0d8e-d94f87b60803
+begin 	
+	q_ps = QuestionBlock(
+		title=md"**Question: complete protein sliding window**",
+		description = md"""
+		Complete the function `protein_sliding_window` and play around with the parameters. Can you discover a strongly non-polar region in the protein?
+		
+		Plot the 3rd zscale versus the index of the amino acids in the tail-spike.
+		""",
+		questions = [
+			Question(
+				validators = @safe[
+					protein_sliding_window(spike_sars2, 5, zscales1) ≈
+						Solutions.protein_sliding_window(spike_sars2, 5, zscales1),
+					protein_sliding_window(spike_sars2, 25, zscales2) ≈
+						Solutions.protein_sliding_window(spike_sars2, 25, zscales2),
+					protein_sliding_window(spike_sars2, 5, zscales3) ≈
+						Solutions.protein_sliding_window(spike_sars2, 5, zscales3),
+				]
+				)],
+		hints = [
+			hint(md"Try to increase the window size for clearer results.")
+		]
+	)
+	validate(q_ps, tracker)
+end
+
+# ╔═╡ d87b7174-67a8-11eb-31ad-1fb0ac41184f
+proteinsw = protein_sliding_window(spike_sars2, m, zscales3)
 
 # ╔═╡ Cell order:
 # ╟─245b6c12-678f-11eb-2765-cfee142b1d26
 # ╠═58efc084-678f-11eb-2cff-9728ba22cc17
-# ╠═5af8cfda-678f-11eb-0977-85d419805ccb
-# ╠═874cda5e-678f-11eb-034e-e5079fff5fc5
-# ╠═973c3dba-678f-11eb-3d41-0babfffcc82e
+# ╟─5af8cfda-678f-11eb-0977-85d419805ccb
+# ╟─874cda5e-678f-11eb-034e-e5079fff5fc5
+# ╟─406cef16-67a8-11eb-2aba-23415f96813f
+# ╟─973c3dba-678f-11eb-3d41-0babfffcc82e
 # ╠═2e95127c-6790-11eb-1dfb-efac567fa1cf
 # ╠═2ec6baca-6790-11eb-3b53-9959545905fe
 # ╠═2ec73a2c-6790-11eb-1b3f-9f499c17b0f6
@@ -531,12 +576,13 @@ m = 5
 # ╠═2f2d4628-6790-11eb-0fd0-f93ed0057dfe
 # ╟─d621de66-6791-11eb-2833-af7559e4a913
 # ╟─c79cc3e2-6791-11eb-1ec2-6fc6a3a4876c
+# ╟─8533fd10-67a8-11eb-0489-a575230c1580
 # ╟─cc3a2fc0-6791-11eb-03f1-3d628e3ea86a
 # ╠═cfb49686-6791-11eb-14a2-b34d6bae95b2
-# ╠═e06a78d6-6791-11eb-2cbd-85812bc978cc
+# ╟─e06a78d6-6791-11eb-2cbd-85812bc978cc
 # ╠═8cfb8f40-6794-11eb-0b33-8d658fe6725b
 # ╠═e086d5c0-6791-11eb-2f3e-cd6f7235b114
-# ╠═e08784f0-6791-11eb-3afa-39eedd974535
+# ╟─e08784f0-6791-11eb-3afa-39eedd974535
 # ╠═e096aba6-6791-11eb-3b0b-2105e2783060
 # ╟─e096d8a6-6791-11eb-2734-b384bf77dcd7
 # ╠═ee8c34a6-6791-11eb-24b5-a99125b2440c
@@ -548,14 +594,15 @@ m = 5
 # ╠═4565323c-6797-11eb-033c-6fbfe296e97f
 # ╠═4cce030a-6797-11eb-2ee8-9186d0df651d
 # ╠═4cce3410-6797-11eb-2c51-abae53886909
-# ╠═ed17c610-6798-11eb-079b-9bc0b6d24a18
+# ╟─be3996da-67a8-11eb-1041-afb0b6d92458
+# ╟─ac7ae05a-67a8-11eb-1d3d-6da1cc61f2a9
 # ╟─72b37606-679a-11eb-2244-e1bdda26f16b
 # ╠═72e5ce1c-679a-11eb-251f-ab932941bcb4
 # ╠═72e681c2-679a-11eb-37c2-c1ddd02a0cfc
 # ╠═72f1465c-679a-11eb-0544-b94495a5f7ea
 # ╠═730a74f6-679a-11eb-2cdf-19fe21dcf5c2
 # ╠═730b2658-679a-11eb-23a8-7d84c146c1f1
-# ╠═731805ee-679a-11eb-2bec-49e59680f7b7
+# ╟─731805ee-679a-11eb-2bec-49e59680f7b7
 # ╟─dbfcabb4-679a-11eb-3eef-8f1bc1542688
 # ╟─d1b4c97a-679a-11eb-3733-fb4c93a73bae
 # ╠═d1ff8c26-679a-11eb-3e49-493e9845dbf5
@@ -564,4 +611,7 @@ m = 5
 # ╟─d218a1ac-679a-11eb-2bab-af40bf39b2c0
 # ╟─d2277e02-679a-11eb-27e8-6bbc46fd5ae1
 # ╠═d227d7a8-679a-11eb-0901-7301975405d7
-# ╠═d244ece6-679a-11eb-0981-7350df30ead7
+# ╠═db647c82-67a8-11eb-379d-b1a395f0d94f
+# ╟─d86372d6-67a8-11eb-0d8e-d94f87b60803
+# ╠═d87b113e-67a8-11eb-2c53-630788d2bacf
+# ╠═d87b7174-67a8-11eb-31ad-1fb0ac41184f
