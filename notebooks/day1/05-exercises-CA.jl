@@ -327,13 +327,19 @@ X = simulate(x0_ca, UInt8(rule_number); nsteps=100)
 # ╔═╡ 71921126-67a7-11eb-0142-1de5c2eb4f66
 ca_image(X) = cm.(X)
 
+# ╔═╡ 37a2fa58-67b5-11eb-0650-656207ef57f6
+
+
+# ╔═╡ 3726e31e-67b5-11eb-22ee-a951ca2f7599
+
+
+# ╔═╡ bd679f6c-67a7-11eb-3362-b3631b1bfc34
+
+
 # ╔═╡ 719dbc6a-67a7-11eb-2596-056b57139b44
 function show_barcode(bitArr) 
 	bar(bitArr, color=:Black, ylims=(0.1,0.5), label="", axis = nothing, border=:none,  bar_width=1,  size=(400,300))
 end
-
-# ╔═╡ bd679f6c-67a7-11eb-3362-b3631b1bfc34
-
 
 # ╔═╡ 785d48a4-67a7-11eb-1509-4901cda96709
 product_code_milk = missing
@@ -443,9 +449,11 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╠═71764aae-67a7-11eb-261a-f7f430d6e1e0
 # ╠═71918506-67a7-11eb-32c0-35de007f1f84
 # ╠═71921126-67a7-11eb-0142-1de5c2eb4f66
-# ╠═719dbc6a-67a7-11eb-2596-056b57139b44
+# ╠═37a2fa58-67b5-11eb-0650-656207ef57f6
+# ╠═3726e31e-67b5-11eb-22ee-a951ca2f7599
 # ╟─bd679f6c-67a7-11eb-3362-b3631b1bfc34
 # ╟─71a84b88-67a7-11eb-25a8-9159f4809a42
+# ╠═719dbc6a-67a7-11eb-2596-056b57139b44
 # ╠═785d48a4-67a7-11eb-1509-4901cda96709
 # ╠═816c43b4-67a7-11eb-3e76-87d5d48cc34e
 # ╠═8423b326-67a7-11eb-1fdf-7bc373064643
