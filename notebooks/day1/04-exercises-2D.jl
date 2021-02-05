@@ -142,8 +142,8 @@ begin
 			Complete the function `decimate(image, ratio=5)`		
 			""", 
 			validators = @safe[
-				decimate(bird_original, ratio=5) ==
-					Solutions.decimate(bird_original, ratio=5)
+				decimate(bird_original, 5) ==
+					Solutions.decimate(bird_original, 5)
 			])
 	
 	qb10 = QuestionBlock(
@@ -376,11 +376,11 @@ end
 # ╟─2fb44f80-679d-11eb-0dea-c14a513d3572
 # ╠═3e0d3a6a-679d-11eb-16f9-2f27d680ad19
 # ╠═41d81432-679d-11eb-1f1e-e37f78f1bb07
-# ╠═8bedb93a-679d-11eb-008e-e10e18ecdd7e
+# ╟─8bedb93a-679d-11eb-008e-e10e18ecdd7e
 # ╠═8bee4bb6-679d-11eb-0ec5-555b068ef863
-# ╠═8bfa95ea-679d-11eb-0896-9d54263302a6
+# ╟─8bfa95ea-679d-11eb-0896-9d54263302a6
 # ╠═8c0486c4-679d-11eb-0808-8f47858313fc
-# ╠═95904a3e-679d-11eb-1fd7-79cf59caac5a
+# ╟─95904a3e-679d-11eb-1fd7-79cf59caac5a
 # ╠═95a31fe0-679d-11eb-1298-c16d2cbb038b
 # ╠═95a387ac-679d-11eb-1e81-c3817940e993
 # ╠═95adca78-679d-11eb-172c-59097b1a40fe
