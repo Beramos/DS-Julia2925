@@ -9,13 +9,10 @@ This two-day course gives an in-depth introduction to the Julia programming lang
 We mainly cater to PhD students in sciences and engineering, especially those who have a computing aspect in their research (large or small). The course is relevant to researchers who need to write complex high-level code that has to be performant. Importantly, this course is *not* meant as a first introduction to programming. Participants are expected to have basic experience in at least one high-level programming language such as Python, R, Matlab, or Perl. We aim to start gentle enough so that novice programmers can get acquainted with the language while following a learning curve that will keep serious hackers interested. At the end of the course, you will have learned the tools to write fairly sophisticated Julia programs.
 
 ## Date and venue
-The course will take place on the **4th** and the **5th of February 2020** (during the inter-term recess). If the course is allowed on-site, it will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
+The course will take place on the **20th** and the **21th of September 2021**. Tt will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
 
 ## Registration and fees
-Registration can be done via the following link: [here](https://webappsx.ugent.be/eventManager/events/juliaprogr). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
-
-**Update:** Registration and waiting list are full. We hope to see you in the next edition!
-
+Registration can be done via the following link: [here](https://webappsx.ugent.be/eventManager/events/juliaprogramming). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
 
 Admission prices are:
 - **for UGent Doctoral School members**: free of charge;
@@ -23,8 +20,6 @@ Admission prices are:
 - **external members**: EUR 250 (priority of participation will be given to PhD students of Ghent University).
 
 We also provide a limited number of free slots for *master students*. Please contact the [organisers](mailto:michiel.stock@ugent.be) if you want to join.
-
-10% of the profit will donated to [Julia computing](https://juliacomputing.com/) who ensure the continuous development of this language.
 
 ![Julia computing logo](img/logojulcom.svg)
 
