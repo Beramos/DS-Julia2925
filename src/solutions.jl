@@ -14,13 +14,7 @@ bram.de.jaegher@gmail.com
 
 #= Notebook 1: basics =#
 ### Clipping
-function clip(x)
-  if x ≤ 0 && return 0.
-  elseif x ≥ 1 && return 1.
-  else
-  return x
-  end
-end
+function clip(x) = x < 1 ? (x > 0 ? x : 0) : 1
 
 ### Stirling
 stirling(n) = sqrt(2*π*n)*(n/exp(1))^n
