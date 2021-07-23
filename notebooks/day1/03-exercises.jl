@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.14.8
 
 using Markdown
 using InteractiveUtils
@@ -171,7 +171,7 @@ $$y_i = \sum_{k=-m}^{m} x_{i + k} w_{m+k+1}\,,$$
 
 a vector $\mathbf{x}$ of length $n$ is transformed in a convolved vector $\mathbf{y}$ (also length $n$). The convolution is determined by a **kernel** or **filter** $\mathbf{w}$ of length $2m+1$ (chosen such that it has an odd length). You can see element $y_i$ as a weighted mean of the elements $x_{i-m}, x_{i-m+1},\ldots, x_{i+m-1}, x_{i+m}$.
 
-When computing convolutions (or in numerical computing in general) one has to be careful with the **boundary conditions**. We cannot compute the sum at the ends since the sum would exceed the vector $\mathbf{x}$. There are many sensible ways to resolve this, we will choose the simplest solution of using fixed boundaries by setting $y_i = x_i$ when $i< m$ or $i>n-m$.
+When computing convolutions (or in numerical computing in general) one has to be careful with the **boundary conditions**. We cannot compute the sum at the ends since the sum would exceed the vector $\mathbf{x}$. There are many sensible ways to resolve this, we will choose the simplest solution of repeating the boundaries by setting $x_i = x_1$ when $i< 1$ and $x_i = x_n$ when $i>n$.
 """
 
 # ╔═╡ a1f75f4c-2bde-11eb-37e7-2dc342c7032a
@@ -640,19 +640,13 @@ md"So an image is basically a two-dimensional array of Colors. Which means it ca
 # ╔═╡ 134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
 md"Lets the define a function to reduce the size of the image"
 
-# ╔═╡ 13807912-5a8f-11eb-3ca2-09030ee978ab
-decimate(image, ratio=5) =  missing
-
 # ╔═╡ 134edde4-5a8f-11eb-117f-455e04acc27d
 begin
 	q101 = Question(
 			description=md"""
 			Complete the function `decimate(image, ratio=5)`		
 			""", 
-			validators = @safe[
-				decimate(bird_original, ratio=5) ==
-					Solutions.decimate(bird_original, ratio=5)
-			])
+			validators = @safe[])
 	
 	qb10 = QuestionBlock(
 		title=md"**Question: decimate image**",
@@ -667,11 +661,17 @@ begin
 	validate(qb10, tracker)
 end
 
+# ╔═╡ 13807912-5a8f-11eb-3ca2-09030ee978ab
+decimate(image, ratio=5) = missing
+
 # ╔═╡ aba77250-5a8e-11eb-0db1-9f2d8fc726e9
 smallbird = decimate(bird_original, 6)
 
+# ╔═╡ d3027d8a-7e80-4a22-bd7b-3f689e3232a4
+md"🐦 Compare your image with the answer below."
+
 # ╔═╡ 6d5de3b8-5dbc-11eb-1fc4-8df16c6c04b7
-bird = Solutions.decimate(bird_original, 6);
+bird = Solutions.decimate(bird_original, 6)
 
 # ╔═╡ 1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
 md"""
@@ -728,7 +728,7 @@ begin
 			description=md"""
 			**Exercise:**
 		
-			Complete the function `convolve_2d(M::Matrix, K::Matrix)` that performs a 2D-convolution of an input matrix `M` with a kernel matrix `K`.
+			Complete the function `convolve_2d(M::Matrix, K::Matrix)` that performs a 2D-convolution of an input matrix `M` with a kernel matrix `K`. You can use the same boundary conditions as we used for the 1D convolution.
 			""",
 			validators = @safe[
 				convolve_2d(M_rand, K_rand) ≈ Solutions.convolve_2d(M_rand, K_rand)
@@ -1065,7 +1065,7 @@ begin
 	
 	q71 = Question(
 			description=md"""
-		Complete `update1dca!(xnew, x, rule::Integer)` that performs a single iteration of the cellular automata given an initial state array `x`, and overwrites the new state array `xnew`, given a certain rule integer.
+		Complete `update1dca!(xnew, x, rule::Integer)` that performs a single iteration of the cellular automata given an initial state array `x`, and overwrites the new state array `xnew`, given a certain rule integer. For the boundaries you can assume that the vector loops around so that the first element is the neighbour of the last element.
 		$(fyi(md"`!` is often used as suffix to a julia function to denote an inplace operation. The function itself changes the input arguments directly. `!` is a naming convention and does not fulfill an actual functionality"))
 		
 			""", 
@@ -1140,7 +1140,7 @@ begin
 	qb8 = QuestionBlock(
 		title=md"**Question: simulating the cellular automata**",
 		description = md"""
-		Now that we are able the transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states transition simultaneously from the initial state to the next state.
+		Now that we are able to transition the individual states, it is time to overcome the final challenge, evolving the entire array! Usually in cellular automata all the initial states transition simultaneously from the initial state to the next state.
 		""",
 		questions = [q81, q82],
 		hints= [
@@ -1317,6 +1317,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─134edde4-5a8f-11eb-117f-455e04acc27d
 # ╠═13807912-5a8f-11eb-3ca2-09030ee978ab
 # ╠═aba77250-5a8e-11eb-0db1-9f2d8fc726e9
+# ╟─d3027d8a-7e80-4a22-bd7b-3f689e3232a4
 # ╠═6d5de3b8-5dbc-11eb-1fc4-8df16c6c04b7
 # ╠═1dfc943e-5a8f-11eb-336b-15b40b9fe412
 # ╟─1e0383ac-5a8f-11eb-1b6d-234b6ad6e9fa
