@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.14.8
 
 using Markdown
 using InteractiveUtils
@@ -64,6 +64,9 @@ Implementing such shapes can have various exciting applications, such as making 
 end goal is to implement a simulator of a toy statistical physics system. Here, we simulate a system with inert particles, leading to self-organization.
 Our simple rejection sampling algorithm that we will use is computationally very demanding, an ideal case study for Julia!
 """
+
+# ╔═╡ f2485038-30dc-4137-88bb-f9394962ec9e
+fyi(md"If you get stuck at any moment in this notebook, you can find a completed version of it [right here](https://github.com/Beramos/DS-Julia2925/blob/master/src/flatland.jl).")
 
 # ╔═╡ 7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 md"""
@@ -961,6 +964,7 @@ end
 # ╟─1657b9b2-62ef-11eb-062e-4758f9ea1075
 # ╠═63f5861e-6244-11eb-268b-a16bc3f8265c
 # ╟─b1d21552-6242-11eb-2665-c9232be7026e
+# ╟─f2485038-30dc-4137-88bb-f9394962ec9e
 # ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 # ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
