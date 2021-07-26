@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.14.8
 
 using Markdown
 using InteractiveUtils
@@ -560,7 +560,7 @@ md"### Example: domain specific languages"
 # ╔═╡ 4d9de330-5f55-11eb-0d89-eb81e6c9ffab
 md"
 Code generation can for instance be used to simplify the creation of a mathematical optimisation problem. In this case, we we'll use the `JuMP` package.
-`JuMP` ('Julia for Mathematical Programming') is an open-source modeling language that is embedded in Julia. It allows users to users formulate various classes of optimization problems (linear, mixed-integer, quadratic, conic quadratic, semidefinite, and nonlinear) with easy-to-read code. `JuMP` also makes advanced optimization techniques easily accessible from a high-level language. 
+`JuMP` ('Julia for Mathematical Programming') is an open-source modeling language that is embedded in Julia. It allows users to formulate various classes of optimization problems (linear, mixed-integer, quadratic, conic quadratic, semidefinite, and nonlinear) with easy-to-read code. `JuMP` also makes advanced optimization techniques easily accessible from a high-level language. 
 
 As a dummy example, let us consider the following linear programming problem:
 
