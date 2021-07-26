@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.14.8
 
 using Markdown
 using InteractiveUtils
@@ -225,7 +225,7 @@ p isa Point{Int}  # obviously not true
 p isa Point{Real}  # unexpectedly not true!
 
 # ╔═╡ 17022b06-5d8e-11eb-391b-7194962a2c18
-md"The observations above is very important! Even though `Float16 <: Real`, this does not hold for the corresponding parametric types."
+md"The observations above are very important! Even though `Float16 <: Real`, this does not hold for the corresponding parametric types."
 
 # ╔═╡ 393e2f9e-5d8e-11eb-11d7-511c32ce6e48
 Point(1, 2.0)  # should error initially, but will be fixed later in the notebook!
@@ -263,9 +263,6 @@ In a normal file, we could run this, but Pluto does not allow us to have constru
 # ╔═╡ e246757e-5d8e-11eb-313c-61a63246cf9a
 Point(1, 2.0)
 
-# ╔═╡ ecc14f96-5d8f-11eb-2b18-cb23fad26b6e
-Point(1.2)
-
 # ╔═╡ 9d4b9eee-5d8f-11eb-07bb-557415e4ac4a
 md"""
 
@@ -277,12 +274,15 @@ Point(x::Real, y::Real) = Point(promote(x, y)...)
 
 Add it to the definition and see the change!
 
-We can write other constructors just like functions. For example, support that when we provide a single `x`, we want to create a point (x, y):
+We can write other constructors just like functions. For example, we can define a function that tells Julia that when we provide a single `x`, we want to create a point (x, y): where x == y .
 
 ```julia
 Point(x) = Point(x, x)
 ```
 """
+
+# ╔═╡ ecc14f96-5d8f-11eb-2b18-cb23fad26b6e
+Point(1.2)
 
 # ╔═╡ 142666de-5d90-11eb-3231-efe53ddc9b0d
 md"""
@@ -439,12 +439,15 @@ end
 # ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
 S * v  # fast (linear time in v)
 
+# ╔═╡ 711a5574-a7c5-43c6-a8a2-4830361f0071
+fyi(md"As you can see in the above function, next to using `a ? b : c` for condense control flow there is also another option. When we use `a && b`, b will only be evaluated and returned when a is `true`. So you can put any expression you like after the `&&`!")
+
 # ╔═╡ cf146bf4-6177-11eb-1eaa-c35efde57b3e
 md"## Exercises"
 
 # ╔═╡ 3ae60e88-5d94-11eb-0c50-1d74ea104758
 struct WizCur
-	# complete me!
+	missing # complete me!
 end
 
 # ╔═╡ 48301af2-5d94-11eb-0019-7737667c9cea
@@ -542,7 +545,6 @@ end
 begin 	
 	q_vm = Question(
 		validators = @safe[
-			
 			Solutions.Vandermonde(Solutions.α, length(Solutions.α)) ==
 				Vandermonde(Solutions.α, length(Solutions.α)),
 			
@@ -577,6 +579,7 @@ Base.size(V::Vandermonde) = missing
 
 # ╔═╡ c2ecfec8-5d93-11eb-2640-07bc07f3da98
 Base.getindex(V::Vandermonde, i, j) = missing
+
 
 # ╔═╡ cb3e91cc-5d93-11eb-020c-d73c10131755
 α = [1, 2, 3, 4]
@@ -670,8 +673,8 @@ import LinearAlgebra
 # ╠═6960f8d2-5d8e-11eb-0215-2de7b54e3081
 # ╟─8321136a-5d8e-11eb-0da2-e750b81d7ce9
 # ╠═e246757e-5d8e-11eb-313c-61a63246cf9a
-# ╠═ecc14f96-5d8f-11eb-2b18-cb23fad26b6e
 # ╟─9d4b9eee-5d8f-11eb-07bb-557415e4ac4a
+# ╠═ecc14f96-5d8f-11eb-2b18-cb23fad26b6e
 # ╟─142666de-5d90-11eb-3231-efe53ddc9b0d
 # ╠═27fcaede-5d90-11eb-1cea-91fcc4b6b0fe
 # ╠═2a224fde-5d90-11eb-1c46-3fd248350914
@@ -710,6 +713,7 @@ import LinearAlgebra
 # ╟─310d8966-6176-11eb-1b23-9d942f197fbd
 # ╠═276e9af4-5d92-11eb-1399-993570859698
 # ╠═300a8428-5d92-11eb-188b-05d00df4f6a7
+# ╟─711a5574-a7c5-43c6-a8a2-4830361f0071
 # ╟─cf146bf4-6177-11eb-1eaa-c35efde57b3e
 # ╟─dd0b7c7a-6177-11eb-2cb7-8b194a75d776
 # ╠═3ae60e88-5d94-11eb-0c50-1d74ea104758
