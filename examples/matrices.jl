@@ -5,8 +5,9 @@ Last update: -
 @author: Michiel Stock
 michielfmstock@gmail.com
 
-Example of some interesting matrices
-- Strang matrix
+Example of how to speed up your script by defining some matrixes
+as a specific type. More specific we take a look at the Strang matrix
+and the Vandermonde matrix.
 =#
 
 # STRANG MATRIX

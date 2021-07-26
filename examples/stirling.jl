@@ -12,6 +12,7 @@ using Plots
 
 stirling(n) = n * log(n / exp(1)) + 0.5log(2π*n)
 
+# here we use `m=:circle` to use the :circle symbols as a marker on our plots.
 
 plot(1:10, n->log(factorial(big(n))), m=:circle, label="log-factorial")
 xlabel!("n")

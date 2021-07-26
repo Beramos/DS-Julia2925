@@ -39,6 +39,8 @@ Kdense = kron(A, B)  # native julia version
 
 Base.inv(K::Kronecker) = Kronecker(inv(K.A), inv(K.B))
 
+# we use the @time macro to measure how long a certain execution takes
+
 @time inv(K)
 @time inv(Kdense)
 

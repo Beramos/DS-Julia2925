@@ -5,15 +5,16 @@ Last update: -
 @author: Michiel Stock
 michielfmstock@gmail.com
 
-Example on uncertainty propagation.
+This example shows a practical application (error propagation) of the type system and the fact that
+you can define them yourselves.
 =#
 
 struct Measurement{T<:AbstractFloat} <: Number
     x::T
     σ::T
     function Measurement(x::T, σ::T) where {T<:AbstractFloat}
-        if σ < zero(σ)
-            error("Measurement error should be non-zero")
+        if σ ≤ zero(σ)
+            error("Measurement error should be positive")
         end
         new{T}(x, σ)
     end
@@ -22,6 +23,7 @@ end
 val(m::Measurement) = m.x;
 err(m::Measurement) = m.σ;
 
+# this is done so that the terminal can display our results
 Base.show(io::IO, measurement::Measurement) = print(io, "$(measurement.x) ± $(measurement.σ)");
 
 ±(x, σ) = Measurement(x, σ);

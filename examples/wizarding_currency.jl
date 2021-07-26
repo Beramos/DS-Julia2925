@@ -16,6 +16,8 @@ The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry 
 HINT: you might find `%` and `div` useful here.
 =#
 
+# first we define the WizCur structure
+
 struct WizCur
     galleons::Int
     sickles::Int
@@ -29,15 +31,21 @@ struct WizCur
     end
 end
 
+# we make it more "Julia" by removing the need for . notations
+
 galleons(money::WizCur) = money.galleons
 sickles(money::WizCur) = money.sickles
 knuts(money::WizCur) = money.knuts
+
+# by calculating the total amount of knuts we can easily compare two values
 
 moneyinknuts(money::WizCur) = 29*17galleons(money) + 29sickles(money) + knuts(money)
 
 function Base.show(io::IO, money::WizCur)
     print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
 end
+
+# lastly we extend some base functions so that they work with our newly defined structure
 
 Base.isless(m1::WizCur, m2::WizCur) = moneyinknuts(m1) < moneyinknuts(m2) 
 Base.isgreater(m1::WizCur, m2::WizCur) = moneyinknuts(m1) > moneyinknuts(m2) 

@@ -5,12 +5,19 @@ Last update: -
 @author: Michiel Stock
 michielfmstock@gmail.com
 
-A simple Dungeons and Dragons interface to illustrate the type system.
+A simple Dungeons and Dragons interface to illustrate the (composite) type system.
 =#
+
+# First we define all the different types we want to use.
 
 abstract type Creature end
 
 abstract type Humanoid <: Creature end
+
+#=
+Notice that we want to use a mutable struct for the characters below since
+the values of their field will be changed throughout the game.
+=#
 
 mutable struct Human <: Humanoid
     name::String
@@ -41,6 +48,11 @@ end
 
 abstract type Monster <: Creature end
 
+#=
+Below you can find an example of when you would use the Union{} function.
+This makes is so that all types that fall under the Float64 or Int type will be accepted. 
+=#
+
 mutable struct Dragon{T<:Union{Float64,Int}} <: Creature
     hp::T
     strength::Int
@@ -54,7 +66,7 @@ mutable struct GelatinousCube{T<:Union{Float64,Int}} <: Creature
 end
 
 
-# functions
+# Lastly we define the functions we need.
 
 languages(::Humanoid) = "Common Tongue"
 languages(::Elf) = "Common Tongue, Elvish"
