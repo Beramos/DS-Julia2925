@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.8
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
@@ -28,7 +28,8 @@ student = (name = "Jenke Janssen", email = "Jenke.Janssen@UGent.be");
 # scroll down the page to see what's up
 
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
-begin 
+begin
+	import Pkg; Pkg.add(url = "https://github.com/Beramos/DS-Julia2925")
 	using DSJulia;
 	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
@@ -430,7 +431,9 @@ begin
 			description=md"""
 			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, **without** making use of the functions `min` and `max`.
 
-			Open assignments always return `missing`. 
+			Open assignments always return `missing`.
+		
+			Show the answer: $(@bind answ_q1 CheckBox())
 			""",
 			validators= @safe[
 			clip(-1)==Solutions.clip(-1), 
@@ -444,6 +447,21 @@ begin
 	);
 	
 	validate(qb2, tracker)
+end
+
+# ╔═╡ 32c8ff60-9a35-4d40-8b54-b4805ca81885
+if answ_q1
+	md""" 
+	```julia
+	function clip(x)
+	  if x ≤ 0 && return 0.
+	  elseif x ≥ 1 && return 1.
+	  else
+	  return x
+	  end
+	end
+	```
+	"""
 end
 
 # ╔═╡ 035a53ba-4ac1-11eb-3c34-b50a803b7b7d
@@ -1253,6 +1271,7 @@ end
 # ╟─6736dafe-4abf-11eb-1fce-0716d2b7f4a8
 # ╟─8933033a-4abf-11eb-1156-a53a5ee9152c
 # ╠═0c693c24-4ac0-11eb-2329-c743dcc5039d
+# ╟─32c8ff60-9a35-4d40-8b54-b4805ca81885
 # ╟─035a53ba-4ac1-11eb-3c34-b50a803b7b7d
 # ╟─2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
 # ╠═3896642a-4ac0-11eb-2c7c-4f376ab82217
