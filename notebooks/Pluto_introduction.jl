@@ -19,6 +19,16 @@ begin
 	md"🦆 : $(@bind ducksize Slider(20:500, default=200))"
 end
 
+# ╔═╡ e703ea17-554a-4932-a20c-5e5975f4372a
+begin
+using HypertextLiteral
+md"""Select your **settings** below:\
+*Background color*: $(@bind bg_color html"<input type=color value='#00eeff'>")\
+*Font*: $(@bind font_type Select(["cursive","serif","sans-serif","monospace","fantasy"]))\
+*Font size*: $(@bind font_size NumberField(10:40, default=20))\
+"""
+end
+
 # ╔═╡ b5094370-ee11-11eb-3e48-b3a77979f99a
 md"""# An Introduction To Pluto
 Welcome dear reader to this short introduction to Pluto. Knowing how to use Pluto is your first step towards working in an interactive environment with the `Julia` language!
@@ -87,6 +97,7 @@ There are 3 different formats as which you can export a notebook:
 ### How to do it?
 There are (at the moment) two ways to do this:
 1. The most easy way to do this is by just scrolling to the top of your notebook, clicking the export button (looks like a triangle on top of a circle).
+
 2. To automatically export your notebook to a pdf you first need to install the PlutoPDF package. This can be done with the following code `import Pkg; Pkg.add(url="https://github.com/JuliaPluto/PlutoPDF.jl")`. Next you just need to run the following code in Julia: `import PlutoPDF` followed by `PlutoPDF.pluto_to_pdf("notebook.jl")`. More info about this package can be found [here](https://github.com/JuliaPluto/PlutoPDF.jl).
 
 """
@@ -129,20 +140,79 @@ md"## This starts a new slide"
 md"### This doesn't"
 
 # ╔═╡ 6b20de32-f606-45d1-a800-b4cdadc33017
-md"""## Javascript, HTML and CSS """
+md"""## Javascript, HTML and CSS 
+As the title already tells you, it is indeed possible to tailor Pluto notebooks to your own preferences. Because you can actually use `Javascript, HTML and CSS` in Pluto notebooks. To do this you just install the module called `HypertextLiteral` by typing `using HypertextLiteral` at the beginning of your notebook. This allows you to use the `@htl()` macro in which you can start typing your Hypertext code encapsulated by \""".  If you would like some more info about this or a sneakpeak of its applications, then take a look at the sample notebook called *sample JavaScript* that you can find at the sample notebook section. 
+
+Below you will find an example of what you can do by combining these languages in Pluto.
+"""
+
+# ╔═╡ d1739e3b-6363-4a77-8d7c-61b6ba8978bd
+@htl("""
+
+<article class="learning">
+	<p>
+		This is a little example of how you can use the automatic update function of Pluto to your advantage. By binding the right variables you can completely let the user choose how their notebook looks! Isn't that great?
+	</p>
+</article>
+
+
+<style>
+
+	article.learning {
+		background: $(bg_color);
+		padding: 1em;
+		border-radius: 5px;
+		font-size: $(font_size)px;
+		font-family: $(font_type);
+	}
+</style>
+""")
+
+# ╔═╡ 3acc7d2e-7c54-423c-aac8-1f8f61963d77
+md"""And this is how the above cell looks in `HTML` and `CSS` code:
+```htmlmixed
+<article class="learning">
+	<p>
+		This is a little example of how you can use the automatic update function of Pluto to your advantage. By binding the right variables you can completely let the user choose how their notebook looks! Isn't that great?
+	</p>
+</article>
+
+
+<style>
+
+	article.learning {
+		background: $(bg_color);
+		padding: 1em;
+		border-radius: 5px;
+		font-size: $(font_size)px;
+		font-family: $(font_type);
+	}
+</style>
+```
+
+"""
 
 # ╔═╡ 4c1ea155-df57-4b1b-94f7-c638e7f747c2
-md"""## Publishing Your Notebook Online """
+md"""## Publishing Your Notebook Online 
+Lastly we will take a small look at how you could post your interactive notebook online so that other people can also access it without using Julia.
 
-# ╔═╡ c0b21f0b-f0a5-46fc-aa65-2067a66deff7
-# not te onderzoeken: https://cotangent.dev/how-to-publish-pluto-jl-notebooks-online-interactively/
+At the moment this still isn't implemented in Pluto. It is however as we mentioned earlier possible to make a static version of your notebook.
+But if you really want to have an up and running version of your notebook that everyone can access, then there are two main ways at the moment.
+
+1. The first and easiest option is to use [Binder](https://github.com/fonsp/pluto-on-binder). This gives an easy and free way of running your notebook online. However it can take a long time to load.
+
+
+2. The second way is a bit more complicated. In short you will run your notebook through `GitHub` and use a (payed) server to take care of the interactive part. If you don't have a server laying around this may not be for you. If you want to find out more about this you can read all about it [here](https://cotangent.dev/how-to-publish-pluto-jl-notebooks-online-interactively/)
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
+HypertextLiteral = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
+HypertextLiteral = "~0.9.0"
 PlutoUI = "~0.7.9"
 """
 
@@ -156,6 +226,11 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 [[Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[HypertextLiteral]]
+git-tree-sha1 = "72053798e1be56026b81d4e2682dbe58922e5ec9"
+uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
+version = "0.9.0"
 
 [[InteractiveUtils]]
 deps = ["Markdown"]
@@ -233,8 +308,10 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 # ╟─ec19c690-5784-4cc4-a63b-5d2485eeafa9
 # ╟─2a83d1e3-79c2-4a36-93b2-1bf2f89b27f3
 # ╟─5a1f85e6-f9c6-44b7-a2d4-6b70d65aeaef
-# ╠═6b20de32-f606-45d1-a800-b4cdadc33017
-# ╠═4c1ea155-df57-4b1b-94f7-c638e7f747c2
-# ╠═c0b21f0b-f0a5-46fc-aa65-2067a66deff7
+# ╟─6b20de32-f606-45d1-a800-b4cdadc33017
+# ╟─e703ea17-554a-4932-a20c-5e5975f4372a
+# ╟─d1739e3b-6363-4a77-8d7c-61b6ba8978bd
+# ╟─3acc7d2e-7c54-423c-aac8-1f8f61963d77
+# ╟─4c1ea155-df57-4b1b-94f7-c638e7f747c2
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
