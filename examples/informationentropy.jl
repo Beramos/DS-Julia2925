@@ -26,4 +26,10 @@ entropy([0, 1, 0])  # 0.0
 entropy([0.5, 0.5])  # 1.0
 entropy([0.5, 0.5], base=10)  # 0.30102999566398114
 
+#=
+Below we use the plot function in a way you may not have seen yet.
+Instead of simply giving it x and y, we instead give it an anonymous function and a range in which
+to evaluate this function.
+=#
+
 plot(p->entropy((p, 1-p)), 0, 1, xlabel="p", label="entropy")

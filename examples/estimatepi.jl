@@ -7,7 +7,7 @@ michielfmstock@gmail.com
 
 Estimate pi through Monte Carlo sampling. 
 Do this by simuting to throw `n` pebbles in the [-1, 1] x [-1, 1] square
-and track the fraction that land in the unit square.
+and track the fraction that land in the unit circle.
 =#
 
 function estimatepi(n)
