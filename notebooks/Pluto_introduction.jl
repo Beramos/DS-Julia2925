@@ -31,9 +31,10 @@ end
 
 # ╔═╡ b5094370-ee11-11eb-3e48-b3a77979f99a
 md"""# An Introduction To Pluto
-Welcome dear reader to this short introduction to Pluto. Knowing how to use Pluto is your first step towards working in an interactive environment with the `Julia` language!
+Welcome, dear reader, to this short introduction to Pluto. Knowing how to use Pluto is your first step towards working in an interactive environment with the `Julia` language!
 
 In the rest of this notebook you'll find some handy **tips** and **tricks** to get you up and running in no time. 
+
 Good luck!
 """
 
@@ -80,7 +81,7 @@ You may have noticed that there is a bit of markup inside this notebook. The nic
 
 Not really familiar with the `Markdown` language? Don't worry it is really easy to learn, all the info you'll ever need can be found [here](https://www.markdownguide.org/cheat-sheet/).
 
-Another nice thing to know is that you can use `Latex` and `unicode` symbols in Pluto. `Latex` gives you easy access to symbols like `α` (just type `\alpha`). `Unicode` makes it so you can use all the smileys you love in your text and even as variable names! (big 🧠 time). 
+Another nice thing to know is that you can use `Latex` and `unicode` symbols in Pluto. `Latex` gives you easy access to symbols like `α` (just type `\alpha<TAB>`). `Unicode` makes it so you can use all the smileys you love in your text and even as variable names! (big 🧠 time). 
 Again if you don't know any Latex or Unicode symbols you can just look them up on there respective pages. Just click [here](https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols) for **Latex** and [here](https://unicode.org/emoji/charts/full-emoji-list.html) for **Unicode**. 
 """
 
@@ -106,7 +107,7 @@ There are (at the moment) two ways to do this:
 md"""## Making It Interactive
 To end the introduction, you will learn how to give your notebook that extra portion of interactivity.
 
-Pluto allows you to use `Javascript` inside your notebook. Most people don't know `Javascript` so that's where `PlutoUI` comes to the rescue! Activate this by typing `using PlutoUI` at the top of your new notebook. By simply typing `@bind varname Slider(5:10)` you can make a nice slider. The value of the variable `varname` will now change depending on where you put the slider. Inside the `Slider` function you put `(minimal value : maximal value)`. Sliders are ofcourse not the only thing you can use, there is a whole range of need interaction tools. You can learn about all of them inside the sample notebook *sample Interactivity*. These sample notebooks can be found by clicking on the **Pluto.jl** logo at the top of your notebook and then selecting the *sample notebooks* option at the start menu.
+Pluto allows you to use `Javascript` inside your notebook. Most people don't know `Javascript` so that's where `PlutoUI` comes to the rescue! Activate this by typing `using PlutoUI` at the top of your new notebook. By simply typing `@bind varname Slider(5:10)` you can make a nice slider. The value of the variable `varname` will now change depending on where you put the slider. Inside the `Slider` function you put `(minimal value : maximal value)`. Sliders are of course not the only thing you can use, there is a whole range interaction tools. You can learn about all of them inside the sample notebook *Sample Interactivity*. These sample notebooks can be found by clicking on the **Pluto.jl** logo at the top of your notebook and then selecting the *sample notebooks* option at the start menu.
 
 To give you a little example, just play with the slider below and see what happens.
 """
