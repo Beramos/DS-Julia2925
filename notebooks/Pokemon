@@ -266,7 +266,7 @@ struct DualType <: PokéType
 end
 
 # ╔═╡ e4870042-9c91-41d8-8770-47940cffce0a
-md"Now we adjust our `effect` function so that it knows what to do with Dualtypes. When the Dual type is the attacter, it will choose its most effective attack."
+md"Now we adjust our `effect` function so that it knows what to do with Dualtypes. When the Dual type is the attacker, it will choose its most effective attack."
 
 # ╔═╡ 7ff0187e-12c2-497d-b5d1-29dd0770a8e1
 eff(atk::DualType, def::PokéType) = max(eff(atk.Type1, def), eff(atk.Type2, def))
