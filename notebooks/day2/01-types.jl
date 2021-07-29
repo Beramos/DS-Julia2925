@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.14.8
 
 using Markdown
 using InteractiveUtils
@@ -364,11 +364,8 @@ begin
 		title=md"**Did I break something?**",
 		description = md"""
 		
-		check how many methods there are associated with the humble multiplication operator `*`.
-		""",
-		hints = [
-			hint(md"You might want to print this one to the terminal.")
-		]
+		check how many methods there are associated with the humble multiplication operator `*`. Just for your info, you might want to print this one to the terminal.
+		"""
 	)
 end
 
@@ -499,9 +496,6 @@ end
 
 
 # ╔═╡ 96f6fef2-4e77-11eb-2ec4-399472d86a60
-
-
-# ╔═╡ a35e6072-6015-11eb-3107-97235db2c766
 
 
 # ╔═╡ 812cfe48-4e7a-11eb-32e6-c918bbe3e602
@@ -685,13 +679,10 @@ play(Scissors, Rock)
 # ╔═╡ 925e2f40-4e7d-11eb-0bd2-f91913c5a23e
 play(Scissors, Paper)
 
-# ╔═╡ 03b97ade-601a-11eb-293e-8920b39b1ce7
-
-
 # ╔═╡ 0b2b40ae-601a-11eb-1d83-53ff171bb799
 begin 
 	QuestionBlock(
-		title=md"**Optional question: rock, paper, lizard, Spock**",
+		title=md"**Optional question: rock, paper, scissors, lizard, Spock**",
 		description = md"""
 		
 		Can you extend the previous code so that it works with lizard an Spock? 
@@ -794,7 +785,6 @@ end
 # ╠═901efaee-4e77-11eb-02d9-b5fe1f0931d5
 # ╠═938d8b1e-4e77-11eb-03d3-9b88c7cab3c1
 # ╠═96f6fef2-4e77-11eb-2ec4-399472d86a60
-# ╟─a35e6072-6015-11eb-3107-97235db2c766
 # ╟─812cfe48-4e7a-11eb-32e6-c918bbe3e602
 # ╟─15bb7eb6-6016-11eb-01d2-0be88279db7e
 # ╟─178a5f96-6016-11eb-0314-010203c5fedf
@@ -830,6 +820,5 @@ end
 # ╠═8331c8b0-4e7d-11eb-0690-8bbae3ed086a
 # ╠═88a95ec0-4e7d-11eb-0a33-77ef82874f45
 # ╠═925e2f40-4e7d-11eb-0bd2-f91913c5a23e
-# ╠═03b97ade-601a-11eb-293e-8920b39b1ce7
 # ╟─0b2b40ae-601a-11eb-1d83-53ff171bb799
 # ╠═269b934c-601b-11eb-00ad-5fec0e2c37e1
