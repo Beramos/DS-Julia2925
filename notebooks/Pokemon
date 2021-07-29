@@ -239,21 +239,13 @@ Now we will define the last couple of functions that we need to implement the fi
 function eff_string(effectiveness)
 	if effectiveness == 0
 		return "not effective"
-	elseif effectiveness == 0.5
-		return "not very effective"
+	elseif effectiveness < 1.0
+		return "not very effective ($effectiveness × damage)"
 	elseif effectiveness == 1
 		return "effective"
 	else
-		return "very effective"
+		return "very effective  ($effectiveness × damage)"
 	end
-end
-
-# ╔═╡ aa5abb6c-2289-4c34-a062-2e84187559dd
-function attack!(atk::PokéType, def::PokéType)
-    effectiveness = eff(atk, def)
-    println("A Pokémon used a $(split(string(typeof(atk)),".")[end]) attack")
-    println("against a $(split(string(typeof(def)),".")[end]) Pokémon")
-    println("it was $(eff_string(effectiveness))")
 end
 
 # ╔═╡ 2326a03a-3f53-420f-896b-cf3620f06a60
@@ -268,24 +260,29 @@ First we define what a dualtype is:
 """
 
 # ╔═╡ b0f76cc7-0fb4-48ca-9844-c0fe186b32eb
-struct DualType
+struct DualType <: PokéType
 	Type1::PokéType
 	Type2::PokéType
-	function DualType(Type1,Type2)
-		return new(Type1,Type2)
-	end
 end
 
 # ╔═╡ e4870042-9c91-41d8-8770-47940cffce0a
-md"Now we adjust our `attack` function so that it knows what to do with Dualtypes."
+md"Now we adjust our `effect` function so that it knows what to do with Dualtypes. When the Dual type is the attacter, it will choose its most effective attack."
 
-# ╔═╡ 0287fb4b-ca34-4f75-87de-95851eeea830
-function attack!(atk::DualType,def::PokéType)
-	if eff(atk.Type1,def) >= eff(atk.Type2,def)
-		attack!(atk.Type1,def)
-	else
-		attack!(atk.Type2,def)
-	end
+# ╔═╡ 7ff0187e-12c2-497d-b5d1-29dd0770a8e1
+eff(atk::DualType, def::PokéType) = max(eff(atk.Type1, def), eff(atk.Type2, def))
+
+# ╔═╡ 33cb3990-d126-41e1-ac9f-c9f9d6b85ae5
+md"When the dual type is the defender, we have to compute the correct effect of the attack."
+
+# ╔═╡ bda2dba7-4be5-4ad0-bfdc-ad02a64297a4
+eff(atk::PokéType, def::DualType) = eff(atk, def.Type1) * eff(atk, def.Type2)
+
+# ╔═╡ aa5abb6c-2289-4c34-a062-2e84187559dd
+function attack!(atk::PokéType, def::PokéType)
+    effectiveness = eff(atk, def)
+	println("A $(split(string(typeof(atk)),".")[end]) Pokémon used an attack")
+    println("against a $(split(string(typeof(def)),".")[end]) Pokémon")
+    println("it was $(eff_string(effectiveness))")
 end
 
 # ╔═╡ a5ecc6c7-d08b-4cf8-8a3b-580ada462edc
@@ -307,9 +304,11 @@ begin
 	with_terminal() do
 		println("Venusaur vs Charmander:")
 		attack!(Venusaur, Charmander)
+		attack!(Charmander, Venusaur)
 		println("")
 		println("Venusaur vs Squirtle:")
 		attack!(Venusaur, Squirtle)
+		attack!(Squirtle, Venusaur)
 	end
 end
 
@@ -430,7 +429,9 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 # ╟─ae08b2e9-f864-458d-89e5-ebe07320f322
 # ╠═b0f76cc7-0fb4-48ca-9844-c0fe186b32eb
 # ╟─e4870042-9c91-41d8-8770-47940cffce0a
-# ╠═0287fb4b-ca34-4f75-87de-95851eeea830
+# ╠═7ff0187e-12c2-497d-b5d1-29dd0770a8e1
+# ╟─33cb3990-d126-41e1-ac9f-c9f9d6b85ae5
+# ╠═bda2dba7-4be5-4ad0-bfdc-ad02a64297a4
 # ╟─fd2d5874-46a0-47ae-9f13-45079f42cfab
 # ╠═faa0448f-7470-4d2e-84bf-f2dcaa92fc37
 # ╟─88d51607-8d4f-4087-ab00-2113a9c65ad4
