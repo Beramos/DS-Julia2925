@@ -432,8 +432,6 @@ begin
 			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, **without** making use of the functions `min` and `max`.
 
 			Open assignments always return `missing`.
-		
-			Show the answer: $(@bind answ_q1 CheckBox())
 			""",
 			validators= @safe[
 			clip(-1)==Solutions.clip(-1), 
@@ -447,21 +445,6 @@ begin
 	);
 	
 	validate(qb2, tracker)
-end
-
-# ╔═╡ 32c8ff60-9a35-4d40-8b54-b4805ca81885
-if answ_q1
-	md""" 
-	```julia
-	function clip(x)
-	  if x ≤ 0 && return 0.
-	  elseif x ≥ 1 && return 1.
-	  else
-	  return x
-	  end
-	end
-	```
-	"""
 end
 
 # ╔═╡ 035a53ba-4ac1-11eb-3c34-b50a803b7b7d
@@ -1171,6 +1154,226 @@ function print_big_grid()
 	missing
 end
 
+# ╔═╡ 2bff11a1-7e39-43e5-8058-5d1496f43387
+md"""## Answers:
+If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+
+| Question | Show solution |
+|-----|:---------:|
+| Question 1 | $(@bind answ_q1 CheckBox()) |
+| Question 2 | $(@bind answ_q2 CheckBox()) |
+| Question 3 | $(@bind answ_q3 CheckBox()) |
+| Question 4 | $(@bind answ_q4 CheckBox()) |
+| Question 5 | $(@bind answ_q5 CheckBox()) |
+| Question 6 | $(@bind answ_q6 CheckBox()) |
+| Question 7 | $(@bind answ_q7 CheckBox()) |
+| Question 8 | $(@bind answ_q8 CheckBox()) |
+| Question 9 | $(@bind answ_q9 CheckBox()) |
+| Question 10 | $(@bind answ_q10 CheckBox()) |
+"""
+
+# ╔═╡ c297d307-a640-4d86-aa0b-a149fe741bac
+if answ_q1
+	md""" 
+	```julia
+	false
+	true
+	false
+	```
+	"""
+end
+
+# ╔═╡ 10a31233-5de3-401b-abdd-a27908e2de9d
+if answ_q2
+	md""" 
+	```julia
+	statements = [
+		true,
+		true,
+		true
+	]
+	```
+	"""
+end
+
+# ╔═╡ 32c8ff60-9a35-4d40-8b54-b4805ca81885
+if answ_q3
+	md""" 
+	```julia
+	function clip(x)
+	  if x ≤ 0 && return 0.
+	  elseif x ≥ 1 && return 1.
+	  else
+	  return x
+	  end
+	end
+	```
+	"""
+end
+
+# ╔═╡ a647ec42-1b3c-4280-958a-e2a96cd3d103
+if answ_q4
+	md""" 
+	`max` gives you the maximum of the given arguments while `maximum` gives you the max of the given collection.
+	"""
+end
+
+# ╔═╡ 9e211fbf-4c43-439a-95ba-86b48767c053
+if answ_q5
+	md""" 
+	```julia
+	stirling(n) = sqrt(2*π*n)*(n/exp(1))^n
+	```
+	"""
+end
+
+# ╔═╡ fd368fc2-2c64-463e-976e-9dd52ce80f13
+if answ_q6
+	md""" 
+	```julia
+	function since_epoch(t)
+	  now = t
+	  seconds = now % 60 # 60 seconds in a minute
+	  now -= seconds
+	  # to minutes
+	  now = div(now, 60) 
+	  minutes = now % 60 # 60 minutes in an hour
+	  now -= minutes
+	  # to hours
+	  now = div(now, 60)
+	  hours = now % 24 # 24 hours in a day
+	  now -= hours
+	  # to days
+	  now = div(now, 24)
+	  days = now % 365 # ± 365 days in a year
+	  return days, hours, minutes, seconds
+	end
+	```
+	"""
+end
+
+# ╔═╡ db78af32-b822-49dd-b085-6f51ba6b623f
+if answ_q7
+	md""" 
+	```julia
+	function checkfermat(a::Int, b::Int, c::Int, n::Int)
+	  if a^n + b^n == c^n
+		  println("Holy smokes, Fermat was wrong!")
+	  else
+		  println("No, that doesn’t work.")
+	  end
+	end
+	```
+	"""
+end
+
+# ╔═╡ c8151b58-735c-4f16-b410-0c5c88818e6d
+if answ_q8
+	md""" 
+	```julia
+	rightjustify(s) = println(" "^(70-length(s)) * s)
+	```
+	"""
+end
+
+# ╔═╡ c01bb803-2255-4164-b216-23ec7310f89f
+if answ_q9
+	md""" 
+	```julia
+	f1(s) = replace(s, "-CH3"=> "-COOH") |> s -> replace(s, "CH3-"=> "COOH-")
+	f2(s) = replace(s, "-CO-COOH"=> "") |> s -> replace(s, "COOH-CO-"=> "")
+
+	function f3(molecule)
+	  if length(molecule) < 4
+		molecule = "CH4"
+		return molecule
+	  end
+
+	  if molecule[1:4] == "CH2-"
+		molecule = "CH3-" * molecule[5:end]
+	  end
+	  if molecule[end-3:end] == "-CH2"
+		molecule = molecule[1:end-4] * "-CH3"
+	  end
+	  return molecule
+	end
+
+	f4(s) = replace(s, "-CH2-CH2-"=> "-CO-")
+
+	function f5(molecule)
+	  if molecule[1:3] == "CO-"
+		molecule = "COOH-" * molecule[4:end]
+	  end
+
+	  if molecule[end-2:end] == "-CO" 
+		molecule = molecule[1:end-3] * "-COOH"
+	  end
+	  return molecule
+	end 
+
+	f6(s) = replace(s, "CO-CO-CO" => "CO-CH2-CO")
+
+	function cycle(molecule)
+	  molecule |> f1 |> f2 |> f3 |> f4 |> f5 |> f6
+	end
+
+	function degrade(molecule)
+	  mol_prev = ""
+	  while mol_prev !== molecule
+		mol_prev = molecule
+		molecule = cycle(molecule)
+	  end
+	  return molecule
+	end
+	```
+	"""
+end
+
+# ╔═╡ 743924b0-0b3b-48e2-9b93-961311d08022
+if answ_q9
+	md""" 
+	```julia
+	function molecular_weight(molecule)
+		return count("CH3", molecule)* 15.0 +
+				count("CH4", molecule) * 16.0 +
+				count("CH2", molecule) * 14.0 +
+				count("CO", molecule) * 28.0 +
+				count("OH", molecule) * 17
+	end
+	```
+	"""
+end
+
+# ╔═╡ 15257785-52b5-4129-9e65-7fa15e83a6e3
+if answ_q10
+	md""" 
+	```julia
+	function print_grid()
+	  dashed = " -"^4*" "
+	  plusdash = "+"*dashed*"+"*dashed*"+"
+	  verticals = ("|"*" "^9)^2*"|"
+	  s = (plusdash * "\n" * (verticals * "\n")^4)^2*plusdash * "\n"
+	  println(s)
+	end
+	```
+	"""
+end
+
+# ╔═╡ 0f095a13-8586-4da3-84ae-24c43a303776
+if answ_q10
+	md""" 
+	```julia
+	function print_big_grid()
+	  dashed = " -"^4*" "
+	  plusdash = "+"*dashed*"+"*dashed*"+"
+	  verticals = ("|"*" "^9)^2*"|"
+	  s = (plusdash * "\n" * (verticals * "\n")^4)^2*plusdash * "\n"
+	  println(s)
+	end
+	```
+	"""
+end
+
 # ╔═╡ Cell order:
 # ╟─f089cbaa-4ab9-11eb-09d1-05f49911487f
 # ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
@@ -1231,6 +1434,7 @@ end
 # ╟─5a9bbbe6-4aba-11eb-3652-43eb7891f437
 # ╟─6bdc8a5e-4aba-11eb-263c-df3af7afa517
 # ╠═77c5280c-58d0-11eb-19ad-83ec82b6d7c7
+# ╟─c297d307-a640-4d86-aa0b-a149fe741bac
 # ╟─a69ead46-4abc-11eb-3d1d-eb1c73f65150
 # ╠═b482b998-4abc-11eb-36da-379010485bfa
 # ╟─07b103ae-4abd-11eb-311b-278d1e033642
@@ -1265,6 +1469,7 @@ end
 # ╠═b8b7c0f6-5009-11eb-1eb7-0be723a88863
 # ╟─bd446c42-4abd-11eb-0465-d9a61c48ff48
 # ╠═1c5975ec-4abe-11eb-0ff0-bfb2f03a520b
+# ╟─10a31233-5de3-401b-abdd-a27908e2de9d
 # ╟─1c22b880-4abf-11eb-3f18-756c1198ccad
 # ╟─37086212-4abf-11eb-3ec9-7f8dae57121e
 # ╠═489421d8-4abf-11eb-0d5e-fd779cc918a1
@@ -1314,6 +1519,7 @@ end
 # ╠═ab006064-4ac1-11eb-32be-6557b8d45f32
 # ╟─b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
 # ╟─b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
+# ╟─a647ec42-1b3c-4280-958a-e2a96cd3d103
 # ╠═beafce06-4ac1-11eb-2431-1ffeba45716b
 # ╟─ec487488-4ac1-11eb-1be3-a93e41f78bf3
 # ╠═f88fee6c-4ac1-11eb-1671-43493122f061
@@ -1361,25 +1567,30 @@ end
 # ╟─0e63d722-4ac3-11eb-3740-d31b47a77912
 # ╟─a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 # ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
+# ╟─9e211fbf-4c43-439a-95ba-86b48767c053
 # ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
 # ╟─c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
 # ╠═40557d76-661e-11eb-3df0-659c6095285d
+# ╟─fd368fc2-2c64-463e-976e-9dd52ce80f13
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
 # ╟─da5537b5-88e7-4377-90c6-abbc7eaf6495
 # ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╟─db78af32-b822-49dd-b085-6f51ba6b623f
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
+# ╟─c8151b58-735c-4f16-b410-0c5c88818e6d
 # ╟─e2583a06-6479-11eb-091b-8be70024930d
 # ╟─e6217d50-63de-11eb-28d8-452aeffc956c
 # ╠═1f588828-6477-11eb-0c70-557f130c6785
 # ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
 # ╠═5167ded6-6463-11eb-3279-0dd226fae82e
 # ╠═c4d03faa-647d-11eb-3a84-d7b2d53e4720
+# ╟─c01bb803-2255-4164-b216-23ec7310f89f
 # ╟─c42f69f6-647d-11eb-143b-2f0ab33616e7
 # ╠═c55ed390-647d-11eb-22d5-33fbae27a2bb
 # ╠═23db2764-647e-11eb-37dd-a34db2ff0fcd
@@ -1387,7 +1598,11 @@ end
 # ╠═061e4894-647b-11eb-06db-310d02463b80
 # ╠═89a9ad00-6489-11eb-2a2d-bfa18af103ab
 # ╠═8ab56dcc-6489-11eb-16a4-b7d12003ed99
+# ╟─743924b0-0b3b-48e2-9b93-961311d08022
 # ╟─0507186a-647a-11eb-07cf-ebf32bdff5b0
 # ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
+# ╟─15257785-52b5-4129-9e65-7fa15e83a6e3
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207
+# ╟─0f095a13-8586-4da3-84ae-24c43a303776
+# ╟─2bff11a1-7e39-43e5-8058-5d1496f43387
