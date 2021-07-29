@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.14.8
 
 using Markdown
 using InteractiveUtils
@@ -21,9 +21,7 @@ using Images
 
 # ╔═╡ 69dc67fa-4cff-11eb-331e-25ffdced4323
 let 
-	using LinearAlgebra
 	using Plots
-	using DSJulia
 
 	blue = "#8DC0FF"
 	red = "#FFAEA6"
@@ -92,17 +90,6 @@ Plot the trend of human vs. dolphin intelligence by implementing the analytical 
 	questions = [Question(;description=md"",validators=Bool[], status=md"")]
 )
 end
-
-# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
-begin
-	using LinearAlgebra
-	t = collect(0:10:3040)
-	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
-	ϵ₂ = randn(length(t))*20     # noise on Human IQ
-
-	Y₁ = dolphinsIQ = t/12 + ϵ₁
-	Y₂ = humanIQ = t/20 + ϵ₂
-end;
 
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
@@ -703,7 +690,7 @@ hint(md"Remember, `.` is not only used for decimals...")
 
 # ╔═╡ 3de1f1aa-58bd-11eb-2ffc-0de292b13840
 function riemannsum(f, a, b; n=100)
-    missing
+  return missing
 end
 
 # ╔═╡ 5f47cdf0-58be-11eb-1bca-a3d0941b9bea
@@ -717,13 +704,11 @@ begin
 	
 	q1 = Question(
 			validators = @safe[
-				riemannsum(sin, 0, 2pi) == Solutions.riemannsum(sin, 0, 2pi),
+				norm(Solutions.riemannsum(sin, 0, 2pi) - riemannsum(sin, 0, 2pi)) ≤ abs(0.1 * Solutions.riemannsum(sin, 0, 2pi)),
 			
-				riemannsum(x->x*sin(x), 0, 2pi) == 
-					Solutions.riemannsum(x->x*sin(x), 0, 2pi),
+				(Solutions.riemannsum(x->x*sin(x), 0, 2pi) - riemannsum(x->x*sin(x), 0, 2pi)) ≤ abs(0.1 * Solutions.riemannsum(x->x*sin(x), 0, 2pi)),
 			
-				riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) == 
-					Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
+				(Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000) - riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)) ≤ abs(0.1 * Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000))
 			]
 		)
 			
@@ -731,7 +716,7 @@ begin
 			validators = @safe[
 				integral1 == Solutions.riemannsum(x->x*sin(x), 0, 2pi)
 			], 
-			description = md" **Integral 1:**  $ \int_0^{2\pi} x\,\sin(x)\,dx$ (n=100)")
+			description = md" **Integral 1:**  $\int_0^{2\pi} x\,\sin(x)\,dx$ (n=100)")
 			
 	q3 = Question(
 			validators = @safe[
@@ -764,6 +749,109 @@ end
 # ╔═╡ c1e377c4-64a4-11eb-3e7f-b163cb465057
 
 
+# ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
+function mydet(A)
+	size(A,1) != size(A,2) && throw(DimensionMismatch)
+	
+	return missing
+end
+
+# ╔═╡ b1a00da4-4cfe-11eb-0aff-69099e40d28f
+let 
+	using LinearAlgebra
+	M₁ = [1 2; 3 4]
+	M₂ = rand(10, 10)
+
+	
+q2 = Question(;
+	description=md"""
+Write a function `mydet` to compute the determinant of a 2x2 square matrix. Remember, for a $2 \times 2$ matrix, the determinant is computed as
+
+${\displaystyle|A|={\begin{vmatrix}a&b\\c&d\end{vmatrix}}=ad-bc.}$
+""",
+	validators = @safe[det(M₁) == mydet(M₁)]
+)
+	
+q3 = QuestionOptional{Hard}(;
+	description=md"""For larger matrices, there is a recursive way of computing the determinant based on the minors, i.e. the determinants of the submatrices. See [http://mathworld.wolfram.com/Determinant.html](http://mathworld.wolfram.com/Determinant.html).
+
+Update `mydet` to compute the determinant of a general square matrix.
+""",
+	validators = @safe[det(M₁) ≈ mydet(M₁), det(M₂) ≈ mydet(M₂)]
+)
+		
+qb2 = QuestionBlock(;
+	title=md"**Question 2: determinining the determinant**",
+	description = md"""
+	""",
+	questions = [q2, q3]
+)
+	validate(qb2, tracker)
+end
+
+# ╔═╡ e5293248-64a4-11eb-0d30-53a15bec0d01
+
+
+# ╔═╡ cb20fffe-58cf-11eb-1b65-49699f2d3699
+function estimatepi(n)
+	missing
+end
+
+# ╔═╡ c6e16d7a-58cf-11eb-32a4-3372939066e3
+begin 
+q91 = Question(
+		  validators = @safe[
+			abs(estimatepi(100) - π) < 1.0, 
+			abs(estimatepi(100000) - π) < 1e-2
+		  ], 
+		)
+	
+q92 = QuestionOptional{Easy}(
+		validators = @safe[], 
+		description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
+
+	
+qb90 = QuestionBlock(;
+	title=md"**Question 3: it is pi 'o clock**",
+	description = md"""
+	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit circle. Complete the function `estimatepi` below.
+	""",
+	questions = [q91, q92],
+	hints=[
+		hint(md"""
+			[Check this image](http://www.pythonlikeyoumeanit.com/_images/circle_square_small.png)
+			 """),
+		hint(md"""
+			Because each throw falls randomly within the square, you realize that the probability of a dart landing within the circle is given by the ratio of the circle’s area to the square’s area:
+				
+			$$P_{circle} = \frac{Area_{circle}}{Area_{square}} = \frac{\pi r^2}{(2r)^2}$$
+				
+			Furthermore, we can interpret Pcircle as being approximated by the fraction of darts thrown that land in the circle. Thus, we find:
+				
+			$$\frac{N_{circle}}{N_{total}} \approx \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$$
+
+			where $N_{total}$ is the total number of darts thrown, and $N_{circle}$ is the number of darts that land within the circle. Thus simply by keeping tally of where the darts land, you can begin to estimate the value of π!
+				
+			[source:](http://www.pythonlikeyoumeanit.com/Module3_IntroducingNumpy/Problems/Approximating_pi.html)  pythonlikeyoumeanit.com
+			 """),
+		
+		
+		]
+)
+	validate(qb90, tracker)
+end
+
+# ╔═╡ cee388d2-58cf-11eb-3b88-971b4b85e957
+function estimatepi2(n)
+	missing
+end
+
+# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
+
+
+# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
+md"## 5. Extra exercises"
+
 # ╔═╡ 75d14674-58ba-11eb-3868-172fc00a0eb8
 function markdowntable(table, header)
 	missing
@@ -785,9 +873,9 @@ begin
 		  )
 	
 	qb70 = QuestionBlock(;
-		title=md"**Question 2: markdown tables**",
+		title=md"**Question 4: markdown tables**",
 		description = md"""
-	Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that tables generation is a tedious process... Write a small julia package (read function) that generates a markdown table that takes a an array of strings for the header and a n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function
+	Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that tables generation is a tedious process... Write a small julia package (read function) that generates a markdown table that takes a an array of strings for the header and a n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function. Just for completion you should end your table with a newline (\n).
 
 		```MD
 			# Header 1
@@ -839,114 +927,15 @@ begin
 	validate(qb70, tracker)
 end
 
-# ╔═╡ dc6a4870-64a4-11eb-328f-41e5dbcd0a3b
+# ╔═╡ 9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
+begin
+	t = collect(0:10:3040)
+	ϵ₁ = randn(length(t))*15     # noise on Dolphin IQ
+	ϵ₂ = randn(length(t))*20     # noise on Human IQ
 
-
-# ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
-function mydet(A)
-	size(A,1) != size(A,2) && throw(DimensionMismatch)
-	
-	return missing
-end
-
-# ╔═╡ b1a00da4-4cfe-11eb-0aff-69099e40d28f
-let 
-	using LinearAlgebra
-	M₁ = [1 2; 3 4]
-	M₂ = rand(10, 10)
-
-	
-q2 = Question(;
-	description=md"""
-Write a function `mydet` to compute the determinant of a 2x2 square matrix. Remember, for a $2 \times 2$ matrix, the determinant is computed as
-
-${\displaystyle|A|={\begin{vmatrix}a&b\\c&d\end{vmatrix}}=ad-bc.}$
-""",
-	validators = @safe[det(M₁) == mydet(M₁)]
-)
-	
-q3 = Question(;
-	description=md"""For larger matrices, there is a recursive way of computing the determinant based on the minors, i.e. the determinants of the submatrices. See [http://mathworld.wolfram.com/Determinant.html](http://mathworld.wolfram.com/Determinant.html).
-
-Update `mydet` to compute the determinant of a general square matrix.
-""",
-	validators = @safe[det(M₁) ≈ mydet(M₁), det(M₂) ≈ mydet(M₂)]
-)
-		
-qb2 = QuestionBlock(;
-	title=md"**Question 3: determinining the determinant**",
-	description = md"""
-	""",
-	questions = [q2, q3]
-)
-	validate(qb2, tracker)
-end
-
-# ╔═╡ e5293248-64a4-11eb-0d30-53a15bec0d01
-
-
-# ╔═╡ cb20fffe-58cf-11eb-1b65-49699f2d3699
-function estimatepi(n)
-	missing
-end
-
-# ╔═╡ cee388d2-58cf-11eb-3b88-971b4b85e957
-function estimatepi2(n)
-	missing
-end
-
-# ╔═╡ c6e16d7a-58cf-11eb-32a4-3372939066e3
-begin 
-q91 = Question(
-		  validators = @safe[
-			abs(estimatepi(100) - π) < 1.0, 
-			abs(estimatepi(100000) - π) < 1e-2
-		  ], 
-		)
-	
-q92 = QuestionOptional{Easy}(
-		validators = @safe[
-			abs(estimatepi2(100) - π) < 1.0, 
-			abs(estimatepi2(100000) - π) < 1e-2
-			], 
-		description = md"Did you use a for loop? If so, try to do this without an explicit for-loop")
-
-	
-qb90 = QuestionBlock(;
-	title=md"**Question 4: it is pi 'o clock**",
-	description = md"""
-	Estimate pi through Monte Carlo sampling. Do this by simulating throwing `n` pebbles in the [-1, 1] x [-1, 1] square and track the fraction that land in the unit square. Complete the function `estimatepi` below.
-	""",
-	questions = [q91, q92],
-	hints=[
-		hint(md"""
-			[Check this image](http://www.pythonlikeyoumeanit.com/_images/circle_square_small.png)
-			 """),
-		hint(md"""
-			Because each throw falls randomly within the square, you realize that the probability of a dart landing within the circle is given by the ratio of the circle’s area to the square’s area:
-				
-			$$P_{circle} = \frac{Area_{circle}}{Area_{square}} = \frac{\pi r^2}{(2r)^2}$$
-				
-			Furthermore, we can interpret Pcircle as being approximated by the fraction of darts thrown that land in the circle. Thus, we find:
-				
-			$$\frac{N_{circle}}{N_{total}} \approx \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$$
-
-			where $N_{total}$ is the total number of darts thrown, and $N_{circle}$ is the number of darts that land within the circle. Thus simply by keeping tally of where the darts land, you can begin to estimate the value of π!
-				
-			[source:](http://www.pythonlikeyoumeanit.com/Module3_IntroducingNumpy/Problems/Approximating_pi.html)  pythonlikeyoumeanit.com
-			 """),
-		
-		
-		]
-)
-	validate(qb90, tracker)
-end
-
-# ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
-
-
-# ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
-md"## 5. Extra exercises"
+	Y₁ = dolphinsIQ = t/12 + ϵ₁
+	Y₂ = humanIQ = t/20 + ϵ₂
+end;
 
 # ╔═╡ 85fb018e-4c1d-11eb-2519-a5abe100748e
 begin 
@@ -1176,9 +1165,6 @@ md""" ## 5. References
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
 # ╟─c1e377c4-64a4-11eb-3e7f-b163cb465057
-# ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
-# ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
-# ╟─dc6a4870-64a4-11eb-328f-41e5dbcd0a3b
 # ╟─b1a00da4-4cfe-11eb-0aff-69099e40d28f
 # ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
 # ╟─e5293248-64a4-11eb-0d30-53a15bec0d01
@@ -1187,6 +1173,8 @@ md""" ## 5. References
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
 # ╟─04aff640-58bb-11eb-1bb6-69ad9fc32314
+# ╟─0c91ce30-58b9-11eb-3617-4d87682831dd
+# ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
 # ╟─69dc67fa-4cff-11eb-331e-25ffdced4323
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
