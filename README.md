@@ -18,7 +18,7 @@ Download or clone this repository, open the Julia REPL and navigate to the folde
 
 ```julia
 cd("path/to/DS-Julia2925/")
-include("launcher.jl")
+include("launch.jl")
 ```
 
 This should open a browser window with the Pluto notebooks. The first time it can take a while since it is installing all the dependencies.

@@ -1,8 +1,17 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
+
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
 
 # ╔═╡ bf1385da-4ac2-11eb-3992-41abac921370
 using Plots
@@ -19,7 +28,8 @@ student = (name = "Jenke Janssen", email = "Jenke.Janssen@UGent.be");
 # scroll down the page to see what's up
 
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
-begin 
+begin
+	import Pkg; Pkg.add(url = "https://github.com/Beramos/DS-Julia2925")
 	using DSJulia;
 	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
@@ -64,7 +74,7 @@ Let's get started with the basics. Some mathematical operations, """
 div(2, 4)   # Computes 2/4 truncated to an integer
 
 # ╔═╡ 8342c042-4ab7-11eb-2136-497fc9e1b9c4
-2 ÷ 4       # looks nices but exactly the same!
+2 ÷ 4       # looks nicer but does exactly the same!
 
 # ╔═╡ 834d4cbc-4ab7-11eb-1f1a-df05b0c00d66
 7 % 3       # get the remainder of the integer division
@@ -73,7 +83,7 @@ div(2, 4)   # Computes 2/4 truncated to an integer
 35 \ 7      # inverse division
 
 # ╔═╡ 8365cb3e-4ab7-11eb-05c0-85f51cc9b018
-1 // 3      # fractions, gives result as a rational
+1 // 3      # fractions, gives the result as a rational
 
 # ╔═╡ 8370eaf0-4ab7-11eb-1cd3-dfeec9341c4b
 1//2 + 1//4
@@ -259,13 +269,13 @@ end
 md"Similarly to Matlab, when using the REPL, Julia will print the result of every statement by default. To suppress this behavious, just end the statement with a semicolon."
 
 # ╔═╡ 15f8b7fe-4abd-11eb-2777-8fc8bf9d342e
-a = 10;  # not printed...
+var1 = 10;  # not printed...
 
 # ╔═╡ efae58fa-5008-11eb-32fe-c3ae588d14f2
-a  # ...but still defined
+var1  # ...but still defined
 
 # ╔═╡ 18f99e46-4abd-11eb-20a8-859cb1b12fe3
-b = 20
+var2 = 20
 
 # ╔═╡ 3a7954da-4abd-11eb-3c5b-858054b4d06b
 md"""## 2. Logical statements
@@ -409,7 +419,7 @@ end
 # ╔═╡ 6736dafe-4abf-11eb-1fce-0716d2b7f4a8
 md"""
 Julia allows for some very condense control flow structures.
-y = `condition` ? `valueiftrue` : `valueiffalse`
+y = `condition` ? `valueiftrue` : `valueiffalse`. To make this work Julia requires spaces around the ? and the : 
 """
 
 # ╔═╡ 0c693c24-4ac0-11eb-2329-c743dcc5039d
@@ -421,7 +431,7 @@ begin
 			description=md"""
 			Complete the clip function: $\max(0, \min(1, x))$ for a given $x$, **without** making use of the functions `min` and `max`.
 
-			Open assignments always return `missing`. 
+			Open assignments always return `missing`.
 			""",
 			validators= @safe[
 			clip(-1)==Solutions.clip(-1), 
@@ -601,10 +611,10 @@ mymean(1, 3, 5, 7)
 md"Similarly, the *splatting* operator can be used to split a collection into its individual elements."
 
 # ╔═╡ a6b95d62-4ac1-11eb-0c93-7fa0f6a120d5
-c = [1.0, 3.0, 5.0];
+var3 = [1.0, 3.0, 5.0];
 
 # ╔═╡ ab006064-4ac1-11eb-32be-6557b8d45f32
-mymean(c...)
+mymean(var3...)
 
 # ╔═╡ b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
 md"""When unsure of what a function does, in the REPL the documentation can be viewed by adding a "?" in front of the function. Here, in the Pluto environment, put the cursor in the function of interest and open the documentation tab (look on your right)."""
@@ -628,7 +638,7 @@ sort
 
 # ╔═╡ ec487488-4ac1-11eb-1be3-a93e41f78bf3
 md"""
-For a lot of standard Julia functions a in-place version is defined. In-place means that the function changes one of the input arguments of the function. As an example, `sort()` sorts and returns the array passed as argument, it does not change the original array. In contrast, `sort!()` is the inplace version of sort and directly sorts the array passed as argument.
+For a lot of standard Julia functions an in-place version is defined. In-place means that the function changes one of the input arguments of the function. As an example, `sort()` sorts and returns the array passed as argument, it does not change the original array. In contrast, `sort!()` is the inplace version of sort and directly sorts the array passed as argument.
 """
 
 # ╔═╡ f88fee6c-4ac1-11eb-1671-43493122f061
@@ -714,7 +724,7 @@ md"## Intermezzo: Types"
 begin
 	number = 42
 	str = "mice"
-	n = 0.9
+	var4 = 0.9
 	A = [1 2; 3 4]
 end;
 
@@ -725,7 +735,7 @@ typeof(number)
 typeof(str)
 
 # ╔═╡ bc67fc50-4f2f-11eb-2209-bf35df0e8c27
-typeof(n)
+typeof(var4)
 
 # ╔═╡ bf40274a-4f2f-11eb-0086-d3502f67161b
 typeof(A)
@@ -827,7 +837,7 @@ begin
 			)
 	
 	qb4 = QuestionBlock(;
-		title=md"**Question 6: Stirling's approximation for factorials**",
+		title=md"**Question 5: Stirling's approximation for factorials**",
 		description = md"""
 	The factorial function,
 
@@ -862,10 +872,10 @@ end
 begin 
  now = time()	
 qb5 = QuestionBlock(;
-	title=md"**Question 5: time is relative**",
+	title=md"**Question 6: time is relative**",
 	description = md"""
 The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
-Write a script that reads the current time in nanoseconds (`time()`) and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
+Write a script that reads the current time in seconds (use `time()`) and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the beginning of the year.
 	""",
 	questions = [Question(validators = @safe[since_epoch(now)==Solutions.since_epoch(now)], description = md"")]
 )
@@ -889,7 +899,7 @@ q6 = Question(;
 	
 q7 = Question(;
 	description=md"""
-2. Write a function that prompts the user to input values for $a$, $b$, $c$ and $n$, converts them to integers, and uses checkfermat to check whether they violate Fermat’s theorem.""",
+2. Write a function that takes 4 random positive integers for $a$, $b$, $c$ and $n$, and use `checkfermat` to check whether they violate Fermat’s theorem.""",
 	validators = Bool[], status=md""		
 )
 	
@@ -900,7 +910,7 @@ oq8 = QuestionOptional{Easy}(;
 )
 		
 qb6 = QuestionBlock(;
-	title=md"**Question 6: Fermat's Last Theorem**",
+	title=md"**Question 7: Fermat's Last Theorem**",
 	description = md"""
 Fermat’s Last Theorem says that there are no positive integers $a$, $b$, and $c$ such that
 
@@ -909,8 +919,8 @@ $a^n + b^n = c^n$
 for any value of $n$ greater than 2.""",
 	questions = [q6, q7, oq8],
 	hints=[
-			hint(md"check the functions `readline` and `parse`."),
-			hint(md"You can write multiple functions with the same name but with a different number or type of input arguments. So you can write a second version of `checkfermat` with no input arguments for a prompting version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat` Remember that this construct is called multiple dispatch."),
+			hint(md"check the functions `rand` and `abs`."),
+			hint(md"You can write multiple functions with the same name but with a different number or type of input arguments. So you can write a second version of `checkfermat` with no input arguments for a random version. Depending on the number and the type of the arguments, Julia will choose the appropriate version of `checkfermat` Remember that this construct is called multiple dispatch."),
 			hint(md"In Pluto, you have to put methods of the same name in a `begin ... end` block.")
 			],
 		
@@ -924,8 +934,17 @@ function checkfermat(a::Int, b::Int, c::Int, n::Int)
 	return answer
 end
 
-# ╔═╡ b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╔═╡ da5537b5-88e7-4377-90c6-abbc7eaf6495
+md"""
+Insert some numbers below to test your function `checkfermat()`\
+a = $(@bind a NumberField(1:100000000))\
+b = $(@bind b NumberField(1:100000000))\
+c = $(@bind c NumberField(1:100000000))\
+n = $(@bind n NumberField(1:100000000))
+"""
 
+# ╔═╡ b4118bfa-5af8-11eb-0aca-cddef8e191ee
+@terminal checkfermat(a,b,c,n)
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
 md"""### 9. Extra exercises"""
@@ -938,7 +957,7 @@ end
 # ╔═╡ 42f24f58-4ac3-11eb-06b5-ebc015c17520
 begin 
 qb7 = QuestionBlock(;
-	title=md"**Question 7: can you justify this?**",
+	title=md"**Question 8: can you justify this?**",
 	description = md"""
 	
 	Write a function named `rightjustify` that takes a string named `s` as a parameter and prints the string with enough leading spaces so that the last letter of the string is in column 70 of the display.
@@ -1033,7 +1052,7 @@ Degrade *1000* molecules containing *12* carbon atoms, compute the molecular wei
 	)
 
 qb_mm = QuestionBlock(;
-	title=md"**Question 8: Molecular mass spectroscopy**",
+	title=md"**Question 9: Molecular mass spectroscopy**",
 	description = md"""
 	Analytical chemists at Ghent University have discovered a new analytical technique where organic molecules are partially burned into smaller molecules. These oxidised molecules can then be detected via acetatometry. 
 		
@@ -1069,10 +1088,9 @@ qb_mm = QuestionBlock(;
 
 	""",
 	questions = [q_mm1, q_mm2],
-	hints= [
-			hint(md"Make sure you to check both endpoints CH₃-, -CH₃ and -CO-COOH or COOH-CO-, etc."),
-			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\")` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """),
-			hint(md"""For part 2: use the function `histogram` from the Plots library"""),
+	hints= [hint(md"Make sure you to check both endpoints CH₃-, -CH₃ and -CO-COOH or COOH-CO-, etc."),
+			hint(md"""`replace(string1, \"-CH2-CH2-\" => \"-CO-\"; count=1)` replaces the first occurence of  "-CH2-CH2-" in `string1` to \"-CO-\". """),
+			hint(md"""For part 2: use the function `count` and the function `histogram` from the Plots library"""),
 			hint(md"""Type \"histogram\", put your cursor on histogram and open the "Live docs", to find informaiton on how to use the histogram function.""")
 		]
 )
@@ -1088,26 +1106,16 @@ end
 # ╔═╡ 0507186a-647a-11eb-07cf-ebf32bdff5b0
 
 
-# ╔═╡ 448ef88e-4ad2-11eb-20d6-17a51d665ef9
-function print_grid()
-	missing
-end
-
-# ╔═╡ 14d50ee8-4ad3-11eb-3b81-9138aec66207
-function print_big_grid()
-	missing
-end
-
 # ╔═╡ 01eb4816-4ad2-11eb-3991-af76de0110c5
 begin 
-q9 = Question(validators = [print_grid() == "+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |\n+ - - - - + - - - - +\n|         |         |\n|         |         |\n|         |         |\n|         |         |\n+ - - - - + - - - - +"], 
+q9 = Question(validators = [], 
 		description = md"")
 
-oq9 = QuestionOptional{Easy}(validators = [print_big_grid() == "+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n|         |         |         |         |\n+ - - - - + - - - - + - - - - + - - - - +"], 
+oq9 = QuestionOptional{Easy}(validators = [], 
 		description = md"Write a function that draws a similar grid with four rows and four columns.")
 	
 qb8 = QuestionBlock(;
-	title=md"**Question 9: grid print**",
+	title=md"**Question 10: grid print**",
 	description = md"""
 	Complete the function `printgrid` that draws a grid like the following:
 	```
@@ -1134,6 +1142,236 @@ qb8 = QuestionBlock(;
 			]
 	)
 	validate(qb8)
+end
+
+# ╔═╡ 448ef88e-4ad2-11eb-20d6-17a51d665ef9
+function print_grid()
+	missing
+end
+
+# ╔═╡ 14d50ee8-4ad3-11eb-3b81-9138aec66207
+function print_big_grid()
+	missing
+end
+
+# ╔═╡ 2bff11a1-7e39-43e5-8058-5d1496f43387
+md"""## Answers:
+If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+
+| Question | Show solution |
+|-----|:---------:|
+| Question 1 | $(@bind answ_q1 CheckBox()) |
+| Question 2 | $(@bind answ_q2 CheckBox()) |
+| Question 3 | $(@bind answ_q3 CheckBox()) |
+| Question 4 | $(@bind answ_q4 CheckBox()) |
+| Question 5 | $(@bind answ_q5 CheckBox()) |
+| Question 6 | $(@bind answ_q6 CheckBox()) |
+| Question 7 | $(@bind answ_q7 CheckBox()) |
+| Question 8 | $(@bind answ_q8 CheckBox()) |
+| Question 9 | $(@bind answ_q9 CheckBox()) |
+| Question 10 | $(@bind answ_q10 CheckBox()) |
+"""
+
+# ╔═╡ c297d307-a640-4d86-aa0b-a149fe741bac
+if answ_q1
+	md""" 
+	```julia
+	false
+	true
+	false
+	```
+	"""
+end
+
+# ╔═╡ 10a31233-5de3-401b-abdd-a27908e2de9d
+if answ_q2
+	md""" 
+	```julia
+	statements = [
+		true,
+		true,
+		true
+	]
+	```
+	"""
+end
+
+# ╔═╡ 32c8ff60-9a35-4d40-8b54-b4805ca81885
+if answ_q3
+	md""" 
+	```julia
+	function clip(x)
+	  if x ≤ 0 && return 0.
+	  elseif x ≥ 1 && return 1.
+	  else
+	  return x
+	  end
+	end
+	```
+	"""
+end
+
+# ╔═╡ a647ec42-1b3c-4280-958a-e2a96cd3d103
+if answ_q4
+	md""" 
+	`max` gives you the maximum of the given arguments while `maximum` gives you the max of the given collection.
+	"""
+end
+
+# ╔═╡ 9e211fbf-4c43-439a-95ba-86b48767c053
+if answ_q5
+	md""" 
+	```julia
+	stirling(n) = sqrt(2*π*n)*(n/exp(1))^n
+	```
+	"""
+end
+
+# ╔═╡ fd368fc2-2c64-463e-976e-9dd52ce80f13
+if answ_q6
+	md""" 
+	```julia
+	function since_epoch(t)
+	  now = t
+	  seconds = now % 60 # 60 seconds in a minute
+	  now -= seconds
+	  # to minutes
+	  now = div(now, 60) 
+	  minutes = now % 60 # 60 minutes in an hour
+	  now -= minutes
+	  # to hours
+	  now = div(now, 60)
+	  hours = now % 24 # 24 hours in a day
+	  now -= hours
+	  # to days
+	  now = div(now, 24)
+	  days = now % 365 # ± 365 days in a year
+	  return days, hours, minutes, seconds
+	end
+	```
+	"""
+end
+
+# ╔═╡ db78af32-b822-49dd-b085-6f51ba6b623f
+if answ_q7
+	md""" 
+	```julia
+	function checkfermat(a::Int, b::Int, c::Int, n::Int)
+	  if a^n + b^n == c^n
+		  println("Holy smokes, Fermat was wrong!")
+	  else
+		  println("No, that doesn’t work.")
+	  end
+	end
+	```
+	"""
+end
+
+# ╔═╡ c8151b58-735c-4f16-b410-0c5c88818e6d
+if answ_q8
+	md""" 
+	```julia
+	rightjustify(s) = println(" "^(70-length(s)) * s)
+	```
+	"""
+end
+
+# ╔═╡ c01bb803-2255-4164-b216-23ec7310f89f
+if answ_q9
+	md""" 
+	```julia
+	f1(s) = replace(s, "-CH3"=> "-COOH") |> s -> replace(s, "CH3-"=> "COOH-")
+	f2(s) = replace(s, "-CO-COOH"=> "") |> s -> replace(s, "COOH-CO-"=> "")
+
+	function f3(molecule)
+	  if length(molecule) < 4
+		molecule = "CH4"
+		return molecule
+	  end
+
+	  if molecule[1:4] == "CH2-"
+		molecule = "CH3-" * molecule[5:end]
+	  end
+	  if molecule[end-3:end] == "-CH2"
+		molecule = molecule[1:end-4] * "-CH3"
+	  end
+	  return molecule
+	end
+
+	f4(s) = replace(s, "-CH2-CH2-"=> "-CO-")
+
+	function f5(molecule)
+	  if molecule[1:3] == "CO-"
+		molecule = "COOH-" * molecule[4:end]
+	  end
+
+	  if molecule[end-2:end] == "-CO" 
+		molecule = molecule[1:end-3] * "-COOH"
+	  end
+	  return molecule
+	end 
+
+	f6(s) = replace(s, "CO-CO-CO" => "CO-CH2-CO")
+
+	function cycle(molecule)
+	  molecule |> f1 |> f2 |> f3 |> f4 |> f5 |> f6
+	end
+
+	function degrade(molecule)
+	  mol_prev = ""
+	  while mol_prev !== molecule
+		mol_prev = molecule
+		molecule = cycle(molecule)
+	  end
+	  return molecule
+	end
+	```
+	"""
+end
+
+# ╔═╡ 743924b0-0b3b-48e2-9b93-961311d08022
+if answ_q9
+	md""" 
+	```julia
+	function molecular_weight(molecule)
+		return count("CH3", molecule)* 15.0 +
+				count("CH4", molecule) * 16.0 +
+				count("CH2", molecule) * 14.0 +
+				count("CO", molecule) * 28.0 +
+				count("OH", molecule) * 17
+	end
+	```
+	"""
+end
+
+# ╔═╡ 15257785-52b5-4129-9e65-7fa15e83a6e3
+if answ_q10
+	md""" 
+	```julia
+	function print_grid()
+	  dashed = " -"^4*" "
+	  plusdash = "+"*dashed*"+"*dashed*"+"
+	  verticals = ("|"*" "^9)^2*"|"
+	  s = (plusdash * "\n" * (verticals * "\n")^4)^2*plusdash * "\n"
+	  println(s)
+	end
+	```
+	"""
+end
+
+# ╔═╡ 0f095a13-8586-4da3-84ae-24c43a303776
+if answ_q10
+	md""" 
+	```julia
+	function print_big_grid()
+	  dashed = " -"^4*" "
+	  plusdash = "+"*dashed*"+"*dashed*"+"
+	  verticals = ("|"*" "^9)^2*"|"
+	  s = (plusdash * "\n" * (verticals * "\n")^4)^2*plusdash * "\n"
+	  println(s)
+	end
+	```
+	"""
 end
 
 # ╔═╡ Cell order:
@@ -1196,6 +1434,7 @@ end
 # ╟─5a9bbbe6-4aba-11eb-3652-43eb7891f437
 # ╟─6bdc8a5e-4aba-11eb-263c-df3af7afa517
 # ╠═77c5280c-58d0-11eb-19ad-83ec82b6d7c7
+# ╟─c297d307-a640-4d86-aa0b-a149fe741bac
 # ╟─a69ead46-4abc-11eb-3d1d-eb1c73f65150
 # ╠═b482b998-4abc-11eb-36da-379010485bfa
 # ╟─07b103ae-4abd-11eb-311b-278d1e033642
@@ -1230,12 +1469,14 @@ end
 # ╠═b8b7c0f6-5009-11eb-1eb7-0be723a88863
 # ╟─bd446c42-4abd-11eb-0465-d9a61c48ff48
 # ╠═1c5975ec-4abe-11eb-0ff0-bfb2f03a520b
+# ╟─10a31233-5de3-401b-abdd-a27908e2de9d
 # ╟─1c22b880-4abf-11eb-3f18-756c1198ccad
 # ╟─37086212-4abf-11eb-3ec9-7f8dae57121e
 # ╠═489421d8-4abf-11eb-0d5e-fd779cc918a1
 # ╟─6736dafe-4abf-11eb-1fce-0716d2b7f4a8
 # ╟─8933033a-4abf-11eb-1156-a53a5ee9152c
 # ╠═0c693c24-4ac0-11eb-2329-c743dcc5039d
+# ╟─32c8ff60-9a35-4d40-8b54-b4805ca81885
 # ╟─035a53ba-4ac1-11eb-3c34-b50a803b7b7d
 # ╟─2a5fca7c-4ac0-11eb-33a3-23d972ca27b8
 # ╠═3896642a-4ac0-11eb-2c7c-4f376ab82217
@@ -1277,7 +1518,8 @@ end
 # ╠═a6b95d62-4ac1-11eb-0c93-7fa0f6a120d5
 # ╠═ab006064-4ac1-11eb-32be-6557b8d45f32
 # ╟─b0603566-4ac1-11eb-17bc-3b63cd2aa1e9
-# ╠═b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
+# ╟─b6db7e2a-5a6e-11eb-1a55-e74b15cbb9e2
+# ╟─a647ec42-1b3c-4280-958a-e2a96cd3d103
 # ╠═beafce06-4ac1-11eb-2431-1ffeba45716b
 # ╟─ec487488-4ac1-11eb-1be3-a93e41f78bf3
 # ╠═f88fee6c-4ac1-11eb-1671-43493122f061
@@ -1325,24 +1567,30 @@ end
 # ╟─0e63d722-4ac3-11eb-3740-d31b47a77912
 # ╟─a48be23a-57ff-11eb-1bc3-3d3e046ea67c
 # ╠═a3969292-57ff-11eb-059b-e9e931a30dc1
+# ╟─9e211fbf-4c43-439a-95ba-86b48767c053
 # ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
 # ╟─c34ede1c-4ad4-11eb-050f-bb07c5d19c1c
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
 # ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
 # ╠═40557d76-661e-11eb-3df0-659c6095285d
+# ╟─fd368fc2-2c64-463e-976e-9dd52ce80f13
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╟─e99d6b96-4ad5-11eb-2144-f97a97e71ae4
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
-# ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╟─da5537b5-88e7-4377-90c6-abbc7eaf6495
+# ╟─b4118bfa-5af8-11eb-0aca-cddef8e191ee
+# ╟─db78af32-b822-49dd-b085-6f51ba6b623f
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─42f24f58-4ac3-11eb-06b5-ebc015c17520
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
+# ╟─c8151b58-735c-4f16-b410-0c5c88818e6d
 # ╟─e2583a06-6479-11eb-091b-8be70024930d
 # ╟─e6217d50-63de-11eb-28d8-452aeffc956c
 # ╠═1f588828-6477-11eb-0c70-557f130c6785
 # ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
 # ╠═5167ded6-6463-11eb-3279-0dd226fae82e
 # ╠═c4d03faa-647d-11eb-3a84-d7b2d53e4720
+# ╟─c01bb803-2255-4164-b216-23ec7310f89f
 # ╟─c42f69f6-647d-11eb-143b-2f0ab33616e7
 # ╠═c55ed390-647d-11eb-22d5-33fbae27a2bb
 # ╠═23db2764-647e-11eb-37dd-a34db2ff0fcd
@@ -1350,7 +1598,11 @@ end
 # ╠═061e4894-647b-11eb-06db-310d02463b80
 # ╠═89a9ad00-6489-11eb-2a2d-bfa18af103ab
 # ╠═8ab56dcc-6489-11eb-16a4-b7d12003ed99
+# ╟─743924b0-0b3b-48e2-9b93-961311d08022
 # ╟─0507186a-647a-11eb-07cf-ebf32bdff5b0
 # ╟─01eb4816-4ad2-11eb-3991-af76de0110c5
 # ╠═448ef88e-4ad2-11eb-20d6-17a51d665ef9
+# ╟─15257785-52b5-4129-9e65-7fa15e83a6e3
 # ╠═14d50ee8-4ad3-11eb-3b81-9138aec66207
+# ╟─0f095a13-8586-4da3-84ae-24c43a303776
+# ╟─2bff11a1-7e39-43e5-8058-5d1496f43387
