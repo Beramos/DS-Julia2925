@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
@@ -12,6 +12,9 @@ macro bind(def, element)
         el
     end
 end
+
+# ╔═╡ 84616ae0-35df-4aab-8540-b863c0e99196
+using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 
 # ╔═╡ cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 using PlutoUI, Plots
@@ -1235,6 +1238,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 
 
 # ╔═╡ Cell order:
+# ╟─84616ae0-35df-4aab-8540-b863c0e99196
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # ╟─2411c6ca-2bdd-11eb-050c-0399b3b0d7af

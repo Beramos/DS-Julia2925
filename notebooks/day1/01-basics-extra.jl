@@ -1,8 +1,11 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
+
+# ╔═╡ 4109a39c-00b7-4954-bb73-35407f82a6f7
+using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 
 # ╔═╡ 24b76a7c-63dd-11eb-1b78-d5a20557e5cd
 # edit the code below to set your name and UGent username
@@ -364,6 +367,7 @@ prod([goingdowntheslope(direction..., slope) for direction in slopestyles])
 
 # ╔═╡ Cell order:
 # ╠═24b76a7c-63dd-11eb-1b78-d5a20557e5cd
+# ╟─4109a39c-00b7-4954-bb73-35407f82a6f7
 # ╟─446c3e4e-63dd-11eb-3300-fb006008ff1f
 # ╟─5368424c-63dd-11eb-3a1b-05a61e266d2b
 # ╟─6c0f2d10-63dd-11eb-2c17-fddf9cd51bfe
