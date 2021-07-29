@@ -14,7 +14,7 @@ bram.de.jaegher@gmail.com
 
 #= Notebook 1: basics =#
 ### Clipping
-function clip(x) = x < 1 ? (x > 0 ? x : 0) : 1
+clip(x) = x < 1 ? (x > 0 ? x : 0) : 1
 
 ### Stirling
 stirling(n) = sqrt(2*π*n)*(n/exp(1))^n
