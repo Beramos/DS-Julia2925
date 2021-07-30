@@ -18,10 +18,11 @@ Download or clone this repository, open the Julia REPL and navigate to the folde
 
 ```julia
 cd("path/to/DS-Julia2925/")
-include("launch.jl")
+using Pluto
+Pluto.run()
 ```
 
-This should open a browser window with the Pluto notebooks. The first time it can take a while since it is installing all the dependencies.
+This should open a browser window with the Pluto homepage. Here you can now select which notebook you would like to open. The first time it can take a while since it is installing all the dependencies.
 
 ## Contact
 UGent Doctoral School member and Julia questions? Chat with us on Gitter!
