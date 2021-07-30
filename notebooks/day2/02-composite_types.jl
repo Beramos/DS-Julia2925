@@ -1,8 +1,17 @@
 ### A Pluto.jl notebook ###
-# v0.14.8
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
+
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
 
 # ╔═╡ 372d3cf2-6173-11eb-356e-23c959c3fd89
 # edit the code below to set your name and UGent username
@@ -16,8 +25,10 @@ student = (name = "Sam Janssen", email = "Sam.Janssen@UGent.be");
 # scroll down the page to see what's up
 
 # ╔═╡ eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
-begin 
+begin
+	using Pkg;Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 	using DSJulia;
+	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
 	Submission by: **_$(student.name)_**
@@ -614,6 +625,89 @@ import LinearAlgebra
 # ╔═╡ dc945902-5d93-11eb-1121-a7ae99c5862e
 #LinearAlgebra.det(V::Vandermonde) = missing
 
+# ╔═╡ 0267b920-9a1f-472f-9d21-5609fb877325
+md"""## Answers:
+If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+
+| Question | Show solution |
+|-----|:---------:|
+| Question WizCur | $(@bind answ_q1 CheckBox()) |
+| Question Vandermonde | $(@bind answ_q2 CheckBox()) |
+| Question Vandermonde determinant | $(@bind answ_q3 CheckBox()) |
+
+"""
+
+# ╔═╡ fcf5c7e6-b745-44af-b731-cd3d44f848b9
+if answ_q1 == true
+	md"""
+	```Julia
+	struct WizCur
+	  galleons::Int
+	  sickles::Int
+	  knuts::Int
+	  function WizCur(galleons::Int, sickles::Int, knuts::Int)
+		  sickles += knuts ÷ 29
+		  knuts %= 29
+		  galleons += sickles ÷ 17
+		  sickles %= 17
+		  return new(galleons, sickles, knuts)
+	  end
+	end
+
+	galleons(money::WizCur) = money.galleons
+	sickles(money::WizCur) = money.sickles
+	knuts(money::WizCur) = money.knuts
+
+	moneyinknuts(money::WizCur) = 29*17galleons(money) + 29sickles(money) + knuts(money)
+
+	function Base.show(io::IO, money::WizCur)
+	  print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
+	end
+
+	Base.isless(m1::WizCur, m2::WizCur) = moneyinknuts(m1) < moneyinknuts(m2) 
+	Base.isgreater(m1::WizCur, m2::WizCur) = moneyinknuts(m1) > moneyinknuts(m2) 
+	Base.isequal(m1::WizCur, m2::WizCur) = moneyinknuts(m1) == moneyinknuts(m2)
+
+	Base.:+(m1::WizCur, m2::WizCur) = WizCur(galleons(m1)+galleons(m2),
+											  sickles(m1)+sickles(m2),
+											  knuts(m1)+knuts(m2))
+
+	money_ron = WizCur(0, 19, 732)
+	money_harry = WizCur(3, 1, 7)
+
+	dungbomb_fund = money_ron + money_harry
+	```
+	"""
+end
+
+# ╔═╡ f4fc59ac-e0e2-483a-9e07-6664090cb299
+if answ_q2 == true
+	md"""
+	```Julia
+	struct Vandermonde{T,VT} <: AbstractMatrix{T}
+	  α::VT
+	  m::Int
+	  Vandermonde(α::AbstractVector{T}, m) where {T} = new{T,typeof(α)}(α,m)
+	end
+
+	Vandermonde(α::Vector{<:Number}) = Vandermonde(α, length(α))
+
+	Base.size(V::Vandermonde) = (length(V.α), V.m)
+	Base.getindex(V::Vandermonde, i, j) = V.α[i]^(j-1)
+	```
+	"""
+end
+
+# ╔═╡ 1c373bba-eeb6-4673-8b18-0d68b524e536
+if answ_q3 == true
+	md"""
+	```julia
+	determinant(V::Vandermonde) = 
+	((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod
+	```
+	"""
+end
+
 # ╔═╡ Cell order:
 # ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
 # ╟─eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
@@ -728,6 +822,7 @@ import LinearAlgebra
 # ╠═9eab40be-5d94-11eb-0c59-21f5824fb812
 # ╠═a137e0f8-5d94-11eb-2209-73acad549307
 # ╠═a79ba114-5d94-11eb-16ae-9906c6cdf54f
+# ╟─fcf5c7e6-b745-44af-b731-cd3d44f848b9
 # ╟─392228e2-617d-11eb-09a5-c9e5649356eb
 # ╟─902f4dfe-617d-11eb-2957-71130adca3ae
 # ╠═d448a2e0-5d92-11eb-18a6-9ff817992154
@@ -735,7 +830,10 @@ import LinearAlgebra
 # ╠═c2ecfec8-5d93-11eb-2640-07bc07f3da98
 # ╠═cb3e91cc-5d93-11eb-020c-d73c10131755
 # ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
+# ╟─f4fc59ac-e0e2-483a-9e07-6664090cb299
 # ╟─7f02b0a0-617f-11eb-1263-91423840def3
 # ╟─f01448f0-617d-11eb-1829-0fcfe19b3115
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
+# ╟─1c373bba-eeb6-4673-8b18-0d68b524e536
+# ╟─0267b920-9a1f-472f-9d21-5609fb877325
