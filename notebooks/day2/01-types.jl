@@ -1,8 +1,17 @@
 ### A Pluto.jl notebook ###
-# v0.14.8
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
+
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
 
 # ╔═╡ e9576706-600e-11eb-1e10-e3bac02a254e
 # edit the code below to set your name and UGent username
@@ -17,7 +26,9 @@ student = (name = "Hanne Janssen", email = "Hanne.Janssen@UGent.be");
 
 # ╔═╡ fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
 begin 
+	using Pkg;Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 	using DSJulia;
+	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
 	Submission by: **_$(student.name)_**
@@ -307,9 +318,6 @@ begin
 	)
 	validate(qb_sparse, tracker)
 end
-
-# ╔═╡ 9a33c306-653c-11eb-3373-01e90d12b246
-
 
 # ╔═╡ 03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 md"""
@@ -697,6 +705,44 @@ end
 # ╔═╡ 269b934c-601b-11eb-00ad-5fec0e2c37e1
 
 
+# ╔═╡ ce5d564a-f2f3-4b1e-aa70-85253b2ccf38
+md"""## Answers:
+If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+
+| Question | Show solution |
+|-----|:---------:|
+| Question string parsing | $(@bind answ_q1 CheckBox()) |
+| Question Rock,Paper,Spock | $(@bind answ_q2 CheckBox()) |
+
+"""
+
+# ╔═╡ 9a33c306-653c-11eb-3373-01e90d12b246
+if answ_q1 == true
+	md"""
+	```Julia
+	sumofbunchofnumbers(bunchofnumbers) = parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
+	```
+	"""
+end
+
+# ╔═╡ 3cf6dffd-d91e-465a-94bb-0ffe6b5152aa
+if answ_q2 == true
+	md"""
+	```Julia
+	abstract type Lizard <: Hand end
+	abstract type Spock <: Hand end
+	
+	play(h1::Type{Paper}, h2::Type{Spock}) = 1
+	play(h1::Type{Rock}, h2::Type{Lizard}) = 1
+	play(h1::Type{Lizard}, h2::Type{Paper}) = 1
+	play(h1::Type{Lizard}, h2::Type{Spock}) = 1
+	play(h1::Type{Spock}, h2::Type{Scissors}) = 1
+	play(h1::Type{Spock}, h2::Type{Rock}) = 1
+	play(h1::Type{Scissors}, h2::Type{Lizard}) = 1
+	```
+	"""
+end
+
 # ╔═╡ Cell order:
 # ╠═e9576706-600e-11eb-1e10-e3bac02a254e
 # ╟─fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
@@ -822,3 +868,5 @@ end
 # ╠═925e2f40-4e7d-11eb-0bd2-f91913c5a23e
 # ╟─0b2b40ae-601a-11eb-1d83-53ff171bb799
 # ╠═269b934c-601b-11eb-00ad-5fec0e2c37e1
+# ╟─3cf6dffd-d91e-465a-94bb-0ffe6b5152aa
+# ╟─ce5d564a-f2f3-4b1e-aa70-85253b2ccf38

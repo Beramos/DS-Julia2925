@@ -1,11 +1,12 @@
 ### A Pluto.jl notebook ###
-# v0.14.8
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
 begin 
+	using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 	using PlutoUI
 	using DSJulia
 end
