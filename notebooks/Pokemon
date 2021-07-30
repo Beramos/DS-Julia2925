@@ -251,8 +251,11 @@ end
 # ╔═╡ e9b22426-0c7f-4f15-8bd3-361b3b5ed5cf
 md"We also want to correctly display the type of our Pokémon. For this reason we overload the `Base.show()` function."
 
+# ╔═╡ 0be3dd43-188f-460d-8df8-3ae9ac8adae1
+Base.string(x::PokéType) = split(string(typeof(x)),".")[end]
+
 # ╔═╡ a5ebeeca-349e-4777-9acf-491da20efd88
-Base.show(x::T) where {T <: PokéType} = split(string(T),".")[end]
+Base.show(io::IO, x::PokéType) = string(x)
 
 # ╔═╡ 2326a03a-3f53-420f-896b-cf3620f06a60
 md"So now it's time for a small test:"
@@ -275,7 +278,7 @@ end
 md"Let us also display the `DualType` correctly."
 
 # ╔═╡ 0ce4e7e0-3d99-4ae4-8a11-905ce6e7708f
-Base.show(x::DualType) = Base.show(x.Type1),Base.show(x.Type2)
+Base.show(io::IO, x::DualType) = "$(string(x.Type1))-$(string(x.Type2))"
 
 # ╔═╡ e4870042-9c91-41d8-8770-47940cffce0a
 md"Now we adjust our `effect` function so that it knows what to do with Dualtypes. When the Dual type is the attacker, it will choose its most effective attack."
@@ -440,6 +443,7 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 # ╠═7539d614-67d5-4a2a-b03a-00c5f873c8ae
 # ╠═aa5abb6c-2289-4c34-a062-2e84187559dd
 # ╟─e9b22426-0c7f-4f15-8bd3-361b3b5ed5cf
+# ╠═0be3dd43-188f-460d-8df8-3ae9ac8adae1
 # ╠═a5ebeeca-349e-4777-9acf-491da20efd88
 # ╟─2326a03a-3f53-420f-896b-cf3620f06a60
 # ╠═a5ecc6c7-d08b-4cf8-8a3b-580ada462edc
