@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.8
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
@@ -35,6 +35,7 @@ student = (name = "Jan Janssen", email = "Jan.Janssen@UGent.be");
 
 # ╔═╡ 981758aa-58e9-11eb-282c-89131d9317b4
 begin 
+	using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 	using DSJulia;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
@@ -1231,6 +1232,225 @@ end
 # ╔═╡ 46449848-64e3-11eb-0bf4-c9211b41c68d
 barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0];
 
+# ╔═╡ 670d4db7-924b-4c44-9729-8677a9b757c8
+md"""## Answers:
+If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+
+| Question | Show solution |
+|-----|:---------:|
+| Question Means | $(@bind answ_q1 CheckBox()) |
+| Question 1-Dimensional covolutional | $(@bind answ_q2 CheckBox()) |
+| Question Common weight vectors | $(@bind answ_q3 CheckBox()) |
+| Question Protein sliding image | $(@bind answ_q4 CheckBox()) |
+| Question Decimate image | $(@bind answ_q5 CheckBox()) |
+| Question 2-Dimensional convolutional | $(@bind answ_q6 CheckBox()) |
+| Question Edge detection | $(@bind answ_q7 CheckBox()) |
+| Question Get binary digit | $(@bind answ_q8 CheckBox()) |
+| Question Transitioning individual states | $(@bind answ_q9 CheckBox()) |
+| Question Evolving the array | $(@bind answ_q10 CheckBox()) |
+| Question Simulate | $(@bind answ_q11 CheckBox()) |
+"""
+
+# ╔═╡ 9fa895b2-b327-4789-8aab-6259ca85c7cd
+if answ_q1 == true
+	md"""
+	```julia
+	mean(x) = sum(x)/length(x)
+
+	weighted_mean(x, w) = sum(w.*x)
+	```
+	"""
+end
+
+# ╔═╡ 99272f4e-b873-4f70-88e6-10bdbca069fe
+if answ_q2 == true
+	md"""
+	```julia
+	function convolve_1d(x::Vector, w::Vector)
+		@assert length(w) % 2 == 1 "length of `w` has to be odd!"
+		@assert length(w) < length(x) "length of `w` should be smaller than `x`"
+		n = length(x)
+		m = length(w) ÷ 2
+		y = zeros(n)
+
+		fill!(y, 0.0)
+		for (i, xj) in enumerate(x)
+		for (j, wj) in enumerate(w)
+		  k = j - m - 1
+		  l = clamp(i - k, 1, n)
+				y[i] += w[j] * x[l]
+			end
+		end
+		return y
+	end
+	```
+	"""
+end
+
+# ╔═╡ b2d992ab-66da-4f8f-a313-6a828b62b70d
+if answ_q3 == true
+	md"""
+	```julia
+	function uniform_weights(m)
+		return ones(2m+1) / (2m+1)
+	end
+
+	function triangle_weights(m)
+		w = zeros(2m+1)
+		for i in 1:(m+1)
+			w[i] = i
+			w[end-i+1] = i
+		end
+		w ./= sum(w)
+		return w
+	end	
+
+	function gaussian_weights(m; σ=4)
+		w = exp.(-(-m:m).^2 / 2σ^2)
+		return w ./ sum(w)
+	end
+	```
+	"""
+end
+
+# ╔═╡ 085a24fb-f71d-4edb-ba8c-a3f1047c60c2
+if answ_q4 == true
+	md"""
+	```julia
+	function protein_sliding_window(sequence, m, zscales)
+		n = length(sequence)
+		y = zeros(n)
+		for i in (m+1):(n-m)
+			for k in -m:m
+				y[i] += zscales[sequence[i+k]]
+			end
+		end
+		return y / (2m + 1)
+	end
+	```
+	"""
+end
+
+# ╔═╡ 37d3969f-a3e6-4d59-8ead-177d149bbbf7
+if answ_q5 == true
+	md"""
+	```julia
+	decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
+	```
+	"""
+end
+
+# ╔═╡ e090373d-1e9e-45f6-bd26-bdcd9ddf4a3a
+if answ_q6 == true
+	md"""
+	```julia
+	function convolve_2d(M::Matrix, K::Matrix)
+		out = similar(M)
+		n_rows, n_cols = size(M)
+		fill!(out, 0.0)
+		m = div(size(K, 1), 2) 
+		for i in 1:n_rows
+			for j in 1:n_cols
+				for k in -m:m
+					for l in -m:m
+						out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
+					end
+				end
+			end
+		end
+		return out
+	end
+
+	function gaussian_kernel(m; σ=4)
+	  K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
+	  K ./= sum(K)
+	  return K
+	end
+
+	function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
+		Mred = convolve_2d(red.(M) .|> Float32, K)
+		Mgreen = convolve_2d(green.(M) .|> Float32, K)
+		Mblue = convolve_2d(blue.(M) .|> Float32, K)
+		return RGB.(Mred, Mgreen, Mblue)
+	end
+	```
+	"""
+end
+
+# ╔═╡ 99cf56dc-aeb3-4f8e-ae52-5b9f639f800e
+if answ_q7 == true
+	md"""
+	```julia
+	Gx = [1 0 -1; 2 0 -2; 1 0 -1]
+	Gy = [1 2 1; 0 0 0; -1 -2 -1]
+	function edge_detection(M)
+		M = M .|> Gray .|> Float64
+		return sqrt.(Solutions.convolve_2d(M, Gx).^2 + Solutions.convolve_2d(M, Gy).^2) .|> Gray
+	end
+	```
+	"""
+end
+
+# ╔═╡ 5e84dd4a-fabe-452c-a274-663b1ba94f5a
+if answ_q8 == true
+	md"""
+	```julia
+	getbinarydigit(rule, i) = isodd(rule >> i)
+	```
+	"""
+end
+
+# ╔═╡ f9b59b28-c635-4474-bc12-f9ce45a047fd
+if answ_q9 == true
+	md"""
+	```julia
+	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+		
+	function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
+	  return getbinarydigit(rule, 4l+2s+1r)
+	end
+	```
+	"""
+end
+
+# ╔═╡ c9fac3a6-e3ad-4f0e-bc71-a36a593094f7
+if answ_q10 == true
+	md"""
+	```julia
+	function update1dca!(xnew, x, rule::Integer)
+		n = length(x)
+		xnew[1] = nextstate(x[end], x[1], x[2], rule)
+		xnew[end] = nextstate(x[end-1], x[end], x[1], rule)
+		for i in 2:n-1
+			xnew[i] = nextstate(x[i-1], x[i], x[i+1], rule)
+		end
+		return xnew
+	end
+
+	update1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
+	```
+	"""
+end
+
+# ╔═╡ bde632e9-3aa4-4a9e-a736-f41ad057b231
+if answ_q11 == true
+	md"""
+	```julia
+	function simulate(x0, rule::UInt8; nsteps=100)
+		n = length(x0)
+		X = zeros(Bool, nsteps+1, n)
+		X[1,:] = x0
+		for t in 1:nsteps
+			x = @view X[t,:]
+			xnew = @view X[t+1,:]
+			update1dca!(xnew, x, rule)
+		end
+		return X
+	end
+	```
+	"""
+end
+
 # ╔═╡ Cell order:
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
@@ -1242,6 +1462,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╠═66a20628-4834-11eb-01a2-27cc2b1ec7be
 # ╠═432c3892-482c-11eb-1467-a3b9c1592597
 # ╠═88c10640-4835-11eb-14b0-abba18da058f
+# ╟─9fa895b2-b327-4789-8aab-6259ca85c7cd
 # ╟─a657c556-4835-11eb-12c3-398890e70105
 # ╠═181c4246-4836-11eb-0368-61b2998f5424
 # ╠═94a950fe-4835-11eb-029c-b70de72c20e6
@@ -1250,6 +1471,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─8b4c6880-4837-11eb-0ff7-573dd18a9664
 # ╟─b0dd68f2-58ee-11eb-3c67-f1c4edf8f7c3
 # ╠═a1f75f4c-2bde-11eb-37e7-2dc342c7032a
+# ╟─99272f4e-b873-4f70-88e6-10bdbca069fe
 # ╟─7945ed1c-598c-11eb-17da-af9a36c6a68c
 # ╠═546beebe-598d-11eb-1717-c9687801e647
 # ╟─f39d88f6-5994-11eb-041c-012af6d3bae6
@@ -1265,6 +1487,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╠═7c12bcf6-4863-11eb-0994-fb7d763c0d47
 # ╠═294140a4-2bf0-11eb-22f5-858969a4640d
 # ╠═d8c7baac-49be-11eb-3afc-0fedae12f74f
+# ╟─b2d992ab-66da-4f8f-a313-6a828b62b70d
 # ╟─2b07134c-598c-11eb-155a-6b28a98e76ca
 # ╟─ff3241be-4861-11eb-0c1c-2bd093e3cbe9
 # ╠═c962de82-3c9e-11eb-13df-d5dec37bb2c0
@@ -1285,6 +1508,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╠═7e96f0d6-5999-11eb-3673-43f7f1fa0113
 # ╟─19a98dd4-599e-11eb-2b1c-172e00137e6c
 # ╠═c23ff59c-3ca1-11eb-1a31-2dd522b9d239
+# ╟─085a24fb-f71d-4edb-ba8c-a3f1047c60c2
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╟─236f1ee8-64e2-11eb-1e60-234754d2c10e
 # ╟─0b847e26-4aa8-11eb-0038-d7698df1c41c
@@ -1313,6 +1537,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─134b2bec-5a8f-11eb-15f5-ff8a1efb68a9
 # ╟─134edde4-5a8f-11eb-117f-455e04acc27d
 # ╠═13807912-5a8f-11eb-3ca2-09030ee978ab
+# ╟─37d3969f-a3e6-4d59-8ead-177d149bbbf7
 # ╠═aba77250-5a8e-11eb-0db1-9f2d8fc726e9
 # ╟─d3027d8a-7e80-4a22-bd7b-3f689e3232a4
 # ╠═6d5de3b8-5dbc-11eb-1fc4-8df16c6c04b7
@@ -1329,12 +1554,14 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╠═f589c15a-5a90-11eb-2a69-fba0819a4993
 # ╠═1e97c530-5a8f-11eb-14b0-47e7e944cba1
 # ╠═f58d5af4-5a90-11eb-3d93-5712bfd9920a
+# ╟─e090373d-1e9e-45f6-bd26-bdcd9ddf4a3a
 # ╟─a588a356-5a95-11eb-27e8-cb8d394b6ff6
 # ╠═f80ab6ba-5e2f-11eb-276c-31bbd5b0fee9
 # ╠═e5042bac-5e2f-11eb-28bb-dbf653abca17
 # ╠═516b1e7c-5e35-11eb-2ef5-4fa72c35878e
 # ╠═520771bc-5e35-11eb-0252-bfc7d76872f1
 # ╠═52a87820-5e35-11eb-0392-85957277f21a
+# ╟─99cf56dc-aeb3-4f8e-ae52-5b9f639f800e
 # ╟─4e6dedf0-2bf2-11eb-0bad-3987f6eb5481
 # ╟─b0bd61f0-49f9-11eb-0e6b-69539bc34be8
 # ╠═b03c60f6-2bf3-11eb-117b-0fc2a259ffe6
@@ -1347,11 +1574,13 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─1f6262b6-59cc-11eb-1306-0d1ca9f3f8e6
 # ╟─2d4e9afe-59cc-11eb-3033-05d9b684b399
 # ╠═b43157fa-482e-11eb-3169-cf4989528800
+# ╟─5e84dd4a-fabe-452c-a274-663b1ba94f5a
 # ╠═781d38a8-59d4-11eb-28f9-9358f132782c
 # ╟─8b6b45c6-64e2-11eb-3662-7de5e25e6faf
 # ╟─1301a3f4-59d0-11eb-2fc5-35e9c1f0841a
 # ╠═00f6e42c-59d4-11eb-31c7-d5aa0105e7cf
 # ╠═d2e5787c-59d2-11eb-1bbd-d79672ab8f1b
+# ╟─f9b59b28-c635-4474-bc12-f9ce45a047fd
 # ╠═38e6a67c-49fa-11eb-287f-91a836f5752c
 # ╟─511661de-59d5-11eb-16f5-4dbdf4e93ab2
 # ╟─428af062-59d5-11eb-3cf7-99533810e83c
@@ -1365,11 +1594,13 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─e46a3f52-5a5a-11eb-1d41-d7d031131d7e
 # ╠═924461c0-2bf3-11eb-2390-71bad2541463
 # ╠═21440956-2bf5-11eb-0860-11127d727282
+# ╟─c9fac3a6-e3ad-4f0e-bc71-a36a593094f7
 # ╠═405a1036-2bf5-11eb-11f9-a1a714dbf7e1
 # ╠═6405f574-2bf5-11eb-3656-d7b9c94f145a
 # ╟─e8ddcd80-5f1c-11eb-00bb-6badc5a9ffaa
 # ╟─2faf6176-5a5e-11eb-241d-4383971500e3
 # ╠═756ef0e0-2bf5-11eb-107c-8d1c65eacc45
+# ╟─bde632e9-3aa4-4a9e-a736-f41ad057b231
 # ╠═e1dd7abc-2bf5-11eb-1f5a-0f46c7405dd5
 # ╠═9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
 # ╠═fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
@@ -1378,3 +1609,4 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 # ╟─36786d6e-5a65-11eb-0fa2-81b69989c39e
 # ╠═caefe5ac-5f4d-11eb-2591-67b5515e1bd4
 # ╠═46449848-64e3-11eb-0bf4-c9211b41c68d
+# ╟─670d4db7-924b-4c44-9729-8677a9b757c8
