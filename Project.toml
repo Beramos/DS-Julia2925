@@ -1,7 +1,7 @@
 name = "DSJulia"
 uuid = "36755c37-737e-4b39-b6ef-e2f953844095"
 authors = ["Michiel Stock <michielfmstock@gmail.com>", "Bram De Jaegher <bram.dejaegher@ugent.be", "Daan Van Hauwermeiren <Daan.VanHauwermeiren@UGent.be>"]
-version = "0.1.0"
+version = "2.0.0"
 
 [deps]
 Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
