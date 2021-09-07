@@ -1234,7 +1234,7 @@ barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
 
 # ╔═╡ 670d4db7-924b-4c44-9729-8677a9b757c8
 md"""## Answers:
-If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+If you would like to take a look at the answers, you can do so by checking the box of the question you would like to see. The function will be shown just below the question you want to look at.
 
 | Question | Show solution |
 |-----|:---------:|
