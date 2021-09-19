@@ -6,7 +6,7 @@ using InteractiveUtils
 
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
 begin 
-	using Pkg; Pkg.activate("../..")
+	using Pkg; Pkg.activate(".") # using the env in /notebooks/day2
 	using PlutoUI
 	using DSJulia
 end
@@ -541,7 +541,7 @@ md"""and we can now use those functions with our custom type:"""
 y = MyNumber(π)
 
 # ╔═╡ 3428d7b8-5e6d-11eb-32bc-af1df0579e60
-sin(x)
+sin(y)
 
 # ╔═╡ 18e3753a-5f55-11eb-0a11-47ca6abe9186
 md"This will not work since we only have defined `log` and not `log10`."
@@ -928,7 +928,7 @@ PlutoUI.with_terminal() do
 end
 
 # ╔═╡ Cell order:
-# ╟─42e620aa-5f4c-11eb-2ebf-85814cf720e7
+# ╠═42e620aa-5f4c-11eb-2ebf-85814cf720e7
 # ╟─31c1e25e-5e53-11eb-2467-9153d30962d5
 # ╟─4ab33c0e-5e53-11eb-2e63-2dd6f06de3ba
 # ╠═e76d8f04-5e53-11eb-26df-db496622642d

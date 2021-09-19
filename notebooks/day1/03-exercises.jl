@@ -19,6 +19,9 @@ using PlutoUI, Plots
 # ╔═╡ c962de82-3c9e-11eb-13df-d5dec37bb2c0
 using CSV, DataFrames, Dates
 
+# ╔═╡ ba2c4c6b-d1bc-47cc-a13e-db2e5bab414d
+using Colors
+
 # ╔═╡ c41426f8-5a8e-11eb-1d49-11c52375a7a0
 using Images
 
@@ -35,7 +38,7 @@ student = (name = "Jan Janssen", email = "Jan.Janssen@UGent.be");
 
 # ╔═╡ 981758aa-58e9-11eb-282c-89131d9317b4
 begin 
-	using Pkg; Pkg.activate("../..")
+	using Pkg; Pkg.activate("..")
 	using DSJulia;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
@@ -181,7 +184,7 @@ function convolve_1d(x::Vector, w::Vector)
 	@assert length(w) < length(x) "length of `w` should be smaller than `x`"
 	n = missing
 	m = missing
-	y = missing # initialize the output
+	y = zeros(size(x)) # initialize the output
 
 	# ... complete
 	return y
@@ -1452,7 +1455,7 @@ if answ_q11 == true
 end
 
 # ╔═╡ Cell order:
-# ╟─981758aa-58e9-11eb-282c-89131d9317b4
+# ╠═981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # ╟─2411c6ca-2bdd-11eb-050c-0399b3b0d7af
 # ╠═cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
@@ -1512,6 +1515,7 @@ end
 # ╠═17e7750e-49c4-11eb-2106-65d47b16308c
 # ╟─236f1ee8-64e2-11eb-1e60-234754d2c10e
 # ╟─0b847e26-4aa8-11eb-0038-d7698df1c41c
+# ╠═ba2c4c6b-d1bc-47cc-a13e-db2e5bab414d
 # ╠═e3f4c82a-5a8d-11eb-3d7d-fd30c0e4a134
 # ╟─c3a51344-5a8e-11eb-015f-bd9aa28aa6eb
 # ╠═c3ac56e0-5a8e-11eb-3520-279c4ba47034

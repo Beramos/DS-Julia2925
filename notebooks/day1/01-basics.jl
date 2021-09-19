@@ -29,7 +29,7 @@ student = (name = "Jenke Janssen", email = "Jenke.Janssen@UGent.be");
 
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
 begin
-	import Pkg; Pkg.activate("../..")
+	import Pkg; Pkg.activate("..")
 	using DSJulia;
 	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
