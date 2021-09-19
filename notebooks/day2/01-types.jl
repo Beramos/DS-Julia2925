@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
@@ -26,7 +26,7 @@ student = (name = "Hanne Janssen", email = "Hanne.Janssen@UGent.be");
 
 # ╔═╡ fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
 begin 
-	using Pkg;Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
+	using Pkg; Pkg.activate("../..")
 	using DSJulia;
 	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);

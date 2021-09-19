@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
@@ -12,9 +12,6 @@ macro bind(def, element)
         el
     end
 end
-
-# ╔═╡ 84616ae0-35df-4aab-8540-b863c0e99196
-using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
 
 # ╔═╡ cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
 using PlutoUI, Plots
@@ -38,7 +35,7 @@ student = (name = "Jan Janssen", email = "Jan.Janssen@UGent.be");
 
 # ╔═╡ 981758aa-58e9-11eb-282c-89131d9317b4
 begin 
-	using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
+	using Pkg; Pkg.activate("../..")
 	using DSJulia;
 	tracker = ProgressTracker(student.name, student.email);
 	md"""
@@ -1042,16 +1039,16 @@ md"We made use of a simple function `cm` to map the states to a gray scale. Feel
 # ╔═╡ 90f543e4-5d89-11eb-27c0-8572a859c1b5
 cm(b) = b ? Gray(0.05) : Gray(0.95)
 
+# ╔═╡ 95ce684a-64e2-11eb-211b-e198b0016152
+cm(b::Missing) = missing;  # safe version when not complete!
+
 # ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 Dict(
-	cm.([l, s, r]) => [cm(Solutions.nextstate(l, s, r, rule_number))]
+	cm.([l, s, r]) => [cm(nextstate(l, s, r, rule_number))]
 	for l in [true, false]
 	for s in [true, false]
 	for r in [true, false]
 				)									
-
-# ╔═╡ 95ce684a-64e2-11eb-211b-e198b0016152
-
 
 # ╔═╡ 924461c0-2bf3-11eb-2390-71bad2541463
 function update1dca!(xnew, x, rule::Integer)
@@ -1455,7 +1452,6 @@ if answ_q11 == true
 end
 
 # ╔═╡ Cell order:
-# ╟─84616ae0-35df-4aab-8540-b863c0e99196
 # ╟─981758aa-58e9-11eb-282c-89131d9317b4
 # ╠═786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # ╟─2411c6ca-2bdd-11eb-050c-0399b3b0d7af
@@ -1591,7 +1587,7 @@ end
 # ╟─be013232-59d4-11eb-360e-e97b6c388991
 # ╟─a808b2d0-5aff-11eb-036f-fd32a1dc92fc
 # ╟─4776ccca-482f-11eb-1194-398046ab944a
-# ╟─5f97da58-2bf4-11eb-26de-8fc5f19f02d2
+# ╠═5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 # ╟─1afb9a16-5d8a-11eb-1ed5-875084953542
 # ╠═90f543e4-5d89-11eb-27c0-8572a859c1b5
 # ╠═95ce684a-64e2-11eb-211b-e198b0016152

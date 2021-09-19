@@ -5,7 +5,7 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ 4109a39c-00b7-4954-bb73-35407f82a6f7
-using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
+using Pkg; Pkg.activate("../..")
 
 # ╔═╡ 24b76a7c-63dd-11eb-1b78-d5a20557e5cd
 # edit the code below to set your name and UGent username

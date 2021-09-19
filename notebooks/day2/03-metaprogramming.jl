@@ -1,12 +1,12 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
 begin 
-	using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
+	using Pkg; Pkg.activate("../..")
 	using PlutoUI
 	using DSJulia
 end
@@ -263,6 +263,9 @@ macro sayhello()
 	return :( println("Hello, world!") )
 end
 
+# ╔═╡ ae1525ea-5e5e-11eb-3906-593143776559
+@terminal @sayhello
+
 # ╔═╡ c40cebe6-5e5e-11eb-1f7f-37134b7a449f
 md"""
 Macros have a dedicated character in Julia's syntax: the `@` (at-sign), followed by the unique
@@ -278,6 +281,9 @@ md"""
 When `@sayhello` is entered in the REPL, the expression executes immediately, thus we only see the evaluation result:
 """
 
+# ╔═╡ bda7fd66-5e5e-11eb-1e06-eb67a0178e14
+@terminal @sayhello()
+
 # ╔═╡ 1707320e-5e60-11eb-3f33-798c81663488
 md"""Now, consider a slightly more complex macro:"""
 
@@ -285,12 +291,6 @@ md"""Now, consider a slightly more complex macro:"""
 macro sayhello(name)
 	return :( println("Hello, ", $name) )
 end
-
-# ╔═╡ ae1525ea-5e5e-11eb-3906-593143776559
-@terminal @sayhello
-
-# ╔═╡ bda7fd66-5e5e-11eb-1e06-eb67a0178e14
-@terminal @sayhello()
 
 # ╔═╡ 2dcacdfc-5e60-11eb-3d04-9f2ffb46d0fe
 md"""
@@ -659,12 +659,12 @@ Perhaps surprisingly, these behaviors are not hard-coded into the Julia parser o
 they are custom behaviors provided by a general mechanism that anyone can use: prefixed string
 literals are parsed as calls to specially-named macros. For example, the regular expression macro
 is just the following:
-"""
-
-# ╔═╡ d46324d8-5e7a-11eb-005c-f7fec5a39880
+```julia
 macro r_str(p)
     Regex(p)
 end
+```
+"""
 
 # ╔═╡ d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
 md"""
@@ -1043,7 +1043,6 @@ end
 # ╠═9612965e-5fe3-11eb-172a-59cc73a26ab6
 # ╠═3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
 # ╟─10a8532a-5e60-11eb-3331-974e708cb39d
-# ╠═d46324d8-5e7a-11eb-005c-f7fec5a39880
 # ╟─d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
 # ╠═e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
 # ╟─ec73cd70-5e7a-11eb-0285-6b1fabd1289d
