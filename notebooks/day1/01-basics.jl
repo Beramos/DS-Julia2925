@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
@@ -29,7 +29,7 @@ student = (name = "Jenke Janssen", email = "Jenke.Janssen@UGent.be");
 
 # ╔═╡ f089cbaa-4ab9-11eb-09d1-05f49911487f
 begin
-	import Pkg; Pkg.add(url = "https://github.com/Beramos/DS-Julia2925")
+	import Pkg; Pkg.activate("..")
 	using DSJulia;
 	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
@@ -679,7 +679,7 @@ A particular powerful tool is creating a **pipeline**, i.e., using the output of
 md"The `.` syntax also works here and it is often useful to combine with anonymous functions."
 
 # ╔═╡ 8b57c506-500f-11eb-3114-55785eb593a7
-1:1000 .|> (x->x^2) .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
+1:1000 .|> abs2 .|> inv |> sum |> (x->6x) |> sqrt  # poor man's pi
 
 # ╔═╡ fd171e0e-4ac1-11eb-09ea-337d17500149
 md"Specific functions can be generated if you have more information on the input type.
@@ -741,7 +741,7 @@ typeof(var4)
 typeof(A)
 
 # ╔═╡ c48e035c-4f2f-11eb-12c7-576aadca7511
-md"**multiple dispatch**"
+md"**Multiple dispatch**"
 
 # ╔═╡ c8435740-4f2f-11eb-3046-3d45d5e0e805
 md"Multiple dispatch is a concept where the behaviour of a function can be specified differently according to the type of the input arguments. Let's us look at an example,"

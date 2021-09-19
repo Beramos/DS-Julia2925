@@ -1,11 +1,11 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 4109a39c-00b7-4954-bb73-35407f82a6f7
-using Pkg; Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
+using Pkg; Pkg.activate("..")
 
 # ╔═╡ 24b76a7c-63dd-11eb-1b78-d5a20557e5cd
 # edit the code below to set your name and UGent username
@@ -140,53 +140,11 @@ begin
 	n_trees = missing
 end
 
-# ╔═╡ 424c1470-63e0-11eb-323f-454ac8ad273e
-begin
-	q1 = Question(validators = @safe[n_trees == Solutions.n_trees], 
-			description=md"""
-			Starting at the top-left corner of your map and following a slope of right 3 and down 1, how many trees would you encounter?
-			""")
-	
-   qb1 = QuestionBlock(;
-	title=md"**Question 1: counting trees**",
-	questions = [q1],
-	hints=[hint(md"This question can be answered without defining your own datatypes and using all that is available from the `Julia.Base` module. This can also be completed without knowing a lot about collections. Since this is only explained in the next part of the course. "),
-			hint(md"An alterative solution showcasing the power of Julia will be shown below, it includes some teasers of what is yet to come in this course")
-			],
-	)
-	validate(qb1, tracker)
-end
-
 # ╔═╡ dcac803a-648d-11eb-21f2-d72e56528e92
 
 
 # ╔═╡ fb39928c-63e2-11eb-2b85-15044c04fbe6
 product_all_trees = missing
-
-# ╔═╡ c1206434-63e2-11eb-16c1-d7fafb48bbbe
-begin
-	q2 = Question(validators = @safe[product_all_trees == Solutions.product_all_trees], 
-			description=md"""
-Time to check the rest of the slopes - you need to minimize the probability of a sudden arboreal stop, after all.
-
-Determine the number of trees you would encounter if, for each of the following slopes, you start at the top-left corner and traverse the map all the way to the bottom:
-
-    Right 1, down 1.
-    Right 3, down 1. (This is the slope you already checked.)
-    Right 5, down 1.
-    Right 7, down 1.
-    Right 1, down 2.
-
-In the above example, these slopes would find 2, 7, 3, 4, and 2 tree(s) respectively; multiplied together, these produce the answer 336.
-
-What do you get if you multiply together the number of trees encountered on each of the listed slopes?""")
-	
-   qb2 = QuestionBlock(;
-	title=md"**Question 2: counting trees**",
-	questions = [q2],
-	)
-	validate(qb2, tracker)
-end
 
 # ╔═╡ ede6342c-648d-11eb-0712-836637408e53
 
@@ -264,6 +222,48 @@ begin
 
 	Base.getindex(A::CircularArray, i::Int) = getindex(A.data, circindex(i, size(A)))
 	Base.getindex(A::CircularArray, I) = getindex(A.data, circindex(I, size(A)))
+end
+
+# ╔═╡ 424c1470-63e0-11eb-323f-454ac8ad273e
+begin
+	q1 = Question(validators = @safe[n_trees == Solutions.n_trees], 
+			description=md"""
+			Starting at the top-left corner of your map and following a slope of right 3 and down 1, how many trees would you encounter?
+			""")
+	
+   qb1 = QuestionBlock(;
+	title=md"**Question 1: counting trees**",
+	questions = [q1],
+	hints=[hint(md"This question can be answered without defining your own datatypes and using all that is available from the `Julia.Base` module. This can also be completed without knowing a lot about collections. Since this is only explained in the next part of the course. "),
+			hint(md"An alterative solution showcasing the power of Julia will be shown below, it includes some teasers of what is yet to come in this course")
+			],
+	)
+	validate(qb1, tracker)
+end
+
+# ╔═╡ c1206434-63e2-11eb-16c1-d7fafb48bbbe
+begin
+	q2 = Question(validators = @safe[product_all_trees == Solutions.product_all_trees], 
+			description=md"""
+Time to check the rest of the slopes - you need to minimize the probability of a sudden arboreal stop, after all.
+
+Determine the number of trees you would encounter if, for each of the following slopes, you start at the top-left corner and traverse the map all the way to the bottom:
+
+    Right 1, down 1.
+    Right 3, down 1. (This is the slope you already checked.)
+    Right 5, down 1.
+    Right 7, down 1.
+    Right 1, down 2.
+
+In the above example, these slopes would find 2, 7, 3, 4, and 2 tree(s) respectively; multiplied together, these produce the answer 336.
+
+What do you get if you multiply together the number of trees encountered on each of the listed slopes?""")
+	
+   qb2 = QuestionBlock(;
+	title=md"**Question 2: counting trees**",
+	questions = [q2],
+	)
+	validate(qb2, tracker)
 end
 
 # ╔═╡ f752b934-63ea-11eb-09cc-99172ed4870d
@@ -368,7 +368,7 @@ prod([goingdowntheslope(direction..., slope) for direction in slopestyles])
 # ╔═╡ Cell order:
 # ╠═24b76a7c-63dd-11eb-1b78-d5a20557e5cd
 # ╟─4109a39c-00b7-4954-bb73-35407f82a6f7
-# ╟─446c3e4e-63dd-11eb-3300-fb006008ff1f
+# ╠═446c3e4e-63dd-11eb-3300-fb006008ff1f
 # ╟─5368424c-63dd-11eb-3a1b-05a61e266d2b
 # ╟─6c0f2d10-63dd-11eb-2c17-fddf9cd51bfe
 # ╟─e1259736-63df-11eb-0010-3f2fc5719596
