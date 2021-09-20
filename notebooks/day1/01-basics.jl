@@ -244,6 +244,9 @@ QuestionBlock(;
 	Check the behaviour of the relational operators on strings.
 	
 	```julia
+
+
+
 	"apples" == "pears"
 	"apples" < "pears"
 	"apples" < "Pears"
@@ -822,8 +825,8 @@ stirling(n) = missing
 begin 	
 	q4 = Question(
 			validators = @safe[
-				stirling(5) == Solutions.stirling(5), 
-				stirling(10) == Solutions.stirling(10)
+				stirling(5) ≈ Solutions.stirling(5), 
+				stirling(10) ≈ Solutions.stirling(10)
 				], 
 			description = md""
 		)
