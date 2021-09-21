@@ -371,7 +371,7 @@ As an example, let us try to process the number of COVID cases that were reporte
 
 # ╔═╡ 31e39938-3c9f-11eb-0341-53670c2e93e1
 begin
-	download("https://epistat.sciensano.be/Data/COVID19BE_CASES_AGESEX.csv", "COVID19BE_CASES_AGESEX.csv")
+	download("https://gist.githubusercontent.com/Beramos/386b16ef40dd547d15e55b302b02101d/raw/ddf55b7545ab964e5a3b9ed975da787986a44386/COVID19BE_CASES_AGESEX_CLEAN.csv", "COVID19BE_CASES_AGESEX.csv")
 	covid_data = CSV.read("COVID19BE_CASES_AGESEX.csv", DataFrame)
 	covid_data = combine(groupby(covid_data, :DATE), :CASES=>sum)
 end
