@@ -5,11 +5,7 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
-begin 
-	using Pkg; Pkg.activate(".") # using the env in /notebooks/day2
-	using PlutoUI
-	using DSJulia
-end
+using PlutoUI
 
 # ╔═╡ 122cffca-5fdc-11eb-3555-b39b818f1116
 let 
