@@ -111,7 +111,6 @@ The `dump` function provides indented and annotated display of `Expr` objects:
 
 # ╔═╡ 985a57f2-5e54-11eb-1f2f-bf23014c6171
 dump(ex2)
-dump(ex2)
 
 # ╔═╡ d66ea502-5e54-11eb-2694-4766a05aed38
 md"""
@@ -338,6 +337,7 @@ ex_twostep = @macroexpand @twostep :(1, 2, 3)
 
 # ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
 dump(ex_twostep)
+
 # ╔═╡ 0613f620-5e66-11eb-08d9-01dd3a403321
 md"""
 ### Macro invocation
@@ -545,9 +545,6 @@ log10(y)
 
 # ╔═╡ cae2546a-5e6b-11eb-3fc2-69f9a15107cf
 md"""In this manner, Julia acts as its own preprocessor, and allows code generation from inside the language."""
-
-# ╔═╡ 0ac5096e-61a1-11eb-24ba-13bc0a3377c6
-
 
 # ╔═╡ efc1357a-61a0-11eb-20f5-a15338080e4c
 md"### Example: domain specific languages"
@@ -851,7 +848,6 @@ html"""<!-- HTML generated using hilite.me --><div style="background: #ffffff; o
 
 # ╔═╡ 92836b48-5fc6-11eb-19b6-1d7a5c310052
 println("There is nothing like ", ip"127.0.0.1")
-println("There is nothing like ", ip"127.0.0.1")
 
 # ╔═╡ f26e65a8-5fc6-11eb-3cd7-3f40c12a6abb
 md"Find out what function is exactly used in multiple dipatching."
@@ -888,6 +884,7 @@ PlutoUI.with_terminal() do
 	@info "Information comes here"
 	@error "Error has been found at this exact location"
 	@warn "Same. but for a warning"
+	@debug "Debugging info, not printed by default"
 end
 
 # ╔═╡ 34829ada-5fdc-11eb-263a-cf60a9650556
@@ -2114,7 +2111,6 @@ version = "1.4.1+0"
 # ╟─18e3753a-5f55-11eb-0a11-47ca6abe9186
 # ╠═2f4fe6ce-5e6c-11eb-1744-2f9534c8b6ba
 # ╟─cae2546a-5e6b-11eb-3fc2-69f9a15107cf
-# ╟─0ac5096e-61a1-11eb-24ba-13bc0a3377c6
 # ╟─efc1357a-61a0-11eb-20f5-a15338080e4c
 # ╟─4d9de330-5f55-11eb-0d89-eb81e6c9ffab
 # ╠═122cffca-5fdc-11eb-3555-b39b818f1116
