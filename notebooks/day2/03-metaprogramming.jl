@@ -5,7 +5,7 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ 42e620aa-5f4c-11eb-2ebf-85814cf720e7
-using PlutoUI
+using PlutoUI; TableOfContents()
 
 # ╔═╡ 122cffca-5fdc-11eb-3555-b39b818f1116
 let 
@@ -110,6 +110,7 @@ The `dump` function provides indented and annotated display of `Expr` objects:
 """
 
 # ╔═╡ 985a57f2-5e54-11eb-1f2f-bf23014c6171
+dump(ex2)
 dump(ex2)
 
 # ╔═╡ d66ea502-5e54-11eb-2694-4766a05aed38
@@ -337,7 +338,6 @@ ex_twostep = @macroexpand @twostep :(1, 2, 3)
 
 # ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
 dump(ex_twostep)
-
 # ╔═╡ 0613f620-5e66-11eb-08d9-01dd3a403321
 md"""
 ### Macro invocation
@@ -580,6 +580,7 @@ let
 	optimize!(model)
 	value(x), value(y), objective_value(model)
 end
+
 
 # ╔═╡ d1222dcc-5f57-11eb-2c87-77a16ea8e65d
 md"
@@ -849,6 +850,7 @@ html"""<!-- HTML generated using hilite.me --><div style="background: #ffffff; o
 """
 
 # ╔═╡ 92836b48-5fc6-11eb-19b6-1d7a5c310052
+println("There is nothing like ", ip"127.0.0.1")
 println("There is nothing like ", ip"127.0.0.1")
 
 # ╔═╡ f26e65a8-5fc6-11eb-3cd7-3f40c12a6abb
