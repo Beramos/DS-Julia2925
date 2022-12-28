@@ -26,7 +26,7 @@ student = (name = "Sam Janssen", email = "Sam.Janssen@UGent.be");
 
 # ╔═╡ eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
 begin
-	using Pkg;Pkg.add(url="https://github.com/Beramos/DS-Julia2925")
+	using Pkg; Pkg.activate("../..")
 	using DSJulia;
 	using PlutoUI;
 	tracker = ProgressTracker(student.name, student.email);
@@ -202,7 +202,6 @@ begin
 	end
 	
 # PASTE YOUR CONSTRUCTORS HERE!
-
 end
 
 # ╔═╡ d305007e-5d8d-11eb-2505-3347d7d1a561
@@ -623,7 +622,7 @@ end
 import LinearAlgebra
 
 # ╔═╡ dc945902-5d93-11eb-1121-a7ae99c5862e
-#LinearAlgebra.det(V::Vandermonde) = missing
+LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ 0267b920-9a1f-472f-9d21-5609fb877325
 md"""## Answers:
@@ -798,7 +797,7 @@ end
 # ╠═f3c3114c-5d91-11eb-1d37-6d97ea6d267f
 # ╠═04dcda58-5d92-11eb-10ba-396947081338
 # ╠═fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
-# ╠═066901bc-6622-11eb-23ad-ed869adad36d
+# ╟─066901bc-6622-11eb-23ad-ed869adad36d
 # ╠═0f878dea-5d92-11eb-0000-b7484532ee70
 # ╠═11630c02-5d92-11eb-1746-4dabf327fbbe
 # ╠═046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
