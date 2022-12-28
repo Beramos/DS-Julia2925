@@ -716,13 +716,13 @@ begin
 			
 	q2 = Question(
 			validators = @safe[
-				integral1 == Solutions.riemannsum(x->x*sin(x), 0, 2pi)
+				norm(integral1 - riemannsum(x->x*sin(x), 0, 2pi, n=100)) ≤ abs(0.1 *Solutions.riemannsum(x->x*sin(x), 0, 2pi, n=100) )
 			], 
 			description = md" **Integral 1:**  $\int_0^{2\pi} x\,\sin(x)\,dx$ (n=100)")
 			
 	q3 = Question(
 			validators = @safe[
-			integral2 == Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)
+			norm(integral2 - riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000)) ≤ abs(0.1 *Solutions.riemannsum(x->(sqrt(1-x^2)), 0, 1, n=1000))
 			], 
 			description = md" **Integral 2:**  $\int_0^1 \sqrt{1 - x^2}\,dx$ (n=1000)")
 	
