@@ -455,7 +455,7 @@ brightness
 img[1:1500, 201:1700] ./ (brightness/100)
 
 # ╔═╡ 21db9766-64a4-11eb-3ec1-4956431e7a09
-
+sort(img, dims=2, by=c->hue(HSV(c)))  # we can sort the colors!
 
 # ╔═╡ 5064c592-4c4b-11eb-0dee-5186caf2b1f6
 md"### Higher dimensional arrays"
@@ -1945,7 +1945,7 @@ version = "17.4.0+0"
 # ╟─8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
 # ╠═ac62d6e0-5a74-11eb-1538-09d157738257
 # ╠═d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
-# ╟─21db9766-64a4-11eb-3ec1-4956431e7a09
+# ╠═21db9766-64a4-11eb-3ec1-4956431e7a09
 # ╟─5064c592-4c4b-11eb-0dee-5186caf2b1f6
 # ╟─598980b8-4c4b-11eb-0c5b-b7064b189e97
 # ╠═5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
