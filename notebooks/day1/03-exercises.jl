@@ -291,7 +291,7 @@ end
 begin
 	try
 		global Wg = gaussian_weights(m₁)
-		pl33 = scatter(1:length(Wg), Wg; label="", xlabel="weights", size=fs,
+		pl34 = scatter(1:length(Wg), Wg; label="", xlabel="weights", size=fs,
 		background_color="#F8F8F8", ms = 6)
 		title!("Your result:")
 	catch e 
