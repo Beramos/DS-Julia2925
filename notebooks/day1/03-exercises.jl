@@ -460,6 +460,12 @@ md"Converting a color to grayscale is also easy."
 # ╔═╡ c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
 Gray(daanbeardred)
 
+# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
+md"Colors can also be represented in other ways, such as this hexadecimal format:"
+
+# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
+hex(daanbeardred)
+
 # ╔═╡ c41f1cb6-5a8e-11eb-326c-db30e518a702
 md"An image is a matrix of colors, nothing more!"
 
