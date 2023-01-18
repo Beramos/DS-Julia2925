@@ -114,7 +114,7 @@ dump(ex2)
 md"""
 ### Symbols
 
-The `:` character has two syntactic purposes in Julia. The first form creates a [`Symbol`](@ref),
+The `:` character has two syntactic purposes in Julia. The first form creates a [`Symbol`](https://docs.julialang.org/en/v1/base/base/#Core.Symbol),
 an [interned string](https://en.wikipedia.org/wiki/String_interning) used as one building-block
 of expressions:
 """
