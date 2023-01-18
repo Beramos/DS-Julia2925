@@ -1228,9 +1228,9 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "007fbb57db0277a809224fb92fc2c3ad5ea07613"
+project_hash = "ade82845dc0c4b4a96b80b7005ea142c361bab74"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -1260,7 +1260,7 @@ uuid = "6e34b625-4abd-537c-b88f-471c36dfa7a0"
 version = "1.0.8+0"
 
 [[deps.Cairo_jll]]
-deps = ["Artifacts", "Bzip2_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
+deps = ["Artifacts", "Bzip2_jll", "CompilerSupportLibraries_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
 git-tree-sha1 = "4b859a208b2397a7a623a03449e4636bdb17bcf2"
 uuid = "83423d85-b0ee-5818-9007-b63ccbeb887a"
 version = "1.16.1+1"
@@ -1316,7 +1316,7 @@ version = "4.5.0"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.Contour]]
 git-tree-sha1 = "d05d9e7b7aedff4e5b51a029dced05cfb6125781"
@@ -2220,7 +2220,7 @@ version = "1.4.1+0"
 # ╠═a17ebeba-6492-11eb-07ba-f516a990affc
 # ╟─3055711a-6493-11eb-252b-7f5d99115551
 # ╟─f474d864-28b9-4299-b207-dca426554c46
-# ╟─c6ae05d2-7e8e-4683-b3e2-fe79d5e24e2f
+# ╠═c6ae05d2-7e8e-4683-b3e2-fe79d5e24e2f
 # ╠═9ce5dfc4-5715-4037-bf36-9e5f68c3273e
 # ╠═962ae6d2-4ab7-11eb-14a2-c76a2221f544
 # ╟─98d48302-4ab7-11eb-2397-710d0ae425f7
@@ -2248,7 +2248,7 @@ version = "1.4.1+0"
 # ╠═34a18900-4ab9-11eb-17a0-1168dd9d06f9
 # ╟─39a0a328-4ab9-11eb-0f37-6717095b56aa
 # ╠═4749f268-4ab9-11eb-15a7-579437e0bd20
-# ╠═5a9bbbe6-4aba-11eb-3652-43eb7891f437
+# ╟─5a9bbbe6-4aba-11eb-3652-43eb7891f437
 # ╟─c297d307-a640-4d86-aa0b-a149fe741bac
 # ╟─a69ead46-4abc-11eb-3d1d-eb1c73f65150
 # ╠═b482b998-4abc-11eb-36da-379010485bfa
@@ -2394,7 +2394,7 @@ version = "1.4.1+0"
 # ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─db78af32-b822-49dd-b085-6f51ba6b623f
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
-# ╠═5f6b3a73-9979-4fdd-b0d0-be43419c6547
+# ╟─5f6b3a73-9979-4fdd-b0d0-be43419c6547
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
 # ╟─c8151b58-735c-4f16-b410-0c5c88818e6d
 # ╟─e2583a06-6479-11eb-091b-8be70024930d
