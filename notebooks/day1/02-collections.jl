@@ -779,22 +779,6 @@ begin
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
 
-# ╔═╡ 00121c4e-64a5-11eb-2993-61c695c4e6a1
-md"""
-Write a function to generate an $n \times m$ [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) for a given vector $\alpha=[\alpha_1,\alpha_2,\ldots,\alpha_m]^T$. This matrix is defined as follows
-${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$
-or
-$V = [\alpha_i^{j-1}] .$
-
-Write a one-liner function `vandermonde` to generate this matrix. This function takes as a vector `α` and `n`, the number of powers to compute.
-"""
-
-# ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
-vandermonde(α, n) = missing
-
-# ╔═╡ 16ec4ee4-64a5-11eb-26f3-15313b8b5acb
-
-
 # ╔═╡ a0026d1c-bcdb-4a2e-b1a1-11c5235a4956
 md"""## Answers
 If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
@@ -806,7 +790,6 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question 3 | $(@bind answ_q3 CheckBox()) |
 | Question 4 | $(@bind answ_q4 CheckBox()) |
 | Question 5 | $(@bind answ_q5 CheckBox()) |
-| Question 6 | $(@bind answ_q6 CheckBox()) |
 """
 
 # ╔═╡ 6d43af49-f127-4ffe-ba97-0f04fb792efb
@@ -884,15 +867,6 @@ if answ_q5 == true
 
 	Yₚ₁ = β₁.*t      # Dolphin IQ
 	Yₚ₂ = β₂.*t      # Human IQ
-	```
-	"""
-end
-
-# ╔═╡ 80159cd5-2e46-4375-b899-a44e45a948da
-if answ_q6 == true
-	md"""
-	```Julia
-	vandermonde(α, n) = [αᵢ^j for αᵢ in α, j in 0:n-1]
 	```
 	"""
 end
@@ -2003,10 +1977,6 @@ version = "17.4.0+0"
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─65a45d44-7942-4808-bed0-0369077c5edb
-# ╟─00121c4e-64a5-11eb-2993-61c695c4e6a1
-# ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
-# ╟─80159cd5-2e46-4375-b899-a44e45a948da
-# ╟─16ec4ee4-64a5-11eb-26f3-15313b8b5acb
 # ╟─a0026d1c-bcdb-4a2e-b1a1-11c5235a4956
 # ╟─2e7973b6-4d0f-11eb-107c-cdaf349428c0
 # ╟─00000000-0000-0000-0000-000000000001
