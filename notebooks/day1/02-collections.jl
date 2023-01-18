@@ -681,24 +681,7 @@ md"""
 
 Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that table generation is a tedious process... Write a small Julia package (read function) that generates a markdown table that takes an array of strings for the header and an n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function. Just for completion, you should end your table with a newline (\n).
 
-```MD
-		# Header 1
-		## Header 2
-		### Header 3
-
-		**This text is bold** and *this is italic*.
-
-		* This
-		* is 
-		* a 
-		* list.
-
-		| This | is | a | table |
-		| :--|:--|:--|:--| 
-		| 5 | 10 | 10 | 3 |
-		| 9 | 3 | 1 | 5 |
-		| 8 | 4 | 7 | 6 |
-	```
+```
 # Header 1
 ## Header 2
 ### Header 3
@@ -797,7 +780,14 @@ begin
 end;
 
 # ╔═╡ 00121c4e-64a5-11eb-2993-61c695c4e6a1
+md"""
+Write a function to generate an $n \times m$ [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) for a given vector $\alpha=[\alpha_1,\alpha_2,\ldots,\alpha_m]^T$. This matrix is defined as follows
+${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$
+or
+$V = [\alpha_i^{j-1}] .$
 
+Write a one-liner function `vandermonde` to generate this matrix. This function takes as a vector `α` and `n`, the number of powers to compute.
+"""
 
 # ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
 vandermonde(α, n) = missing
@@ -934,7 +924,7 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.5"
 manifest_format = "2.0"
 project_hash = "4d594d5517ecd9b7b50ec45dad9191268e4d5f4d"
 
@@ -1040,7 +1030,7 @@ version = "4.5.0"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
