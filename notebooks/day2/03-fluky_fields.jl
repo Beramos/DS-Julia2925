@@ -227,9 +227,9 @@ RecipesBase = "~1.3.3"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "33d6a656d97a032094b6a080efd63aa7f472578e"
+project_hash = "625bd316a93377ede0b71e96a3befdc413ee927c"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -315,7 +315,7 @@ version = "4.5.0"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.Contour]]
 git-tree-sha1 = "d05d9e7b7aedff4e5b51a029dced05cfb6125781"
@@ -1191,14 +1191,14 @@ version = "1.4.1+0"
 # ╔═╡ Cell order:
 # ╠═4e827046-8787-11ed-1763-99b10d56f7a6
 # ╠═347583c6-9ed6-42af-b760-733585dbb7a6
-# ╠═b7e28115-8901-4972-b37f-9b5869735b50
+# ╟─b7e28115-8901-4972-b37f-9b5869735b50
 # ╠═efb5380d-ab9d-4e7e-ad2b-d7beb3e28609
-# ╠═2ff01603-4322-4571-b172-20b9952ff4ff
+# ╟─2ff01603-4322-4571-b172-20b9952ff4ff
 # ╟─7470865e-87e2-4e40-8cb5-e27b516ce976
-# ╠═9731ecc2-a3bf-47bc-8385-96147b0ddbd0
+# ╟─9731ecc2-a3bf-47bc-8385-96147b0ddbd0
 # ╠═9c443e96-d40c-4c9d-a0b3-3390e18911df
 # ╠═de71232a-1498-4db1-8fc3-65a84a93551a
-# ╠═4826f7b8-0922-4a2d-abd4-426aa43c293a
+# ╟─4826f7b8-0922-4a2d-abd4-426aa43c293a
 # ╠═409d0d25-bae3-45ed-9ba1-477fcf928bce
 # ╠═a7fdf0f3-4810-4c9c-8fd5-e144b602d209
 # ╠═59949c0b-4a6e-4237-9b1d-5a674f4849bd
