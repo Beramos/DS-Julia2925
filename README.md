@@ -1,9 +1,5 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays. 
 
-This course is currently under construction. All materials are work-in-progress.
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/beramos/DS-Julia2925/binder_pluto_server?urlpath=pluto)
-
 ## Introduction
 
 In case you do not want to install julia and jump straight in the course material, use binder instead. However, we do not recommend doing so since saving progress is tricky. 
