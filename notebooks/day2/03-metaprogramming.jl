@@ -382,31 +382,6 @@ of a macro expansion with `@macroexpand`.
 # ╔═╡ 4dce26dc-5e68-11eb-1ff7-8974f93e3cb8
 @macroexpand @assert a==b "a should equal b!"
 
-# ╔═╡ 558920ca-5e68-11eb-3533-d5d596e3884d
-md"""
-
-There is yet another case that the actual `@assert` macro handles: what if, in addition to printing
-"a should equal b," we wanted to print their values? One might naively try to use string interpolation
-in the custom message, e.g., `@assert a==b "a ($a) should equal b ($b)!"`, but this won't work
-as expected with the above macro. Can you see why? Recall from string interpolation that an interpolated string is rewritten to a call to `string`. Compare:
-"""
-
-# ╔═╡ 6d69106a-5e68-11eb-0d50-e17b4db5db74
-typeof(:("a should equal b"))
-
-# ╔═╡ 715464cc-5e68-11eb-3e1a-977db04a7db6
-typeof(:("a ($a) should equal b ($b)!"))
-
-# ╔═╡ 7588018e-5e68-11eb-3be2-b97ce124d6bf
-dump(:("a ($a) should equal b ($b)!"))
-
-# ╔═╡ 84771eaa-5e68-11eb-0684-cf1a3118d10b
-md"""
-So now instead of getting a plain string in `msg_body`, the macro is receiving a full expression that will need to be evaluated in order to display as expected. This can be spliced directly into the returned expression as an argument to the `string` call; see `error.jl` for the complete implementation.
-
-The `@assert` macro makes great use of splicing into quoted expressions to simplify the manipulation of expressions inside the macro body.
-"""
-
 # ╔═╡ 43a19ace-5e6b-11eb-005b-b7d2d9a46878
 md"""
 ### Macros and dispatch
