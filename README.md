@@ -24,16 +24,15 @@ For ease-of-use we recommend adding an alias to your dotfiles (.bashrc, .zshrc).
 ```bash
 alias julia=~/julia-1.x.x/bin/julia
 ```
-
 ### Running the notebooks
-Download or clone this repository, open the Julia REPL and navigate to the folder
+Open the Julia REPL
 
-```julia
-cd("path/to/DS-Julia2925/")
-include("launch.jl")
-```
+1. Open the (just) installed Julia application.
+2. Install Pluto by copy-pasting the following instruction in the REPL (the terminal that just appeared): `using Pkg; Pkg.add("Pluto")`. This will take two minutes.
+3. Launch Pluto by copy-pasting `using Pluto; Pluto.run()`. It will open in your browser.
+4. In the slot "open for file" navigate to the notebook by typing the location of the notebooks on your computer (e.g. */home/jef/notebooks/day1/01-basics.jl*). 
 
-This should open a browser window with the Pluto notebooks. The first time it can take a while since it is installing all the dependencies.
+This should open a browser window with the Pluto notebooks. The first time it can take a while (up to 10 minutes) since it is installing all the dependencies.
 
 ## Contact
 UGent Doctoral School member and Julia questions? Chat with us on Gitter!
