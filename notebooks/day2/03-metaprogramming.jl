@@ -13,9 +13,6 @@ let
 	using GLPK
 end
 
-# ╔═╡ 0963185c-5fdc-11eb-0eed-89d514850353
-using BioSequences
-
 # ╔═╡ 24806108-5fdc-11eb-2f19-bb09f836f893
 using Sockets
 
@@ -649,7 +646,6 @@ end
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
-BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 GLPK = "60bf3e95-4087-53dc-ae20-288a0d20c6a6"
 JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
@@ -658,7 +654,6 @@ PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
 
 [compat]
-BioSequences = "~3.1.2"
 GLPK = "~1.1.0"
 JuMP = "~1.5.0"
 Plots = "~1.38.0"
@@ -671,7 +666,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.4"
 manifest_format = "2.0"
-project_hash = "8febdee43d00d56240a405190c63cc038c084c4e"
+project_hash = "0e368e512026c4c7e81a1db6d9c3b61f5135bfeb"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -695,18 +690,6 @@ git-tree-sha1 = "d9a9701b899b30332bbcb3e1679c41cce81fb0e8"
 uuid = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 version = "1.3.2"
 
-[[deps.BioSequences]]
-deps = ["BioSymbols", "Random", "SnoopPrecompile", "Twiddle"]
-git-tree-sha1 = "e67b5446b44d96595ededa2b32ab0f2f6b3d2997"
-uuid = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
-version = "3.1.2"
-
-[[deps.BioSymbols]]
-deps = ["SnoopPrecompile"]
-git-tree-sha1 = "2052c3ec7c41b69efa0e9ff7e2734aa6658d4c40"
-uuid = "3c28c6f8-a34d-59c4-9654-267d177fcfa9"
-version = "5.1.2"
-
 [[deps.BitFlags]]
 git-tree-sha1 = "43b1a4a8f797c1cddadf60499a8a077d4af2cd2d"
 uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
@@ -719,7 +702,7 @@ uuid = "6e34b625-4abd-537c-b88f-471c36dfa7a0"
 version = "1.0.8+0"
 
 [[deps.Cairo_jll]]
-deps = ["Artifacts", "Bzip2_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
+deps = ["Artifacts", "Bzip2_jll", "CompilerSupportLibraries_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
 git-tree-sha1 = "4b859a208b2397a7a623a03449e4636bdb17bcf2"
 uuid = "83423d85-b0ee-5818-9007-b63ccbeb887a"
 version = "1.16.1+1"
@@ -1478,11 +1461,6 @@ git-tree-sha1 = "6bac775f2d42a611cdfcd1fb217ee719630c4175"
 uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
 version = "0.1.6"
 
-[[deps.Twiddle]]
-git-tree-sha1 = "29509c4862bfb5da9e76eb6937125ab93986270a"
-uuid = "7200193e-83a8-5a55-b20d-5d36d44a0795"
-version = "1.1.2"
-
 [[deps.URIs]]
 git-tree-sha1 = "ac00576f90d8a259f2c9d823e91d1de3fd44d348"
 uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
@@ -1767,15 +1745,6 @@ version = "1.4.1+0"
 # ╠═917a579c-5e5a-11eb-3fe6-cb0dcad5e4e6
 # ╠═82d3220a-5e5a-11eb-3c49-d5e7afb1af2a
 # ╠═67954702-5e5a-11eb-1ab1-e9a285ee208d
-# ╟─2ae6ac9c-5e5a-11eb-060c-b3eae1df0493
-# ╠═5ef3d532-5e5a-11eb-30b3-a569e0bd736e
-# ╠═3bb1f892-5e5a-11eb-0946-e5e977a4e5b2
-# ╟─5763cca0-5e5a-11eb-1341-3d9bfb47fb58
-# ╠═e6a3902a-5e58-11eb-2bd2-4bc779bcebe7
-# ╟─11991248-5e55-11eb-2748-992f6fe48620
-# ╟─1c016bec-5e5d-11eb-3687-931da82f8c04
-# ╠═552ea3bc-5e5d-11eb-0c97-e1e6db526df3
-# ╠═629c4f9a-5e5d-11eb-2731-bf7457755829
 # ╟─66c113d0-5e5d-11eb-0aab-b3fa7f98eae5
 # ╠═6fc2fb9c-5e5d-11eb-0f21-6524555a9c42
 # ╠═6dab1d58-5e5d-11eb-3381-a1796f8d14c5
@@ -1799,7 +1768,6 @@ version = "1.4.1+0"
 # ╠═01feeca0-5e63-11eb-11a0-1b66a92127d1
 # ╠═f1969888-5e65-11eb-18a3-879d2f87b447
 # ╟─0613f620-5e66-11eb-08d9-01dd3a403321
-# ╟─29a2c0ee-5e66-11eb-2194-6f1c3cef563a
 # ╟─a1e86478-5e66-11eb-2ef9-6d460e707013
 # ╠═e61381aa-5e66-11eb-3347-5d26b61e6c17
 # ╟─a43490de-5e67-11eb-253e-f7455ade3ffe
@@ -1813,17 +1781,13 @@ version = "1.4.1+0"
 # ╟─376fe8e4-5e68-11eb-1d7d-c9b1945b133f
 # ╠═4750ce04-5e68-11eb-237e-3fed9eb1f4c5
 # ╠═4dce26dc-5e68-11eb-1ff7-8974f93e3cb8
-# ╟─558920ca-5e68-11eb-3533-d5d596e3884d
-# ╠═6d69106a-5e68-11eb-0d50-e17b4db5db74
-# ╠═715464cc-5e68-11eb-3e1a-977db04a7db6
-# ╠═7588018e-5e68-11eb-3be2-b97ce124d6bf
-# ╟─84771eaa-5e68-11eb-0684-cf1a3118d10b
 # ╟─43a19ace-5e6b-11eb-005b-b7d2d9a46878
 # ╠═508167c4-5e6b-11eb-2587-b967b79cf74c
 # ╠═59f86d98-5e6b-11eb-3259-7312501b70bf
 # ╠═5edf55e2-5e6b-11eb-383e-5965ae694c4c
 # ╠═65c94e9c-5e6b-11eb-38a8-4d60c692222b
 # ╠═42fc5284-5e6c-11eb-0edb-9555a320ec55
+# ╠═dc168cf8-484f-4054-a6d2-55703e99fda2
 # ╟─3dc3aa10-5e6c-11eb-3338-7777b8cb97a5
 # ╠═34565ba8-5e6c-11eb-2a27-2ff13394bcc8
 # ╠═02e4bf64-5e6d-11eb-36b5-fb57c87bff81
@@ -1845,46 +1809,11 @@ version = "1.4.1+0"
 # ╠═92458f54-5f57-11eb-179f-c749ce06f7e2
 # ╟─d1222dcc-5f57-11eb-2c87-77a16ea8e65d
 # ╠═0b1f3542-5f58-11eb-1610-75df3e2a4a76
-# ╟─57f243ec-5fe3-11eb-04d9-d776ccba4c0f
-# ╠═211cf9ca-5fe3-11eb-2596-71b1848753d7
-# ╠═35ccaee2-5fe3-11eb-3bd0-e355b0fd3f71
-# ╠═434669d2-5fe3-11eb-1f4a-27edf1f9e7f6
-# ╠═9612965e-5fe3-11eb-172a-59cc73a26ab6
-# ╠═3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
-# ╟─10a8532a-5e60-11eb-3331-974e708cb39d
-# ╟─d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
-# ╠═e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
-# ╟─ec73cd70-5e7a-11eb-0285-6b1fabd1289d
-# ╠═f1d24ba2-5e7a-11eb-010a-f543cfc306b5
-# ╟─f838762c-5e7a-11eb-000a-e963fab5e97d
-# ╠═149c1c12-5e7b-11eb-297d-6da57f45891b
-# ╟─780da60e-5e7c-11eb-0c1a-55be73da188f
-# ╟─90a672d0-5f5c-11eb-3a62-1b034cd41e67
-# ╠═b4104d12-5e7c-11eb-3e22-a78b74526129
-# ╠═20393e86-5e7d-11eb-18e3-613890472903
-# ╟─5069df16-5e7d-11eb-217d-6b740e9b3559
-# ╟─1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
-# ╠═0963185c-5fdc-11eb-0eed-89d514850353
-# ╠═0664eb22-5e7d-11eb-07a6-ed35143bf03f
-# ╟─a965bd70-5e7c-11eb-13dd-5fe83950af11
-# ╠═fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
-# ╠═a157dafc-5e7c-11eb-105d-4db3ee9dbec6
-# ╟─0ec9887c-5f5e-11eb-29e5-931881dcb222
-# ╠═1d4aca5a-5f5e-11eb-23c3-d1ddef4e6ee6
-# ╟─c4c2137a-5f5d-11eb-1e06-8f5e2b1f1c0e
-# ╠═e13fcbbe-5f5d-11eb-2074-fdbc945861e1
-# ╟─2c1308f4-5f5e-11eb-058f-79cbf7dd23c6
-# ╠═fdf46c92-5f5d-11eb-345b-e145c9c2874c
-# ╟─37da420a-5f61-11eb-3688-09e6188165e3
-# ╠═d9f18616-5e8d-11eb-1b1a-3bcc749fb467
-# ╠═ea3da4dc-5e8d-11eb-0910-091b926aea58
-# ╠═f13dd22a-5e8d-11eb-1def-137de66123ba
-# ╟─be11ec9a-5f61-11eb-374a-c96489ea582d
-# ╠═f44d757e-5e8d-11eb-18f1-719d3c7b8688
-# ╠═fa310fdc-5e8d-11eb-024b-7ded3e213112
-# ╠═1acb02d4-5e8e-11eb-232c-f756e92c3f97
-# ╟─2dcb4600-5e8e-11eb-093e-59eb79f0cf20
 # ╟─2e2601b6-5e94-11eb-3613-eb5fee19b6b7
+# ╟─d889f68e-4d15-4bab-92f6-c42bac58e60a
+# ╟─fe4095e9-0c35-4459-98b0-30ba91fc90b4
+# ╠═ce8b16fa-7644-4c64-ad3c-cbf667b4811b
+# ╟─f20221ca-82d1-4973-9f68-e46638c929f7
 # ╟─311a4666-5fc5-11eb-2cc0-ef66e5be96e3
 # ╠═4622422a-5fc5-11eb-20f2-9bfe466f8f30
 # ╟─5ba5d6b6-5fc5-11eb-256b-73a954a5db68
