@@ -30,7 +30,7 @@ Open the Julia REPL
 1. Open the (just) installed Julia application.
 2. Install Pluto by copy-pasting the following instruction in the REPL (the terminal that just appeared): `using Pkg; Pkg.add("Pluto")`. This will take two minutes.
 3. Launch Pluto by copy-pasting `using Pluto; Pluto.run()`. It will open in your browser.
-4. In the slot "open for file" navigate to the notebook by typing the location of the notebooks on your computer (e.g. */home/jef/notebooks/day1/01-basics.jl*). 
+4. In the slot "open a notebook" navigate to the notebook by typing the location of the notebooks on your computer (e.g. `C:/Users\jef\notebooks\day1\01-basics.jl` or `/home/jef/notebooks/day1/01-basics.jl` for Linux users). 
 
 This should open a browser window with the Pluto notebooks. The first time it can take a while (up to 10 minutes) since it is installing all the dependencies.
 
