@@ -168,57 +168,6 @@ typeof(ex)
 # ╔═╡ 67954702-5e5a-11eb-1ab1-e9a285ee208d
 ex.args
 
-# ╔═╡ 2ae6ac9c-5e5a-11eb-060c-b3eae1df0493
-md"""
-### Interpolation
-
-Direct construction of `Expr` objects with value arguments is powerful, but `Expr` constructors
-can be tedious compared to "normal" Julia syntax. As an alternative, Julia allows *interpolation* of
-literals or expressions into quoted expressions. Interpolation is indicated by a prefix `$`.
-
-In this example, the value of variable `a` is interpolated:
-"""
-
-# ╔═╡ 5ef3d532-5e5a-11eb-30b3-a569e0bd736e
-a = 1
-
-# ╔═╡ 3bb1f892-5e5a-11eb-0946-e5e977a4e5b2
-:($a + b)
-
-# ╔═╡ 5763cca0-5e5a-11eb-1341-3d9bfb47fb58
-md"""
-Interpolating into an unquoted expression is not supported and will cause a compile-time error:
-"""
-
-# ╔═╡ e6a3902a-5e58-11eb-2bd2-4bc779bcebe7
-$a + b
-
-# ╔═╡ 11991248-5e55-11eb-2748-992f6fe48620
-md"""
-The use of `$` for expression interpolation is intentionally reminiscent of string interpolation and command interpolation. Expression interpolation allows convenient, readable programmatic construction of complex Julia expressions.
-"""
-
-# ╔═╡ 1c016bec-5e5d-11eb-3687-931da82f8c04
-md"""
-
-### Splatting interpolation
-
-Notice that the `$` interpolation syntax allows inserting only a single expression into an
-enclosing expression.
-Occasionally, you have an array of expressions and need them all to become arguments of
-the surrounding expression.
-This can be done with the syntax `$(args...)`.
-
-For example, the following code generates a function call where the number of arguments is
-determined programmatically:
-"""
-
-# ╔═╡ 552ea3bc-5e5d-11eb-0c97-e1e6db526df3
-args = [:x, :y, :z]
-
-# ╔═╡ 629c4f9a-5e5d-11eb-2731-bf7457755829
-:(f(1, $(args...)))
-
 # ╔═╡ 66c113d0-5e5d-11eb-0aab-b3fa7f98eae5
 md"""
 ### Evaluating expressions
