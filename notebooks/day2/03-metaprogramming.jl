@@ -186,6 +186,7 @@ md"""
 ## Macros
 
 Now that we have an understanding of the basic concepts of code representation in Julia, we can introduce the core concept of this notebook: macros. 
+
 Macros provide a method to include generated code in the final body of a program. A macro maps
 a tuple of arguments to a returned *expression*, and the resulting expression is compiled directly
 rather than requiring a runtime `eval` call. Macro arguments may include expressions,
@@ -233,7 +234,7 @@ end
 @sayhello
 
 # ╔═╡ bda7fd66-5e5e-11eb-1e06-eb67a0178e14
-@sayhello()
+@sayhello
 
 # ╔═╡ 2dcacdfc-5e60-11eb-3d04-9f2ffb46d0fe
 md"""
@@ -260,8 +261,6 @@ md"""
 
 ### Hold on: why macros?
 
-We have already seen a function `f(::Expr...) -> Expr` in a previous section. In fact, `macroexpand` is also such a function. So, why do macros exist?
-
 Macros are necessary because they execute when code is parsed, therefore, macros allow the programmer
 to generate and include fragments of customized code *before* the full program is run. To illustrate
 the difference, consider the following example.
@@ -277,7 +276,7 @@ macro twostep(arg)
 end
 
 # ╔═╡ f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
-md"""Note that the computation of message is compiled away if we expand the macro!"""
+md"""Note that the computation of `message` is compiled away if we expand the macro!"""
 
 # ╔═╡ 01feeca0-5e63-11eb-11a0-1b66a92127d1
 ex_twostep = @macroexpand @twostep :(1, 2, 3)
@@ -292,22 +291,10 @@ md"""
 Macros are invoked with the following general syntax:
 
 ```julia
-@name expr1 expr2 ...
-@name(expr1, expr2, ...)
+@name expr1 expr2 ... # only spaces!
+@name(expr1, expr2, ...) # no space, with commas!
 ```
 
-"""
-
-# ╔═╡ 29a2c0ee-5e66-11eb-2194-6f1c3cef563a
-md"""
-Note the distinguishing `@` before the macro name and the lack of commas between the argument
-expressions in the first form, and the lack of whitespace after `@name` in the second form. The
-two styles should not be mixed. For example, the following syntax is different from the examples
-above; it passes the tuple `(expr1, expr2, ...)` as one argument to the macro:
-
-```julia
-@name (expr1, expr2, ...)
-```
 """
 
 # ╔═╡ a1e86478-5e66-11eb-2ef9-6d460e707013
@@ -344,9 +331,8 @@ while the value of `string(:(1 == 1.0))` is spliced into the assertion message s
 expression, thus constructed, is placed into the syntax tree where the `@assert` macro call occurs.
 Then at execution time, if the test expression evaluates to true, then `nothing` is returned,
 whereas if the test is false, an error is raised indicating the asserted expression that was false.
-Notice that it would not be possible to write this as a function, since only the *value* of the
-condition is available and it would be impossible to display the expression that computed it in
-the error message.
+
+**Notice that it would not be possible to write this as a function, since only the value of the condition is available and it would be impossible to display the expression that computed it in the error message.**
 
 The actual definition of `@assert` in Julia Base is more complicated. It allows the
 user to optionally specify their own error message, instead of just printing the failed expression.
@@ -417,6 +403,9 @@ end
 
 # ╔═╡ 42fc5284-5e6c-11eb-0edb-9555a320ec55
 @m 1 2
+
+# ╔═╡ dc168cf8-484f-4054-a6d2-55703e99fda2
+@m 1 2 3
 
 # ╔═╡ 02e4bf64-5e6d-11eb-36b5-fb57c87bff81
 @m 3
