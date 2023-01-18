@@ -501,151 +501,12 @@ let
 	@macroexpand @constraint(model, x + y <= 1)
 end
 
-# ╔═╡ 57f243ec-5fe3-11eb-04d9-d776ccba4c0f
-md"Finally, this section on code generation ends with two more examples:
-1. a macro to repeat a certain expression n-times
-2. a macro to repeat a certain expression until a condition is met
-
-Are these macros the best way to tackle the problems at hand? Maybe not, but they do give a nice illustration of how the code generation works.
-"
-
-# ╔═╡ 211cf9ca-5fe3-11eb-2596-71b1848753d7
-macro dotimes(n, body)
-    quote
-        for i = 1:$(esc(n))
-            $(esc(body))
-        end
-    end
-end
-
-# ╔═╡ 35ccaee2-5fe3-11eb-3bd0-e355b0fd3f71
-@macroexpand @dotimes 3 println("hi there")
-
-# ╔═╡ 434669d2-5fe3-11eb-1f4a-27edf1f9e7f6
-macro until(condition, block)
-    quote
-        while true
-            $(esc(block))
-            if $(esc(condition))
-                break
-            end
-        end
-    end
-end
-
-# ╔═╡ 9612965e-5fe3-11eb-172a-59cc73a26ab6
-PlutoUI.with_terminal() do
-	i = 0
-	@until i == 10 begin
-		i += 1
-		println(i) 
-	end
-end
-
-# ╔═╡ 3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
-@macroexpand @until j == 10 begin
-	j += 1
-	println(j) 
-end
-
-# ╔═╡ 10a8532a-5e60-11eb-3331-974e708cb39d
-md"""
-## Non-Standard String Literals
-
-String literals prefixed by an identifier are called non-standard string literals, and can have different semantics than un-prefixed string literals. For example:
-
-
-  * `r"^\s*(?:#|$)"` produces a regular expression object rather than a string
-  * `b"DATA\xff\u2200"` is a byte array literal for `[68,65,84,65,255,226,136,128]`.
-
-Perhaps surprisingly, these behaviors are not hard-coded into the Julia parser or compiler. Instead,
-they are custom behaviors provided by a general mechanism that anyone can use: prefixed string
-literals are parsed as calls to specially-named macros. For example, the regular expression macro
-is just the following:
-```julia
-macro r_str(p)
-    Regex(p)
-end
-```
-"""
-
-# ╔═╡ d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
-md"""
-That's all. This macro says that the literal contents of the string literal `r"^\s*(?:#|$)"` should
-be passed to the `@r_str` macro and the result of that expansion should be placed in the syntax
-tree where the string literal occurs. In other words, the expression `r"^\s*(?:#|$)"` is equivalent
-to placing the following object directly into the syntax tree:
-"""
-
-# ╔═╡ e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
-Regex("^\\s*(?:#|\$)")
-
-# ╔═╡ ec73cd70-5e7a-11eb-0285-6b1fabd1289d
-md"""
-Not only is the string literal form shorter and far more convenient, but it is also more efficient:
-since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*,
-the compilation occurs only once, rather than every time the code is executed. Consider if the
-regular expression occurs in a loop:
-"""
-
-# ╔═╡ f1d24ba2-5e7a-11eb-010a-f543cfc306b5
-PlutoUI.with_terminal() do
-	for line ∈ ["first", "sec#nd", "third"]
-		m = match(r"#", line)
-		if m === nothing
-			println("nothing found")
-		else
-			println("found something")
-		end
-	end
-end
-
-# ╔═╡ f838762c-5e7a-11eb-000a-e963fab5e97d
-md"""
-Since the regular expression `r"^\s*(?:#|$)"` is compiled and inserted into the syntax tree when
-this code is parsed, the expression is only compiled once instead of each time the loop is executed.
-In order to accomplish this without macros, one would have to write this loop like this:
-"""
-
-# ╔═╡ 149c1c12-5e7b-11eb-297d-6da57f45891b
-PlutoUI.with_terminal() do
-	re = Regex("#")
-	for line ∈ ["first", "sec#nd", "third"]
-		m = match(re, line)
-		if m === nothing
-			println("nothing found")
-		else
-			println("found something")
-		end
-	end
-end
-
-# ╔═╡ 780da60e-5e7c-11eb-0c1a-55be73da188f
-md"""
-Moreover, if the compiler could not determine that the regex object was constant over all loops,
-certain optimizations might not be possible, making this version still less efficient than the
-more convenient literal form above. Of course, there are still situations where the non-literal
-form is more convenient: if one needs to interpolate a variable into the regular expression, one
-must take this more verbose approach. In the vast majority of use cases, however, regular expressions
-are not constructed based on run-time data. In this majority of cases, the ability to write regular
-expressions as compile-time values is invaluable.
-"""
-
-# ╔═╡ 90a672d0-5f5c-11eb-3a62-1b034cd41e67
+# ╔═╡ 2e2601b6-5e94-11eb-3613-eb5fee19b6b7
 md"
-Designing your own custom string literals can be done as such:
+## Overview of some interesting macros
 "
 
-# ╔═╡ b4104d12-5e7c-11eb-3e22-a78b74526129
-macro foo_str(str, flag)
-    # do stuff
-	str, flag
-end
-
-# ╔═╡ 20393e86-5e7d-11eb-18e3-613890472903
-foo"this is the string"theflag
-
-# ╔═╡ 5069df16-5e7d-11eb-217d-6b740e9b3559
+# ╔═╡ d889f68e-4d15-4bab-92f6-c42bac58e60a
 md"""
 The first example of a custom macro can be found in every notebook in this course! It is the markdown string literal, which allows the usage of Markdown markup language to prettify these lectures!
 
@@ -653,82 +514,35 @@ The first example of a custom macro can be found in every notebook in this cours
 md"I am a Markdown string with glorious **formatting capabilities**."
 ```
 I am a Markdown string with glorious *formatting* **capabilities**.
+
+```julia
+macro md_str(p)
+	...
+end
+```
 """
 
-# ╔═╡ 1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
-md"The second example is from the `BioSequences.jl` package. In that bioinformatics package, you can define sequences e.g. DNA and RNA as string literals:
-"
-
-# ╔═╡ 0664eb22-5e7d-11eb-07a6-ed35143bf03f
-dna"ACGT"
-
-# ╔═╡ a965bd70-5e7c-11eb-13dd-5fe83950af11
-md"Repetition and concatenation can be performed pretty straightforward:"
-
-# ╔═╡ fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
-repeat(dna"TTAGGG", 10)
-
-# ╔═╡ a157dafc-5e7c-11eb-105d-4db3ee9dbec6
-dna = dna"ACGT" * dna"TGCAA"
-
-# ╔═╡ 0ec9887c-5f5e-11eb-29e5-931881dcb222
-md"Other typical string operations such as pushing new values work as you would expect"
-
-# ╔═╡ 1d4aca5a-5f5e-11eb-23c3-d1ddef4e6ee6
-push!(dna, DNA_A)
-
-# ╔═╡ c4c2137a-5f5d-11eb-1e06-8f5e2b1f1c0e
-md"There existj methods to convert a DNA sequence to its RNA equivalent:"
-
-# ╔═╡ e13fcbbe-5f5d-11eb-2074-fdbc945861e1
-rna = convert(LongRNA{2}, dna)
-
-# ╔═╡ 2c1308f4-5f5e-11eb-058f-79cbf7dd23c6
-md"Note that altough the printout of the DNA and RNA object is different because of different nucleotides. The information content is the same, and as such this statement is true:"
-
-# ╔═╡ fdf46c92-5f5d-11eb-345b-e145c9c2874c
-dna.data === rna.data
-
-# ╔═╡ 37da420a-5f61-11eb-3688-09e6188165e3
-md"Remember before that we mentioned that you can add a flag to a string literal? In `BioSequences.jl` this has a use case. 
-
-If you have a function that generates a sequence, and you want it to create a new sequence each time it is called, then you can add a flag to the end of the sequence literal to dictate behaviour: A flag of 's' means 'static': the sequence will be allocated before code is run, as is the default behaviour. However providing 'd' flag changes the behaviour: 'd' means 'dynamic': the sequence will be allocated whilst the code is running, and not before. So to change foo so as it creates a new sequence each time it is called, simply add the 'd' flag to the sequence literal:"
-
-# ╔═╡ d9f18616-5e8d-11eb-1b1a-3bcc749fb467
-function getdna_dynamic()
-	s = dna"CTT"d     # 'd' flag appended to the string literal.
-	push!(s, DNA_A)
-end
-
-# ╔═╡ ea3da4dc-5e8d-11eb-0910-091b926aea58
-getdna_dynamic()
-
-# ╔═╡ f13dd22a-5e8d-11eb-1def-137de66123ba
-getdna_dynamic()
-
-# ╔═╡ be11ec9a-5f61-11eb-374a-c96489ea582d
-md"Output of `getdna_dynamic()` stays the same!"
-
-# ╔═╡ f44d757e-5e8d-11eb-18f1-719d3c7b8688
-function getdna_static()
-	s = dna"CTT"s     # 's' flag appended to the string literal.
-	push!(s, DNA_A)
-end
-
-# ╔═╡ fa310fdc-5e8d-11eb-024b-7ded3e213112
-getdna_static()
-
-# ╔═╡ 1acb02d4-5e8e-11eb-232c-f756e92c3f97
-getdna_static()
-
-# ╔═╡ 2dcb4600-5e8e-11eb-093e-59eb79f0cf20
+# ╔═╡ fe4095e9-0c35-4459-98b0-30ba91fc90b4
 md"""
-Be careful when you are using sequence literals inside of functions, and inside the bodies of things like for loops. And if you use them and are unsure, use the 's' and 'd' flags to ensure the behaviour you get is the behaviour you intend.
+The regular expression macro is just the following:
+```julia
+macro r_str(p)
+    Regex(p)
+end
+```
+That's all. This macro says that the literal contents of the string literal `r"^\s*(?:#|$)"` should
+be passed to the `@r_str` macro and the result of that expansion should be placed in the syntax
+tree where the string literal occurs. In other words, the expression `r"^\s*(?:#|$)"` is equivalent
+to placing the following object directly into the syntax tree:
+
 """
 
-# ╔═╡ 2e2601b6-5e94-11eb-3613-eb5fee19b6b7
-md"
-## Overview of some interesting macros
+# ╔═╡ ce8b16fa-7644-4c64-ad3c-cbf667b4811b
+Regex("^\\s*(?:#|\$)")
+
+# ╔═╡ f20221ca-82d1-4973-9f68-e46638c929f7
+md"Not only is the string literal form shorter and far more convenient, but it is also more efficient:
+since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*, the compilation occurs only once, rather than every time the code is executed.
 "
 
 # ╔═╡ 311a4666-5fc5-11eb-2cc0-ef66e5be96e3
@@ -787,7 +601,10 @@ When developing modules, scripts or julia packages, you can use the `@info`, `@w
 
 An example usage would be a warning thrown by an optimisation algorithm to tell you that e.g. the predefined accuracy or tolerance was not reached.
 
-Note, to make `@debug` you need to set an environment variable to mark that you are in debug mode: `ENV["JULIA_DEBUG"] = "all"`
+Note, to make `@debug` you need to set an environment variable to mark that you are in debug mode: 
+```julia
+ENV["JULIA_DEBUG"] = "all"
+```
 """
 
 # ╔═╡ 4a9d85ba-5fc7-11eb-1b6e-59ef2259dd24
@@ -817,7 +634,7 @@ end
 end
 
 # ╔═╡ 1a793992-5fdb-11eb-3b38-05544f268a65
-plot(TemperatureMeas(Plots.fakedata(50), Plots.fakedata(50), Plots.fakedata(50)))
+plot(TemperatureMeas(Plots.fakedata(50), -Plots.fakedata(50), Plots.fakedata(50).^2))
 
 # ╔═╡ d418dca4-5fe5-11eb-3f1a-a31e5dc5f7e9
 md"
