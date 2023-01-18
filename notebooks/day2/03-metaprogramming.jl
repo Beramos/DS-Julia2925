@@ -29,15 +29,14 @@ using Distributed
 md"""
 # Metaprogramming
 
-The strongest legacy of [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)) in the Julia language is its metaprogramming support. Like Lisp,
-Julia represents its own code as a data structure of the language itself. Since code is represented
-by objects that can be created and manipulated from within the language, it is possible for a
-program to transform and generate its own code. This allows sophisticated code generation without
-extra build steps, and also allows true Lisp-style macros operating at the level of abstract syntax trees.
-Because all data types and
-code in Julia are represented by Julia data structures, powerful reflection
-capabilities are available to explore the internals of a program and its types just like any other
-data.
+The strongest legacy of [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)) in the Julia language is its metaprogramming  support. Like Lisp, Julia represents its own code as a data structure of the language itself. 
+
+Since code is represented by objects that can be created and manipulated from within the language, it is possible for a program to transform and generate its own code. This allows sophisticated code generation without extra build steps, and also allows true Lisp-style macros operating at the level of abstract syntax trees.
+
+
+Because all data types and code in Julia are represented by Julia data structures, powerful reflection capabilities are available to explore the internals of a program and its types just like any other data.
+
+First, we will talk about how to represent a program (aka the building blocks), then how to manipulate Julia code from Julia with macros. Finally, we end with examples on code generation and some interesting macros
 """
 
 # ╔═╡ 4ab33c0e-5e53-11eb-2e63-2dd6f06de3ba
