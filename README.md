@@ -1,13 +1,29 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays. 
+This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/122f756b-8a04-4713-9d6e-d8fc56eea628) hosted at Ghent University.
 
 ## Introduction
-
-In case you do not want to install julia and jump straight in the course material, use binder instead. However, we do not recommend doing so since saving progress is tricky. 
+This course gives an in-depth introduction to the Julia programming language. The first day will introduce the essential elements (variables, printing, plotting, looping, collections, etc.) of Julia programming along with a peek behind the curtains of the type system. On the second day, we will cover the type system comprehensively and discuss its relation to multiple dispatch and illustrate how this translates into extensible and user-friendly programs. We cover the subject matter interactively in notebooks. 
 
 ## Getting started
+There are two ways to download the notebooks.
+1. If you are used to github, you can clone this repository to your computer.
+2. Download the notebooks from this link **(WIP)**
+
 ### Installing Julia
-1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.8.4.
+1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.8.5.
 2. Yes, it is that simple :zap:
+
+### Starting Julia
+For *windows* users, it is as simple as double-clicking the Julia application (after unzipping). For *Linux* users the Julia REPL can be started by executing the binary (after unzipping).
+
+```bash
+/path/to/julia-1.x.x/bin/julia
+```
+For ease-of-use we recommend adding an alias to your dotfiles (.bashrc, .zshrc).
+
+```bash
+alias julia=~/julia-1.x.x/bin/julia
+```
 
 ### Running the notebooks
 Download or clone this repository, open the Julia REPL and navigate to the folder
