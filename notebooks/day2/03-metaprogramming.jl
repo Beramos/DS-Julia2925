@@ -53,8 +53,8 @@ prog = "1 + 1"
 md"""
 **What happens next?**
 
-The next step is to parse each string
-into an object called an expression, represented by the Julia type `Expr`. 
+The next step is to parse each string into an object called an expression, represented by the Julia type `Expr`. 
+
 Parsing means taking the input (in this case, a string) and building a data structure – often some kind of parse tree, [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or other hierarchical structure, giving a structural representation of the input while checking for correct syntax. 
 """
 
@@ -68,8 +68,7 @@ typeof(ex1)
 md"""
 `Expr` objects contains two parts:
 
-  * a `Symbol` identifying the kind of expression. A symbol is an [interned string](https://en.wikipedia.org/wiki/String_interning)
-    identifier (string interning is a method of storing only one copy of each distinct string value, which must be immutable).
+  1. a `Symbol` identifying the kind of expression (e.g. a call, for loop, conditional statement, etc.). A symbol is an [interned string](https://en.wikipedia.org/wiki/String_interning) identifier (string interning is a method of storing only one copy of each distinct string value, which must be immutable).
 
 """
 
@@ -78,7 +77,7 @@ ex1.head
 
 # ╔═╡ 48104478-5e54-11eb-2f23-c98c4ccbb763
 md"""
-  * the expression arguments, which may be symbols, other expressions, or literal values:
+  2. the expression arguments, which may be symbols, other expressions, or literal values:
 """
 
 # ╔═╡ 538e2054-5e54-11eb-2b9c-451637e1d8ee
