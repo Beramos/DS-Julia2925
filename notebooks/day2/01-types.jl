@@ -270,10 +270,7 @@ When a function is run for the first time with a particular combination of input
 """
 
 # ╔═╡ 63166056-6014-11eb-09c4-e5a44d37095f
-begin 
-	QuestionBlock(
-		title=md"**Task:**",
-		description = md"""
+md"""
 		Run the following examples in the terminal using `@time`.
 		
 		```julia
@@ -285,8 +282,6 @@ begin
 
 		```
 		"""
-	)
-end
 
 # ╔═╡ 2dff8c88-4e75-11eb-050b-7152e82ac10d
 mynewfun(x) = x^2 .+ x
@@ -310,15 +305,10 @@ methods(sum)
 
 
 # ╔═╡ 9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
-begin 
-	QuestionBlock(
-		title=md"**Did I break something?**",
-		description = md"""
+md"""
 		
 		check how many methods there are associated with the humble multiplication operator `*`. Just for your info, you might want to print this one to the terminal.
 		"""
-	)
-end
 
 # ╔═╡ b18d0532-4e76-11eb-2e8a-2bee580533cc
 
@@ -330,10 +320,7 @@ end
 md"The arguments a function can take can be restricted using the `::`-operator. Here, if we limit a function as `f(x::T)`, this means that `x` can be any type `<: T`. "
 
 # ╔═╡ 002fdec6-6015-11eb-0e89-c7d020826cf9
-begin 
-	QuestionBlock(
-		title=md"**Question: ::**",
-		description = md"""
+md"""
 		
 		Can you explain the reasoning behind the following code? How does it process numbers? What does it do with strings?"
 			
@@ -347,8 +334,6 @@ begin
 		
 		
 		"""
-	)
-end
 
 # ╔═╡ db1bb4c8-4e76-11eb-2756-3f6ce778acc0
 begin
@@ -384,10 +369,7 @@ begin
 end
 
 # ╔═╡ 622b8382-6015-11eb-17fb-3352c73a0d10
-begin 
-	QuestionBlock(
-		title=md"**Question: ::²**",
-		description = md"""
+md"""
 		
 		Predict the outcome of the following statements.
 			
@@ -416,8 +398,6 @@ begin
 		
 		
 		"""
-	)
-end
 
 # ╔═╡ 76fe9fc4-4e77-11eb-3bc7-2dfbdff8dfc8
 
@@ -472,9 +452,6 @@ abstract type «name» <: «supertype» end
 ### Composite types
 *Composite types* (records, structs, or objects) are more exciting. They are often containers for several objects set to behave in a certain way. We will study them in depth in the next notebook.
 """
-
-# ╔═╡ 15bb7eb6-6016-11eb-01d2-0be88279db7e
-
 
 # ╔═╡ 178a5f96-6016-11eb-0314-010203c5fedf
 md"It takes some time to fully grasp the potential of julia's type system, especially if you have experience in object-oriented programming. In the following examples we will try to show you the uniqueness and power of this paradigm."
@@ -717,9 +694,9 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "502a5e5263da26fcd619b7b7033f402a42a81ffc"
+project_hash = "08cc58b1fbde73292d848136b97991797e6c5429"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -746,7 +723,7 @@ version = "0.11.4"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -1051,7 +1028,6 @@ version = "17.4.0+0"
 # ╠═938d8b1e-4e77-11eb-03d3-9b88c7cab3c1
 # ╠═96f6fef2-4e77-11eb-2ec4-399472d86a60
 # ╟─812cfe48-4e7a-11eb-32e6-c918bbe3e602
-# ╟─15bb7eb6-6016-11eb-01d2-0be88279db7e
 # ╟─178a5f96-6016-11eb-0314-010203c5fedf
 # ╟─4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 # ╟─d668a692-6017-11eb-2f28-e9b00762b92d
