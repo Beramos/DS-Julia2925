@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.19.19
 
 using Markdown
 using InteractiveUtils
@@ -7,11 +7,15 @@ using InteractiveUtils
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
     quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
         local el = $(esc(element))
-        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
     end
 end
+
+# ╔═╡ 79271c7b-a15c-4e12-ae89-d107604c218d
+using PlutoUI; TableOfContents()
 
 # ╔═╡ e9576706-600e-11eb-1e10-e3bac02a254e
 # edit the code below to set your name and UGent username
@@ -23,17 +27,6 @@ student = (name = "Hanne Janssen", email = "Hanne.Janssen@UGent.be");
 
 # you might need to wait until all other cells in this notebook have completed running. 
 # scroll down the page to see what's up
-
-# ╔═╡ fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
-begin 
-	using Pkg; Pkg.activate("../..")
-	using DSJulia;
-	using PlutoUI;
-	tracker = ProgressTracker(student.name, student.email);
-	md"""
-	Submission by: **_$(student.name)_**
-	"""
-end
 
 # ╔═╡ 4ec271b0-4e73-11eb-2660-6b8bd637d7ee
 md"""
@@ -53,25 +46,20 @@ The type of objects can be assessed using the function `typeof`. For collections
 a = 42; s = "mice"; n = 0.9; A = [1 2; 3 4];
 
 # ╔═╡ bd994d64-600e-11eb-1ab3-ed6317b7c211
-begin 
-	QuestionBlock(
-		title=md"**Task:**",
-		description = md"""
-		Check the type of the `a`, `s`, `n` and `A`
-		
-		```julia
-		typeof(a)
-		
-		typeof(s)
-		
-		typeof(n)
-		
-		typeof(A)
-		
-		```
-		"""
-	)
-end
+md"""
+> **Task: Check the types of the following expressions**"
+
+```julia
+typeof(a)
+
+typeof(s)
+
+typeof(n)
+
+typeof(A)
+
+```
+"""
 
 # ╔═╡ b844d568-4e73-11eb-3de9-4158b0bdca12
 
@@ -100,29 +88,24 @@ md"Concrete types (should) have a well-defined memory layout, for example `Float
 # ╔═╡ de3de7fc-4e73-11eb-2ff6-1560481f7ee5
 md"We can find the supertype (ancestor) of a concrete or abstract type using the function `supertype`."
 
-# ╔═╡ 910c8e0e-600f-11eb-2558-57040714937b
-begin 
-	QuestionBlock(
-		title=md"**Task:**",
-		description = md"""
-		Check the supertype of the following concrete and abstract types,
-		
-		```julia
-		supertype(Int8)
+# ╔═╡ 0598b350-b906-4792-a42f-54ba3eed9577
+md"""
+> **Task: Check the supertype of the following concrete and abstract types**
 
-		supertype(Float64)
+```julia
+supertype(Int8)
 
-		supertype(AbstractFloat)
+supertype(Float64)
 
-		supertype(Real)
+supertype(AbstractFloat)
 
-		supertype(Number)
+supertype(Real)
 
-		supertype(Any)
-		```
-		"""
-	)
-end
+supertype(Number)
+
+supertype(Any)
+```
+"""
 
 # ╔═╡ e1c8cf4a-4e73-11eb-27be-d702064a0182
 
@@ -145,33 +128,27 @@ end
 # ╔═╡ a0cecb24-4e74-11eb-3634-cd8dd628e9ec
 md"See how all the numbers are hierarchically represented? Note that any type is always a subtype of `Any`. We can check if an object is (sub)type using the function `isa` or use the `<:` operator."
 
-# ╔═╡ 200d8d36-6012-11eb-0171-8bc2511e18f1
-begin 
-	QuestionBlock(
-		title=md"**Task:**",
-		description = md"""
-		Predict the outcome of the following statements,
-		
-		```julia
-		Float64 <: AbstractFloat
+# ╔═╡ c232463e-233b-449a-befd-306c7d7100d5
+md"""
+> **Task: Predict the outcome of the following statements**
 
-		Float16 <: AbstractFloat
+```julia
+Float64 <: AbstractFloat
 
-		AbstractFloat <: Number
+Float16 <: AbstractFloat
 
-		Int <: Number
+AbstractFloat <: Number
 
-		Int <: AbstractFloat
+Int <: Number
 
-		Integer isa Int
+Int <: AbstractFloat
 
-		```
-		""",
-		hints = [
-			hint(md"If you are confused by the last statement, read the next section.")
-		]
-	)
-end
+Integer isa Int
+
+```
+
+If you are confused by the last statement, read the next section.
+"""
 
 # ╔═╡ b31fe65a-4e74-11eb-0414-35f2be687c7f
 
@@ -197,28 +174,6 @@ end
 # ╔═╡ 34ca6158-4e75-11eb-3d51-330952c9b3dd
 md"We can check the entire subtree of a type using the function `subtypetree`"
 
-# ╔═╡ 972154f6-6536-11eb-08a8-e3fc98623177
-function subtypetree(roottype, level=1, last=false)
-	level == 1 && println(split(string(roottype),".")[end])
-	for (index, s) in enumerate(subtypes(roottype))
-	
-		if index < length(subtypes(roottype))
-			println(join(fill("│  ", level-1-1*last))* 
-				join(fill("   ", 1*last)) * "├──" * split(string(s),".")[end])
-
-			subtypetree(s, level + 1, false)
-		else
-			println(join(fill("│  ", level-1-1*last))* 
-				join(fill("   ", 1*last)) * "└──" * split(string(s),".")[end])
-			subtypetree(s, level + 1, true)
-		end
-
-	end
-end
-
-# ╔═╡ e50c3f36-653c-11eb-0eb4-cf44af78e44c
-@terminal subtypetree(Real)
-
 # ╔═╡ 3d1db2de-6549-11eb-2649-2d96659813f6
 md"It does not need to be complicated, though."
 
@@ -232,7 +187,7 @@ function subtypetreesimple(roottype, level=1)
 end
 
 # ╔═╡ 6cbd4874-6549-11eb-296e-af4a43d53223
-@terminal subtypetreesimple(Real)
+subtypetreesimple(Real)
 
 # ╔═╡ 4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 md"""
@@ -288,36 +243,24 @@ parse(Int, "42")
 # ╔═╡ 570c85bc-4e79-11eb-0249-891cf205d623
 parse(Float64, "0.999")
 
+# ╔═╡ b3da4c4b-3603-489a-b1ad-3c4a17ef9a98
+md"""
+**Question: string parsing**
+
+Below are a bunch of numbers in a text string. Can you compute their sum `(Float64)`?
+
+Hints:
+- `rstrip` is a handy function.
+- `split` is a handy function.
+- Maybe we can use a pipe `|>`?
+"""
+
 # ╔═╡ 6756d6ac-4e79-11eb-21ab-4776195c9d3b
 bunchofnumbers = "1.728002758512114, 0.45540258865644284, 1.4067738604851092, 1.6549474922755167, -0.5281073122489854, 2.219250973007533, 0.8195027302254512, 1.8833469318073521, 0.7429034224663096, -0.8127686064960085, -0.14337850083375886, -1.477193046160141, 0.024525761924498457, 0.16097115910472956, -0.39278880092280993, 1.3988081686729814, -1.3316370350161346, 0.2791510437718087, 1.9834455917052212, -0.8616791621501649
 "
 
 # ╔═╡ e6f31ad8-4e79-11eb-11f4-2936cb039f8d
 sumofbunchofnumbers = missing
-
-# ╔═╡ 4495802e-6013-11eb-22fa-03f635d30a7b
-begin 
-	q_sparse = Question(
-		validators=@safe[
-			sumofbunchofnumbers == Solutions.bunchofnumbers_parser(bunchofnumbers) 
-		]
-	)
-	
-	qb_sparse = QuestionBlock(
-		title=md"**Question: string parsing**",
-		description = md"""
-		Below are a bunch of numbers in a text string. Can you compute their sum `(Float64)`?
-		
-		""",
-		questions = [q_sparse],
-		hints = [
-			hint(md" `rstrip` is a handy function."),
-			hint(md" `split` is a handy function."),
-			hint(md" Maybe we can use a pipe `|>`?"),
-		]
-	)
-	validate(qb_sparse, tracker)
-end
 
 # ╔═╡ 03766a5c-4e75-11eb-12ad-cb2e9468e0d2
 md"""
@@ -327,10 +270,7 @@ When a function is run for the first time with a particular combination of input
 """
 
 # ╔═╡ 63166056-6014-11eb-09c4-e5a44d37095f
-begin 
-	QuestionBlock(
-		title=md"**Task:**",
-		description = md"""
+md"""
 		Run the following examples in the terminal using `@time`.
 		
 		```julia
@@ -342,8 +282,6 @@ begin
 
 		```
 		"""
-	)
-end
 
 # ╔═╡ 2dff8c88-4e75-11eb-050b-7152e82ac10d
 mynewfun(x) = x^2 .+ x
@@ -367,15 +305,10 @@ methods(sum)
 
 
 # ╔═╡ 9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
-begin 
-	QuestionBlock(
-		title=md"**Did I break something?**",
-		description = md"""
+md"""
 		
 		check how many methods there are associated with the humble multiplication operator `*`. Just for your info, you might want to print this one to the terminal.
 		"""
-	)
-end
 
 # ╔═╡ b18d0532-4e76-11eb-2e8a-2bee580533cc
 
@@ -387,10 +320,7 @@ end
 md"The arguments a function can take can be restricted using the `::`-operator. Here, if we limit a function as `f(x::T)`, this means that `x` can be any type `<: T`. "
 
 # ╔═╡ 002fdec6-6015-11eb-0e89-c7d020826cf9
-begin 
-	QuestionBlock(
-		title=md"**Question: ::**",
-		description = md"""
+md"""
 		
 		Can you explain the reasoning behind the following code? How does it process numbers? What does it do with strings?"
 			
@@ -404,8 +334,6 @@ begin
 		
 		
 		"""
-	)
-end
 
 # ╔═╡ db1bb4c8-4e76-11eb-2756-3f6ce778acc0
 begin
@@ -441,10 +369,7 @@ begin
 end
 
 # ╔═╡ 622b8382-6015-11eb-17fb-3352c73a0d10
-begin 
-	QuestionBlock(
-		title=md"**Question: ::²**",
-		description = md"""
+md"""
 		
 		Predict the outcome of the following statements.
 			
@@ -473,8 +398,6 @@ begin
 		
 		
 		"""
-	)
-end
 
 # ╔═╡ 76fe9fc4-4e77-11eb-3bc7-2dfbdff8dfc8
 
@@ -530,9 +453,6 @@ abstract type «name» <: «supertype» end
 *Composite types* (records, structs, or objects) are more exciting. They are often containers for several objects set to behave in a certain way. We will study them in depth in the next notebook.
 """
 
-# ╔═╡ 15bb7eb6-6016-11eb-01d2-0be88279db7e
-
-
 # ╔═╡ 178a5f96-6016-11eb-0314-010203c5fedf
 md"It takes some time to fully grasp the potential of julia's type system, especially if you have experience in object-oriented programming. In the following examples we will try to show you the uniqueness and power of this paradigm."
 
@@ -571,9 +491,6 @@ end
 # ╔═╡ 0884f752-6018-11eb-2eb3-d1cd317dceb3
 md"You can see, it is a pretty flat hierarchy"
 
-# ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
-@terminal subtypetree(Mohs)  # check the terminal!
-
 # ╔═╡ 443ecf72-6018-11eb-1a7a-e75e9596e4bd
 md"Next, let us define a function `mohs_scale` that dispatches on the different abstract types (minerals) and returns a hardness value"
 
@@ -609,14 +526,39 @@ mohs_scale(🔶)
 # ╔═╡ b5339e22-6018-11eb-38b6-352602a85cdd
 md"Will 💎 scratch 🔶?"
 
-# ╔═╡ fc0f2e92-6018-11eb-0b45-49fdec301609
-mohs_scale(💎) > mohs_scale(🔶)
-
 # ╔═╡ 02e57e74-6019-11eb-3e35-1d2b4d61b283
 md"To make this more user-friendly, one can add a method to the `<`-operator or the `isless`-function to work directly on `mohs_scale`."
 
 # ╔═╡ 6e429164-4e7f-11eb-1829-0582f1417815
 Base.isless(m1::Type{<:Mohs}, m2::Type{<:Mohs}) = mohs_scale(m1) < mohs_scale(m2)
+
+# ╔═╡ 972154f6-6536-11eb-08a8-e3fc98623177
+function subtypetree(roottype, level=1, last=false)
+	level == 1 && println(split(string(roottype),".")[end])
+	for (index, s) in enumerate(subtypes(roottype))
+	
+		if index < length(subtypes(roottype))
+			println(join(fill("│  ", level-1-1*last))* 
+				join(fill("   ", 1*last)) * "├──" * split(string(s),".")[end])
+
+			subtypetree(s, level + 1, false)
+		else
+			println(join(fill("│  ", level-1-1*last))* 
+				join(fill("   ", 1*last)) * "└──" * split(string(s),".")[end])
+			subtypetree(s, level + 1, true)
+		end
+
+	end
+end
+
+# ╔═╡ e50c3f36-653c-11eb-0eb4-cf44af78e44c
+subtypetree(Real)
+
+# ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
+subtypetree(Mohs)  
+
+# ╔═╡ fc0f2e92-6018-11eb-0b45-49fdec301609
+mohs_scale(💎) > mohs_scale(🔶)
 
 # ╔═╡ ad6e9d8e-4e7f-11eb-1e33-efcee699f2a0
 isless(Diamond, Corundum)
@@ -687,20 +629,16 @@ play(Scissors, Rock)
 # ╔═╡ 925e2f40-4e7d-11eb-0bd2-f91913c5a23e
 play(Scissors, Paper)
 
-# ╔═╡ 0b2b40ae-601a-11eb-1d83-53ff171bb799
-begin 
-	QuestionBlock(
-		title=md"**Optional question: rock, paper, scissors, lizard, Spock**",
-		description = md"""
+# ╔═╡ 629e7829-d214-4406-a082-aa1f82cb539c
+md"""
+> **Optional question: rock, paper, scissors, lizard, Spock**
+
+Can you extend the previous code so that it works with lizard an Spock? 
 		
-		Can you extend the previous code so that it works with lizard an Spock? 
-		
-		![](https://i.imgur.com/jbmAYKI.png)
-		
-		adapted from: [source](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)
-		"""
-	)
-end
+![](https://i.imgur.com/jbmAYKI.png)
+
+adapted from: [source](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)
+"""
 
 # ╔═╡ 269b934c-601b-11eb-00ad-5fec0e2c37e1
 
@@ -743,9 +681,267 @@ if answ_q2 == true
 	"""
 end
 
+# ╔═╡ 00000000-0000-0000-0000-000000000001
+PLUTO_PROJECT_TOML_CONTENTS = """
+[deps]
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+
+[compat]
+PlutoUI = "~0.7.49"
+"""
+
+# ╔═╡ 00000000-0000-0000-0000-000000000002
+PLUTO_MANIFEST_TOML_CONTENTS = """
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.8.5"
+manifest_format = "2.0"
+project_hash = "08cc58b1fbde73292d848136b97991797e6c5429"
+
+[[deps.AbstractPlutoDingetjes]]
+deps = ["Pkg"]
+git-tree-sha1 = "8eaf9f1b4921132a4cff3f36a1d9ba923b14a481"
+uuid = "6e696c72-6542-2067-7265-42206c756150"
+version = "1.1.4"
+
+[[deps.ArgTools]]
+uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
+version = "1.1.1"
+
+[[deps.Artifacts]]
+uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+
+[[deps.Base64]]
+uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+
+[[deps.ColorTypes]]
+deps = ["FixedPointNumbers", "Random"]
+git-tree-sha1 = "eb7f0f8307f71fac7c606984ea5fb2817275d6e4"
+uuid = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
+version = "0.11.4"
+
+[[deps.CompilerSupportLibraries_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
+version = "1.0.1+0"
+
+[[deps.Dates]]
+deps = ["Printf"]
+uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[deps.Downloads]]
+deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
+uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+version = "1.6.0"
+
+[[deps.FileWatching]]
+uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
+
+[[deps.FixedPointNumbers]]
+deps = ["Statistics"]
+git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
+uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
+version = "0.8.4"
+
+[[deps.Hyperscript]]
+deps = ["Test"]
+git-tree-sha1 = "8d511d5b81240fc8e6802386302675bdf47737b9"
+uuid = "47d2ed2b-36de-50cf-bf87-49c2cf4b8b91"
+version = "0.0.4"
+
+[[deps.HypertextLiteral]]
+deps = ["Tricks"]
+git-tree-sha1 = "c47c5fa4c5308f27ccaac35504858d8914e102f9"
+uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
+version = "0.9.4"
+
+[[deps.IOCapture]]
+deps = ["Logging", "Random"]
+git-tree-sha1 = "f7be53659ab06ddc986428d3a9dcc95f6fa6705a"
+uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
+version = "0.2.2"
+
+[[deps.InteractiveUtils]]
+deps = ["Markdown"]
+uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
+
+[[deps.JSON]]
+deps = ["Dates", "Mmap", "Parsers", "Unicode"]
+git-tree-sha1 = "3c837543ddb02250ef42f4738347454f95079d4e"
+uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+version = "0.21.3"
+
+[[deps.LibCURL]]
+deps = ["LibCURL_jll", "MozillaCACerts_jll"]
+uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
+version = "0.6.3"
+
+[[deps.LibCURL_jll]]
+deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
+uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
+version = "7.84.0+0"
+
+[[deps.LibGit2]]
+deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
+uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
+
+[[deps.LibSSH2_jll]]
+deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
+uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
+version = "1.10.2+0"
+
+[[deps.Libdl]]
+uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+
+[[deps.LinearAlgebra]]
+deps = ["Libdl", "libblastrampoline_jll"]
+uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+[[deps.Logging]]
+uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
+
+[[deps.MIMEs]]
+git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
+uuid = "6c6e2e6c-3030-632d-7369-2d6c69616d65"
+version = "0.1.4"
+
+[[deps.Markdown]]
+deps = ["Base64"]
+uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
+
+[[deps.MbedTLS_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
+version = "2.28.0+0"
+
+[[deps.Mmap]]
+uuid = "a63ad114-7e13-5084-954f-fe012c677804"
+
+[[deps.MozillaCACerts_jll]]
+uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
+version = "2022.2.1"
+
+[[deps.NetworkOptions]]
+uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
+version = "1.2.0"
+
+[[deps.OpenBLAS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
+uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
+version = "0.3.20+0"
+
+[[deps.Parsers]]
+deps = ["Dates", "SnoopPrecompile"]
+git-tree-sha1 = "6466e524967496866901a78fca3f2e9ea445a559"
+uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
+version = "2.5.2"
+
+[[deps.Pkg]]
+deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
+uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+version = "1.8.0"
+
+[[deps.PlutoUI]]
+deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
+git-tree-sha1 = "eadad7b14cf046de6eb41f13c9275e5aa2711ab6"
+uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+version = "0.7.49"
+
+[[deps.Printf]]
+deps = ["Unicode"]
+uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+
+[[deps.REPL]]
+deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
+uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
+
+[[deps.Random]]
+deps = ["SHA", "Serialization"]
+uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[[deps.Reexport]]
+git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
+uuid = "189a3867-3050-52da-a836-e630ba90ab69"
+version = "1.2.2"
+
+[[deps.SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"
+
+[[deps.Serialization]]
+uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+
+[[deps.SnoopPrecompile]]
+git-tree-sha1 = "f604441450a3c0569830946e5b33b78c928e1a85"
+uuid = "66db9d55-30c0-4569-8b51-7e840670fc0c"
+version = "1.0.1"
+
+[[deps.Sockets]]
+uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
+
+[[deps.SparseArrays]]
+deps = ["LinearAlgebra", "Random"]
+uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+[[deps.Statistics]]
+deps = ["LinearAlgebra", "SparseArrays"]
+uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+[[deps.TOML]]
+deps = ["Dates"]
+uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+version = "1.0.0"
+
+[[deps.Tar]]
+deps = ["ArgTools", "SHA"]
+uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
+version = "1.10.1"
+
+[[deps.Test]]
+deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
+uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[[deps.Tricks]]
+git-tree-sha1 = "6bac775f2d42a611cdfcd1fb217ee719630c4175"
+uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
+version = "0.1.6"
+
+[[deps.URIs]]
+git-tree-sha1 = "ac00576f90d8a259f2c9d823e91d1de3fd44d348"
+uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
+version = "1.4.1"
+
+[[deps.UUIDs]]
+deps = ["Random", "SHA"]
+uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
+
+[[deps.Unicode]]
+uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
+
+[[deps.Zlib_jll]]
+deps = ["Libdl"]
+uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
+version = "1.2.12+3"
+
+[[deps.libblastrampoline_jll]]
+deps = ["Artifacts", "Libdl", "OpenBLAS_jll"]
+uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
+version = "5.1.1+0"
+
+[[deps.nghttp2_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
+version = "1.48.0+0"
+
+[[deps.p7zip_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
+version = "17.4.0+0"
+"""
+
 # ╔═╡ Cell order:
 # ╠═e9576706-600e-11eb-1e10-e3bac02a254e
-# ╟─fa42d7da-600e-11eb-13a4-7dfe5ebbafd0
+# ╠═79271c7b-a15c-4e12-ae89-d107604c218d
 # ╟─4ec271b0-4e73-11eb-2660-6b8bd637d7ee
 # ╟─a1f2d06e-4e73-11eb-3afd-1353def71700
 # ╠═c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
@@ -759,7 +955,7 @@ end
 # ╠═f533012c-4e78-11eb-0f45-3b47f088c9c6
 # ╟─f69d89ba-4e73-11eb-3ab9-9179ea7e3217
 # ╟─de3de7fc-4e73-11eb-2ff6-1560481f7ee5
-# ╟─910c8e0e-600f-11eb-2558-57040714937b
+# ╟─0598b350-b906-4792-a42f-54ba3eed9577
 # ╠═e1c8cf4a-4e73-11eb-27be-d702064a0182
 # ╠═e56a46c6-4e73-11eb-1748-1b6fe5ab0376
 # ╠═e89adcaa-4e73-11eb-1ed8-e9c89ca633f6
@@ -767,7 +963,7 @@ end
 # ╠═efa205b4-4e73-11eb-1647-e9dcab5f7b7a
 # ╠═f3b5a778-4e73-11eb-1d3c-11ae19713eca
 # ╟─a0cecb24-4e74-11eb-3634-cd8dd628e9ec
-# ╟─200d8d36-6012-11eb-0171-8bc2511e18f1
+# ╟─c232463e-233b-449a-befd-306c7d7100d5
 # ╠═b31fe65a-4e74-11eb-0414-35f2be687c7f
 # ╠═c2ac0c48-4e74-11eb-10b0-91ad620fefcd
 # ╠═c5208cce-4e74-11eb-0615-135b510a9e8d
@@ -795,7 +991,7 @@ end
 # ╟─aa26b46c-4e78-11eb-24d8-7fdce7c94fff
 # ╠═815b0436-4e78-11eb-13d4-0dc6531e34f2
 # ╠═570c85bc-4e79-11eb-0249-891cf205d623
-# ╟─4495802e-6013-11eb-22fa-03f635d30a7b
+# ╟─b3da4c4b-3603-489a-b1ad-3c4a17ef9a98
 # ╠═6756d6ac-4e79-11eb-21ab-4776195c9d3b
 # ╠═e6f31ad8-4e79-11eb-11f4-2936cb039f8d
 # ╟─9a33c306-653c-11eb-3373-01e90d12b246
@@ -832,7 +1028,6 @@ end
 # ╠═938d8b1e-4e77-11eb-03d3-9b88c7cab3c1
 # ╠═96f6fef2-4e77-11eb-2ec4-399472d86a60
 # ╟─812cfe48-4e7a-11eb-32e6-c918bbe3e602
-# ╟─15bb7eb6-6016-11eb-01d2-0be88279db7e
 # ╟─178a5f96-6016-11eb-0314-010203c5fedf
 # ╟─4df6c0c0-4e7c-11eb-1d43-0d9bbf4896a7
 # ╟─d668a692-6017-11eb-2f28-e9b00762b92d
@@ -866,7 +1061,9 @@ end
 # ╠═8331c8b0-4e7d-11eb-0690-8bbae3ed086a
 # ╠═88a95ec0-4e7d-11eb-0a33-77ef82874f45
 # ╠═925e2f40-4e7d-11eb-0bd2-f91913c5a23e
-# ╟─0b2b40ae-601a-11eb-1d83-53ff171bb799
+# ╟─629e7829-d214-4406-a082-aa1f82cb539c
 # ╠═269b934c-601b-11eb-00ad-5fec0e2c37e1
 # ╟─3cf6dffd-d91e-465a-94bb-0ffe6b5152aa
 # ╟─ce5d564a-f2f3-4b1e-aa70-85253b2ccf38
+# ╟─00000000-0000-0000-0000-000000000001
+# ╟─00000000-0000-0000-0000-000000000002
