@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.19.19
 
 using Markdown
 using InteractiveUtils
@@ -7,8 +7,9 @@ using InteractiveUtils
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
     quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
         local el = $(esc(element))
-        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
     end
 end
@@ -703,9 +704,6 @@ end
 # ╔═╡ 6aa3519a-6248-11eb-193d-a3537f7d3bd0
 linecross(((0, 0), (1, 1)), ((0, 1), (1, 0)))
 
-# ╔═╡ 51bca412-6340-11eb-3f38-8bfc8377715b
-
-
 # ╔═╡ e21b0f1c-633b-11eb-3609-9b9dae71c915
 md"""
 By completing these functions, the following mathematical syntax should also work:
@@ -1055,7 +1053,6 @@ end
 # ╟─91273cd2-6248-11eb-245c-abb6269f916b
 # ╠═653af7c6-6248-11eb-2a7b-fbf7550ef92b
 # ╠═6aa3519a-6248-11eb-193d-a3537f7d3bd0
-# ╟─51bca412-6340-11eb-3f38-8bfc8377715b
 # ╟─e21b0f1c-633b-11eb-3609-9b9dae71c915
 # ╟─f97bf1c0-6247-11eb-1acc-e30068a277d0
 # ╟─97c8cd32-6340-11eb-1d6d-b7d364c0c987

@@ -455,7 +455,7 @@ brightness
 img[1:1500, 201:1700] ./ (brightness/100)
 
 # ╔═╡ 21db9766-64a4-11eb-3ec1-4956431e7a09
-
+sort(img, dims=2, by=c->hue(HSV(c)))  # we can sort the colors!
 
 # ╔═╡ 5064c592-4c4b-11eb-0dee-5186caf2b1f6
 md"### Higher dimensional arrays"
@@ -681,24 +681,7 @@ md"""
 
 Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that table generation is a tedious process... Write a small Julia package (read function) that generates a markdown table that takes an array of strings for the header and an n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function. Just for completion, you should end your table with a newline (\n).
 
-```MD
-		# Header 1
-		## Header 2
-		### Header 3
-
-		**This text is bold** and *this is italic*.
-
-		* This
-		* is 
-		* a 
-		* list.
-
-		| This | is | a | table |
-		| :--|:--|:--|:--| 
-		| 5 | 10 | 10 | 3 |
-		| 9 | 3 | 1 | 5 |
-		| 8 | 4 | 7 | 6 |
-	```
+```
 # Header 1
 ## Header 2
 ### Header 3
@@ -796,15 +779,6 @@ begin
 	Yₚ₂ = β₂.*t      # Human IQ
 end;
 
-# ╔═╡ 00121c4e-64a5-11eb-2993-61c695c4e6a1
-
-
-# ╔═╡ a8837ec2-5a4b-11eb-2930-55e48850b7db
-vandermonde(α, n) = missing
-
-# ╔═╡ 16ec4ee4-64a5-11eb-26f3-15313b8b5acb
-
-
 # ╔═╡ a0026d1c-bcdb-4a2e-b1a1-11c5235a4956
 md"""## Answers
 If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
@@ -816,7 +790,6 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question 3 | $(@bind answ_q3 CheckBox()) |
 | Question 4 | $(@bind answ_q4 CheckBox()) |
 | Question 5 | $(@bind answ_q5 CheckBox()) |
-| Question 6 | $(@bind answ_q6 CheckBox()) |
 """
 
 # ╔═╡ 6d43af49-f127-4ffe-ba97-0f04fb792efb
@@ -898,15 +871,6 @@ if answ_q5 == true
 	"""
 end
 
-# ╔═╡ 80159cd5-2e46-4375-b899-a44e45a948da
-if answ_q6 == true
-	md"""
-	```Julia
-	vandermonde(α, n) = [αᵢ^j for αᵢ in α, j in 0:n-1]
-	```
-	"""
-end
-
 # ╔═╡ 2e7973b6-4d0f-11eb-107c-cdaf349428c0
 md""" ## 5. References
 
@@ -934,7 +898,7 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.5"
 manifest_format = "2.0"
 project_hash = "4d594d5517ecd9b7b50ec45dad9191268e4d5f4d"
 
@@ -1040,7 +1004,7 @@ version = "4.5.0"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
@@ -1945,7 +1909,7 @@ version = "17.4.0+0"
 # ╟─8ce0ab98-4f3a-11eb-37b2-dd7dda63ad5f
 # ╠═ac62d6e0-5a74-11eb-1538-09d157738257
 # ╠═d73eba40-4f3a-11eb-0aa8-617fc22d5ca3
-# ╟─21db9766-64a4-11eb-3ec1-4956431e7a09
+# ╠═21db9766-64a4-11eb-3ec1-4956431e7a09
 # ╟─5064c592-4c4b-11eb-0dee-5186caf2b1f6
 # ╟─598980b8-4c4b-11eb-0c5b-b7064b189e97
 # ╠═5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
@@ -2013,10 +1977,6 @@ version = "17.4.0+0"
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─65a45d44-7942-4808-bed0-0369077c5edb
-# ╟─00121c4e-64a5-11eb-2993-61c695c4e6a1
-# ╠═a8837ec2-5a4b-11eb-2930-55e48850b7db
-# ╟─80159cd5-2e46-4375-b899-a44e45a948da
-# ╟─16ec4ee4-64a5-11eb-26f3-15313b8b5acb
 # ╟─a0026d1c-bcdb-4a2e-b1a1-11c5235a4956
 # ╟─2e7973b6-4d0f-11eb-107c-cdaf349428c0
 # ╟─00000000-0000-0000-0000-000000000001

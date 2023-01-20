@@ -346,9 +346,9 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "502a5e5263da26fcd619b7b7033f402a42a81ffc"
+project_hash = "08cc58b1fbde73292d848136b97991797e6c5429"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -375,7 +375,7 @@ version = "0.11.4"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -598,7 +598,7 @@ version = "17.4.0+0"
 # ╟─5368424c-63dd-11eb-3a1b-05a61e266d2b
 # ╟─6c0f2d10-63dd-11eb-2c17-fddf9cd51bfe
 # ╟─e1259736-63df-11eb-0010-3f2fc5719596
-# ╠═36e51b02-63df-11eb-34a5-39e6e0650541
+# ╟─36e51b02-63df-11eb-34a5-39e6e0650541
 # ╠═e677ca7e-63df-11eb-186b-8d20826ec916
 # ╠═c34af248-63e3-11eb-2bfd-898ef2cfbea5
 # ╠═4b4bbeb8-63e2-11eb-0ea2-6de494f61dc1
