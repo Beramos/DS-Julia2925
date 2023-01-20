@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.19.19
 
 using Markdown
 using InteractiveUtils
@@ -11,10 +11,6 @@ using PlutoUI
 md"""# Pokémon Fights In Julia
 Welcome great adventurer, in this notebook we will take you on a `Pokémon` journey. We will try to take adnvantage of the **multiple dispatch** system of Julia by implementing a very efficient Pokémon fight system. 
 """
-
-# ╔═╡ 8efc6f7a-1336-4118-acec-29f751cf7aac
-md"""Something to get you in the right mood:\
-$(Resource("https://vgmsite.com/soundtracks/pokemon-gameboy-sound-collection/gbhogmtx/107-battle%20%28vs%20wild%20pokemon%29.mp3"))"""
 
 # ╔═╡ 0f6fc6b1-6d79-4ab7-9263-92adecb6e495
 md"""## The Mechanics 
@@ -226,7 +222,6 @@ end
 
 # ╔═╡ db9ba5b4-0573-4bd0-9359-24cdc2885082
 md"""Now that we have defined all of the effects, it's time to take a small brake and heal up at the PokéCenter!\
-$(Resource("https://vgmsite.com/soundtracks/pokemon-gameboy-sound-collection/znqhqixi/111-pokemon%20recovery.mp3"))\
 $(Resource("http://25.media.tumblr.com/tumblr_lzm9prI6UJ1qeh39oo1_500.gif"))\
 *Gif from http://pokemondailylr.blogspot.com/2012/12/pokemon-center.html* """
 
@@ -331,9 +326,9 @@ end
 show(Venusaur)
 
 # ╔═╡ 88d51607-8d4f-4087-ab00-2113a9c65ad4
-md"""As you can see the sky is the limit with these types and take note of the fact that it's all calculated very efficiently!\
-For now this notebook is over but the Pokémon adventure never stops!\
-$(Resource("https://vgmsite.com/soundtracks/pokemon-gameboy-sound-collection/gjqttmbp/108-victory%20%28vs%20wild%20pokemon%29.mp3"))
+md"""As you can see, the sky is the limit with these types and take note of the fact that it's all calculated very efficiently!\
+For now, this notebook is over but the Pokémon adventure never stops!\
+
 """
 
 # ╔═╡ 6209b50b-5ded-4529-a895-2ae533ef63b6
@@ -398,13 +393,17 @@ deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [[Random]]
-deps = ["Serialization"]
+deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [[Reexport]]
 git-tree-sha1 = "5f6c21241f0f655da3952fd60aa18477cf96c220"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
 version = "1.1.0"
+
+[[SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"
 
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
@@ -421,7 +420,6 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 # ╔═╡ Cell order:
 # ╟─1dffac12-ef71-11eb-3d44-537b4ed77dc9
 # ╟─63456a8a-6821-446c-9279-8a9fc269b047
-# ╟─8efc6f7a-1336-4118-acec-29f751cf7aac
 # ╟─0f6fc6b1-6d79-4ab7-9263-92adecb6e495
 # ╠═fc131461-7d14-4301-aad5-1c91ed54c972
 # ╟─d53461a0-8124-4108-b8a9-909313c01b55
