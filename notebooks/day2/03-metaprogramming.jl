@@ -643,6 +643,17 @@ Using the `Distributed` module, one can easily transform certain types of code t
 	println(i)
 end
 
+# ╔═╡ 7fb1899d-7ed2-44ad-a76b-79ab401ba9f3
+md"
+With `@time` or `@elapsed` you can check the execution time of an expression. Note that `@time` returns the result of the expression, whereas `@elapsed` returns the execution time in seconds
+"
+
+# ╔═╡ 0b4f0a03-8556-4009-9c3f-89c3628c006f
+@time 1:100_000_000 |> sum
+
+# ╔═╡ 867805fe-bc86-4b81-9237-2a056076d138
+@elapsed 1:100_000_000 |> sum
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -1838,5 +1849,8 @@ version = "1.4.1+0"
 # ╟─d418dca4-5fe5-11eb-3f1a-a31e5dc5f7e9
 # ╠═b2c1cef8-5fe5-11eb-20c7-134432196893
 # ╠═f1b70998-5fdb-11eb-292b-0776f1b03816
+# ╟─7fb1899d-7ed2-44ad-a76b-79ab401ba9f3
+# ╠═0b4f0a03-8556-4009-9c3f-89c3628c006f
+# ╠═867805fe-bc86-4b81-9237-2a056076d138
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
