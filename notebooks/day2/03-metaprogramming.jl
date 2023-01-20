@@ -8,16 +8,10 @@ using InteractiveUtils
 using PlutoUI; TableOfContents()
 
 # ╔═╡ 122cffca-5fdc-11eb-3555-b39b818f1116
-# ╠═╡ skip_as_script = true
-#=╠═╡
 let 
 	using JuMP
 	using GLPK
 end
-  ╠═╡ =#
-
-# ╔═╡ 0963185c-5fdc-11eb-0eed-89d514850353
-using BioSequences
 
 # ╔═╡ 24806108-5fdc-11eb-2f19-bb09f836f893
 using Sockets
@@ -32,15 +26,14 @@ using Distributed
 md"""
 # Metaprogramming
 
-The strongest legacy of [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)) in the Julia language is its metaprogramming support. Like Lisp,
-Julia represents its own code as a data structure of the language itself. Since code is represented
-by objects that can be created and manipulated from within the language, it is possible for a
-program to transform and generate its own code. This allows sophisticated code generation without
-extra build steps, and also allows true Lisp-style macros operating at the level of abstract syntax trees.
-Because all data types and
-code in Julia are represented by Julia data structures, powerful reflection
-capabilities are available to explore the internals of a program and its types just like any other
-data.
+The strongest legacy of [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)) in the Julia language is its metaprogramming  support. Like Lisp, Julia represents its own code as a data structure of the language itself. 
+
+Since code is represented by objects that can be created and manipulated from within the language, it is possible for a program to transform and generate its own code. This allows sophisticated code generation without extra build steps, and also allows true Lisp-style macros operating at the level of abstract syntax trees.
+
+
+Because all data types and code in Julia are represented by Julia data structures, powerful reflection capabilities are available to explore the internals of a program and its types just like any other data.
+
+First, we will talk about how to represent a program (aka the building blocks), then how to manipulate Julia code from Julia with macros. Finally, we end with examples on code generation and some interesting macros
 """
 
 # ╔═╡ 4ab33c0e-5e53-11eb-2e63-2dd6f06de3ba
@@ -57,8 +50,8 @@ prog = "1 + 1"
 md"""
 **What happens next?**
 
-The next step is to parse each string
-into an object called an expression, represented by the Julia type `Expr`. 
+The next step is to parse each string into an object called an expression, represented by the Julia type `Expr`. 
+
 Parsing means taking the input (in this case, a string) and building a data structure – often some kind of parse tree, [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or other hierarchical structure, giving a structural representation of the input while checking for correct syntax. 
 """
 
@@ -72,8 +65,7 @@ typeof(ex1)
 md"""
 `Expr` objects contains two parts:
 
-  * a `Symbol` identifying the kind of expression. A symbol is an [interned string](https://en.wikipedia.org/wiki/String_interning)
-    identifier (string interning is a method of storing only one copy of each distinct string value, which must be immutable).
+  1. a `Symbol` identifying the kind of expression (e.g. a call, for loop, conditional statement, etc.). A symbol is an [interned string](https://en.wikipedia.org/wiki/String_interning) identifier (string interning is a method of storing only one copy of each distinct string value, which must be immutable).
 
 """
 
@@ -82,7 +74,7 @@ ex1.head
 
 # ╔═╡ 48104478-5e54-11eb-2f23-c98c4ccbb763
 md"""
-  * the expression arguments, which may be symbols, other expressions, or literal values:
+  2. the expression arguments, which may be symbols, other expressions, or literal values:
 """
 
 # ╔═╡ 538e2054-5e54-11eb-2b9c-451637e1d8ee
@@ -119,7 +111,7 @@ dump(ex2)
 md"""
 ### Symbols
 
-The `:` character has two syntactic purposes in Julia. The first form creates a [`Symbol`](@ref),
+The `:` character has two syntactic purposes in Julia. The first form creates a [`Symbol`](https://docs.julialang.org/en/v1/base/base/#Core.Symbol),
 an [interned string](https://en.wikipedia.org/wiki/String_interning) used as one building-block
 of expressions:
 """
@@ -173,57 +165,6 @@ typeof(ex)
 # ╔═╡ 67954702-5e5a-11eb-1ab1-e9a285ee208d
 ex.args
 
-# ╔═╡ 2ae6ac9c-5e5a-11eb-060c-b3eae1df0493
-md"""
-### Interpolation
-
-Direct construction of `Expr` objects with value arguments is powerful, but `Expr` constructors
-can be tedious compared to "normal" Julia syntax. As an alternative, Julia allows *interpolation* of
-literals or expressions into quoted expressions. Interpolation is indicated by a prefix `$`.
-
-In this example, the value of variable `a` is interpolated:
-"""
-
-# ╔═╡ 5ef3d532-5e5a-11eb-30b3-a569e0bd736e
-a = 1
-
-# ╔═╡ 3bb1f892-5e5a-11eb-0946-e5e977a4e5b2
-:($a + b)
-
-# ╔═╡ 5763cca0-5e5a-11eb-1341-3d9bfb47fb58
-md"""
-Interpolating into an unquoted expression is not supported and will cause a compile-time error:
-"""
-
-# ╔═╡ e6a3902a-5e58-11eb-2bd2-4bc779bcebe7
-$a + b
-
-# ╔═╡ 11991248-5e55-11eb-2748-992f6fe48620
-md"""
-The use of `$` for expression interpolation is intentionally reminiscent of string interpolation and command interpolation. Expression interpolation allows convenient, readable programmatic construction of complex Julia expressions.
-"""
-
-# ╔═╡ 1c016bec-5e5d-11eb-3687-931da82f8c04
-md"""
-
-### Splatting interpolation
-
-Notice that the `$` interpolation syntax allows inserting only a single expression into an
-enclosing expression.
-Occasionally, you have an array of expressions and need them all to become arguments of
-the surrounding expression.
-This can be done with the syntax `$(args...)`.
-
-For example, the following code generates a function call where the number of arguments is
-determined programmatically:
-"""
-
-# ╔═╡ 552ea3bc-5e5d-11eb-0c97-e1e6db526df3
-args = [:x, :y, :z]
-
-# ╔═╡ 629c4f9a-5e5d-11eb-2731-bf7457755829
-:(f(1, $(args...)))
-
 # ╔═╡ 66c113d0-5e5d-11eb-0aab-b3fa7f98eae5
 md"""
 ### Evaluating expressions
@@ -242,6 +183,7 @@ md"""
 ## Macros
 
 Now that we have an understanding of the basic concepts of code representation in Julia, we can introduce the core concept of this notebook: macros. 
+
 Macros provide a method to include generated code in the final body of a program. A macro maps
 a tuple of arguments to a returned *expression*, and the resulting expression is compiled directly
 rather than requiring a runtime `eval` call. Macro arguments may include expressions,
@@ -289,7 +231,7 @@ end
 @sayhello
 
 # ╔═╡ bda7fd66-5e5e-11eb-1e06-eb67a0178e14
-@sayhello()
+@sayhello
 
 # ╔═╡ 2dcacdfc-5e60-11eb-3d04-9f2ffb46d0fe
 md"""
@@ -316,13 +258,9 @@ md"""
 
 ### Hold on: why macros?
 
-We have already seen a function `f(::Expr...) -> Expr` in a previous section. In fact, `macroexpand` is also such a function. So, why do macros exist?
-
 Macros are necessary because they execute when code is parsed, therefore, macros allow the programmer
 to generate and include fragments of customized code *before* the full program is run. To illustrate
 the difference, consider the following example.
-
-Note that in this case, you need to look at your REPL to see the output. A macro definition is not allowed in the local scope, so we cannot wrap this with our `@terminal` macro.
 """
 
 # ╔═╡ cabb3cdc-5e62-11eb-2479-bb8337c05292
@@ -335,13 +273,20 @@ macro twostep(arg)
 end
 
 # ╔═╡ f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
-md"""Note that the computation of message is compiled away if we expand the macro!"""
+md"""Note that the computation of `message` is compiled away if we expand the macro!"""
 
 # ╔═╡ 01feeca0-5e63-11eb-11a0-1b66a92127d1
 ex_twostep = @macroexpand @twostep :(1, 2, 3)
 
 # ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
 dump(ex_twostep)
+
+# ╔═╡ da275ff1-b3d9-4a91-b03a-914878555418
+md"If you need another example, check out the code below that is generated using the `@elapsed` macro: a functionality that lets you time an expression by injecting `time_ns()` before and after the expression.
+"
+
+# ╔═╡ 876ea56f-d426-4908-a832-96ccbd83d950
+@macroexpand @elapsed sleep(1)
 
 # ╔═╡ 0613f620-5e66-11eb-08d9-01dd3a403321
 md"""
@@ -350,22 +295,10 @@ md"""
 Macros are invoked with the following general syntax:
 
 ```julia
-@name expr1 expr2 ...
-@name(expr1, expr2, ...)
+@name expr1 expr2 ... # only spaces!
+@name(expr1, expr2, ...) # no space, with commas!
 ```
 
-"""
-
-# ╔═╡ 29a2c0ee-5e66-11eb-2194-6f1c3cef563a
-md"""
-Note the distinguishing `@` before the macro name and the lack of commas between the argument
-expressions in the first form, and the lack of whitespace after `@name` in the second form. The
-two styles should not be mixed. For example, the following syntax is different from the examples
-above; it passes the tuple `(expr1, expr2, ...)` as one argument to the macro:
-
-```julia
-@name (expr1, expr2, ...)
-```
 """
 
 # ╔═╡ a1e86478-5e66-11eb-2ef9-6d460e707013
@@ -402,9 +335,8 @@ while the value of `string(:(1 == 1.0))` is spliced into the assertion message s
 expression, thus constructed, is placed into the syntax tree where the `@assert` macro call occurs.
 Then at execution time, if the test expression evaluates to true, then `nothing` is returned,
 whereas if the test is false, an error is raised indicating the asserted expression that was false.
-Notice that it would not be possible to write this as a function, since only the *value* of the
-condition is available and it would be impossible to display the expression that computed it in
-the error message.
+
+**Notice that it would not be possible to write this as a function, since only the value of the condition is available and it would be impossible to display the expression that computed it in the error message.**
 
 The actual definition of `@assert` in Julia Base is more complicated. It allows the
 user to optionally specify their own error message, instead of just printing the failed expression.
@@ -439,31 +371,6 @@ of a macro expansion with `@macroexpand`.
 
 # ╔═╡ 4dce26dc-5e68-11eb-1ff7-8974f93e3cb8
 @macroexpand @assert a==b "a should equal b!"
-
-# ╔═╡ 558920ca-5e68-11eb-3533-d5d596e3884d
-md"""
-
-There is yet another case that the actual `@assert` macro handles: what if, in addition to printing
-"a should equal b," we wanted to print their values? One might naively try to use string interpolation
-in the custom message, e.g., `@assert a==b "a ($a) should equal b ($b)!"`, but this won't work
-as expected with the above macro. Can you see why? Recall from string interpolation that an interpolated string is rewritten to a call to `string`. Compare:
-"""
-
-# ╔═╡ 6d69106a-5e68-11eb-0d50-e17b4db5db74
-typeof(:("a should equal b"))
-
-# ╔═╡ 715464cc-5e68-11eb-3e1a-977db04a7db6
-typeof(:("a ($a) should equal b ($b)!"))
-
-# ╔═╡ 7588018e-5e68-11eb-3be2-b97ce124d6bf
-dump(:("a ($a) should equal b ($b)!"))
-
-# ╔═╡ 84771eaa-5e68-11eb-0684-cf1a3118d10b
-md"""
-So now instead of getting a plain string in `msg_body`, the macro is receiving a full expression that will need to be evaluated in order to display as expected. This can be spliced directly into the returned expression as an argument to the `string` call; see `error.jl` for the complete implementation.
-
-The `@assert` macro makes great use of splicing into quoted expressions to simplify the manipulation of expressions inside the macro body.
-"""
 
 # ╔═╡ 43a19ace-5e6b-11eb-005b-b7d2d9a46878
 md"""
@@ -500,6 +407,9 @@ end
 
 # ╔═╡ 42fc5284-5e6c-11eb-0edb-9555a320ec55
 @m 1 2
+
+# ╔═╡ dc168cf8-484f-4054-a6d2-55703e99fda2
+@m 1 2 3
 
 # ╔═╡ 02e4bf64-5e6d-11eb-36b5-fb57c87bff81
 @m 3
@@ -551,9 +461,6 @@ log10(y)
 # ╔═╡ cae2546a-5e6b-11eb-3fc2-69f9a15107cf
 md"""In this manner, Julia acts as its own preprocessor, and allows code generation from inside the language."""
 
-# ╔═╡ 0ac5096e-61a1-11eb-24ba-13bc0a3377c6
-
-
 # ╔═╡ efc1357a-61a0-11eb-20f5-a15338080e4c
 md"### Example: domain specific languages"
 
@@ -576,7 +483,6 @@ Which can be transcribed into a `JuMP` model as:
 "
 
 # ╔═╡ 92458f54-5f57-11eb-179f-c749ce06f7e2
-#=╠═╡
 let
 	model = Model(GLPK.Optimizer)
 	@variable(model, 0 <= x <= 1)
@@ -586,7 +492,7 @@ let
 	optimize!(model)
 	value(x), value(y), objective_value(model)
 end
-  ╠═╡ =#
+
 
 # ╔═╡ d1222dcc-5f57-11eb-2c87-77a16ea8e65d
 md"
@@ -594,158 +500,17 @@ Without the macros, the code would be more difficult to read. As an example, che
 "
 
 # ╔═╡ 0b1f3542-5f58-11eb-1610-75df3e2a4a76
-#=╠═╡
 let
 	model = Model(GLPK.Optimizer)
 	@macroexpand @constraint(model, x + y <= 1)
 end
-  ╠═╡ =#
 
-# ╔═╡ 57f243ec-5fe3-11eb-04d9-d776ccba4c0f
-md"Finally, this section on code generation ends with two more examples:
-1. a macro to repeat a certain expression n-times
-2. a macro to repeat a certain expression until a condition is met
-
-Are these macros the best way to tackle the problems at hand? Maybe not, but they do give a nice illustration of how the code generation works.
-"
-
-# ╔═╡ 211cf9ca-5fe3-11eb-2596-71b1848753d7
-macro dotimes(n, body)
-    quote
-        for i = 1:$(esc(n))
-            $(esc(body))
-        end
-    end
-end
-
-# ╔═╡ 35ccaee2-5fe3-11eb-3bd0-e355b0fd3f71
-@macroexpand @dotimes 3 println("hi there")
-
-# ╔═╡ 434669d2-5fe3-11eb-1f4a-27edf1f9e7f6
-macro until(condition, block)
-    quote
-        while true
-            $(esc(block))
-            if $(esc(condition))
-                break
-            end
-        end
-    end
-end
-
-# ╔═╡ 9612965e-5fe3-11eb-172a-59cc73a26ab6
-PlutoUI.with_terminal() do
-	i = 0
-	@until i == 10 begin
-		i += 1
-		println(i) 
-	end
-end
-
-# ╔═╡ 3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
-@macroexpand @until j == 10 begin
-	j += 1
-	println(j) 
-end
-
-# ╔═╡ 10a8532a-5e60-11eb-3331-974e708cb39d
-md"""
-## Non-Standard String Literals
-
-String literals prefixed by an identifier are called non-standard string literals, and can have different semantics than un-prefixed string literals. For example:
-
-
-  * `r"^\s*(?:#|$)"` produces a regular expression object rather than a string
-  * `b"DATA\xff\u2200"` is a byte array literal for `[68,65,84,65,255,226,136,128]`.
-
-Perhaps surprisingly, these behaviors are not hard-coded into the Julia parser or compiler. Instead,
-they are custom behaviors provided by a general mechanism that anyone can use: prefixed string
-literals are parsed as calls to specially-named macros. For example, the regular expression macro
-is just the following:
-```julia
-macro r_str(p)
-    Regex(p)
-end
-```
-"""
-
-# ╔═╡ d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
-md"""
-That's all. This macro says that the literal contents of the string literal `r"^\s*(?:#|$)"` should
-be passed to the `@r_str` macro and the result of that expansion should be placed in the syntax
-tree where the string literal occurs. In other words, the expression `r"^\s*(?:#|$)"` is equivalent
-to placing the following object directly into the syntax tree:
-"""
-
-# ╔═╡ e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
-Regex("^\\s*(?:#|\$)")
-
-# ╔═╡ ec73cd70-5e7a-11eb-0285-6b1fabd1289d
-md"""
-Not only is the string literal form shorter and far more convenient, but it is also more efficient:
-since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*,
-the compilation occurs only once, rather than every time the code is executed. Consider if the
-regular expression occurs in a loop:
-"""
-
-# ╔═╡ f1d24ba2-5e7a-11eb-010a-f543cfc306b5
-PlutoUI.with_terminal() do
-	for line ∈ ["first", "sec#nd", "third"]
-		m = match(r"#", line)
-		if m === nothing
-			println("nothing found")
-		else
-			println("found something")
-		end
-	end
-end
-
-# ╔═╡ f838762c-5e7a-11eb-000a-e963fab5e97d
-md"""
-Since the regular expression `r"^\s*(?:#|$)"` is compiled and inserted into the syntax tree when
-this code is parsed, the expression is only compiled once instead of each time the loop is executed.
-In order to accomplish this without macros, one would have to write this loop like this:
-"""
-
-# ╔═╡ 149c1c12-5e7b-11eb-297d-6da57f45891b
-PlutoUI.with_terminal() do
-	re = Regex("#")
-	for line ∈ ["first", "sec#nd", "third"]
-		m = match(re, line)
-		if m === nothing
-			println("nothing found")
-		else
-			println("found something")
-		end
-	end
-end
-
-# ╔═╡ 780da60e-5e7c-11eb-0c1a-55be73da188f
-md"""
-Moreover, if the compiler could not determine that the regex object was constant over all loops,
-certain optimizations might not be possible, making this version still less efficient than the
-more convenient literal form above. Of course, there are still situations where the non-literal
-form is more convenient: if one needs to interpolate a variable into the regular expression, one
-must take this more verbose approach. In the vast majority of use cases, however, regular expressions
-are not constructed based on run-time data. In this majority of cases, the ability to write regular
-expressions as compile-time values is invaluable.
-"""
-
-# ╔═╡ 90a672d0-5f5c-11eb-3a62-1b034cd41e67
+# ╔═╡ 2e2601b6-5e94-11eb-3613-eb5fee19b6b7
 md"
-Designing your own custom string literals can be done as such:
+## Overview of some interesting macros
 "
 
-# ╔═╡ b4104d12-5e7c-11eb-3e22-a78b74526129
-macro foo_str(str, flag)
-    # do stuff
-	str, flag
-end
-
-# ╔═╡ 20393e86-5e7d-11eb-18e3-613890472903
-foo"this is the string"theflag
-
-# ╔═╡ 5069df16-5e7d-11eb-217d-6b740e9b3559
+# ╔═╡ d889f68e-4d15-4bab-92f6-c42bac58e60a
 md"""
 The first example of a custom macro can be found in every notebook in this course! It is the markdown string literal, which allows the usage of Markdown markup language to prettify these lectures!
 
@@ -753,82 +518,35 @@ The first example of a custom macro can be found in every notebook in this cours
 md"I am a Markdown string with glorious **formatting capabilities**."
 ```
 I am a Markdown string with glorious *formatting* **capabilities**.
+
+```julia
+macro md_str(p)
+	...
+end
+```
 """
 
-# ╔═╡ 1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
-md"The second example is from the `BioSequences.jl` package. In that bioinformatics package, you can define sequences e.g. DNA and RNA as string literals:
-"
-
-# ╔═╡ 0664eb22-5e7d-11eb-07a6-ed35143bf03f
-dna"ACGT"
-
-# ╔═╡ a965bd70-5e7c-11eb-13dd-5fe83950af11
-md"Repetition and concatenation can be performed pretty straightforward:"
-
-# ╔═╡ fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
-repeat(dna"TTAGGG", 10)
-
-# ╔═╡ a157dafc-5e7c-11eb-105d-4db3ee9dbec6
-dna = dna"ACGT" * dna"TGCAA"
-
-# ╔═╡ 0ec9887c-5f5e-11eb-29e5-931881dcb222
-md"Other typical string operations such as pushing new values work as you would expect"
-
-# ╔═╡ 1d4aca5a-5f5e-11eb-23c3-d1ddef4e6ee6
-push!(dna, DNA_A)
-
-# ╔═╡ c4c2137a-5f5d-11eb-1e06-8f5e2b1f1c0e
-md"There exist methods to convert a DNA sequence to its RNA equivalent:"
-
-# ╔═╡ e13fcbbe-5f5d-11eb-2074-fdbc945861e1
-rna = convert(LongRNASeq, dna)
-
-# ╔═╡ 2c1308f4-5f5e-11eb-058f-79cbf7dd23c6
-md"Note that altough the printout of the DNA and RNA object is different because of different nucleotides. The information content is the same, and as such this statement is true:"
-
-# ╔═╡ fdf46c92-5f5d-11eb-345b-e145c9c2874c
-dna.data === rna.data
-
-# ╔═╡ 37da420a-5f61-11eb-3688-09e6188165e3
-md"Remember before that we mentioned that you can add a flag to a string literal? In `BioSequences.jl` this has a use case. 
-
-If you have a function that generates a sequence, and you want it to create a new sequence each time it is called, then you can add a flag to the end of the sequence literal to dictate behaviour: A flag of 's' means 'static': the sequence will be allocated before code is run, as is the default behaviour. However providing 'd' flag changes the behaviour: 'd' means 'dynamic': the sequence will be allocated whilst the code is running, and not before. So to change foo so as it creates a new sequence each time it is called, simply add the 'd' flag to the sequence literal:"
-
-# ╔═╡ d9f18616-5e8d-11eb-1b1a-3bcc749fb467
-function getdna_dynamic()
-	s = dna"CTT"d     # 'd' flag appended to the string literal.
-	push!(s, DNA_A)
-end
-
-# ╔═╡ ea3da4dc-5e8d-11eb-0910-091b926aea58
-getdna_dynamic()
-
-# ╔═╡ f13dd22a-5e8d-11eb-1def-137de66123ba
-getdna_dynamic()
-
-# ╔═╡ be11ec9a-5f61-11eb-374a-c96489ea582d
-md"Output of `getdna_dynamic()` stays the same!"
-
-# ╔═╡ f44d757e-5e8d-11eb-18f1-719d3c7b8688
-function getdna_static()
-	s = dna"CTT"s     # 's' flag appended to the string literal.
-	push!(s, DNA_A)
-end
-
-# ╔═╡ fa310fdc-5e8d-11eb-024b-7ded3e213112
-getdna_static()
-
-# ╔═╡ 1acb02d4-5e8e-11eb-232c-f756e92c3f97
-getdna_static()
-
-# ╔═╡ 2dcb4600-5e8e-11eb-093e-59eb79f0cf20
+# ╔═╡ fe4095e9-0c35-4459-98b0-30ba91fc90b4
 md"""
-Be careful when you are using sequence literals inside of functions, and inside the bodies of things like for loops. And if you use them and are unsure, use the 's' and 'd' flags to ensure the behaviour you get is the behaviour you intend.
+The regular expression macro is just the following:
+```julia
+macro r_str(p)
+    Regex(p)
+end
+```
+That's all. This macro says that the literal contents of the string literal `r"^\s*(?:#|$)"` should
+be passed to the `@r_str` macro and the result of that expansion should be placed in the syntax
+tree where the string literal occurs. In other words, the expression `r"^\s*(?:#|$)"` is equivalent
+to placing the following object directly into the syntax tree:
+
 """
 
-# ╔═╡ 2e2601b6-5e94-11eb-3613-eb5fee19b6b7
-md"
-## Overview of some interesting macros
+# ╔═╡ ce8b16fa-7644-4c64-ad3c-cbf667b4811b
+Regex("^\\s*(?:#|\$)")
+
+# ╔═╡ f20221ca-82d1-4973-9f68-e46638c929f7
+md"Not only is the string literal form shorter and far more convenient, but it is also more efficient:
+since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*, the compilation occurs only once, rather than every time the code is executed.
 "
 
 # ╔═╡ 311a4666-5fc5-11eb-2cc0-ef66e5be96e3
@@ -887,7 +605,10 @@ When developing modules, scripts or julia packages, you can use the `@info`, `@w
 
 An example usage would be a warning thrown by an optimisation algorithm to tell you that e.g. the predefined accuracy or tolerance was not reached.
 
-Note, to make `@debug` you need to set an environment variable to mark that you are in debug mode: `ENV["JULIA_DEBUG"] = "all"`
+Note, to make `@debug` you need to set an environment variable to mark that you are in debug mode: 
+```julia
+ENV["JULIA_DEBUG"] = "all"
+```
 """
 
 # ╔═╡ 4a9d85ba-5fc7-11eb-1b6e-59ef2259dd24
@@ -895,6 +616,7 @@ PlutoUI.with_terminal() do
 	@info "Information comes here"
 	@error "Error has been found at this exact location"
 	@warn "Same. but for a warning"
+	@debug "Debugging info, not printed by default"
 end
 
 # ╔═╡ 34829ada-5fdc-11eb-263a-cf60a9650556
@@ -916,7 +638,7 @@ end
 end
 
 # ╔═╡ 1a793992-5fdb-11eb-3b38-05544f268a65
-plot(TemperatureMeas(Plots.fakedata(50), Plots.fakedata(50), Plots.fakedata(50)))
+plot(TemperatureMeas(Plots.fakedata(50), -Plots.fakedata(50), Plots.fakedata(50).^2))
 
 # ╔═╡ d418dca4-5fe5-11eb-3f1a-a31e5dc5f7e9
 md"
@@ -924,16 +646,24 @@ Using the `Distributed` module, one can easily transform certain types of code t
 "
 
 # ╔═╡ f1b70998-5fdb-11eb-292b-0776f1b03816
-PlutoUI.with_terminal() do
-	@sync @distributed for i ∈ 1:5
-		println(i)
-	end
+@sync @distributed for i ∈ 1:5
+	println(i)
 end
+
+# ╔═╡ 7fb1899d-7ed2-44ad-a76b-79ab401ba9f3
+md"
+With `@time` or `@elapsed` you can check the execution time of an expression. Note that `@time` returns the result of the expression, whereas `@elapsed` returns the execution time in seconds
+"
+
+# ╔═╡ 0b4f0a03-8556-4009-9c3f-89c3628c006f
+@time 1:100_000_000 |> sum
+
+# ╔═╡ 867805fe-bc86-4b81-9237-2a056076d138
+@elapsed 1:100_000_000 |> sum
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
-BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 GLPK = "60bf3e95-4087-53dc-ae20-288a0d20c6a6"
 JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
@@ -942,7 +672,6 @@ PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
 
 [compat]
-BioSequences = "~3.1.2"
 GLPK = "~1.1.0"
 JuMP = "~1.5.0"
 Plots = "~1.38.0"
@@ -953,9 +682,9 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.4"
 manifest_format = "2.0"
-project_hash = "f876cfdc2c7b2f3852592a2c0f72ead7d96cdc2b"
+project_hash = "0e368e512026c4c7e81a1db6d9c3b61f5135bfeb"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -979,18 +708,6 @@ git-tree-sha1 = "d9a9701b899b30332bbcb3e1679c41cce81fb0e8"
 uuid = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 version = "1.3.2"
 
-[[deps.BioSequences]]
-deps = ["BioSymbols", "Random", "SnoopPrecompile", "Twiddle"]
-git-tree-sha1 = "e67b5446b44d96595ededa2b32ab0f2f6b3d2997"
-uuid = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
-version = "3.1.2"
-
-[[deps.BioSymbols]]
-deps = ["SnoopPrecompile"]
-git-tree-sha1 = "2052c3ec7c41b69efa0e9ff7e2734aa6658d4c40"
-uuid = "3c28c6f8-a34d-59c4-9654-267d177fcfa9"
-version = "5.1.2"
-
 [[deps.BitFlags]]
 git-tree-sha1 = "43b1a4a8f797c1cddadf60499a8a077d4af2cd2d"
 uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
@@ -1003,7 +720,7 @@ uuid = "6e34b625-4abd-537c-b88f-471c36dfa7a0"
 version = "1.0.8+0"
 
 [[deps.Cairo_jll]]
-deps = ["Artifacts", "Bzip2_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
+deps = ["Artifacts", "Bzip2_jll", "CompilerSupportLibraries_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
 git-tree-sha1 = "4b859a208b2397a7a623a03449e4636bdb17bcf2"
 uuid = "83423d85-b0ee-5818-9007-b63ccbeb887a"
 version = "1.16.1+1"
@@ -1071,7 +788,7 @@ version = "4.5.0"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.2+0"
+version = "1.0.1+0"
 
 [[deps.Contour]]
 git-tree-sha1 = "d05d9e7b7aedff4e5b51a029dced05cfb6125781"
@@ -1762,11 +1479,6 @@ git-tree-sha1 = "6bac775f2d42a611cdfcd1fb217ee719630c4175"
 uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
 version = "0.1.6"
 
-[[deps.Twiddle]]
-git-tree-sha1 = "29509c4862bfb5da9e76eb6937125ab93986270a"
-uuid = "7200193e-83a8-5a55-b20d-5d36d44a0795"
-version = "1.1.2"
-
 [[deps.URIs]]
 git-tree-sha1 = "ac00576f90d8a259f2c9d823e91d1de3fd44d348"
 uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
@@ -2051,15 +1763,6 @@ version = "1.4.1+0"
 # ╠═917a579c-5e5a-11eb-3fe6-cb0dcad5e4e6
 # ╠═82d3220a-5e5a-11eb-3c49-d5e7afb1af2a
 # ╠═67954702-5e5a-11eb-1ab1-e9a285ee208d
-# ╟─2ae6ac9c-5e5a-11eb-060c-b3eae1df0493
-# ╠═5ef3d532-5e5a-11eb-30b3-a569e0bd736e
-# ╠═3bb1f892-5e5a-11eb-0946-e5e977a4e5b2
-# ╟─5763cca0-5e5a-11eb-1341-3d9bfb47fb58
-# ╠═e6a3902a-5e58-11eb-2bd2-4bc779bcebe7
-# ╟─11991248-5e55-11eb-2748-992f6fe48620
-# ╟─1c016bec-5e5d-11eb-3687-931da82f8c04
-# ╠═552ea3bc-5e5d-11eb-0c97-e1e6db526df3
-# ╠═629c4f9a-5e5d-11eb-2731-bf7457755829
 # ╟─66c113d0-5e5d-11eb-0aab-b3fa7f98eae5
 # ╠═6fc2fb9c-5e5d-11eb-0f21-6524555a9c42
 # ╠═6dab1d58-5e5d-11eb-3381-a1796f8d14c5
@@ -2082,8 +1785,9 @@ version = "1.4.1+0"
 # ╟─f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
 # ╠═01feeca0-5e63-11eb-11a0-1b66a92127d1
 # ╠═f1969888-5e65-11eb-18a3-879d2f87b447
+# ╟─da275ff1-b3d9-4a91-b03a-914878555418
+# ╠═876ea56f-d426-4908-a832-96ccbd83d950
 # ╟─0613f620-5e66-11eb-08d9-01dd3a403321
-# ╟─29a2c0ee-5e66-11eb-2194-6f1c3cef563a
 # ╟─a1e86478-5e66-11eb-2ef9-6d460e707013
 # ╠═e61381aa-5e66-11eb-3347-5d26b61e6c17
 # ╟─a43490de-5e67-11eb-253e-f7455ade3ffe
@@ -2097,17 +1801,13 @@ version = "1.4.1+0"
 # ╟─376fe8e4-5e68-11eb-1d7d-c9b1945b133f
 # ╠═4750ce04-5e68-11eb-237e-3fed9eb1f4c5
 # ╠═4dce26dc-5e68-11eb-1ff7-8974f93e3cb8
-# ╟─558920ca-5e68-11eb-3533-d5d596e3884d
-# ╠═6d69106a-5e68-11eb-0d50-e17b4db5db74
-# ╠═715464cc-5e68-11eb-3e1a-977db04a7db6
-# ╠═7588018e-5e68-11eb-3be2-b97ce124d6bf
-# ╟─84771eaa-5e68-11eb-0684-cf1a3118d10b
 # ╟─43a19ace-5e6b-11eb-005b-b7d2d9a46878
 # ╠═508167c4-5e6b-11eb-2587-b967b79cf74c
 # ╠═59f86d98-5e6b-11eb-3259-7312501b70bf
 # ╠═5edf55e2-5e6b-11eb-383e-5965ae694c4c
 # ╠═65c94e9c-5e6b-11eb-38a8-4d60c692222b
 # ╠═42fc5284-5e6c-11eb-0edb-9555a320ec55
+# ╠═dc168cf8-484f-4054-a6d2-55703e99fda2
 # ╟─3dc3aa10-5e6c-11eb-3338-7777b8cb97a5
 # ╠═34565ba8-5e6c-11eb-2a27-2ff13394bcc8
 # ╠═02e4bf64-5e6d-11eb-36b5-fb57c87bff81
@@ -2123,53 +1823,17 @@ version = "1.4.1+0"
 # ╟─18e3753a-5f55-11eb-0a11-47ca6abe9186
 # ╠═2f4fe6ce-5e6c-11eb-1744-2f9534c8b6ba
 # ╟─cae2546a-5e6b-11eb-3fc2-69f9a15107cf
-# ╟─0ac5096e-61a1-11eb-24ba-13bc0a3377c6
 # ╟─efc1357a-61a0-11eb-20f5-a15338080e4c
 # ╟─4d9de330-5f55-11eb-0d89-eb81e6c9ffab
 # ╠═122cffca-5fdc-11eb-3555-b39b818f1116
 # ╠═92458f54-5f57-11eb-179f-c749ce06f7e2
 # ╟─d1222dcc-5f57-11eb-2c87-77a16ea8e65d
 # ╠═0b1f3542-5f58-11eb-1610-75df3e2a4a76
-# ╟─57f243ec-5fe3-11eb-04d9-d776ccba4c0f
-# ╠═211cf9ca-5fe3-11eb-2596-71b1848753d7
-# ╠═35ccaee2-5fe3-11eb-3bd0-e355b0fd3f71
-# ╠═434669d2-5fe3-11eb-1f4a-27edf1f9e7f6
-# ╠═9612965e-5fe3-11eb-172a-59cc73a26ab6
-# ╠═3c2cce20-5fe3-11eb-32e3-f542f9a94a6e
-# ╟─10a8532a-5e60-11eb-3331-974e708cb39d
-# ╟─d8a9ad46-5e7a-11eb-1cce-3d4bc49cd332
-# ╠═e85b2d3c-5e7a-11eb-3b89-e11bc274f7cf
-# ╟─ec73cd70-5e7a-11eb-0285-6b1fabd1289d
-# ╠═f1d24ba2-5e7a-11eb-010a-f543cfc306b5
-# ╟─f838762c-5e7a-11eb-000a-e963fab5e97d
-# ╠═149c1c12-5e7b-11eb-297d-6da57f45891b
-# ╟─780da60e-5e7c-11eb-0c1a-55be73da188f
-# ╟─90a672d0-5f5c-11eb-3a62-1b034cd41e67
-# ╠═b4104d12-5e7c-11eb-3e22-a78b74526129
-# ╠═20393e86-5e7d-11eb-18e3-613890472903
-# ╟─5069df16-5e7d-11eb-217d-6b740e9b3559
-# ╟─1a50ff0e-5e7d-11eb-2fc4-cd5c12015751
-# ╠═0963185c-5fdc-11eb-0eed-89d514850353
-# ╠═0664eb22-5e7d-11eb-07a6-ed35143bf03f
-# ╟─a965bd70-5e7c-11eb-13dd-5fe83950af11
-# ╠═fb0c59fa-5f61-11eb-1ab7-bf7b80746aa2
-# ╠═a157dafc-5e7c-11eb-105d-4db3ee9dbec6
-# ╟─0ec9887c-5f5e-11eb-29e5-931881dcb222
-# ╠═1d4aca5a-5f5e-11eb-23c3-d1ddef4e6ee6
-# ╟─c4c2137a-5f5d-11eb-1e06-8f5e2b1f1c0e
-# ╠═e13fcbbe-5f5d-11eb-2074-fdbc945861e1
-# ╟─2c1308f4-5f5e-11eb-058f-79cbf7dd23c6
-# ╠═fdf46c92-5f5d-11eb-345b-e145c9c2874c
-# ╟─37da420a-5f61-11eb-3688-09e6188165e3
-# ╠═d9f18616-5e8d-11eb-1b1a-3bcc749fb467
-# ╠═ea3da4dc-5e8d-11eb-0910-091b926aea58
-# ╠═f13dd22a-5e8d-11eb-1def-137de66123ba
-# ╟─be11ec9a-5f61-11eb-374a-c96489ea582d
-# ╠═f44d757e-5e8d-11eb-18f1-719d3c7b8688
-# ╠═fa310fdc-5e8d-11eb-024b-7ded3e213112
-# ╠═1acb02d4-5e8e-11eb-232c-f756e92c3f97
-# ╟─2dcb4600-5e8e-11eb-093e-59eb79f0cf20
 # ╟─2e2601b6-5e94-11eb-3613-eb5fee19b6b7
+# ╟─d889f68e-4d15-4bab-92f6-c42bac58e60a
+# ╟─fe4095e9-0c35-4459-98b0-30ba91fc90b4
+# ╠═ce8b16fa-7644-4c64-ad3c-cbf667b4811b
+# ╟─f20221ca-82d1-4973-9f68-e46638c929f7
 # ╟─311a4666-5fc5-11eb-2cc0-ef66e5be96e3
 # ╠═4622422a-5fc5-11eb-20f2-9bfe466f8f30
 # ╟─5ba5d6b6-5fc5-11eb-256b-73a954a5db68
@@ -2194,5 +1858,8 @@ version = "1.4.1+0"
 # ╟─d418dca4-5fe5-11eb-3f1a-a31e5dc5f7e9
 # ╠═b2c1cef8-5fe5-11eb-20c7-134432196893
 # ╠═f1b70998-5fdb-11eb-292b-0776f1b03816
+# ╟─7fb1899d-7ed2-44ad-a76b-79ab401ba9f3
+# ╠═0b4f0a03-8556-4009-9c3f-89c3628c006f
+# ╠═867805fe-bc86-4b81-9237-2a056076d138
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
