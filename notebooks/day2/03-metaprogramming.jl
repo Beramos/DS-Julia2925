@@ -281,6 +281,13 @@ ex_twostep = @macroexpand @twostep :(1, 2, 3)
 # ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
 dump(ex_twostep)
 
+# ╔═╡ da275ff1-b3d9-4a91-b03a-914878555418
+md"If you need another example, check out the code below that is generated using the `@elapsed` macro: a functionality that lets you time an expression by injecting `time_ns()` before and after the expression.
+"
+
+# ╔═╡ 876ea56f-d426-4908-a832-96ccbd83d950
+@macroexpand @elapsed sleep(1)
+
 # ╔═╡ 0613f620-5e66-11eb-08d9-01dd3a403321
 md"""
 ### Macro invocation
@@ -1778,6 +1785,8 @@ version = "1.4.1+0"
 # ╟─f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
 # ╠═01feeca0-5e63-11eb-11a0-1b66a92127d1
 # ╠═f1969888-5e65-11eb-18a3-879d2f87b447
+# ╟─da275ff1-b3d9-4a91-b03a-914878555418
+# ╠═876ea56f-d426-4908-a832-96ccbd83d950
 # ╟─0613f620-5e66-11eb-08d9-01dd3a403321
 # ╟─a1e86478-5e66-11eb-2ef9-6d460e707013
 # ╠═e61381aa-5e66-11eb-3347-5d26b61e6c17
