@@ -99,7 +99,7 @@ names[end-1:end] = ["Slartibartfast", "The Whale and the Bowl of Petunias"]
 names
 
 # ╔═╡ 619fd3bc-5a72-11eb-22f7-49ff5486e0fa
-md"What the first index again? And how to access the last element? If you forgot, just use `first` and `last`:"
+md"What is the first index again? And how to access the last element? If you forgot, just use `first` and `last`:"
 
 # ╔═╡ 7e460c3e-5a72-11eb-0c52-cf9583c70759
 first(names), last(names)
@@ -386,7 +386,7 @@ T = [10 10 10; 20 20 20]
 T.^2
 
 # ╔═╡ 1ace7720-4c4b-11eb-0338-37e7a7227a68
-md"""Under the hood, Julia is looping over the elements of `Y`. So a sequence of dot-operations is fused into a single loop."""
+md"""Under the hood, Julia is looping over the elements of `Y`. So a sequence of dot operations is fused into a single loop."""
 
 # ╔═╡ 2146ac4c-4c4b-11eb-288f-edb3eacff0eb
 T.^2 .+ cos.(T)
@@ -632,7 +632,7 @@ end;
 
 # ╔═╡ c1e377c4-64a4-11eb-3e7f-b163cb465057
 md"""
-> **Question 2: determinining the determinant**
+> **Question 2: Computing the determinant**
 
 1. Write a function `mydet` to compute the determinant of a 2x2 square matrix. Remember, for a $2 \times 2$ matrix, the determinant is computed as
 
@@ -781,7 +781,7 @@ end;
 
 # ╔═╡ a0026d1c-bcdb-4a2e-b1a1-11c5235a4956
 md"""## Answers
-If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+If you would like to take a look at the answers, you can do so by checking the box of the question you would like to see. The function will be shown just below the question you want to look at.
 
 | Question | Show solution |
 |-----|:---------:|
