@@ -995,7 +995,7 @@ end
 
 # ╔═╡ 2bff11a1-7e39-43e5-8058-5d1496f43387
 md"""## Answers
-If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+If you would like to take a look at the answers, you can do so by checking the box of the question you would like to see. The function will be shown just below the question you want to look at.
 
 | Question | Show solution |
 |-----|:---------:|
