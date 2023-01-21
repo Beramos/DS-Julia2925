@@ -337,7 +337,7 @@ The previous notebook showed that it is easy to extend the type system with our 
 
 ## Composite types
 
-Composite types, sometimes call records, structs (matlab) or objects (python), can store several values in its *fields*.
+Composite types, sometimes call records, structs (matlab) or objects (python), can store several values in their *fields*.
 
 When defining a new composite type, we can choose them to be mutable or immutable:
 - mutable types are defined using `mutable struct ... end`, they allow the fields to be changed after the object is created;
@@ -351,8 +351,7 @@ can then specify several children types.
 """
 
 # ╔═╡ af8c6460-5d8c-11eb-3ba8-c16e8855e992
-md"The concrete types in such an IBM might represent an animal type you want to model, for example preys and predators. Making a concrete type of 
-a prey animal, we want each to have an unique identifier (represented by an integer) and a position. As we expect the agent to move, hence changing
+md"The concrete types in such an IBM might represent an animal type you want to model, for example, preys and predators. In making a concrete type of prey animal, we want each to have a unique identifier (represented by an integer) and a position. As we expect the agent to move, hence changing
 its position when our simulation runs, we choose a mutable type."
 
 # ╔═╡ bcacf89e-5d8c-11eb-0077-e5761b8855a3
@@ -380,7 +379,7 @@ fields for the two agents. However, since these fields should be defined for eve
 these for the Agent type!"
 
 # ╔═╡ 23f7e8c4-5d8d-11eb-04af-b5e268c13a14
-md"Here, we could theoretically have ommited the type annotation in the function. Then the function would accept objects of the non-agent type and likely yield an error because they don't have the `id` or `pos` field. Now, these functions will return a `MethodError` when given a non-`Agent` input."
+md"Here, we could theoretically have omited the type annotation in the function. Then the function would accept objects of the non-agent type and likely yield an error because they don't have the `id` or `pos` field. Now, these functions will return a `MethodError` when given a non-`Agent` input."
 
 # ╔═╡ 330d2090-5d8d-11eb-1003-a52a078514b2
 md"A slightly more interesting example is by extending `size`."
@@ -392,7 +391,7 @@ md"Here, we had to import `size` because we are extending a function from the `B
 md"Similarly, we can program the interaction behaviour between the agents."
 
 # ╔═╡ 585995ae-5d8d-11eb-256f-bd8e9eb52063
-md"We have chosen the default behaviour that two Agents of unspecified types do not interact at all, this will now be the case when a prey meets other prey, a predator an other predator or a new third type comes into the equation."
+md"We have chosen the default behaviour that two Agents of unspecified types do not interact at all, this will now be the case when a prey meets other prey, a predator another predator or a new third type comes into the equation."
 
 # ╔═╡ 62e49c94-5d8d-11eb-39ac-f30febf282ff
 md"Since in these simple examples, the `interact` methods do not use their arguments, merely perform type checking, we could have written this as `interact(::Agent,::Agent) = ...` etc."
@@ -408,7 +407,7 @@ Test a few random wildlife encounters.
 md"""
 ## Parametric types
 
-Sometimes we want more flexiblility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
+Sometimes we want more flexibilility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
 numeric datatypes, `Int`, `Int8`, `Float6`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
 *parametric types*, types that **depend** on another type.
 
@@ -480,7 +479,7 @@ md"""
 
 ## Example: iterators
 
-We can extend Julia by making use of establised interfaces, such as for iterators like `1:0.1:10`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
+We can extend Julia by making use of established interfaces, such as for iterators like `1:0.1:10`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
 """
 
 # ╔═╡ aca1c930-5d90-11eb-29d9-954e097bbe3b
@@ -510,7 +509,7 @@ md"Uncomment the line below."
 md"Luckily there is a trick to computing the product of a tridiagonal matrix and a vector:"
 
 # ╔═╡ 711a5574-a7c5-43c6-a8a2-4830361f0071
-md"As you can see in the above function, next to using `a ? b : c` for condense control flow there is also another option. When we use `a && b`, b will only be evaluated and returned when a is `true`. So you can put any expression you like after the `&&`!"
+md"As you can see in the above function, next to using `a ? b : c` for condensing control flow there is also another option. When we use `a && b`, b will only be evaluated and returned when a is `true`. So you can put any expression you like after the `&&`!"
 
 # ╔═╡ cf146bf4-6177-11eb-1eaa-c35efde57b3e
 md"## Exercises"
@@ -519,7 +518,7 @@ md"## Exercises"
 md"""
 > **Exercise: wizarding currency**
 			
-The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
+The British Wizarding World uses Galleons, Sickles, and Knuts as currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts in a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
 
 Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
 
