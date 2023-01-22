@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.19
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
@@ -166,7 +166,7 @@ md"""
 # ╔═╡ bc67a0a6-d5f1-4404-9406-acb05857361d
 hint(
 	md"""
-	> Did you take into account the boundary conditions? The function `clamp` can help you with that.
+	Did you take into account the boundary conditions? The function `clamp` can help you with that.
 	"""
 )
 
@@ -459,12 +459,6 @@ md"Converting a color to grayscale is also easy."
 
 # ╔═╡ c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
 Gray(daanbeardred)
-
-# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
-md"Colors can also be represented in other ways, such as this hexadecimal format:"
-
-# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
-hex(daanbeardred)
 
 # ╔═╡ c41f1cb6-5a8e-11eb-326c-db30e518a702
 md"An image is a matrix of colors, nothing more!"
@@ -1306,6 +1300,12 @@ if answ_q11 == true
 	"""
 end
 
+# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
+md"Colors can also be represented in other ways, such as this hexadecimal format:"
+
+# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
+hex(daanbeardred)
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -1382,7 +1382,7 @@ uuid = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 version = "0.4.2"
 
 [[Cairo_jll]]
-deps = ["Artifacts", "Bzip2_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
+deps = ["Artifacts", "Bzip2_jll", "CompilerSupportLibraries_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Pkg", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
 git-tree-sha1 = "4b859a208b2397a7a623a03449e4636bdb17bcf2"
 uuid = "83423d85-b0ee-5818-9007-b63ccbeb887a"
 version = "1.16.1+1"
@@ -2864,5 +2864,7 @@ version = "1.4.1+0"
 # ╠═caefe5ac-5f4d-11eb-2591-67b5515e1bd4
 # ╠═46449848-64e3-11eb-0bf4-c9211b41c68d
 # ╟─670d4db7-924b-4c44-9729-8677a9b757c8
+# ╟─37cb5545-38cc-49f5-aff7-913eb0d08cbc
+# ╠═7fb698a3-aaad-4a36-ae73-a05602d790af
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

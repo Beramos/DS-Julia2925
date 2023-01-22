@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.19
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
@@ -337,7 +337,7 @@ The previous notebook showed that it is easy to extend the type system with our 
 
 ## Composite types
 
-Composite types, sometimes call records, structs (matlab) or objects (python), can store several values in its *fields*.
+Composite types, sometimes call records, structs (matlab) or objects (python), can store several values in their *fields*.
 
 When defining a new composite type, we can choose them to be mutable or immutable:
 - mutable types are defined using `mutable struct ... end`, they allow the fields to be changed after the object is created;
@@ -351,8 +351,7 @@ can then specify several children types.
 """
 
 # ╔═╡ af8c6460-5d8c-11eb-3ba8-c16e8855e992
-md"The concrete types in such an IBM might represent an animal type you want to model, for example preys and predators. Making a concrete type of 
-a prey animal, we want each to have an unique identifier (represented by an integer) and a position. As we expect the agent to move, hence changing
+md"The concrete types in such an IBM might represent an animal type you want to model, for example, preys and predators. In making a concrete type of prey animal, we want each to have a unique identifier (represented by an integer) and a position. As we expect the agent to move, hence changing
 its position when our simulation runs, we choose a mutable type."
 
 # ╔═╡ bcacf89e-5d8c-11eb-0077-e5761b8855a3
@@ -380,7 +379,7 @@ fields for the two agents. However, since these fields should be defined for eve
 these for the Agent type!"
 
 # ╔═╡ 23f7e8c4-5d8d-11eb-04af-b5e268c13a14
-md"Here, we could theoretically have ommited the type annotation in the function. Then the function would accept objects of the non-agent type and likely yield an error because they don't have the `id` or `pos` field. Now, these functions will return a `MethodError` when given a non-`Agent` input."
+md"Here, we could theoretically have omited the type annotation in the function. Then the function would accept objects of the non-agent type and likely yield an error because they don't have the `id` or `pos` field. Now, these functions will return a `MethodError` when given a non-`Agent` input."
 
 # ╔═╡ 330d2090-5d8d-11eb-1003-a52a078514b2
 md"A slightly more interesting example is by extending `size`."
@@ -392,7 +391,7 @@ md"Here, we had to import `size` because we are extending a function from the `B
 md"Similarly, we can program the interaction behaviour between the agents."
 
 # ╔═╡ 585995ae-5d8d-11eb-256f-bd8e9eb52063
-md"We have chosen the default behaviour that two Agents of unspecified types do not interact at all, this will now be the case when a prey meets other prey, a predator an other predator or a new third type comes into the equation."
+md"We have chosen the default behaviour that two Agents of unspecified types do not interact at all, this will now be the case when a prey meets other prey, a predator another predator or a new third type comes into the equation."
 
 # ╔═╡ 62e49c94-5d8d-11eb-39ac-f30febf282ff
 md"Since in these simple examples, the `interact` methods do not use their arguments, merely perform type checking, we could have written this as `interact(::Agent,::Agent) = ...` etc."
@@ -408,7 +407,7 @@ Test a few random wildlife encounters.
 md"""
 ## Parametric types
 
-Sometimes we want more flexiblility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
+Sometimes we want more flexibilility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
 numeric datatypes, `Int`, `Int8`, `Float6`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
 *parametric types*, types that **depend** on another type.
 
@@ -480,7 +479,7 @@ md"""
 
 ## Example: iterators
 
-We can extend Julia by making use of establised interfaces, such as for iterators like `1:0.1:10`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
+We can extend Julia by making use of established interfaces, such as for iterators like `1:0.1:10`. For example, suppose we want to iterate over the first $n$ squares of natural numbers.
 """
 
 # ╔═╡ aca1c930-5d90-11eb-29d9-954e097bbe3b
@@ -510,7 +509,7 @@ md"Uncomment the line below."
 md"Luckily there is a trick to computing the product of a tridiagonal matrix and a vector:"
 
 # ╔═╡ 711a5574-a7c5-43c6-a8a2-4830361f0071
-md"As you can see in the above function, next to using `a ? b : c` for condense control flow there is also another option. When we use `a && b`, b will only be evaluated and returned when a is `true`. So you can put any expression you like after the `&&`!"
+md"As you can see in the above function, next to using `a ? b : c` for condensing control flow there is also another option. When we use `a && b`, b will only be evaluated and returned when a is `true`. So you can put any expression you like after the `&&`!"
 
 # ╔═╡ cf146bf4-6177-11eb-1eaa-c35efde57b3e
 md"## Exercises"
@@ -519,7 +518,7 @@ md"## Exercises"
 md"""
 > **Exercise: wizarding currency**
 			
-The British Wizarding World uses Galleons, Sickles, and Knuts as a currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts to a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
+The British Wizarding World uses Galleons, Sickles, and Knuts as currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts in a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
 
 Overload `Base.show` such that Julia prints your currency as, for example, `7G, 2S, 9K`.
 
@@ -571,7 +570,7 @@ LinearAlgebra.det(V::Vandermonde) = missing
 
 # ╔═╡ 0267b920-9a1f-472f-9d21-5609fb877325
 md"""## Answers:
-If you would like to take a look at the answers, you can do so by checking the boxo the question you would like to see. The function will be shown just below the question you want to look at.
+If you would like to take a look at the answers, you can do so by checking the box of the question you would like to see. The function will be shown just below the question you want to look at.
 
 | Question | Show solution |
 |-----|:---------:|
@@ -666,254 +665,224 @@ PlutoUI = "~0.7.49"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.5"
-manifest_format = "2.0"
-project_hash = "d5fa82fd19d4dc350046d8a11da77fde4ffaae93"
-
-[[deps.AbstractPlutoDingetjes]]
+[[AbstractPlutoDingetjes]]
 deps = ["Pkg"]
 git-tree-sha1 = "8eaf9f1b4921132a4cff3f36a1d9ba923b14a481"
 uuid = "6e696c72-6542-2067-7265-42206c756150"
 version = "1.1.4"
 
-[[deps.ArgTools]]
+[[ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
-version = "1.1.1"
 
-[[deps.Artifacts]]
+[[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 
-[[deps.Base64]]
+[[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
-[[deps.ColorTypes]]
+[[ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
 git-tree-sha1 = "eb7f0f8307f71fac7c606984ea5fb2817275d6e4"
 uuid = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
 version = "0.11.4"
 
-[[deps.CompilerSupportLibraries_jll]]
-deps = ["Artifacts", "Libdl"]
-uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.1+0"
-
-[[deps.Dates]]
+[[Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
-[[deps.Downloads]]
-deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
+[[Downloads]]
+deps = ["ArgTools", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
-version = "1.6.0"
 
-[[deps.FileWatching]]
-uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
-
-[[deps.FixedPointNumbers]]
+[[FixedPointNumbers]]
 deps = ["Statistics"]
 git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
 uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
 version = "0.8.4"
 
-[[deps.Hyperscript]]
+[[Hyperscript]]
 deps = ["Test"]
 git-tree-sha1 = "8d511d5b81240fc8e6802386302675bdf47737b9"
 uuid = "47d2ed2b-36de-50cf-bf87-49c2cf4b8b91"
 version = "0.0.4"
 
-[[deps.HypertextLiteral]]
+[[HypertextLiteral]]
 deps = ["Tricks"]
 git-tree-sha1 = "c47c5fa4c5308f27ccaac35504858d8914e102f9"
 uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
 version = "0.9.4"
 
-[[deps.IOCapture]]
+[[IOCapture]]
 deps = ["Logging", "Random"]
 git-tree-sha1 = "f7be53659ab06ddc986428d3a9dcc95f6fa6705a"
 uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
 version = "0.2.2"
 
-[[deps.InteractiveUtils]]
+[[InteractiveUtils]]
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
-[[deps.JSON]]
+[[JSON]]
 deps = ["Dates", "Mmap", "Parsers", "Unicode"]
 git-tree-sha1 = "3c837543ddb02250ef42f4738347454f95079d4e"
 uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 version = "0.21.3"
 
-[[deps.LibCURL]]
+[[LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
-version = "0.6.3"
 
-[[deps.LibCURL_jll]]
+[[LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "7.84.0+0"
 
-[[deps.LibGit2]]
+[[LibGit2]]
 deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 
-[[deps.LibSSH2_jll]]
+[[LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.10.2+0"
 
-[[deps.Libdl]]
+[[Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
-[[deps.LinearAlgebra]]
-deps = ["Libdl", "libblastrampoline_jll"]
+[[LinearAlgebra]]
+deps = ["Libdl"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
-[[deps.Logging]]
+[[Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 
-[[deps.MIMEs]]
+[[MIMEs]]
 git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
 uuid = "6c6e2e6c-3030-632d-7369-2d6c69616d65"
 version = "0.1.4"
 
-[[deps.Markdown]]
+[[Markdown]]
 deps = ["Base64"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 
-[[deps.MbedTLS_jll]]
+[[MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.0+0"
 
-[[deps.Mmap]]
+[[Mmap]]
 uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
-[[deps.MozillaCACerts_jll]]
+[[MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2022.2.1"
 
-[[deps.NetworkOptions]]
+[[NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
-version = "1.2.0"
 
-[[deps.OpenBLAS_jll]]
-deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
-uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.20+0"
-
-[[deps.Parsers]]
+[[Parsers]]
 deps = ["Dates", "SnoopPrecompile"]
-git-tree-sha1 = "6466e524967496866901a78fca3f2e9ea445a559"
+git-tree-sha1 = "8175fc2b118a3755113c8e68084dc1a9e63c61ee"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.5.2"
+version = "2.5.3"
 
-[[deps.Pkg]]
+[[Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.8.0"
 
-[[deps.PlutoUI]]
+[[PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
 git-tree-sha1 = "eadad7b14cf046de6eb41f13c9275e5aa2711ab6"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 version = "0.7.49"
 
-[[deps.Printf]]
+[[Preferences]]
+deps = ["TOML"]
+git-tree-sha1 = "47e5f437cc0e7ef2ce8406ce1e7e24d44915f88d"
+uuid = "21216c6a-2e73-6563-6e65-726566657250"
+version = "1.3.0"
+
+[[Printf]]
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
-[[deps.REPL]]
+[[REPL]]
 deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
-[[deps.Random]]
-deps = ["SHA", "Serialization"]
+[[Random]]
+deps = ["Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
-[[deps.Reexport]]
+[[Reexport]]
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
 version = "1.2.2"
 
-[[deps.SHA]]
+[[SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
-version = "0.7.0"
 
-[[deps.Serialization]]
+[[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
-[[deps.SnoopPrecompile]]
-git-tree-sha1 = "f604441450a3c0569830946e5b33b78c928e1a85"
+[[SnoopPrecompile]]
+deps = ["Preferences"]
+git-tree-sha1 = "e760a70afdcd461cf01a575947738d359234665c"
 uuid = "66db9d55-30c0-4569-8b51-7e840670fc0c"
-version = "1.0.1"
+version = "1.0.3"
 
-[[deps.Sockets]]
+[[Sockets]]
 uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
 
-[[deps.SparseArrays]]
+[[SparseArrays]]
 deps = ["LinearAlgebra", "Random"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
-[[deps.Statistics]]
+[[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
-[[deps.TOML]]
+[[TOML]]
 deps = ["Dates"]
 uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-version = "1.0.0"
 
-[[deps.Tar]]
+[[Tar]]
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
-version = "1.10.1"
 
-[[deps.Test]]
+[[Test]]
 deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
-[[deps.Tricks]]
+[[Tricks]]
 git-tree-sha1 = "6bac775f2d42a611cdfcd1fb217ee719630c4175"
 uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
 version = "0.1.6"
 
-[[deps.URIs]]
+[[URIs]]
 git-tree-sha1 = "ac00576f90d8a259f2c9d823e91d1de3fd44d348"
 uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
 version = "1.4.1"
 
-[[deps.UUIDs]]
+[[UUIDs]]
 deps = ["Random", "SHA"]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
-[[deps.Unicode]]
+[[Unicode]]
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
-[[deps.Zlib_jll]]
+[[Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.12+3"
 
-[[deps.libblastrampoline_jll]]
-deps = ["Artifacts", "Libdl", "OpenBLAS_jll"]
-uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.1.1+0"
-
-[[deps.nghttp2_jll]]
+[[nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.48.0+0"
 
-[[deps.p7zip_jll]]
+[[p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+0"
 """
 
 # ╔═╡ Cell order:
 # ╠═372d3cf2-6173-11eb-356e-23c959c3fd89
-# ╠═8062c45e-1df3-44bc-981d-cc990fbe6bcb
+# ╟─8062c45e-1df3-44bc-981d-cc990fbe6bcb
 # ╟─eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
 # ╟─70be3952-5d8c-11eb-1509-b3f7077d57e0
 # ╠═acd7de0c-5d8c-11eb-120a-8b79f2b8eb3b
