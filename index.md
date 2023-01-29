@@ -14,7 +14,7 @@ This two-day course gives an in-depth introduction to the Julia programming lang
 
 ### Day 2
 5. [Introduction to the type system](notebooks/day2/01-types.html)
-6. [Composity types](notebooks/day2/02-composite_types.html)
+6. [Composite types](notebooks/day2/02-composite_types.html)
 7. [Synthesis exercise](notebooks/day2/03-fluky_fields.html)
 8. [Metaprogramming](notebooks/day2/04-metaprogramming.html)
 
