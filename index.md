@@ -5,6 +5,19 @@ The [Julia language](https://julialang.org/) has taken the scientific computing 
 
 This two-day course gives an in-depth introduction to the Julia programming language. The first day will introduce the essential elements (variables, printing, plotting, looping, collections, etc.) of Julia programming along with a peek behind the curtains of the type system. On the second day, we will cover the type system comprehensively and discuss its relation to multiple dispatch and illustrate how this translates into extensible and user-friendly programs. We cover the subject matter interactively in notebooks. In the afternoon sessions, we guide you through larger synthesis projects to solidify your knowledge.
 
+## Course content
+### Day 1
+1. [The basics of Julia](notebooks/day1/01-basics.html)
+2. [The basics of Julia (extra)](notebooks/day1/01-basics-extra.html)
+3. [Collections](notebooks/day1/02-collections.html)
+4. [Exercises](notebooks/day1/03-exercises.html)
+
+### Day 2
+5. [Introduction to the type system](notebooks/day2/01-types.html)
+6. [Composite types](notebooks/day2/02-composite_types.html)
+7. [Synthesis exercise](notebooks/day2/03-fluky_fields.html)
+8. [Metaprogramming](notebooks/day2/04-metaprogramming.html)
+
 ## Who is this for?
 We mainly cater to PhD students in sciences and engineering, especially those who have a computing aspect in their research (large or small). The course is relevant to researchers who need to write complex high-level code that has to be performant. Importantly, this course is *not* meant as a first introduction to programming. Participants are expected to have basic experience in at least one high-level programming language such as Python, R, Matlab, or Perl. We aim to start gentle enough so that novice programmers can get acquainted with the language while following a learning curve that will keep serious hackers interested. At the end of the course, you will have learned the tools to write fairly sophisticated Julia programs.
 
