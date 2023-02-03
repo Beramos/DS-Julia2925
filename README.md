@@ -10,7 +10,7 @@ This course gives an in-depth introduction to the Julia programming language. Th
 ## Getting started
 There are two ways to download the notebooks.
 1. If you are used to Github, you can clone this repository to your computer.
-2. Download the notebooks from this link **(WIP)**
+2. Download the notebooks from [this link](https://beramos.github.io/DS-Julia2925/)
 
 ### Installing Julia
 
