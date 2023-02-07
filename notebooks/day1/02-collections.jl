@@ -42,7 +42,7 @@ md"""
 # ╔═╡ 2222fe0c-4c1d-11eb-1e63-f1dbc90a813c
 md"""In programming, a collection is a class used to represent a set of similar data type items as a single unit. These unit classes are used for grouping and managing related objects. A collection has an underlying data structure that is used for efficient data manipulation and storage. 
 	
-	[Techopedia.com](https://www.techopedia.com/definition/25317/collection)"""
+	[Techopedia.com](https://www.techopedia.com/definition/25317/collection)"""&
 
 # ╔═╡ 44542690-4c1d-11eb-2eea-49f28ed7fd90
 md"""
@@ -249,29 +249,32 @@ md"We can also use logic to specify which elements to include."
 # ╔═╡ a5f17ccc-4c22-11eb-2cb8-7b130e1e811f
 md"Arrays behave like a stack. So pushing, appending and popping are valid operations. Elements can be added to the back of the array, (*Pushing and appending*)"
 
+# ╔═╡ 6289557a-ff0a-4d5a-bfe1-d745ebd50857
+fellowship = ["Gandal", "Frodo", "Bilbo", "Gollum", "Legolas"]
+
 # ╔═╡ f1b481f4-4c22-11eb-39b7-39ffdd5bbccc
-push!(names, "Eddie") # add a single element
+push!(fellowship, "Eddie") # add a single element
 
 # ╔═╡ f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
-append!(names, ["Sam", "Gerard"]) # add an array
+append!(fellowship, ["Sam", "Gerard"]) # add an array
 
 # ╔═╡ fcbeda22-4c22-11eb-2d35-a356b98bbc46
-md""" "Eddie" was appended as the final element of the Array along with "Sam" and "Gerard". Remember, a "!" is used to indicate an in-place function. `pop()` is used to return and remove the final element of an array"""
+md""" "Eddie" was appended as the final element of the Array along with "Sam" and "Gerard". Remember, a "!" is used to indicate an in-place function. `pop!()` is used to return and remove the final element of an array"""
 
 # ╔═╡ 3516a722-4c23-11eb-3ee7-fb8d582c8ce0
 md"Removing the last element or first element (*popping*)"
 
 # ╔═╡ 08bb725e-4c23-11eb-3338-03370f49dd11
-pop!(names)
+pop!(fellowship)
 
 # ╔═╡ 0cfc84ca-4c23-11eb-124b-5397430fd203
-names
+fellowship
 
 # ╔═╡ 4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
-popfirst!(names)
+popfirst!(fellowship)
 
 # ╔═╡ 562b751e-4c23-11eb-2b8f-73f710bf3520
-names
+fellowship
 
 # ╔═╡ 5ed7284a-4c23-11eb-1451-0ff763f52bc7
 md"## 2. Matrices"
@@ -1824,6 +1827,7 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─10267fee-5a73-11eb-2947-279f6be1a3fe
 # ╠═27051614-5a73-11eb-1d22-35ec8ebc1fd8
 # ╟─a5f17ccc-4c22-11eb-2cb8-7b130e1e811f
+# ╠═6289557a-ff0a-4d5a-bfe1-d745ebd50857
 # ╠═f1b481f4-4c22-11eb-39b7-39ffdd5bbccc
 # ╠═f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
 # ╟─fcbeda22-4c22-11eb-2d35-a356b98bbc46
