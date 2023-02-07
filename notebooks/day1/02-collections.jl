@@ -619,6 +619,12 @@ Complete the function `riemannsum(f, a, b; n=100)` where the arguments are the f
 # ╔═╡ ee9069e2-63a7-11eb-12b9-97ae270506f4
 md"Remember, `.` is not only used for decimals..."
 
+# ╔═╡ 57b9de0f-acfb-49ef-9216-e7d9a2685071
+md"**Integral 1:**  $\int_0^{2\pi} x\,\sin(x)\,dx$ (n=100)"
+
+# ╔═╡ bb5aa3d3-fe95-479b-905f-f546a3e16309
+md" **Integral 2:**  $\int_0^1 \sqrt{1 - x^2}\,dx$ (n=1000)"
+
 # ╔═╡ 3de1f1aa-58bd-11eb-2ffc-0de292b13840
 function riemannsum(f, a, b; n=100)
   return missing
@@ -1083,9 +1089,9 @@ version = "0.8.4"
 
 [[Ghostscript_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "78e2c69783c9753a91cdae88a8d432be85a2ab5e"
+git-tree-sha1 = "71061d79c8d92172ece80e567c0de45a2bb9d989"
 uuid = "61579ee1-b43e-5ca0-a5da-69d92c66a64b"
-version = "9.55.0+0"
+version = "9.55.0+3"
 
 [[Graphics]]
 deps = ["Colors", "LinearAlgebra", "NaNMath"]
@@ -1931,6 +1937,8 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─ebb09172-4c58-11eb-1cc9-91193c57677d
 # ╟─f441018e-5212-4e7a-b67e-6e28f92be4a2
 # ╟─ee9069e2-63a7-11eb-12b9-97ae270506f4
+# ╟─57b9de0f-acfb-49ef-9216-e7d9a2685071
+# ╟─bb5aa3d3-fe95-479b-905f-f546a3e16309
 # ╠═3de1f1aa-58bd-11eb-2ffc-0de292b13840
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
 # ╟─6d43af49-f127-4ffe-ba97-0f04fb792efb
