@@ -27,10 +27,10 @@ A tailored selection of scientific projects including data science, robotics, si
 This course aims to provide an extensive introduction to Julia to kickstart those PhD researchers who want to incorporate it in their research and to create a solid foundation for Julia novices. We mainly cater to PhD students in sciences and engineering, especially those who have a computing aspect in their research (large or small). The course is relevant to researchers who need to write complex high-level code that has to be performant. Importantly, this course is *not* meant as a first introduction to programming. Participants are expected to have basic experience in at least one high-level programming language such as Python, R, Matlab, or Perl. We aim to start gentle enough so that novice programmers can get acquainted with the language while following a learning curve that will keep serious hackers interested. At the end of day 2, you will have learned the tools to write fairly sophisticated Julia programs. On the final day we will apply our Julia skills to tackle a selection of real world scientific projects.
 
 ## Date and venue
-The course will take place on the **5th**, the **6th** and the **7th of February 2024**. Tt will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
+The course will take place on the **5th**, **6th** and **7th of February 2024**. It will take place in a PC-room at [Campus Coupure](https://www.ugent.be/bw/en/contact#CampusCoupure(maincampus)). If we can not meet on-site, the course will be taught online with maximal interactivity.
 
 ## Registration and fees
-Registration can be done via the following link [here](https://event.ugent.be/registration/event/a5636c73-abf1-4598-9eb5-d92ee8f2b65e). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enroll.
+Registration can be done via the following link [here](https://event.ugent.be/registration/event/a5636c73-abf1-4598-9eb5-d92ee8f2b65e). For external members and master students, please contact the [organisers](mailto:michiel.stock@ugent.be) to enrol.
 
 Admission prices are:
 - **for UGent Doctoral School members**: free of charge;
