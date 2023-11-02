@@ -42,7 +42,7 @@ We also provide a limited number of free slots for *master students*. Please con
 ![Julia computing logo](img/logojulcom.svg)
 
 ## Organizer information
-This course is organized by [Michiel Stock](https://github.com/MichielStock/) (UGent), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren) ([elegent](https://www.ele.gent)), and [Bram De Jaegher](https://github.com/Beramos) ([Fluves](https://www.fluves.com)), a professor Applied Dynamic systems and two postdocs originating from the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education and are (co-)authors of several Julia software packages.
+This course is organized by [Michiel Stock](https://github.com/MichielStock/) (UGent), [Daan Van Hauwermeiren](https://github.com/DaanVanHauwermeiren) ([elegent](https://www.ele.gent)), and [Bram De Jaegher](https://github.com/Beramos) ([Fluves](https://www.fluves.com)), a professor in Applied Dynamic Systems and two postdocs originating from the Department of Mathematical Modelling and Data Analysis of the Faculty of Bioscience Engineering. They have ample experience using Julia for both research and education and are (co-)authors of several Julia software packages.
 
 ## Contact
 More information? Unsure if this course is relevant to you? Reach out to the [organisers](mailto:michiel.stock@ugent.be)!
