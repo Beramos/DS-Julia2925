@@ -3,6 +3,7 @@
 **tags:** *REST API, optimisation, geographical, traveling salesperson, Ghent*
 
 ![project image](../img/pubCrawlImpression.png)
+*An artist impression of an algorithmically-optimised bar crawl.*
 
 ## 1. Abstract
 Day 3 of the Julia doctoral schools is actually a cover to explore some of Ghent’s amazing bars. An efficient algorithm will be developed for computing the ideal bar crawl route, starting at the closest available rental bicycle. Using optimization techniques and real-time API data, the goal is to enhance the overall bar crawl experience by minimizing travel time. [Ghent's Open Data Portal](https://data.stad.gent/) will be used to obtain an up-to-date overview of the bars and real-time availability of bicycles in a [bicycle-sharing system](https://en.wikipedia.org/wiki/Bicycle-sharing_system).
