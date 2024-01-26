@@ -137,7 +137,9 @@ display(pltBack)
 ```
 
 ## 5. Resources
-- DrWatson.js - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
+- Exact solver for TSP - *TravelingSalesmanExact.jl* ([source]https://github.com/ericphanson/TravelingSalesmanExact.jl)
+- TSP heuristics - *TravelingSalesmanHeuristics.jl* ([source]https://github.com/evanfields/TravelingSalesmanHeuristics.jl)
+- *DrWatson.js* - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
 - Julia documentation ([source](https://docs.julialang.org/en/v1/))
 
 
