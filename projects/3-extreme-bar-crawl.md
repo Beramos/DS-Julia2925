@@ -1,9 +1,9 @@
 # Extreme bar crawl
 
-**tags:** *REST API, optimisation, geographical, traveling salesperson, Ghent*
+**tags:** *REST API, optimisation, geographical, travelling salesperson, Ghent*
 
 ![project image](../img/pubCrawlImpression.png)
-*An AIrtist impression of an algorithmically-optimised bar crawl.*
+*An AIrtist impression of an algorithmically optimised bar crawl.*
 
 ## 1. Abstract
 Day 3 of the Julia doctoral schools is actually a cover to explore some of Ghent’s amazing bars. An efficient algorithm will be developed for computing the ideal bar crawl route, starting at the closest available rental bicycle. Using optimization techniques and real-time API data, the goal is to enhance the overall bar crawl experience by minimizing travel time. [Ghent's Open Data Portal](https://data.stad.gent/) will be used to obtain an up-to-date overview of the bars and real-time availability of bicycles in a [bicycle-sharing system](https://en.wikipedia.org/wiki/Bicycle-sharing_system).
@@ -22,7 +22,7 @@ A bar crawl is a social activity where a group of people moves from one bar to a
 
 The Traveling Salesperson Problem (TSP) is a classic optimization problem aiming to find the shortest route that visits each location exactly once while returning to the starting point. 
 
-The TSP is an NP-hard problem, meaning that there is no known polynomial-time algorithm that can solve it for all possible inputs. As the number of location increases, the number of possible routes grows factorially, making it computationally infeasible to check all possible solutions for large instances.
+The TSP is an NP-hard problem, meaning that no known polynomial-time algorithm can find an exact solution for all possible inputs. As the number of locations increases, the number of possible routes grows factorially, making it computationally infeasible to check all possible solutions for large instances.
 
 Several approaches and algorithms have been proposed to tackle the TSP. It's important to note that the choice of algorithm depends on factors such as the size of the problem instance, the desired level of optimality and the available computational resources. In practice, heuristic and approximation algorithms are often employed for large-scale TSP instances. 
 
@@ -40,17 +40,17 @@ Several approaches and algorithms have been proposed to tackle the TSP. It's imp
 
    - Develop a program to estimate the computationally feasible number of bars for which an exact solution can be computed.
    - Sort the bars by distance to the faculty
-   - Lastly, based on the feasible number of bars in the barcrawl (*X*) compute the optimal route to visit the *X*-closest bars, and visualize this route on the map.
+   - Lastly, based on the feasible number of bars in the bar crawl (*X*) compute the optimal route to visit the *X*-closest bars, and visualize this route on the map.
    
     **\[Optional\] An approximate solution:**
 
-    The number of bars in the barcrawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with a varying degree of optimality:
+    The number of bars in the bar crawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with varying degrees of optimality:
     Nearest Neighbor Algorithm: This algorithm starts at a randomly chosen city and selects the nearest unvisited city at each step. While simple and fast, it may not always yield an optimal solution.
 
     - Try to find the most optimal route to visit all bars in Ghent starting from and returning to the faculty.
 
 4. **Why are you walking?**   
-   When time is of concern (... and it is!), the time spend between bars should be minimised. Luckily there are plenty of mobility solutions in Ghent. Create an application that, starting from a specified location (e.g. the faculty), finds the closest public bicycle, computes the optimal barcrawl route of a specified number of bars, given that the bicycle needs to be returned to the starting location. Ghent's data portal has an API endpoint to find available [“BAQME bicycles”](https://data.stad.gent/api/explore/v2.1/catalog/datasets/baqme-locaties-vrije-deelfietsen-gent/records?).
+   When time is of concern (... and it is!), the time spent between bars should be minimised. Luckily there are plenty of mobility solutions in Ghent. Create an application that, starting from a specified location (e.g. the faculty), finds the closest public bicycle, and computes the optimal bar crawl route of a specified number of bars, given that the bicycle needs to be returned to the starting location. Ghent's data portal has an API endpoint to find available [“BAQME bicycles”](https://data.stad.gent/api/explore/v2.1/catalog/datasets/baqme-locaties-vrije-deelfietsen-gent/records?).
 
 ## 4. Resources
 - DrWatson.js - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
