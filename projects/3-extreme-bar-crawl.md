@@ -30,7 +30,7 @@ Several approaches and algorithms have been proposed to tackle the TSP. It's imp
 
 1. Retrieve information about bars in Ghent from [Ghent’s data portal](https://data.stad.gent/explore/dataset/cafes-gent/). The API is [documented](https://data.stad.gent/explore/dataset/cafes-gent/api/), and [HTTP.jl](https://github.com/JuliaWeb/HTTP.jl) can be employed to call the API endpoint. Note that the default number of bars returned per request is 20. The `offset`-parameter is utilized to request the next set of records. To fetch all records in the database, multiple API calls need to be made with an increasing offset until all records have been retrieved.
 
-2. Create a map of the bars and the faculty. This snippet constructs a [Plots.jl](https://docs.juliaplots.org) plot with the background map and streets of Ghent **(TODO)**.
+2. Create a map of the bars and the faculty. A snippet is provided at the bottom of this document which constructs a [Plots.jl](https://docs.juliaplots.org) plot with the background map and streets of Ghent.
 
 3. Optimize the bar crawl starting at and returning to the Faculty (*latitude:* 51.0529, *longitude:* 3.7093) by determining the distance (bird's-eye distance) to visit all bars and return to the faculty. This is a Salesman Problem (TSP), making it impossible to find an exact solution for a large number of bars. Some subtasks are defined to get you started, 
 
@@ -52,7 +52,92 @@ Several approaches and algorithms have been proposed to tackle the TSP. It's imp
 4. **Why are you walking?**   
    When time is of concern (... and it is!), the time spent between bars should be minimised. Luckily there are plenty of mobility solutions in Ghent. Create an application that, starting from a specified location (e.g. the faculty), finds the closest public bicycle, and computes the optimal bar crawl route of a specified number of bars, given that the bicycle needs to be returned to the starting location. Ghent's data portal has an API endpoint to find available [“BAQME bicycles”](https://data.stad.gent/api/explore/v2.1/catalog/datasets/baqme-locaties-vrije-deelfietsen-gent/records?).
 
-## 4. Resources
+## 4. Useful code snippets
+
+All components to plot the map of Ghent
+```julia
+"""
+    getNeighbourhoods(URL_MAP)
+
+Fetches and parses Ghents neighbourhoods (GEOJSON) 
+Returns a vector containing the neighbourhoods represented as a Plots:Shape.
+"""
+function getNeighbourhoods(;
+    URL_MAP::String = "https://github.com/blackmad/neighborhoods/blob/master/ghent.geojson"
+)::Vector
+    resp = HTTP.get(URL_MAP).body |> String |> JSON.parse
+    map_json = resp["payload"]["blob"]["rawLines"][1] |> JSON.parse
+    coords = map(nb -> nb["geometry"]["coordinates"] |> first |> first, map_json["features"])
+    neighbourhoods = map(coord -> Shape(coord .|> first, coord .|> last), coords)
+    return neighbourhoods
+end
+
+
+"""
+    getRoads(;offset, limit, URL_MAP)
+
+Fetches the roads segment from Ghent's data portal.
+Returns an array where every element is road segment
+represented as an array of coordinates. 
+"""
+function getRoads(;
+    offsets::Integer=30, 
+    limit::Integer=100, 
+    URL_MAP::String = "https://data.stad.gent/api/explore/v2.1/catalog/datasets/straten-gent/records?"
+)::Vector{Any}
+
+    coords = []
+    for offset in 1:limit:offsets*limit
+        resp = HTTP.get(URL_MAP * "limit=$limit&offset=$offset").body |> String |> JSON.parse
+        sleep(0.01)
+        for road in resp["results"]
+            geom = road["geometry"]["geometry"]
+            if geom["type"] == "LineString"
+                push!(coords, geom["coordinates"])
+            else
+                append!(coords, geom["coordinates"])
+            end
+        end
+    end
+    return coords
+end
+
+"""
+    plotGhent(neighbourhoods, roads)
+
+visualises the neighbourhoods and roads.
+Returns a Plots.Plot which can be displayed using
+
+'''julia
+plt =  plotGhent(neighbourhood, roads)
+display(plt)
+'''
+"""
+function plotGhent(
+    neighbourhoods::Vector, 
+    roads::Vector
+)::Plots.Plot
+    pltBack = plot(neighbourhoods, color="#E5E9F0",label="", lw=0, axis=nothing, border=:none)
+    for road in roads
+        plot!(road .|> first, road .|> last, color="#4C566A", alpha=0.5, label="", markersize=3)
+    end
+    return pltBack
+end
+
+
+# Get neighbourhoods
+neighbourhoods = getNeighbourhoods()
+
+# Get roads segments
+roads = getRoads()
+
+# Plot map
+pltBack =  plotGhent(neighbourhoods, roads)
+display(pltBack)
+```
+
+## 5. Resources
 - DrWatson.js - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
 - Julia documentation ([source](https://docs.julialang.org/en/v1/))
-- (**TODO**)
+
+
