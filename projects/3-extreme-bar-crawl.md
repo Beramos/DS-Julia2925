@@ -3,7 +3,7 @@
 **tags:** *REST API, optimisation, geographical, traveling salesperson, Ghent*
 
 ![project image](../img/pubCrawlImpression.png)
-*An artist impression of an algorithmically-optimised bar crawl.*
+*An AIrtist impression of an algorithmically-optimised bar crawl.*
 
 ## 1. Abstract
 Day 3 of the Julia doctoral schools is actually a cover to explore some of Ghent’s amazing bars. An efficient algorithm will be developed for computing the ideal bar crawl route, starting at the closest available rental bicycle. Using optimization techniques and real-time API data, the goal is to enhance the overall bar crawl experience by minimizing travel time. [Ghent's Open Data Portal](https://data.stad.gent/) will be used to obtain an up-to-date overview of the bars and real-time availability of bicycles in a [bicycle-sharing system](https://en.wikipedia.org/wiki/Bicycle-sharing_system).
@@ -27,17 +27,30 @@ The TSP is an NP-hard problem, meaning that there is no known polynomial-time al
 Several approaches and algorithms have been proposed to tackle the TSP. It's important to note that the choice of algorithm depends on factors such as the size of the problem instance, the desired level of optimality and the available computational resources. In practice, heuristic and approximation algorithms are often employed for large-scale TSP instances. 
 
 ## 3. Assignments
-1. Fetch the bars in Ghent from [Ghent’s data portal](https://data.stad.gent/explore/dataset/cafes-gent/), the API is [documented](https://data.stad.gent/explore/dataset/cafes-gent/api/).  `HTTP.jl` can be used to call the [API endpoint](https://www.notion.so/5744662fff9641a990a40f00ce3948db?pvs=21). Be aware that the default number of bars returned per request is 20, the maximal number of records that can be fetched per API call is 100. This is achieved by defining the `limit` -parameter (`?limit=100`). The `offset`-parameter can be used to request the next 20 records (if `limit` is set, it defines the number of records for each offset). To fetch all the records in the database, multiple API calls need to be performed with an increasing offset until all records have been fetched.
-   
-2. Plot the bars, the bicycles and the faculty (This snippet constructs a `Plots.jl`-plot with the background map and streets of Ghent (**TODO**))
-   
-3. To optimise the bar crawl, starting at the Faculty *(51.0529, 3.7093)*, determine the minimal distance travelled (Bird’s eye distance) to visit all bars and return to the faculty. This TSP problem is NP-hard, which means it is impossible to find an exact solution for all bars. 
--   First, write a program to estimate for how many bars it is still computionally feasible (brute-force) to compute an exact solution to this problem.   
--   Based on that number (*X*), sort the bars based on the distance to the faculty, compute the optimal route to visit (*X*-closest bars) and visualise this route on the map. 
 
-4. *\[Optional\]* To increase the scope of the bar crawl find an optimal solution to the closest 25 bars using non-exact solutions. (**TODO**)
+1. Retrieve information about bars in Ghent from [Ghent’s data portal](https://data.stad.gent/explore/dataset/cafes-gent/). The API is [documented](https://data.stad.gent/explore/dataset/cafes-gent/api/), and [HTTP.jl](https://github.com/JuliaWeb/HTTP.jl) can be employed to call the API endpoint. Note that the default number of bars returned per request is 20. The `offset`-parameter is utilized to request the next set of records. To fetch all records in the database, multiple API calls need to be made with an increasing offset until all records have been retrieved.
 
-5. *\[Optional\]*: Fetch the available bicycles from the [“BAQME available bicycles endpoint”](https://data.stad.gent/api/explore/v2.1/catalog/datasets/baqme-locaties-vrije-deelfietsen-gent/records?) and plot on the map. (**TODO**)
+2. Create a map of the bars and the faculty. This snippet constructs a [Plots.jl](https://docs.juliaplots.org) plot with the background map and streets of Ghent **(TODO)**.
+
+3. Optimize the bar crawl starting at and returning to the Faculty (*latitude:* 51.0529, *longitude:* 3.7093) by determining the distance (bird's-eye distance) to visit all bars and return to the faculty. This is a Salesman Problem (TSP), making it impossible to find an exact solution for a large number of bars. Some subtasks are defined to get you started, 
+
+   **An exact solution (brute-force):**
+
+   It is possible to compute the optimal sequence of bars by computing the distance for all possible routes. This is only possible for a small subset of bars.
+
+   - Develop a program to estimate the computationally feasible number of bars for which an exact solution can be computed.
+   - Sort the bars by distance to the faculty
+   - Lastly, based on the feasible number of bars in the barcrawl (*X*) compute the optimal route to visit the *X*-closest bars, and visualize this route on the map.
+   
+    **\[Optional\] An approximate solution:**
+
+    The number of bars in the barcrawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with a varying degree of optimality:
+    Nearest Neighbor Algorithm: This algorithm starts at a randomly chosen city and selects the nearest unvisited city at each step. While simple and fast, it may not always yield an optimal solution.
+
+    - Try to find the most optimal route to visit all bars in Ghent starting from and returning to the faculty.
+
+4. **Why are you walking?**   
+   When time is of concern (... and it is!), the time spend between bars should be minimised. Luckily there are plenty of mobility solutions in Ghent. Create an application that, starting from a specified location (e.g. the faculty), finds the closest public bicycle, computes the optimal barcrawl route of a specified number of bars, given that the bicycle needs to be returned to the starting location. Ghent's data portal has an API endpoint to find available [“BAQME bicycles”](https://data.stad.gent/api/explore/v2.1/catalog/datasets/baqme-locaties-vrije-deelfietsen-gent/records?).
 
 ## 4. Resources
 - DrWatson.js - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
