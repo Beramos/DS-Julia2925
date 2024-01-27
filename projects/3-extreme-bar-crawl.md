@@ -45,7 +45,7 @@ Several approaches and algorithms have been proposed to tackle the TSP. It's imp
     **\[Optional\] An approximate solution:**
 
     The number of bars in the bar crawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with varying degrees of optimality:
-    Nearest Neighbor Algorithm: This algorithm starts at a randomly chosen city and selects the nearest unvisited city at each step. While simple and fast, it may not always yield an optimal solution.
+    Nearest Neighbor Algorithm: This algorithm starts at a randomly chosen bar and selects the nearest unvisited bar at each step. While simple and fast, it may not always yield an optimal solution.
 
     - Try to find the most optimal route to visit all bars in Ghent starting from and returning to the faculty.
 
