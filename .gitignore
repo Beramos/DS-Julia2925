@@ -417,3 +417,6 @@ $RECYCLE.BIN/
 
 # vscode
 .vscode
+
+# ignore the birb
+notebooks/day1/aprettybird.jpg
