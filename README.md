@@ -14,8 +14,23 @@ There are two ways to download the notebooks.
 
 ### Installing Julia
 
-1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.8.5.
-2. Yes, it is that simple :zap:
+There are multiple ways to install julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
+
+We recommend the `Juliaup` installation manager.
+
+In the current version of the course we will be using the latest stable release `1.10.0`.
+
+#### using the binaries
+
+1. Go to [this page](https://julialang.org/downloads/#official_binaries_for_manual_download) on the official Julia website and select the binary you want to download given the version and your system specification. 
+2. Have a look [here](https://julialang.org/downloads/platform/) to see the installation instruction for different platforms.
+
+#### Juliaup
+
+1. Follow the (installation instructions)[https://github.com/JuliaLang/juliaup#installation] for your specific platform.
+2. Check out the (using Juliaup)[https://github.com/JuliaLang/juliaup#installation] details for how to launch Juliaup and execute some commands for your specific system.
+3. Install version `1.10.0`: `juliaup add 1.10.0`
+4. Make this version the default version: `juliaup default 1.10.0`.
 
 ### Starting Julia
 For *windows* users, it is as simple as double-clicking the Julia application (after unzipping). For *Linux* users the Julia REPL can be started by executing the binary (after unzipping).
