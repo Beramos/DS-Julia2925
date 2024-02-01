@@ -194,7 +194,7 @@ noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) +  σ * rand();
 md"We use the convolution function we defined to construct a moving_average function,"
 
 # ╔═╡ f94e2e6c-598e-11eb-041a-0b6a068e464c
-moving_average(f::Function, t, w) = convolve_1d(f.(t), ones(w).*1/w);
+moving_average(y::Vector, w) = convolve_1d(y, ones(w).*1/w);
 
 # ╔═╡ 4e45e43e-598f-11eb-0a0a-2fa636748f7c
 @bind wₑ Slider(1:2:43, default=3)
@@ -205,8 +205,9 @@ md"Number of weights (w) : $wₑ"
 # ╔═╡ 8e53f108-598d-11eb-127f-ddd5be0ec899
 begin 
 	t = 0:0.01:10
-	plot(t, noisy_signal.(t), label="Noisy", ylabel="Signal (-)", xlabel="time(s)")
-	plot!(t, moving_average(noisy_signal, t, wₑ), label="Filtered", lw = 2)
+	signal = noisy_signal.(t) 
+	plot(t, signal, label="Noisy", ylabel="Signal (-)", xlabel="time(s)")
+	plot!(t, moving_average(signal, wₑ), label="Filtered", lw = 2)
 end
 
 # ╔═╡ eec85f98-ae75-451e-b8bf-89271c8f4950
