@@ -27,8 +27,8 @@ In the current version of the course we will be using the latest stable release 
 
 #### Juliaup
 
-1. Follow the (installation instructions)[https://github.com/JuliaLang/juliaup#installation] for your specific platform.
-2. Check out the (using Juliaup)[https://github.com/JuliaLang/juliaup#installation] details for how to launch Juliaup and execute some commands for your specific system.
+1. Follow the [installation instructions](https://github.com/JuliaLang/juliaup#installation) for your specific platform.
+2. Check out the [using Juliaup](https://github.com/JuliaLang/juliaup?tab=readme-ov-file#using-juliaup) details for how to launch Juliaup and execute some commands for your specific system.
 3. Install version `1.10.0`: `juliaup add 1.10.0`
 4. Make this version the default version: `juliaup default 1.10.0`.
 
