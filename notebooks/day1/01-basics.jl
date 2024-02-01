@@ -800,23 +800,48 @@ stirling(n) = missing
 
 # ╔═╡ adb47b64-5af8-11eb-1b32-57cbe5d47200
 md"""
-> **Question 6: time is relative**
+> **Question 6: Narcissistic numbers**
 
-The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
-Write a script that reads the current time in seconds (use `time()`) and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the beginning of the year.
+[source](https://www.w3resource.com/python-exercises/basic/)
+
+If you are a reader of Greek mythology, then you are probably familiar with Narcissus. He was a hunter of exceptional beauty, and he died because he was unable to leave a pool after falling in love with his own reflection. That's why I keep myself away from pools these days (kidding).
+In mathematics, he has kins called narcissistic numbers - numbers that can't get enough of themselves. In particular, they are numbers that are the sum of their digits when raised to the power of the number of digits.
+
+
+For example, 371 is a narcissistic number; it has three digits, and if we cube each digits 33 + 73 + 13 the sum is 371. Other 3-digit narcissistic numbers are
+```
+153 = 13 + 53 + 33
+370 = 33 + 73 + 03
+407 = 43 + 03 + 73.
+```
+There are also 4-digit narcissistic numbers, some of which are 1634, 8208, 9474 since
+```
+1634 = 14+64+34+44
+8208 = 84+24+04+84
+9474 = 94+44+74+44
+```
+It has been proven that there are only 88 narcissistic numbers (in the decimal system) and that the largest of which is
+115,132,219,018,763,992,565,095,597,973,971,522,401
+has 39 digits.
+
+Complete the function `isnarcistic`, which returns `true` if the input is narcissistic. Use the function `filter` to find all narcissistic numbers up to 100000.
 """
 
 # ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
-present = time()
-
-# ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-function since_epoch(t)
-	days, hours, minutes, seconds = missing, missing, missing, missing
-	return days, hours, minutes, seconds
+function isnarcistic(n)
+	@assert n isa Integer
+	
+	return missing
 end
 
-# ╔═╡ 40557d76-661e-11eb-3df0-659c6095285d
-since_epoch(present)
+# ╔═╡ de609dc8-f004-4412-aef6-82f62803ba86
+isnarcistic(153)  # true
+
+# ╔═╡ 4fd2ae04-c611-48f4-8af8-5ee7f07f7914
+isnarcistic(197)  # false
+
+# ╔═╡ 9bbf8541-795b-4b09-b2ac-db37fa2b8fca
+# find all narcistic numbers between 1 and 100,000
 
 # ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 md"""
@@ -1070,24 +1095,24 @@ end
 if answ_q6
 	md""" 
 	```julia
-	function since_epoch(t)
-	  now = t
-	  seconds = now % 60 # 60 seconds in a minute
-	  now -= seconds
-	  # to minutes
-	  now = div(now, 60) 
-	  minutes = now % 60 # 60 minutes in an hour
-	  now -= minutes
-	  # to hours
-	  now = div(now, 60)
-	  hours = now % 24 # 24 hours in a day
-	  now -= hours
-	  # to days
-	  now = div(now, 24)
-	  days = now % 365 # ± 365 days in a year
-	  return days, hours, minutes, seconds
+	function isnarcistic(n)
+		@assert n isa Integer
+		n_digits = ceil(Int, log10(n))
+		result = 0
+		m = n
+		for d in 1:n_digits
+			r = m % 10
+			result += r^n_digits
+			m -= r
+			m = m ÷ 10
+		end
+		return result == n
 	end
 	```
+
+	The above code makes use of a bit of math. You can also turn the number in a string using `string` and use length and `convert(Int, s)` to convert numbers back.
+
+	You can easily find narcistic numbers using `filter(isnarcistic, 1:100_000)`.
 	"""
 end
 
@@ -1312,7 +1337,7 @@ version = "4.5.0"
 [[CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.5+1"
+version = "1.0.2+0"
 
 [[Contour]]
 git-tree-sha1 = "d05d9e7b7aedff4e5b51a029dced05cfb6125781"
@@ -1555,26 +1580,21 @@ version = "0.15.18"
 [[LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
-version = "0.6.4"
+version = "0.6.3"
 
 [[LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "8.4.0+0"
+version = "7.84.0+0"
 
 [[LibGit2]]
-deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
+deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
-
-[[LibGit2_jll]]
-deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
-uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
-version = "1.6.4+0"
 
 [[LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.11.0+1"
+version = "1.10.2+0"
 
 [[Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
@@ -1670,7 +1690,7 @@ version = "1.1.7"
 [[MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.2+1"
+version = "2.28.2+0"
 
 [[Measures]]
 git-tree-sha1 = "c13304c81eec1ed3af7fc20e75fb6b26092a1102"
@@ -1688,7 +1708,7 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2023.1.10"
+version = "2022.10.11"
 
 [[NaNMath]]
 deps = ["OpenLibm_jll"]
@@ -1709,12 +1729,12 @@ version = "1.3.5+1"
 [[OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.23+2"
+version = "0.3.21+4"
 
 [[OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
-version = "0.8.1+2"
+version = "0.8.1+0"
 
 [[OpenSSL]]
 deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
@@ -1748,7 +1768,7 @@ version = "1.4.1"
 [[PCRE2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "efcefdf7-47ab-520b-bdef-62a2eaa19f15"
-version = "10.42.0+1"
+version = "10.42.0+0"
 
 [[Parsers]]
 deps = ["Dates", "SnoopPrecompile"]
@@ -1770,7 +1790,7 @@ version = "0.40.1+0"
 [[Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.10.0"
+version = "1.9.0"
 
 [[PlotThemes]]
 deps = ["PlotUtils", "Statistics"]
@@ -1817,7 +1837,7 @@ deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[Random]]
-deps = ["SHA"]
+deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [[RecipesBase]]
@@ -1891,7 +1911,6 @@ version = "1.1.0"
 [[SparseArrays]]
 deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
-version = "1.10.0"
 
 [[SpecialFunctions]]
 deps = ["ChainRulesCore", "IrrationalConstants", "LogExpFunctions", "OpenLibm_jll", "OpenSpecFun_jll"]
@@ -1902,7 +1921,7 @@ version = "2.1.7"
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-version = "1.10.0"
+version = "1.9.0"
 
 [[StatsAPI]]
 deps = ["LinearAlgebra"]
@@ -1917,9 +1936,9 @@ uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 version = "0.33.21"
 
 [[SuiteSparse_jll]]
-deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
+deps = ["Artifacts", "Libdl", "Pkg", "libblastrampoline_jll"]
 uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
-version = "7.2.1+1"
+version = "5.10.1+6"
 
 [[TOML]]
 deps = ["Dates"]
@@ -2128,7 +2147,7 @@ version = "1.4.0+3"
 [[Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.13+1"
+version = "1.2.13+0"
 
 [[Zstd_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2157,7 +2176,7 @@ version = "0.15.1+0"
 [[libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.7.0+0"
 
 [[libfdk_aac_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2180,12 +2199,12 @@ version = "1.3.7+1"
 [[nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.52.0+1"
+version = "1.48.0+0"
 
 [[p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+2"
+version = "17.4.0+0"
 
 [[x264_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2402,8 +2421,9 @@ version = "1.4.1+0"
 # ╟─9e211fbf-4c43-439a-95ba-86b48767c053
 # ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
-# ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-# ╠═40557d76-661e-11eb-3df0-659c6095285d
+# ╠═de609dc8-f004-4412-aef6-82f62803ba86
+# ╠═4fd2ae04-c611-48f4-8af8-5ee7f07f7914
+# ╠═9bbf8541-795b-4b09-b2ac-db37fa2b8fca
 # ╟─fd368fc2-2c64-463e-976e-9dd52ce80f13
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
