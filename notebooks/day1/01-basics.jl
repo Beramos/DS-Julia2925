@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.2
+# v0.19.37
 
 using Markdown
 using InteractiveUtils
@@ -800,23 +800,48 @@ stirling(n) = missing
 
 # ╔═╡ adb47b64-5af8-11eb-1b32-57cbe5d47200
 md"""
-> **Question 6: time is relative**
+> **Question 6: Narcissistic numbers**
 
-The function `time` returns the current Greenwich Mean Time in seconds since "the epoch", which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
-Write a script that reads the current time in seconds (use `time()`) and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the beginning of the year.
+[source](https://www.w3resource.com/python-exercises/basic/)
+
+If you are a reader of Greek mythology, then you are probably familiar with Narcissus. He was a hunter of exceptional beauty, and he died because he was unable to leave a pool after falling in love with his own reflection. That's why I keep myself away from pools these days (kidding).
+In mathematics, he has kins called narcissistic numbers - numbers that can't get enough of themselves. In particular, they are numbers that are the sum of their digits when raised to the power of the number of digits.
+
+
+For example, 371 is a narcissistic number; it has three digits, and if we cube each digits 33 + 73 + 13 the sum is 371. Other 3-digit narcissistic numbers are
+```
+153 = 13 + 53 + 33
+370 = 33 + 73 + 03
+407 = 43 + 03 + 73.
+```
+There are also 4-digit narcissistic numbers, some of which are 1634, 8208, 9474 since
+```
+1634 = 14+64+34+44
+8208 = 84+24+04+84
+9474 = 94+44+74+44
+```
+It has been proven that there are only 88 narcissistic numbers (in the decimal system) and that the largest of which is
+115,132,219,018,763,992,565,095,597,973,971,522,401
+has 39 digits.
+
+Complete the function `isnarcistic`, which returns `true` if the input is narcissistic. Use the function `filter` to find all narcissistic numbers up to 100000.
 """
 
 # ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
-present = time()
-
-# ╔═╡ 0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-function since_epoch(t)
-	days, hours, minutes, seconds = missing, missing, missing, missing
-	return days, hours, minutes, seconds
+function isnarcistic(n)
+	@assert n isa Integer
+	
+	return missing
 end
 
-# ╔═╡ 40557d76-661e-11eb-3df0-659c6095285d
-since_epoch(present)
+# ╔═╡ de609dc8-f004-4412-aef6-82f62803ba86
+isnarcistic(153)  # true
+
+# ╔═╡ 4fd2ae04-c611-48f4-8af8-5ee7f07f7914
+isnarcistic(197)  # false
+
+# ╔═╡ 9bbf8541-795b-4b09-b2ac-db37fa2b8fca
+# find all narcistic numbers between 1 and 100,000
 
 # ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 md"""
@@ -1070,24 +1095,24 @@ end
 if answ_q6
 	md""" 
 	```julia
-	function since_epoch(t)
-	  now = t
-	  seconds = now % 60 # 60 seconds in a minute
-	  now -= seconds
-	  # to minutes
-	  now = div(now, 60) 
-	  minutes = now % 60 # 60 minutes in an hour
-	  now -= minutes
-	  # to hours
-	  now = div(now, 60)
-	  hours = now % 24 # 24 hours in a day
-	  now -= hours
-	  # to days
-	  now = div(now, 24)
-	  days = now % 365 # ± 365 days in a year
-	  return days, hours, minutes, seconds
+	function isnarcistic(n)
+		@assert n isa Integer
+		n_digits = ceil(Int, log10(n))
+		result = 0
+		m = n
+		for d in 1:n_digits
+			r = m % 10
+			result += r^n_digits
+			m -= r
+			m = m ÷ 10
+		end
+		return result == n
 	end
 	```
+
+	The above code makes use of a bit of math. You can also turn the number in a string using `string` and use length and `convert(Int, s)` to convert numbers back.
+
+	You can easily find narcistic numbers using `filter(isnarcistic, 1:100_000)`.
 	"""
 end
 
@@ -1236,6 +1261,7 @@ version = "1.1.4"
 
 [[ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
+version = "1.1.1"
 
 [[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -1311,6 +1337,7 @@ version = "4.5.0"
 [[CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
+version = "1.0.2+0"
 
 [[Contour]]
 git-tree-sha1 = "d05d9e7b7aedff4e5b51a029dced05cfb6125781"
@@ -1334,7 +1361,9 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
 [[DelimitedFiles]]
 deps = ["Mmap"]
+git-tree-sha1 = "9e2f36d3c96a820c678f2f1f1782582fcf685bae"
 uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+version = "1.9.1"
 
 [[DocStringExtensions]]
 deps = ["LibGit2"]
@@ -1343,8 +1372,15 @@ uuid = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 version = "0.9.3"
 
 [[Downloads]]
-deps = ["ArgTools", "LibCURL", "NetworkOptions"]
+deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+version = "1.6.0"
+
+[[EpollShim_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "8e9441ee83492030ace98f9789a654a6d0b1f643"
+uuid = "2702e6a9-849d-5ed8-8c21-79e8b8f9ee43"
+version = "0.0.20230411+0"
 
 [[Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1363,6 +1399,9 @@ deps = ["Artifacts", "Bzip2_jll", "FreeType2_jll", "FriBidi_jll", "JLLWrappers",
 git-tree-sha1 = "74faea50c1d007c85837327f6775bea60b5492dd"
 uuid = "b22a6f82-2f65-5046-a5b2-351ab43fb4e5"
 version = "4.4.2+2"
+
+[[FileWatching]]
+uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[FixedPointNumbers]]
 deps = ["Statistics"]
@@ -1541,10 +1580,12 @@ version = "0.15.18"
 [[LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
+version = "0.6.3"
 
 [[LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
+version = "7.84.0+0"
 
 [[LibGit2]]
 deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
@@ -1553,6 +1594,7 @@ uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 [[LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
+version = "1.10.2+0"
 
 [[Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
@@ -1606,7 +1648,7 @@ uuid = "38a345b3-de98-5d2b-a5d3-14cd9215e700"
 version = "2.36.0+0"
 
 [[LinearAlgebra]]
-deps = ["Libdl"]
+deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[LogExpFunctions]]
@@ -1648,6 +1690,7 @@ version = "1.1.7"
 [[MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
+version = "2.28.2+0"
 
 [[Measures]]
 git-tree-sha1 = "c13304c81eec1ed3af7fc20e75fb6b26092a1102"
@@ -1665,6 +1708,7 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
+version = "2022.10.11"
 
 [[NaNMath]]
 deps = ["OpenLibm_jll"]
@@ -1674,6 +1718,7 @@ version = "1.0.1"
 
 [[NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
+version = "1.2.0"
 
 [[Ogg_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1681,9 +1726,15 @@ git-tree-sha1 = "887579a3eb005446d514ab7aeac5d1d027658b8f"
 uuid = "e7412a2a-1a6e-54c0-be00-318e2571c051"
 version = "1.3.5+1"
 
+[[OpenBLAS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
+uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
+version = "0.3.21+4"
+
 [[OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
+version = "0.8.1+0"
 
 [[OpenSSL]]
 deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
@@ -1717,6 +1768,7 @@ version = "1.4.1"
 [[PCRE2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "efcefdf7-47ab-520b-bdef-62a2eaa19f15"
+version = "10.42.0+0"
 
 [[Parsers]]
 deps = ["Dates", "SnoopPrecompile"]
@@ -1736,8 +1788,9 @@ uuid = "30392449-352a-5448-841d-b1acce4e97dc"
 version = "0.40.1+0"
 
 [[Pkg]]
-deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
+deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+version = "1.9.0"
 
 [[PlotThemes]]
 deps = ["PlotUtils", "Statistics"]
@@ -1784,7 +1837,7 @@ deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[Random]]
-deps = ["Serialization"]
+deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [[RecipesBase]]
@@ -1818,6 +1871,7 @@ version = "1.3.0"
 
 [[SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"
 
 [[Scratch]]
 deps = ["Dates"]
@@ -1855,7 +1909,7 @@ uuid = "a2af1166-a08f-5f64-846c-94a0d3cef48c"
 version = "1.1.0"
 
 [[SparseArrays]]
-deps = ["LinearAlgebra", "Random"]
+deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [[SpecialFunctions]]
@@ -1867,6 +1921,7 @@ version = "2.1.7"
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+version = "1.9.0"
 
 [[StatsAPI]]
 deps = ["LinearAlgebra"]
@@ -1880,13 +1935,20 @@ git-tree-sha1 = "d1bf48bfcc554a3761a133fe3a9bb01488e06916"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 version = "0.33.21"
 
+[[SuiteSparse_jll]]
+deps = ["Artifacts", "Libdl", "Pkg", "libblastrampoline_jll"]
+uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
+version = "5.10.1+6"
+
 [[TOML]]
 deps = ["Dates"]
 uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+version = "1.0.3"
 
 [[Tar]]
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
+version = "1.10.0"
 
 [[TensorCore]]
 deps = ["LinearAlgebra"]
@@ -1933,7 +1995,7 @@ uuid = "41fe7b60-77ed-43a1-b4f0-825fd5a5650d"
 version = "0.1.2"
 
 [[Wayland_jll]]
-deps = ["Artifacts", "Expat_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Pkg", "XML2_jll"]
+deps = ["Artifacts", "EpollShim_jll", "Expat_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Pkg", "XML2_jll"]
 git-tree-sha1 = "ed8d92d9774b077c53e1da50fd81a36af3744c1c"
 uuid = "a2964d1f-97da-50d4-b82a-358c7fce9d89"
 version = "1.21.0+0"
@@ -2085,6 +2147,7 @@ version = "1.4.0+3"
 [[Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
+version = "1.2.13+0"
 
 [[Zstd_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2110,6 +2173,11 @@ git-tree-sha1 = "5982a94fcba20f02f42ace44b9894ee2b140fe47"
 uuid = "0ac62f75-1d6f-5e53-bd7c-93b484bb37c0"
 version = "0.15.1+0"
 
+[[libblastrampoline_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
+version = "5.7.0+0"
+
 [[libfdk_aac_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "daacc84a041563f965be61859a36e17c4e4fcd55"
@@ -2131,10 +2199,12 @@ version = "1.3.7+1"
 [[nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
+version = "1.48.0+0"
 
 [[p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
+version = "17.4.0+0"
 
 [[x264_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2351,8 +2421,9 @@ version = "1.4.1+0"
 # ╟─9e211fbf-4c43-439a-95ba-86b48767c053
 # ╟─adb47b64-5af8-11eb-1b32-57cbe5d47200
 # ╠═0cd2d0e4-59e1-11eb-112e-83ebe626f597
-# ╠═0c306fd8-4ad5-11eb-1a9f-2d3d1e838a77
-# ╠═40557d76-661e-11eb-3df0-659c6095285d
+# ╠═de609dc8-f004-4412-aef6-82f62803ba86
+# ╠═4fd2ae04-c611-48f4-8af8-5ee7f07f7914
+# ╠═9bbf8541-795b-4b09-b2ac-db37fa2b8fca
 # ╟─fd368fc2-2c64-463e-976e-9dd52ce80f13
 # ╟─b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 # ╠═bf53d86c-59e1-11eb-1456-5518e1f63390
