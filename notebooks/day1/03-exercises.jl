@@ -120,7 +120,7 @@ $$w_i = \cfrac{i}{\sum_j^n j} \, .$$
 
 For example,
 
-$$[w_1, w_2, w_3] = [1/3, 2/3, 3/3]\, .$$
+$$[w_1, w_2, w_3] = [1/6, 2/6, 3/6]\, .$$
 
 "
 
@@ -128,7 +128,7 @@ $$[w_1, w_2, w_3] = [1/3, 2/3, 3/3]\, .$$
 weighted_mean(x, w) = missing
 
 # ╔═╡ 181c4246-4836-11eb-0368-61b2998f5424
-wx = collect((1:5) / sum(1:5))
+wx = collect((1:3) / sum(1:3))
 
 # ╔═╡ 94a950fe-4835-11eb-029c-b70de72c20e6
 weighted_mean(x, wx)
