@@ -44,10 +44,10 @@ Several approaches and algorithms have been proposed to tackle the TSP. It's imp
    
     **\[Optional\] An approximate solution:**
 
-    The number of bars in the bar crawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with varying degrees of optimality:
-    Nearest Neighbor Algorithm: This algorithm starts at a randomly chosen bar and selects the nearest unvisited bar at each step. While simple and fast, it may not always yield an optimal solution.
+    The number of bars in the bar crawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with varying degrees of optimality. [These course notes](https://michielstock.github.io/STMO/chapters/11.TSP/tsp.jl.html) provide an overview of algorithms for solving this problem.  
 
-    - Try to find the most optimal route to visit all bars in Ghent starting from and returning to the faculty.
+    - Choose one or multiple algorithms and try to find the most optimal route to visit all bars in Ghent starting from and returning to the faculty.
+
 
 4. **Why are you walking?**   
    When time is of concern (... and it is!), the time spent between bars should be minimised. Luckily there are plenty of mobility solutions in Ghent. Create an application that, starting from a specified location (e.g. the faculty), finds the closest public bicycle, and computes the optimal bar crawl route of a specified number of bars, given that the bicycle needs to be returned to the starting location. Ghent's data portal has an API endpoint to find available [“BAQME bicycles”](https://data.stad.gent/api/explore/v2.1/catalog/datasets/baqme-locaties-vrije-deelfietsen-gent/records?).
@@ -89,7 +89,7 @@ function getRoads(;
     coords = []
     for offset in 1:limit:offsets*limit
         resp = HTTP.get(URL_MAP * "limit=$limit&offset=$offset").body |> String |> JSON.parse
-        sleep(0.01)
+        sleep(0.01) # let's be gentle to Ghents API and throttle.
         for road in resp["results"]
             geom = road["geometry"]["geometry"]
             if geom["type"] == "LineString"
