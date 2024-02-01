@@ -14,7 +14,7 @@ There are two ways to download the notebooks.
 
 ### Installing Julia
 
-1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.8.5.
+1. Download the *Julia* binaries for your system [here](https://julialang.org/downloads/) we suggest to install the Current Stable Release v1.10.
 2. Yes, it is that simple :zap:
 
 ### Starting Julia
