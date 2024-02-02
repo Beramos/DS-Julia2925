@@ -15,7 +15,7 @@ macro bind(def, element)
 end
 
 # ╔═╡ 9a1cca86-0fff-4f8a-a033-8cf6db337503
-using PlutoUI
+using PlutoUI; TableOfContents()
 
 # ╔═╡ bf1385da-4ac2-11eb-3992-41abac921370
 using Plots
@@ -36,18 +36,12 @@ md"""
 Submission by: **_$(student.name)_**
 """
 
-# ╔═╡ b2108e9b-d3cc-4001-88b0-d61936ec392a
-TableOfContents()
-
 # ╔═╡ fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
 md"""
 # Notebook 1: Getting up and running
 
 First of all, welcome to the course, **$(student[:name])**! We hope you enjoy the ride.
 """ 
-
-# ╔═╡ 0f47f5b2-4aba-11eb-2e5a-b10407e3f928
-
 
 # ╔═╡ 23d3c9cc-4abd-11eb-0cb0-21673effee6c
 md"""## 1. The basics
@@ -2341,11 +2335,9 @@ version = "1.4.1+1"
 
 # ╔═╡ Cell order:
 # ╟─f089cbaa-4ab9-11eb-09d1-05f49911487f
-# ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # ╠═9a1cca86-0fff-4f8a-a033-8cf6db337503
-# ╟─b2108e9b-d3cc-4001-88b0-d61936ec392a
+# ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # ╟─fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
-# ╟─0f47f5b2-4aba-11eb-2e5a-b10407e3f928
 # ╟─23d3c9cc-4abd-11eb-0cb0-21673effee6c
 # ╟─62c3b076-4ab7-11eb-0cf2-25cdf7d2540d
 # ╠═7bf5bdbe-4ab7-11eb-0d4b-c116e02cb9d9
