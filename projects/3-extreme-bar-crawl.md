@@ -137,6 +137,7 @@ display(pltBack)
 ```
 
 ## 5. Resources
+- Several Julia implementations for solving TSP - *STMO.jl* - ([source](https://github.com/MichielStock/STMO/blob/master/scripts/tsp_algorithms.jl))
 - Exact solver for TSP - *TravelingSalesmanExact.jl* ([source]https://github.com/ericphanson/TravelingSalesmanExact.jl)
 - TSP heuristics - *TravelingSalesmanHeuristics.jl* ([source]https://github.com/evanfields/TravelingSalesmanHeuristics.jl)
 - *DrWatson.js* - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
