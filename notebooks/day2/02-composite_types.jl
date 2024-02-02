@@ -555,7 +555,7 @@ md"""
 
 The determinant of a Vandermonde matrix is easy to compute:
 
-$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
+$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(\alpha_{j}-\alpha_{i}).}$$
 
 Overload this for the Vandermonde matrix!
 
@@ -1049,7 +1049,7 @@ version = "17.4.0+2"
 # ╠═d107c75e-5d93-11eb-0e6f-097b1291e460
 # ╟─f4fc59ac-e0e2-483a-9e07-6664090cb299
 # ╟─7f02b0a0-617f-11eb-1263-91423840def3
-# ╟─a9ad5b1d-1935-427b-b7f0-dc638b0e861b
+# ╠═a9ad5b1d-1935-427b-b7f0-dc638b0e861b
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
 # ╟─1c373bba-eeb6-4673-8b18-0d68b524e536
