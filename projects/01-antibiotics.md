@@ -28,11 +28,27 @@ Aₛ(c) = (2.5 + 2.1) * (c/16)^4 / ((c/16)^4 - (-2.1/2.5))
 Aᵣ(c) = (2.5 + 2.1) * (c/32)^4 / ((c/32)^4 - (-2.1/2.5))
 ```
 
-![ODE system antibiotics](antibiotics_ode.png)
+
+$$
+\frac{d S}{d t}=\underbrace{r S\left(1-\frac{S+R}{K}\right)-\theta S}_{\text {Natural Growth }}-\underbrace{\beta S R}_{\text {HGT }}-\underbrace{A_{S}(C) S}_{\text {AB Death }}
+$$ 
+(1)
+
+$$
+\frac{d R}{d t}=\underbrace{r R\left(1-\frac{S+R}{K}\right)(1-a)-\theta R}_{\text {Natural Growth }}+\underbrace{\beta S R}_{\text {HGT }}-\underbrace{A_{R}(C) R}_{\text {AB Death }}
+$$ 
+(2)
+
+$$
+\frac{d C}{d t}=\underbrace{\sum_{n=1}^{10} D_{n} \delta\left(t-\hat{t}_{n}\right)}_{\text {Antibiotic Doses }}-\underbrace{g C}_{\text {Degredation }}
+$$
+(3)
 
 The paper used the following objective function:
 
-![Objective function antibiotics](antibiotics_obj.png)
+$$
+F = \underbrace{w_1\,\alpha_1\,\sum^{10}_{i=1}D_i}_{\text{Total Antibiotic}} + \underbrace{w_2\,\alpha_2\,\int^{30}_{0}N(t)\,dt}_{\text{Bacterial Load}}
+$$
 
 ## Assignments
 
