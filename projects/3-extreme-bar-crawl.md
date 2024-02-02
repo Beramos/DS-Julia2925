@@ -44,7 +44,7 @@ Several approaches and algorithms have been proposed to tackle the TSP. It's imp
    
     **\[Optional\] An approximate solution:**
 
-    The number of bars in the bar crawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with varying degrees of optimality. [These course notes](https://michielstock.github.io/STMO/chapters/11.TSP/tsp.jl.html) provide an overview of algorithms for solving this problem.  
+    The number of bars in the bar crawl can increase considerably when stepping away from exact solutions. Several approaches can be applied with varying degrees of optimality. [These course notes](https://michielstock.github.io/STMO/chapters/11.TSP/tsp.jl.html) provide an overview of algorithms for solving this problem. The implementation of certain solver can be found in the resource section below.
 
     - Choose one or multiple algorithms and try to find the most optimal route to visit all bars in Ghent starting from and returning to the faculty.
 
