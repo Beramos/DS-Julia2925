@@ -2,11 +2,11 @@
 
 **tags:** *antibiotics, ordinary differential equations, parameter estimation*
 
-## Abstract
+## 1. Abstract
 
 The discovery of antibiotics is one of the greatest medical advancements of the 20th century. In this project, we use a simple ordinary differential equation (ODE) system to model the effect of antibiotic dosing on a system containing susceptible and resistant bacteria. Bacteria grow with a simple completion model (susceptible bacteria grow faster due to the fitness cost associated with being resistant). Antibiotics can be added to the system. Higher concentrations kill bacteria more effectively, though antibiotics are quickly removed from the system. When choosing doses and dosing time, can we maximally reduce bacterial infection while limiting our total use?
 
-## Background
+## 2. Background
 
 In this project, we will study the regime of treating a bacterial infection with antibiotics.
 
@@ -50,7 +50,7 @@ $$
 F = \underbrace{w_1\,\alpha_1\,\sum^{10}_{i=1}D_i}_{\text{Total Antibiotic}} + \underbrace{w_2\,\alpha_2\,\int^{30}_{0}N(t)\,dt}_{\text{Bacterial Load}}
 $$
 
-## Assignments
+## 3. Assignments
 
 1. Implement the antibiotics dosing model using Catalyst. **Don’t implement the ODEs directly, instead, add all processes as reactions.** Ignore HGT. The part “antibiotic dosing” does not need to be implemented. This can be addressed by the solver. 
 2. Convert your system into an ODE system. 
@@ -60,7 +60,7 @@ $$
 6. Make a function that gives different dosing schemes and concentrations. Either use random sampling or optimization to minimize the bacterial load. Make a Pareto plot of the bacterial load vs total antibiotics used in your treatments.
 7. Perform a sensitivity analysis of a parameter of your choice.
 
-## Resources
+## 4. Resources
 
 This work is based on the paper “*[Optimising Antibiotic Usage to Treat Bacterial Infections](https://www.nature.com/articles/srep37853)*”, which explains the model and lists sensible values for the parameters.
 
