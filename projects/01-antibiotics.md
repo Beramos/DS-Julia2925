@@ -15,10 +15,10 @@ In this project, we will study the regime of treating a bacterial infection with
 We assume there is an infection with susceptible (S) and resistant (R) bacteria. Both bacteria have a growth rate dependent on their total density:
 
 $$
-\mu=r\left(1+\frac{S+R}{K}\right)
+\mu=r\left(1-\frac{S+R}{K}\right)
 $$
 
-For resistant bacteria, there is a fitness cost $a$, meaning their growth rate is only $\mu(1-a)$.
+For resistant bacteria, there is a fitness cost $a$, meaning their growth rate is only $\mu\times(1-a)$.
 
 Both bacteria die naturally, given by a first-order rate of $\theta$.
 
@@ -57,8 +57,8 @@ $$
 1. Implement the antibiotics dosing model using Catalyst. **Don’t implement the ODEs directly, instead, add all processes as reactions.** Ignore HGT. The part “antibiotic dosing” does not need to be implemented. This can be addressed by the solver. 
 2. Convert your system into an ODE system. 
 3. Perform a simulation! Start with the following initial conditions: `u₀map = [:S=>500, :R=>100, :C=>50.0]`. Use the paper to get some realistic parameter values. Simulate for 35 days and make a plot.
-4. Use `DiscreteProblem` and `JumpProblem` for discrete versions.
-5. Now use `PresetTimeCallback` to give antibiotics dosing on set time points. This requires making a function to give the solver’s callback to have the variable C increase at set times (your dosing times) with a specific value (i.e. the dosis of antibiotics you add). Make a bunch of plots with different schemes. You can use DrWatson’s functionality to save these figures systematically.
+4. Try out `DiscreteProblem` and `JumpProblem` for stochastic versions.
+5. Now use `PresetTimeCallback` to give antibiotics dosing on set time points. This requires making a function to give the solver’s callback to have the variable $C$ increase at set times (your dosing times) with a specific value (i.e. the dosis of antibiotics you add). Make a bunch of plots with different schemes. You can use DrWatson’s functionality to save these figures systematically.
 6. Make a function that gives different dosing schemes and concentrations. Either use random sampling or optimization to minimize the bacterial load. Make a Pareto plot of the bacterial load vs total antibiotics used in your treatments.
 7. Perform a sensitivity analysis of a parameter of your choice.
 
