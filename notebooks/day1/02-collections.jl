@@ -65,7 +65,28 @@ A = []            # empty array
 md"Note that the element type is `Any`, since the compiler has no idea what we would store in `A`!"
 
 # ╔═╡ a0c22de6-4c1d-11eb-34a2-aff57cfd22a1
-X = [1, 3, -5, 7] # array of integers
+X = [1, 3, -5, 6] # array of integers
+
+# ╔═╡ 57386df5-058b-4f50-98b1-2557553fa54c
+md"Julia provides many functions to process arrays."
+
+# ╔═╡ 4a7c0935-de06-469e-8eef-88664d5678a5
+sum(X)
+
+# ╔═╡ ca8fb43b-94d3-43b0-a686-1f5380d766b9
+minimum(X)
+
+# ╔═╡ c5a6873a-a7c3-4ed5-8e3a-34cece9dc2d2
+extrema(X)  # smallest and largest value
+
+# ╔═╡ 845df822-2d5b-47ab-ac46-9656d2a68d73
+any([true, false, true])
+
+# ╔═╡ 60f0eee2-4f23-4cd4-9fdd-0c69100b9662
+any(>(0), X)  # >(0) generates a function that check is something is greater than 0
+
+# ╔═╡ 17875f73-831a-4e06-8492-e172295da1da
+count(isodd, X)
 
 # ╔═╡ a81d1f22-4c1d-11eb-1b76-2929f30565bf
 md"### Indexing and slicing"
@@ -299,6 +320,9 @@ P[3,2]  # indexing
 # ╔═╡ 0b9d0bf8-4c24-11eb-2beb-0763c66e6a20
 P[1,:]  # slicing
 
+# ╔═╡ d02f96c8-4192-4bb5-92e8-1837af89f013
+P'  # tranposing (or conjugate transpose for a complex matrix)
+
 # ╔═╡ b9a9a730-5a73-11eb-0d17-7bf1aa935697
 md"You  will likely not be surprised that most functions just work for two (or more) dimensions:"
 
@@ -385,7 +409,7 @@ md"### Element-wise operations"
 md"""This is the Julian way since functions act on the objects, and element-wise operations are done with "dot" operations. For every function or binary operation like `^` there is a "dot" operation `.^` to perform element-by-element exponentiation on arrays."""
 
 # ╔═╡ 0697987c-4c4b-11eb-3052-df54b72dec52
-T = [10 10 10; 20 20 20]
+T = [10 20 30; 21 22 23]
 
 # ╔═╡ 14bceb32-4c4b-11eb-06b2-5190f7ebb9c2
 T.^2
@@ -405,7 +429,22 @@ Did you notice that dot-operations are also applicable to functions, even user-d
 T.^2 .+ cos.(T) == @. T^2 + cos(T)
 
 # ╔═╡ be557eda-64a3-11eb-1562-35ad48531ebd
+md"Many functions that compute something on a whole matrix can also work on the the rows or columns."
 
+# ╔═╡ 16951b3e-4748-41d4-b42e-49f230979f39
+sum(T)
+
+# ╔═╡ fd4c9d45-3099-4044-9177-650430b7f5f1
+sum(T, dims=1)  # over rows
+
+# ╔═╡ 0ee08475-fa03-4e4f-9fcc-7b173387043a
+sum(T, dims=2)  # over columns
+
+# ╔═╡ 61a1d179-783f-46e2-8180-352d1220e35f
+maximum(T, dims=1)
+
+# ╔═╡ 295b6131-cbc3-45bf-af6a-c823b38eb9ea
+md"Note that the dimensionality is kept. This is important for type stability!"
 
 # ╔═╡ eed4faca-4c1f-11eb-3e6c-b342b48080eb
 md""" ### Intermezzo: Colors.jl and Images.jl
@@ -469,7 +508,7 @@ md"### Higher dimensional arrays"
 md"Matrices can be generalized to multiple dimensions."
 
 # ╔═╡ 5fcfb5dc-4c4b-11eb-0be6-e7f66ea1839e
-H = rand(3, 3, 3)
+H = rand(3, 3, 3)  # many functions to construct arrays work with an arbitrary number of dimensions
 
 # ╔═╡ bf6b9fc4-5a74-11eb-2676-bda580c65877
 md"That is all there is to see about matrices, feel free to create arrays of any dimension."
@@ -533,7 +572,13 @@ md"`StepRange` and `UnitRange` also work with floats."
 (0:1:100) / 10  # equivalent
 
 # ╔═╡ ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
+md"You can also use the function `range`:"
 
+# ╔═╡ 8fec0796-6084-49c3-a7f8-a00dfd329e2c
+range(0, 1, 10)  # start, stop, length
+
+# ╔═╡ 0704bcce-0e7b-42c6-8aa4-8f8e0922e3b5
+range(0, 1, step=0.2)  # giving steps
 
 # ╔═╡ 0fd08728-4c58-11eb-1b71-c9710d398fab
 md"## 3. Other collections"
@@ -586,6 +631,9 @@ md"### Dictionaries"
 # ╔═╡ c6d236da-4c58-11eb-2714-3f5c43583a3d
 md"A dictionary is a collection that stores a set of values with their corresponding keys internally for faster data retrieval. The operation of finding the value associated with a key is called lookup or indexing. [Techopedia.com](https://www.techopedia.com/definition/10263/dictionary-c)"
 
+# ╔═╡ e594575b-8faa-4be4-8367-75dd65afc01f
+md"Dictionaries can be initialized by giving a series of key-value pairs of the form `k=>v':"
+
 # ╔═╡ 3253ab74-4c58-11eb-178e-83ea8aba9c8f
 scores = Dict("humans" => 2, "vogons" => 1) # dictionaries
 
@@ -601,8 +649,134 @@ scores
 # ╔═╡ 3fc787d6-5a76-11eb-06e9-5378d27ce011
 delete!(scores, "humans")  # removing a key, earth was destroyed
 
+# ╔═╡ 937af866-47db-4aa7-9c42-3e92cb42383c
+md"## 4. Strings"
+
+# ╔═╡ e6c6b353-cc75-4ce4-8055-7a78ea8b3bca
+md"""
+In the previous notebook, we briefly covered strings. As strings have much in common with collections, they are a sequence of characters, we will show a bit more functionality here.
+"""
+
+# ╔═╡ f7a97d80-3951-44e6-82dc-4b5714bb145c
+mystring = "One ring to rule them all"  # strings are defined using double quotes
+
+# ╔═╡ e5405e7a-e986-4cfb-b338-98ae453b9101
+mystring[3]  # a string is built from characters
+
+# ╔═╡ ba650ce6-d4a5-44dd-9ddc-42add99cbac2
+'a'  # character
+
+# ╔═╡ ab1dc759-a500-44f5-b182-43dc6811ec11
+"a"  # tiny string
+
+# ╔═╡ 3a71effa-67d6-4694-8d70-6e22e7672904
+mystring[5:8]  # slicing works similarly as with vectors 
+
+# ╔═╡ e1f2dd8b-4b3c-457b-b880-1def928b4524
+mystring[end-2:end]  # gives a Substring
+
+# ╔═╡ 3f9d2121-1a98-47e4-96cf-9b32ebdcbd7b
+mystring[1] = '0'  # this doesn't work however!
+
+# ╔═╡ 580d6c53-1f3b-4044-88ab-8e31781276f6
+md"For long strings, you can use triple quotes:"
+
+# ╔═╡ c71f044c-6807-4fff-9fd9-5590d5fef845
+mylongstring = """
+One ring to rule them all,
+   one ring to find them,
+One ring to bring them all
+   and in the darkness bind them.
+"""
+
+# ╔═╡ 5fb7bbbf-63a7-4bd5-88dc-24f4ac330266
+println(mylongstring)
+
+# ╔═╡ 636d20ce-efce-48f2-a7cb-c8db7bb0cc3a
+md"Note that there is a `\n` at the end that is not so tidy. This frequently occurs when parsing strings and can be solved by `rstrip`."
+
+# ╔═╡ 3ab46e8a-dbf1-4103-9e1a-8887f375512e
+rstrip(mylongstring)
+
+# ╔═╡ f1ac2420-767f-405d-b68e-543f7842e96f
+md"You can interpolate strings by using `$variable`, for example:"
+
+# ╔═╡ ee864877-ffa4-4603-a9d6-b54501abdadf
+"The ring is carried by $(student.name)"
+
+# ╔═╡ 8b5153b5-dcee-401f-9664-bc8eb02f1c8a
+"The answer to life, the universe and everything is $(7 * 3 * 2)!"  # you can compute something there
+
+# ╔═╡ 3f765458-4a6e-40a4-a075-b4e20ee01f80
+md"Two or more strings can be concatenated using `*`:"
+
+# ╔═╡ d7e1c451-664b-445b-a737-075c32239c88
+"hocus" * "pocus" 
+
+# ╔═╡ dadda755-621f-4903-be44-d7f954030c98
+md"So, since `*` is used for concatenation, you might infer that `^` would repeat a string"
+
+# ╔═╡ 2000c0e1-f4c0-43ac-97de-7aa6db592c41
+"ha"^20
+
+# ╔═╡ 187f81ab-8996-45aa-955d-b2ca6b598016
+md"""
+There are many handy functions for processing and searching strings.
+"""
+
+# ╔═╡ 60371e70-2e74-4ec4-9952-348b10f0c545
+findfirst("ring", mylongstring)  # position of the first occurence of a string
+
+# ╔═╡ e1b4260c-231f-4d31-86b4-fead7f780782
+findlast("ring", mylongstring)  # position of the last occurence of a string
+
+# ╔═╡ 10507d4a-08d7-4520-a210-744fd6824ef8
+occursin("find", mylongstring)  # check if a substring is part of a string
+
+# ╔═╡ eb09ab1e-1de9-449c-952f-e71908b7720d
+replace(mylongstring, "ring"=>"donut")  # replace a substring
+
+# ╔═╡ de259259-86e5-48e0-9110-975e31b1f57c
+md"The output of the following example seems to give an unexpected error. Can you find and fix it?"
+
+# ╔═╡ e2a7870c-dc5c-45b9-bb0b-8f6f4f679519
+md"If you are familiar with string processing, you might have heard of [regular expressions](https://docs.julialang.org/en/v1/manual/strings/#man-regex-literals), which allow to capture fairly complex string patterns such as telephone numbers or IP addresses. Julia supports RegEx that are as powerful as those of PERL. An exhaustive overview of regular expressions is beyond the scope of this course, but we give a couple of examples."
+
+# ╔═╡ d6dafbb2-b049-470e-99e6-382a6d9331ba
+re = r"\d+"  # a regex that matches numbers
+
+# ╔═╡ b51d1361-51bd-4d55-95d6-2092713ca535
+md"Note the form of `r\"...\"`, which defines a RegEx using Metaprogramming, an advanced topic for tomorrow."
+
+# ╔═╡ dac56976-1685-49e9-98b7-89a59a90a0b2
+joke = "Why did the number 1 break up with 7? It heard 7 ate 9, but when it asked, 7 claimed it was only 20. Turns out, 7 was really 31!"
+
+# ╔═╡ 09ea4e54-9fbf-4961-aec9-5cd3e17cf6e9
+match(re, joke)  # matches the first occurrence
+
+# ╔═╡ 4a4045a0-d4c0-4739-8424-9fdb386f2ad1
+matches = eachmatch(re, joke)  # matches all occurrences
+
+# ╔═╡ a5cd90b3-292a-43be-9a42-c3d3620befbe
+collect(matches)
+
+# ╔═╡ 3076c343-a216-4e4a-b97b-4f836c0330d2
+findall(re, joke)  # all 
+
+# ╔═╡ 9ff5c3d8-d2e9-4fdf-bb95-084447776e58
+md"You can use round brackets to match patterns:"
+
+# ╔═╡ c05b74fa-866d-4265-8d62-168fa71c6824
+m = match(r"(\d+)\s*\+\s*(\d+)\s*=\s*(\d+)", " 12 + 17 = 29 ")
+
+# ╔═╡ 24826e56-5cb0-4fbb-a1fb-c80ea8fbb822
+m[1]
+
+# ╔═╡ ba9146ba-ecbe-42fb-8d46-f18bf5feaedb
+m.captures
+
 # ╔═╡ ebb09172-4c58-11eb-1cc9-91193c57677d
-md"## 4. Exercises"
+md"## 5. Exercises"
 
 # ╔═╡ f441018e-5212-4e7a-b67e-6e28f92be4a2
 md"""
@@ -643,20 +817,32 @@ end;
 
 # ╔═╡ c1e377c4-64a4-11eb-3e7f-b163cb465057
 md"""
-> **Question 2: Computing the determinant**
+> **Question 2: $N$-Rook Problem**
 
-1. Write a function `mydet` to compute the determinant of a 2x2 square matrix. Remember, for a $2 \times 2$ matrix, the determinant is computed as
+In chess, rooks are powerful pieces that can move horizontally or vertically across the board. The $N$-Rook problem involves placing $N$ rooks on an $N \times N$ chessboard in such a way that no two rooks share the same row or column. Complete the function `rook_problem` to determine whether a given configuration is valid.
 
-${\displaystyle|A|={\begin{vmatrix}a&b\\c&d\end{vmatrix}}=ad-bc.}$
+The function should return `true` if the configuration is valid, indicating that the rooks are positioned without any conflicts, and `false` otherwise. Represent the configuration using a square Boolean matrix where `true` indicates the positions occupied by rooks.
 
-2. For larger matrices, there is a recursive way of computing the determinant based on the minors, i.e. the determinants of the submatrices. See [http://mathworld.wolfram.com/Determinant.html](http://mathworld.wolfram.com/Determinant.html). Update `mydet` to compute the determinant of a general square matrix.
+
 """
 
-# ╔═╡ 5619fd6c-4cfe-11eb-1512-e1800b6c7df9
-function mydet(A)
-	size(A,1) != size(A,2) && throw(DimensionMismatch)
+# ╔═╡ 1c357d6f-7ac0-4e4d-82c4-b0c83fb65bbd
+function rook_problem(board::Matrix{Bool})
+	@assert count(board) == size(board, 1) == size(board, 2) "Wrong number of rooks or not a square board"
 	return missing
 end
+
+# ╔═╡ 45ea911b-7feb-4c9e-a81b-813cdd9e0e30
+R1 = [true false false; false false true; false true false]
+
+# ╔═╡ e570ac5f-c2a3-42b9-9f70-6b51a64abf2c
+R2 = [true false false false; false false true false; false true false false; false true false false]
+
+# ╔═╡ 4cccf6fb-ed30-4462-b929-54c88a3280d1
+rook_problem(R1)
+
+# ╔═╡ 5fa1dc21-ac69-471f-8899-a68b76980a88
+rook_problem(R2)
 
 # ╔═╡ e5293248-64a4-11eb-0d30-53a15bec0d01
 md"""
@@ -683,12 +869,39 @@ end
 # ╔═╡ 41b19e20-4d0f-11eb-1c3c-572cc5243d99
 
 
+# ╔═╡ a5c5910c-1a70-4e70-be5f-08ebe6790c19
+md"""
+> **Question 4: Check password**
+Complete the function `check_password`, which checks if your suggested password matches the safety guidelines:
+
+- has a length of at least six characters
+- contains at least two letters
+- contains at least one lower-case and one upper-case letter
+- contains at least one number
+- has at least one character that is a neither a letter nor a number, i.e. `!@#$%^&*()_+-=,.?`
+
+Your function returns `true` if the password matches the requirements and a `false` if not. Optionally, use a print statement to convey the user what is lacking.
+
+"""
+
+# ╔═╡ d286cd36-27ea-405f-b54e-e97c2d0bbcba
+function check_password(pwd)
+
+	return missing
+end
+
+# ╔═╡ 17d3ba29-d492-4ba4-88ac-4689330d023f
+check_password("password")
+
+# ╔═╡ 204cef98-ce43-42f1-99f4-50c2686767b8
+check_password("Passw0rd!")
+
 # ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
-md"## 5. Extra exercises"
+md"## 6. Extra exercises"
 
 # ╔═╡ 5c8f024f-87a3-444f-8f09-5d179a04a1cb
 md"""
-> **Question 4: Markdown tables**
+> **Question 5: Markdown tables**
 
 Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. It is also the markup language used in this notebook. Markdown is really easy to learn (see the example below). The problem with markdown is that table generation is a tedious process... Write a small Julia package (read function) that generates a markdown table that takes an array of strings for the header and an n-by-m array of table values. Complete `markdowntable()` below. The function should both return a string of the markdown table and should automatically copies this to the clipboard using the `clipboard()` function. Just for completion, you should end your table with a newline (\n).
 
@@ -725,7 +938,7 @@ end
 
 # ╔═╡ 8c5da051-f397-4613-97aa-2d673e03ea7b
 md"""
-> **Question 5: Ridge Regression**
+> **Question 6: Ridge Regression**
 
 Ridge regression can be seen as an extension of ordinary least squares regression,
 
@@ -792,7 +1005,7 @@ end;
 
 # ╔═╡ a0026d1c-bcdb-4a2e-b1a1-11c5235a4956
 md"""## Answers
-If you would like to take a look at the answers, you can do so by checking the box of the question you would like to see. The function will be shown just below the question you want to look at.
+If you want to look at the answers, you can check the box for the questions you want to see. The function will be shown just below the question you want to look at.
 
 | Question | Show solution |
 |-----|:---------:|
@@ -801,6 +1014,7 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question 3 | $(@bind answ_q3 CheckBox()) |
 | Question 4 | $(@bind answ_q4 CheckBox()) |
 | Question 5 | $(@bind answ_q5 CheckBox()) |
+| Question 6 | $(@bind answ_q6 CheckBox()) |
 """
 
 # ╔═╡ 6d43af49-f127-4ffe-ba97-0f04fb792efb
@@ -819,9 +1033,9 @@ end
 if answ_q2 == true
 	md"""
 	```Julia
-	function mydet(A)
-		size(A,1) != size(A,2) && throw(DimensionMismatch)
-		return A[1,1]*A[2,2]-[1,2]*A[2,1]
+	function rook_problem(board::Matrix{Bool})
+		@assert count(board) == size(board, 1) == size(board, 2) "Wrong number of rooks or not a square board"
+		return all(==(1), sum(board, dims=1)) && all(==(1), sum(board, dims=2))
 	end
 	```
 	"""
@@ -848,8 +1062,25 @@ if answ_q3 == true
 	"""
 end
 
-# ╔═╡ cf2b6aa4-b0e8-471a-95fc-646bbddb989a
+# ╔═╡ df56e757-873b-4115-a030-9dd83e532b7e
 if answ_q4 == true
+	md"""
+	```Julia
+	function check_password(pwd)
+		l = length(pwd)
+		letters = count(isletter, pwd)
+		upper = count(isuppercase, pwd) 
+		lower = count(islowercase, pwd)
+		nums = count(isnumeric, pwd)
+		nonconv = length(pwd ∩ "!@#\$%^&*()_+-=,.?")
+		return l ≥ 6 && letters ≥ 2 && upper ≥ 1 && lower ≥ 1 && nums ≥ 1 && nonconv ≥ 1
+	end
+	```
+	"""
+end
+
+# ╔═╡ cf2b6aa4-b0e8-471a-95fc-646bbddb989a
+if answ_q5 == true
 	md"""
 	```Julia
 	function markdowntable(table, header)
@@ -870,7 +1101,7 @@ if answ_q4 == true
 end
 
 # ╔═╡ 65a45d44-7942-4808-bed0-0369077c5edb
-if answ_q5 == true
+if answ_q6 == true
 	md"""
 	```Julia
 	β₁ = inv(transpose(t)*t + UniformScaling(0.01)) * transpose(t)* Y₁
@@ -883,7 +1114,7 @@ if answ_q5 == true
 end
 
 # ╔═╡ 2e7973b6-4d0f-11eb-107c-cdaf349428c0
-md""" ## 5. References
+md""" ## 6. References
 
 - [Julia Documentation](https://juliadocs.github.io/Julia-Cheat-Sheet/)
 - [Introduction to Julia UCI data science initiative](http://ucidatascienceinitiative.github.io/IntroToJulia/)
@@ -1871,6 +2102,13 @@ version = "17.4.0+2"
 # ╠═8f8c7b44-4c1d-11eb-0cd8-3bb82c75c086
 # ╟─b0420f36-5a71-11eb-01f1-f16b115f5895
 # ╠═a0c22de6-4c1d-11eb-34a2-aff57cfd22a1
+# ╟─57386df5-058b-4f50-98b1-2557553fa54c
+# ╠═4a7c0935-de06-469e-8eef-88664d5678a5
+# ╠═ca8fb43b-94d3-43b0-a686-1f5380d766b9
+# ╠═c5a6873a-a7c3-4ed5-8e3a-34cece9dc2d2
+# ╠═845df822-2d5b-47ab-ac46-9656d2a68d73
+# ╠═60f0eee2-4f23-4cd4-9fdd-0c69100b9662
+# ╠═17875f73-831a-4e06-8492-e172295da1da
 # ╟─a81d1f22-4c1d-11eb-1b76-2929f30565bf
 # ╟─bb79bf28-4c1d-11eb-35bf-379ac0cd16b6
 # ╠═eaf59a7e-4c1d-11eb-2db3-fd7f995db3e4
@@ -1934,6 +2172,7 @@ version = "17.4.0+2"
 # ╠═08e5589e-661f-11eb-262a-dd917f77f56b
 # ╠═0b9bad58-4c24-11eb-26a8-1d04d7b2be61
 # ╠═0b9d0bf8-4c24-11eb-2beb-0763c66e6a20
+# ╠═d02f96c8-4192-4bb5-92e8-1837af89f013
 # ╟─b9a9a730-5a73-11eb-0d17-7bf1aa935697
 # ╠═d4405d8c-5a73-11eb-21f7-37c4d7ac537b
 # ╠═da5edf54-5a73-11eb-26ff-2f6af8adceed
@@ -1966,6 +2205,11 @@ version = "17.4.0+2"
 # ╟─28f5c018-4c4b-11eb-3530-8b592f2abeda
 # ╠═32351fb8-4c4b-11eb-058b-5bb348e8dfb7
 # ╟─be557eda-64a3-11eb-1562-35ad48531ebd
+# ╠═16951b3e-4748-41d4-b42e-49f230979f39
+# ╠═fd4c9d45-3099-4044-9177-650430b7f5f1
+# ╠═0ee08475-fa03-4e4f-9fcc-7b173387043a
+# ╠═61a1d179-783f-46e2-8180-352d1220e35f
+# ╟─295b6131-cbc3-45bf-af6a-c823b38eb9ea
 # ╟─eed4faca-4c1f-11eb-3e6c-b342b48080eb
 # ╠═fbde6364-4f30-11eb-1ece-712293996c04
 # ╠═42254aa6-4f37-11eb-001b-f78d5383e36f
@@ -2007,6 +2251,8 @@ version = "17.4.0+2"
 # ╠═0bec2d28-4c58-11eb-0a51-95bf50bbfd79
 # ╠═6aa73154-661f-11eb-2b88-578eb2dd2ec2
 # ╟─ae6064e6-64a4-11eb-24b5-0b0b848aa2d6
+# ╠═8fec0796-6084-49c3-a7f8-a00dfd329e2c
+# ╠═0704bcce-0e7b-42c6-8aa4-8f8e0922e3b5
 # ╟─0fd08728-4c58-11eb-1b71-c9710d398fab
 # ╟─2c6097f4-4c58-11eb-0807-d5d8cbfbd62c
 # ╟─9505a4d4-4c58-11eb-1e2e-0d080437fa23
@@ -2024,11 +2270,51 @@ version = "17.4.0+2"
 # ╠═dd8978a4-5a75-11eb-287e-03e4272b6f2c
 # ╟─9cecd9a6-4c58-11eb-22dc-33cd2559d815
 # ╟─c6d236da-4c58-11eb-2714-3f5c43583a3d
+# ╟─e594575b-8faa-4be4-8367-75dd65afc01f
 # ╠═3253ab74-4c58-11eb-178e-83ea8aba9c8f
 # ╠═32593936-4c58-11eb-174c-0bb20d93dde5
 # ╠═fcfb511c-5a75-11eb-2181-33d147ab1806
 # ╠═1882840a-5a76-11eb-3392-81c2915487f5
 # ╠═3fc787d6-5a76-11eb-06e9-5378d27ce011
+# ╟─937af866-47db-4aa7-9c42-3e92cb42383c
+# ╠═e6c6b353-cc75-4ce4-8055-7a78ea8b3bca
+# ╠═f7a97d80-3951-44e6-82dc-4b5714bb145c
+# ╠═e5405e7a-e986-4cfb-b338-98ae453b9101
+# ╠═ba650ce6-d4a5-44dd-9ddc-42add99cbac2
+# ╠═ab1dc759-a500-44f5-b182-43dc6811ec11
+# ╠═3a71effa-67d6-4694-8d70-6e22e7672904
+# ╠═e1f2dd8b-4b3c-457b-b880-1def928b4524
+# ╠═3f9d2121-1a98-47e4-96cf-9b32ebdcbd7b
+# ╟─580d6c53-1f3b-4044-88ab-8e31781276f6
+# ╠═c71f044c-6807-4fff-9fd9-5590d5fef845
+# ╠═5fb7bbbf-63a7-4bd5-88dc-24f4ac330266
+# ╟─636d20ce-efce-48f2-a7cb-c8db7bb0cc3a
+# ╠═3ab46e8a-dbf1-4103-9e1a-8887f375512e
+# ╟─f1ac2420-767f-405d-b68e-543f7842e96f
+# ╠═ee864877-ffa4-4603-a9d6-b54501abdadf
+# ╠═8b5153b5-dcee-401f-9664-bc8eb02f1c8a
+# ╟─3f765458-4a6e-40a4-a075-b4e20ee01f80
+# ╠═d7e1c451-664b-445b-a737-075c32239c88
+# ╟─dadda755-621f-4903-be44-d7f954030c98
+# ╠═2000c0e1-f4c0-43ac-97de-7aa6db592c41
+# ╟─187f81ab-8996-45aa-955d-b2ca6b598016
+# ╠═60371e70-2e74-4ec4-9952-348b10f0c545
+# ╠═e1b4260c-231f-4d31-86b4-fead7f780782
+# ╠═10507d4a-08d7-4520-a210-744fd6824ef8
+# ╠═eb09ab1e-1de9-449c-952f-e71908b7720d
+# ╟─de259259-86e5-48e0-9110-975e31b1f57c
+# ╠═e2a7870c-dc5c-45b9-bb0b-8f6f4f679519
+# ╠═d6dafbb2-b049-470e-99e6-382a6d9331ba
+# ╟─b51d1361-51bd-4d55-95d6-2092713ca535
+# ╠═dac56976-1685-49e9-98b7-89a59a90a0b2
+# ╠═09ea4e54-9fbf-4961-aec9-5cd3e17cf6e9
+# ╠═4a4045a0-d4c0-4739-8424-9fdb386f2ad1
+# ╠═a5cd90b3-292a-43be-9a42-c3d3620befbe
+# ╠═3076c343-a216-4e4a-b97b-4f836c0330d2
+# ╟─9ff5c3d8-d2e9-4fdf-bb95-084447776e58
+# ╠═c05b74fa-866d-4265-8d62-168fa71c6824
+# ╠═24826e56-5cb0-4fbb-a1fb-c80ea8fbb822
+# ╠═ba9146ba-ecbe-42fb-8d46-f18bf5feaedb
 # ╟─ebb09172-4c58-11eb-1cc9-91193c57677d
 # ╟─f441018e-5212-4e7a-b67e-6e28f92be4a2
 # ╟─ee9069e2-63a7-11eb-12b9-97ae270506f4
@@ -2038,13 +2324,22 @@ version = "17.4.0+2"
 # ╠═5f47cdf0-58be-11eb-1bca-a3d0941b9bea
 # ╟─6d43af49-f127-4ffe-ba97-0f04fb792efb
 # ╟─c1e377c4-64a4-11eb-3e7f-b163cb465057
-# ╠═5619fd6c-4cfe-11eb-1512-e1800b6c7df9
+# ╠═1c357d6f-7ac0-4e4d-82c4-b0c83fb65bbd
+# ╠═45ea911b-7feb-4c9e-a81b-813cdd9e0e30
+# ╠═e570ac5f-c2a3-42b9-9f70-6b51a64abf2c
+# ╠═4cccf6fb-ed30-4462-b929-54c88a3280d1
+# ╠═5fa1dc21-ac69-471f-8899-a68b76980a88
 # ╟─eae5611f-913c-48e4-bc1b-86d33908ac46
 # ╟─e5293248-64a4-11eb-0d30-53a15bec0d01
 # ╠═cb20fffe-58cf-11eb-1b65-49699f2d3699
 # ╠═cee388d2-58cf-11eb-3b88-971b4b85e957
 # ╟─be4c9bbe-0ec1-4477-b422-dcf308cd6f5b
 # ╟─41b19e20-4d0f-11eb-1c3c-572cc5243d99
+# ╟─a5c5910c-1a70-4e70-be5f-08ebe6790c19
+# ╠═d286cd36-27ea-405f-b54e-e97c2d0bbcba
+# ╠═17d3ba29-d492-4ba4-88ac-4689330d023f
+# ╠═204cef98-ce43-42f1-99f4-50c2686767b8
+# ╟─df56e757-873b-4115-a030-9dd83e532b7e
 # ╟─04aff640-58bb-11eb-1bb6-69ad9fc32314
 # ╟─5c8f024f-87a3-444f-8f09-5d179a04a1cb
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8

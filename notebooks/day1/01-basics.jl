@@ -907,7 +907,7 @@ An organic molecule entering the analyser will always follow the same degradatio
 4. The first *-CH₂-CH₂-* wil react to *CO*;
 5. *CO* at the endpoints will be converted to *COOH*;
 6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
-7. If the *CH2* or *CH3* is left at the very end, *CH4* is formed.
+7. When *CH2* or *CH3* is the molecule that remains, it will change to *CH4*.
 
 This degradation pattern is repeated until a stable molecule is obtained.
 

@@ -152,12 +152,6 @@ end
 # ╔═╡ e3759d4c-5d90-11eb-0bea-bb4247623ec2
 25 ∈ Squares(10)
 
-# ╔═╡ 07998440-5d91-11eb-1a65-8de428eac89c
-sum(Squares(18093))
-
-# ╔═╡ e11b0b10-6621-11eb-0bdb-f3719cc92a20
-@elapsed sum(Squares(18093))
-
 # ╔═╡ 192d9fd4-5d91-11eb-1cb9-c706aad03480
 Base.eltype(::Type{Squares}) = Int
 
@@ -166,15 +160,6 @@ Base.length(S::Squares) = S.count
 
 # ╔═╡ 2270e790-5d91-11eb-20e5-29905f232734
 collect(Squares(4))
-
-# ╔═╡ 49f1d98c-5d91-11eb-1657-f320e9fcdc0e
-#Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
-
-# ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
-sum(Squares(18093))  # much faster now!
-
-# ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
-@elapsed sum(Squares(18093))
 
 # ╔═╡ e9a99a00-5d91-11eb-2c50-8be452cab83f
 struct Strang <: AbstractMatrix{Int}
@@ -190,20 +175,8 @@ Base.getindex(S::Strang, i, j) = i==j ? 2 : (abs(i - j) == 1 ?  -1 : 0)
 # ╔═╡ f3c3114c-5d91-11eb-1d37-6d97ea6d267f
 S = Strang(1000)  # holy cow! Looks just like a real matrix!
 
-# ╔═╡ 04dcda58-5d92-11eb-10ba-396947081338
-sum(S)  # works, but slow...
-
-# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
-@elapsed sum(S)
-
 # ╔═╡ 0f878dea-5d92-11eb-0000-b7484532ee70
 #Base.sum(S::Strang) = 2
-
-# ╔═╡ 11630c02-5d92-11eb-1746-4dabf327fbbe
-sum(S)
-
-# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
-@elapsed sum(S)
 
 # ╔═╡ 1e65cb9c-5d92-11eb-3526-332169917fd9
 v = randn(1000)
@@ -311,6 +284,33 @@ end
 
 # ╔═╡ a9502b64-5d90-11eb-144c-3d7ce0949e67
 Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
+
+# ╔═╡ 49f1d98c-5d91-11eb-1657-f320e9fcdc0e
+Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
+
+# ╔═╡ 07998440-5d91-11eb-1a65-8de428eac89c
+sum(Squares(18093))
+
+# ╔═╡ e11b0b10-6621-11eb-0bdb-f3719cc92a20
+@elapsed sum(Squares(18093))
+
+# ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
+sum(Squares(18093))  # much faster now!
+
+# ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
+@elapsed sum(Squares(18093))
+
+# ╔═╡ 04dcda58-5d92-11eb-10ba-396947081338
+sum(S)  # works, but slow...
+
+# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
+@elapsed sum(S)
+
+# ╔═╡ 11630c02-5d92-11eb-1746-4dabf327fbbe
+sum(S)
+
+# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
+@elapsed sum(S)
 
 # ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
 S * v  # works, but slow
@@ -560,7 +560,7 @@ md"""
 
 The determinant of a Vandermonde matrix is easy to compute:
 
-$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(x_{j}-x_{i}).}$$
+$${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(\alpha_{j}-\alpha_{i}).}$$
 
 Overload this for the Vandermonde matrix!
 
@@ -1063,6 +1063,6 @@ version = "17.4.0+2"
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
 # ╟─1c373bba-eeb6-4673-8b18-0d68b524e536
-# ╠═0267b920-9a1f-472f-9d21-5609fb877325
+# ╟─0267b920-9a1f-472f-9d21-5609fb877325
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
