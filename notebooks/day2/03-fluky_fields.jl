@@ -15,7 +15,7 @@ macro bind(def, element)
 end
 
 # ╔═╡ 4e827046-8787-11ed-1763-99b10d56f7a6
-using PlutoUI, Random; TableOfContents()
+using PlutoUI, Random;
 
 # ╔═╡ 59c37c98-9a9a-4bbc-9809-26360ead8e45
 using Plots, RecipesBase
@@ -31,8 +31,16 @@ student = (name = "Jimmy Janssen", email = "Jimmy.Janssen@UGent.be");
 # you might need to wait until all other cells in this notebook have completed running. 
 # scroll down the page to see what's up
 
+# ╔═╡ b303bde5-a395-43b8-b61f-ba1d13cef1ba
+md"""
+Submission by: **_$(student.name)_**
+"""
+
 # ╔═╡ efb5380d-ab9d-4e7e-ad2b-d7beb3e28609
 @bind shape_type Select(["circles", "rectangles", "triangles"])
+
+# ╔═╡ 77ac6ec3-d652-451a-8e08-289f9f940bda
+@bind potato Select(["circles", "rectangles", "triangles"])
 
 # ╔═╡ 2ff01603-4322-4571-b172-20b9952ff4ff
 if shape_type == "circles"
@@ -1314,10 +1322,12 @@ version = "1.4.1+1"
 """
 
 # ╔═╡ Cell order:
+# ╟─b303bde5-a395-43b8-b61f-ba1d13cef1ba
 # ╠═4e827046-8787-11ed-1763-99b10d56f7a6
 # ╠═347583c6-9ed6-42af-b760-733585dbb7a6
 # ╟─b7e28115-8901-4972-b37f-9b5869735b50
 # ╠═efb5380d-ab9d-4e7e-ad2b-d7beb3e28609
+# ╠═77ac6ec3-d652-451a-8e08-289f9f940bda
 # ╟─2ff01603-4322-4571-b172-20b9952ff4ff
 # ╟─7470865e-87e2-4e40-8cb5-e27b516ce976
 # ╟─9731ecc2-a3bf-47bc-8385-96147b0ddbd0
