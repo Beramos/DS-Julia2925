@@ -1,6 +1,6 @@
 # Advent of Code
 
-**tags:** *Programming, Parsing, Christmass*
+**tags:** *Programming, Parsing, Christmas*
 
 ![project image](https://github.com/DaanVanHauwermeiren/AdventofCode/blob/main/figs/re50_ComfyUI_20281122__00141_.png?raw=true)
 
@@ -35,4 +35,4 @@ Feel free to ask for hints if you get stuck or check the [subreddit](https://www
 ## 4. Resources
 - DrWatson.js - Introduction ([source](https://juliadynamics.github.io/DrWatson.jl/dev/))
 - Julia documentation ([source](https://docs.julialang.org/en/v1/))
-- Your knowledge of day 1 and 2
+- Your knowledge of days 1 and 2
