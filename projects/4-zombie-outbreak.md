@@ -8,7 +8,7 @@
 
 *The globe is on the brink of a looming catastrophe. A virus broke out from a laboratory and is transforming humans into zombies! Nations are closing down borders, flights are canceled, and pandemonium is rapidly engulfing the entire world…*
 
-This project explores an agent-based model (ABM) designed to simulate a zombie outbreak. Participants will gain proficiency in utilizing advanced simulation software by customizing it based on provided examples. DrWatson will be employed to store diverse simulation outcomes, and participants will be tasked with composing source code for fundamental components. The underlying model is a modified version of a SIR model.
+This project explores an agent-based model (ABM) designed to simulate a zombie outbreak. You will gain proficiency in utilizing advanced simulation software by customizing it based on the provided examples. DrWatson will be employed to store diverse simulation outcomes, and participants will be tasked with composing source code for fundamental components. Our underlying model is a modification of a SIR model.
 
 ## 2. Background
 
@@ -32,7 +32,7 @@ To represent a zombie outbreak as an SIR problem, you can adapt the SIR model to
 2. These examples involve using a fixed grid ([Gridspace](https://juliadynamics.github.io/Agents.jl/stable/api/#Discrete-spaces-1)). Modeling a zombie apocalypse is boring if nobody can move. Develop your SIR model using a [Continuous space](https://juliadynamics.github.io/Agents.jl/stable/api/#Continuous-spaces-1). One can take a look at the [other examples](https://juliadynamics.github.io/AgentsExampleZoo.jl/dev/examples/social_distancing/#Adding-Virus-spread-(SIR)) for inspiration.
    
 3. To simplify, start by implementing the movement of the *zombies* and s*usceptibles.
-   * Write a function `compute_velocity` which updates the velocity of *zombies* and *susceptibles.
+   * Write a function `compute_velocity`, which updates the velocity of *zombies* and *susceptibles*.
    * For *zombies* the following steps should be included;
 
 4. Initialise a simulation with 1000 individuals: 9990 susceptible and ten infected individuals. [This example](https://juliadynamics.github.io/AgentsExampleZoo.jl/dev/examples/social_distancing/#Adding-Virus-spread-(SIR)) can show an interesting intialisation setting. Run a simulation to see if everything is working as expected.
