@@ -194,7 +194,7 @@ noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) +  σ * rand();
 md"We use the convolution function we defined to construct a moving_average function,"
 
 # ╔═╡ f94e2e6c-598e-11eb-041a-0b6a068e464c
-moving_average(y::Vector, w) = convolve_1d(y, ones(w).*1/w);
+moving_average(y, w) = convolve_1d(y, ones(w).*1/w);
 
 # ╔═╡ 4e45e43e-598f-11eb-0a0a-2fa636748f7c
 @bind wₑ Slider(1:2:43, default=3)
