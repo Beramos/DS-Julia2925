@@ -12,14 +12,14 @@ Machine learning and data science: where computers learn from data like students
 
 In this project, you will use Julia to go through the different steps of a data science or machine learning project. To quote Wikipedia:
 
-> Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions.
+> "*Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions.*"
 
 To be more specific, you are going to implement a supervised learning task to learn a general rule that maps inputs to outputs. For this, you will need to follow these steps:
 
-- get and process the data
-- assess the data
-- pose the modelling question
-- train the model
+- get and process the data;
+- assess the data;
+- pose the modelling question;
+- train the model;
 - verify the model
 
 ## 3. Assignments
@@ -67,5 +67,5 @@ models(matching(X, y))
 ```
 
 4. If you are keen to try out neural networks: we recommend using the [Flux](https://fluxml.ai/) ecosystem of packages. 
-5. Consider using pipelines and target transformers for reproducible results!
-6. model interpretation will depend on the chosen model, for an all-round solution you can look into Shapley values
+5. Consider using the MLJ pipelines and target transformers for reproducible results!
+6. Model interpretation will depend on the chosen model, for an all-round solution you can look into [Shapley values](https://christophm.github.io/interpretable-ml-book/shapley.html).
