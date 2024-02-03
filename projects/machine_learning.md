@@ -67,5 +67,5 @@ models(matching(X, y))
 ```
 
 4. If you are keen to try out neural networks: we recommend using the [Flux](https://fluxml.ai/) ecosystem of packages. 
-5. Consider using the MLJ pipelines and target transformers for reproducible results!
+5. Consider using the MLJ [pipelines](https://alan-turing-institute.github.io/MLJ.jl/dev/linear_pipelines/) and [target transformers](https://alan-turing-institute.github.io/MLJ.jl/dev/target_transformations/) for reproducible results!
 6. Model interpretation will depend on the chosen model, for an all-round solution you can look into [Shapley values](https://christophm.github.io/interpretable-ml-book/shapley.html).
