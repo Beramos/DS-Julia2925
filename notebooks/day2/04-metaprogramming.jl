@@ -253,6 +253,13 @@ We can see that the `"Mr. Bond"` literal has been interpolated into the expressi
 # ╔═╡ 536addec-5e61-11eb-1a9d-d7f2c190d6c2
 @macroexpand @sayhello("Mr. Bond")
 
+# ╔═╡ d1730db6-eb2d-4233-b0a0-bdd84afef88f
+md"""
+!!! note 
+
+	This in a simple example to show the machinery of macros but as an example it does not offer much benefits over a function.
+"""
+
 # ╔═╡ 855412b2-5e61-11eb-3aba-bb862489414e
 md"""
 
@@ -1925,6 +1932,7 @@ version = "1.4.1+1"
 # ╠═0c787198-61a0-11eb-1e30-fbcb5a624076
 # ╟─4a732eb8-5e60-11eb-197b-0729d0f1be15
 # ╠═536addec-5e61-11eb-1a9d-d7f2c190d6c2
+# ╟─d1730db6-eb2d-4233-b0a0-bdd84afef88f
 # ╟─855412b2-5e61-11eb-3aba-bb862489414e
 # ╠═cabb3cdc-5e62-11eb-2479-bb8337c05292
 # ╟─f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
