@@ -802,17 +802,17 @@ If you are a reader of Greek mythology, then you are probably familiar with Narc
 In mathematics, he has kins called narcissistic numbers - numbers that can't get enough of themselves. In particular, they are numbers that are the sum of their digits when raised to the power of the number of digits.
 
 
-For example, 371 is a narcissistic number; it has three digits, and if we cube each digits 33 + 73 + 13 the sum is 371. Other 3-digit narcissistic numbers are
+For example, 371 is a narcissistic number; it has three digits, and if we cube each digits 3^3 + 7^3 + 1^3 the sum is 371. Other 3-digit narcissistic numbers are
 ```
-153 = 13 + 53 + 33
-370 = 33 + 73 + 03
-407 = 43 + 03 + 73.
+153 = 1^3 + 5^3 + 3^3
+370 = 3^3 + 7^3 + 0^3
+407 = 4^3 + 0^3 + 7^3.
 ```
 There are also 4-digit narcissistic numbers, some of which are 1634, 8208, 9474 since
 ```
-1634 = 14+64+34+44
-8208 = 84+24+04+84
-9474 = 94+44+74+44
+1634 = 1^4+6^4+3^4+4^4
+8208 = 8^4+2^4+0^4+8^4
+9474 = 9^4+4^4+7^4+4^4
 ```
 It has been proven that there are only 88 narcissistic numbers (in the decimal system) and that the largest of which is
 115,132,219,018,763,992,565,095,597,973,971,522,401
