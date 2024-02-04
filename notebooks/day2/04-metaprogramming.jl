@@ -253,6 +253,13 @@ We can see that the `"Mr. Bond"` literal has been interpolated into the expressi
 # ╔═╡ 536addec-5e61-11eb-1a9d-d7f2c190d6c2
 @macroexpand @sayhello("Mr. Bond")
 
+# ╔═╡ d1730db6-eb2d-4233-b0a0-bdd84afef88f
+md"""
+!!! note 
+
+	This in a simple example to show the machinery of macros but as an example it does not offer much benefits over a function.
+"""
+
 # ╔═╡ 855412b2-5e61-11eb-3aba-bb862489414e
 md"""
 
@@ -544,16 +551,21 @@ to placing the following object directly into the syntax tree:
 # ╔═╡ ce8b16fa-7644-4c64-ad3c-cbf667b4811b
 Regex("^\\s*(?:#|\$)")
 
+# ╔═╡ 48a68105-9a30-4dd1-9f7b-eebf1c19c856
+md"""
+!!! note
+
+	It might be confusion that the `@`-symbol is not used for calling these macros. It is a convention that when defining a macro with the `_str` suffix, one can use the macro as a prefix to string literals. These object are called [non-standard string literals](https://docs.julialang.org/en/v1/manual/metaprogramming/#meta-non-standard-string-literals).
+
+"""
+
 # ╔═╡ f20221ca-82d1-4973-9f68-e46638c929f7
 md"Not only is the string literal form shorter and far more convenient, but it is also more efficient:
-since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*, the compilation occurs only once, rather than every time the code is executed.
-"
+since the regular expression is compiled, which takes time, and the `Regex` object is actually created *when the code is compiled*, the compilation occurs only once, rather than every time the code is executed."
 
-# ╔═╡ 311a4666-5fc5-11eb-2cc0-ef66e5be96e3
-md"check if an expression is true"
 
-# ╔═╡ 4622422a-5fc5-11eb-20f2-9bfe466f8f30
-@assert true == true
+# ╔═╡ cb0907b5-a8d9-4954-85cc-2040887f5e3c
+md"**Other examples of useful macros:**"
 
 # ╔═╡ 5ba5d6b6-5fc5-11eb-256b-73a954a5db68
 md"Integers and floating point numbers with arbitrary precision. This macro exists because promoting a floating point number to a `BigFloat` will keep the approximation error of `Float64`."
@@ -1925,6 +1937,7 @@ version = "1.4.1+1"
 # ╠═0c787198-61a0-11eb-1e30-fbcb5a624076
 # ╟─4a732eb8-5e60-11eb-197b-0729d0f1be15
 # ╠═536addec-5e61-11eb-1a9d-d7f2c190d6c2
+# ╟─d1730db6-eb2d-4233-b0a0-bdd84afef88f
 # ╟─855412b2-5e61-11eb-3aba-bb862489414e
 # ╠═cabb3cdc-5e62-11eb-2479-bb8337c05292
 # ╟─f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
@@ -1978,9 +1991,9 @@ version = "1.4.1+1"
 # ╟─d889f68e-4d15-4bab-92f6-c42bac58e60a
 # ╟─fe4095e9-0c35-4459-98b0-30ba91fc90b4
 # ╠═ce8b16fa-7644-4c64-ad3c-cbf667b4811b
+# ╟─48a68105-9a30-4dd1-9f7b-eebf1c19c856
 # ╟─f20221ca-82d1-4973-9f68-e46638c929f7
-# ╟─311a4666-5fc5-11eb-2cc0-ef66e5be96e3
-# ╠═4622422a-5fc5-11eb-20f2-9bfe466f8f30
+# ╟─cb0907b5-a8d9-4954-85cc-2040887f5e3c
 # ╟─5ba5d6b6-5fc5-11eb-256b-73a954a5db68
 # ╠═a47ab60e-5fc5-11eb-368a-d76fc6ee640d
 # ╠═a99546c2-5fc5-11eb-0902-71cb283543c8
