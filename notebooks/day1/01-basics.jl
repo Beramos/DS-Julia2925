@@ -902,14 +902,14 @@ Analytical chemists at Ghent University have discovered a new analytical techniq
 An organic molecule entering the analyser will always follow the same degradation pattern and subsequently,
 
 1. *CH₃*-endpoints will turn into *COOH*;
-2. *CO-COOH*-endpoints are unstable and will evaporate;
+2. *-CO-COOH* and *COOH-CO-* endpoints are unstable and will evaporate;
 3. Any *CH₂*-endpoints are unstable and will turn into *CH₃*;
 4. The first *-CH₂-CH₂-* wil react to *CO*;
 5. *CO* at the endpoints will be converted to *COOH*;
 6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
-7. When *CH2* or *CH3* is the molecule that remains, it will change to *CH4*.
+7. When *CH2* or *CH3* is the only thing that remains, it will change to *CH4*. *CH4* is a stable molecule that will not further degrade.
 
-This degradation pattern is repeated until a stable molecule is obtained.
+The degradation patterns are repeated until a stable molecule is obtained. Stable is defined as a molecule that does not change over the duraction of a full cycle.
 
 Let's take caproic acid for example,
 	![](https://i.imgur.com/xsb9tGR.png)
@@ -917,9 +917,9 @@ Let's take caproic acid for example,
 with a structural formula of CH3-CH2-CH2-CH2-CH2-COOH, caproic acid will degrade following this pattern,
 	
 - Cycle 1: Step 1: CH₃ will turn into COOH: COOH-CH2-CH2-CH2-CH2-COOH.
-- Cycle 1: Step2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH.
-- Cycle 1: Step3: No unstable CH₂ ends:  COOH-CH2-CH2-CH2-CH2-COOH.
-- Cycle 1: Step4: Reaction of the first -CH₂-CH₂- to CO: COOH-CO-CH2-CH2-COOH.
+- Cycle 1: Step 2: No CO-COOH to remove: COOH-CH2-CH2-CH2-CH2-COOH.
+- Cycle 1: Step 3: No unstable CH₂ ends:  COOH-CH2-CH2-CH2-CH2-COOH.
+- Cycle 1: Step 4: Reaction of the first -CH₂-CH₂- to CO: COOH-CO-CH2-CH2-COOH.
 - Cycle 1: Steps 5 & 6 do not change the molecule and a new cycle is repeated
 - Cycle 2: Step 1 does not change the molecule.
 - Cycle 2: Step 2 removes a single CO-COOH: CH2-CH2-COOH.
@@ -2540,7 +2540,7 @@ version = "1.4.1+1"
 # ╟─5f6b3a73-9979-4fdd-b0d0-be43419c6547
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
 # ╟─c8151b58-735c-4f16-b410-0c5c88818e6d
-# ╟─e2583a06-6479-11eb-091b-8be70024930d
+# ╠═e2583a06-6479-11eb-091b-8be70024930d
 # ╠═1f588828-6477-11eb-0c70-557f130c6785
 # ╠═4d0e1d60-6476-11eb-154e-d9cc3bf284c2
 # ╠═5167ded6-6463-11eb-3279-0dd226fae82e
