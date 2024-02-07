@@ -14,9 +14,7 @@ In this project, we will study the regime of treating a bacterial infection with
 
 We assume there is an infection with susceptible (S) and resistant (R) bacteria. Both bacteria have a growth rate dependent on their total density:
 
-$$
-\mu=r\left(1-\frac{S+R}{K}\right)
-$$
+$$\mu=r\left(1-\frac{S+R}{K}\right)$$
 
 For resistant bacteria, there is a fitness cost $a$, meaning their growth rate is only $\mu\times(1-a)$.
 
@@ -31,26 +29,18 @@ Aᵣ(c) = (2.5 + 2.1) * (c/32)^4 / ((c/32)^4 - (-2.1/2.5))
 ```
 
 
-$$
-\frac{d S}{d t}=\underbrace{r S\left(1-\frac{S+R}{K}\right)-\theta S}_{\text {Natural Growth }}-\underbrace{\beta S R}_{\text {HGT }}-\underbrace{A_{S}(C) S}_{\text {AB Death }}
-$$ 
+$$\frac{d S}{d t}=\underbrace{r S\left(1-\frac{S+R}{K}\right)-\theta S}_{\text {Natural Growth }}-\underbrace{\beta S R}_{\text {HGT }}-\underbrace{A_{S}(C) S}_{\text {AB Death }}$$ 
 (1)
 
-$$
-\frac{d R}{d t}=\underbrace{r R\left(1-\frac{S+R}{K}\right)(1-a)-\theta R}_{\text {Natural Growth }}+\underbrace{\beta S R}_{\text {HGT }}-\underbrace{A_{R}(C) R}_{\text {AB Death }}
-$$ 
+$$\frac{d R}{d t}=\underbrace{r R\left(1-\frac{S+R}{K}\right)(1-a)-\theta R}_{\text {Natural Growth }}+\underbrace{\beta S R}_{\text {HGT }}-\underbrace{A_{R}(C) R}_{\text {AB Death }}$$ 
 (2)
 
-$$
-\frac{d C}{d t}=\underbrace{\sum_{n=1}^{10} D_{n} \delta\left(t-\hat{t}_{n}\right)}_{\text {Antibiotic Doses }}-\underbrace{g C}_{\text {Degredation }}
-$$
+$$\frac{d C}{d t}=\underbrace{\sum_{n=1}^{10} D_{n} \delta\left(t-\hat{t}_{n}\right)}_{\text {Antibiotic Doses }}-\underbrace{g C}_{\text {Degredation }}$$
 (3)
 
 The paper used the following objective function:
 
-$$
-F = \underbrace{w_1\,\alpha_1\,\sum^{10}_{i=1}D_i}_{\text{Total Antibiotic}} + \underbrace{w_2\,\alpha_2\,\int^{30}_{0}N(t)\,dt}_{\text{Bacterial Load}}
-$$
+$$F = \underbrace{w_1\,\alpha_1\,\sum^{10}_{i=1}D_i}_{\text{Total Antibiotic}} + \underbrace{w_2\,\alpha_2\,\int^{30}_{0}N(t)\,dt}_{\text{Bacterial Load}}$$
 
 ## 3. Assignments
 
