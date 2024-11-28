@@ -129,7 +129,7 @@ Enable to wrap multiple statements, since only single-line statements are allowe
 """
 
 # ╔═╡ f474d864-28b9-4299-b207-dca426554c46
-md"Similarly, `let ... end` blocks allow you to define a separate envirionment. Everything you define in such a block is only available there."
+md"Similarly, `let ... end` blocks allow you to define a separate environment. Everything you define in such a block is only available there."
 
 # ╔═╡ c6ae05d2-7e8e-4683-b3e2-fe79d5e24e2f
 let
@@ -150,7 +150,7 @@ unicode! In most Julia editing environments, unicode math symbols can be typed w
 """
 
 # ╔═╡ acb3b57a-661c-11eb-2c6a-99793a47ff29
-md"""> Unsure what the LaTeX name for a symbol is or how to type an emoiji? Just copy-paste it in the REPL with a `?` at the beginning, e.g., `?ζ` and it will tell you how to type it."""
+md"""> Unsure what the LaTeX name for a symbol is or how to type an emoji? Just copy-paste it in the REPL with a `?` at the beginning, e.g., `?ζ` and it will tell you how to type it."""
 
 # ╔═╡ cee8a766-4ab7-11eb-2bc7-898df2c9b1ff
 # type \alpha  and <TAB>
@@ -720,7 +720,7 @@ translate([0.0 0.0])
 translate("Hi how are you?")
 
 # ╔═╡ de48a3f6-4f2f-11eb-314b-493546c37a21
- md"A great deal of time will be spend on the julia's time system in day 2. So do not worry if this still feels vague. Just **remember** that all objects have a type and the behaviour of a function can vary depending on the type of the input arguments."
+ md"A great deal of time will be spend on Julia's type system in day 2. So do not worry if this still feels vague. Just **remember** that all objects have a type and the behaviour of a function can vary depending on the type of the input arguments."
 
 # ╔═╡ 6da71180-4ac2-11eb-1cac-410bd1cce70c
 md"""## 6. Macros
@@ -818,24 +818,24 @@ It has been proven that there are only 88 narcissistic numbers (in the decimal s
 115,132,219,018,763,992,565,095,597,973,971,522,401
 has 39 digits.
 
-Complete the function `isnarcistic`, which returns `true` if the input is narcissistic. Use the function `filter` to find all narcissistic numbers up to 100000.
+Complete the function `isnarcissistic`, which returns `true` if the input is narcissistic. Use the function `filter` to find all narcissistic numbers up to 100000.
 """
 
 # ╔═╡ 0cd2d0e4-59e1-11eb-112e-83ebe626f597
-function isnarcistic(n)
+function isnarcissistic(n)
 	@assert n isa Integer
 	
 	return missing
 end
 
 # ╔═╡ de609dc8-f004-4412-aef6-82f62803ba86
-isnarcistic(153)  # true
+isnarcissistic(153)  # true
 
 # ╔═╡ 4fd2ae04-c611-48f4-8af8-5ee7f07f7914
-isnarcistic(197)  # false
+isnarcissistic(197)  # false
 
 # ╔═╡ 9bbf8541-795b-4b09-b2ac-db37fa2b8fca
-# find all narcistic numbers between 1 and 100,000
+# find all narcissistic numbers between 1 and 100,000
 
 # ╔═╡ b1af96ea-5af8-11eb-0d08-f59a4c2b686c
 md"""
@@ -1089,7 +1089,7 @@ end
 if answ_q6
 	md""" 
 	```julia
-	function isnarcistic(n)
+	function isnarcissistic(n)
 		@assert n isa Integer
 		n_digits = ceil(Int, log10(n))
 		result = 0
@@ -1106,7 +1106,7 @@ if answ_q6
 
 	The above code makes use of a bit of math. You can also turn the number in a string using `string` and use length and `convert(Int, s)` to convert numbers back.
 
-	You can easily find narcistic numbers using `filter(isnarcistic, 1:100_000)`.
+	You can easily find narcissistic numbers using `filter(isnarcissistic, 1:100_000)`.
 	"""
 end
 
