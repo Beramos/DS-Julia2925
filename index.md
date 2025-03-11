@@ -34,8 +34,8 @@ Registration can be done via the following link [here](https://event.ugent.be/re
 
 Admission prices are:
 - **for UGent Doctoral School members**: free of charge;
-- **Industry, private sector, profession**: EUR 750 for two days, EUR 1000 for three days
-- **Non-profit, government, higher education staff**: EUR 375 for two days, EUR 500 for three days. (prices are VAT excl.)
+- **Industry, private sector, profession**: EUR 850 for two days, EUR 1200 for three days
+- **Non-profit, government, higher education staff**: EUR 475 for two days, EUR 625 for three days. (prices are VAT excl.)
 
 We also provide a limited number of free slots for *master students*. Please contact the [organisers](mailto:michiel.stock@ugent.be) if you want to join.
 
