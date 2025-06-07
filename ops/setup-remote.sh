@@ -5,6 +5,16 @@ set -e
 JULIA_VERSION="1.11.5"
 SSH_KEY_PATH=""
 DEFAULT_USERNAME="user"
+TEMP_DIR="$(mktemp -d)"
+JULIA_INSTALLER_PATH="$TEMP_DIR/julia_installer.sh"
+
+# Download Julia installer script locally
+download_julia_installer() {
+    echo "Downloading Julia installer script locally..."
+    curl -fsSL https://install.julialang.org -o "$JULIA_INSTALLER_PATH"
+    chmod +x "$JULIA_INSTALLER_PATH"
+    echo "Julia installer downloaded to $JULIA_INSTALLER_PATH"
+}
 
 # Help function
 show_help() {
@@ -78,6 +88,9 @@ fi
 if [[ -z "$REMOTE_EXECUTION" ]]; then
     # Running locally - prepare to copy to server and execute
     
+    # Download Julia installer
+    download_julia_installer
+    
     # Encode SSH key content if provided
     SSH_KEY_CONTENT=""
     if [[ -n "$SSH_KEY_PATH" ]]; then
@@ -85,12 +98,35 @@ if [[ -z "$REMOTE_EXECUTION" ]]; then
     fi
     
     echo "Connecting to server $SERVER_ADDRESS..."
-    # Copy this script to the server
+    # Copy this script and Julia installer to the server
     scp "$0" "root@$SERVER_ADDRESS:/tmp/setup_julia_pluto.sh"
+    scp "$JULIA_INSTALLER_PATH" "root@$SERVER_ADDRESS:/tmp/julia_installer.sh"
+    
+    # Check and copy notebooks and examples directories
+    SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+    REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+    
+    echo "Checking for notebooks and examples directories..."
+    if [ -d "$REPO_ROOT/notebooks" ]; then
+        echo "Found notebooks directory, copying to server..."
+        scp -r "$REPO_ROOT/notebooks" "root@$SERVER_ADDRESS:/tmp/"
+    else
+        echo "Warning: notebooks directory not found at $REPO_ROOT/notebooks"
+    fi
+    
+    if [ -d "$REPO_ROOT/examples" ]; then
+        echo "Found examples directory, copying to server..."
+        scp -r "$REPO_ROOT/examples" "root@$SERVER_ADDRESS:/tmp/"
+    else
+        echo "Warning: examples directory not found at $REPO_ROOT/examples"
+    fi
     
     # Execute the script on the remote server
     echo "Executing setup on server..."
-    ssh "root@$SERVER_ADDRESS" "chmod +x /tmp/setup_julia_pluto.sh && REMOTE_EXECUTION=1 NEW_USERNAME='$NEW_USERNAME' JULIA_VERSION='$JULIA_VERSION' SSH_KEY_CONTENT='$SSH_KEY_CONTENT' /tmp/setup_julia_pluto.sh"
+    ssh "root@$SERVER_ADDRESS" "chmod +x /tmp/setup_julia_pluto.sh && chmod +x /tmp/julia_installer.sh && REMOTE_EXECUTION=1 NEW_USERNAME='$NEW_USERNAME' JULIA_VERSION='$JULIA_VERSION' SSH_KEY_CONTENT='$SSH_KEY_CONTENT' /tmp/setup_julia_pluto.sh"
+    
+    # Clean up temp directory
+    rm -rf "$TEMP_DIR"
     
     echo "Setup completed successfully!"
     echo "Access Pluto at http://$SERVER_ADDRESS:1234/"
@@ -102,11 +138,16 @@ else
     
     # Create the user with home directory
     echo "Creating user: $NEW_USERNAME"
-    useradd -m -s /bin/bash "$NEW_USERNAME"
-    # Generate a random password
-    RANDOM_PASSWORD=$(openssl rand -base64 12)
-    echo "$NEW_USERNAME:$RANDOM_PASSWORD" | chpasswd
-    echo "User created with password: $RANDOM_PASSWORD"
+    # Create user only if it does not exist
+    if id "$NEW_USERNAME" &>/dev/null; then
+      echo "User $NEW_USERNAME already exists, skipping creation."
+    else
+      # Generate a random password
+      RANDOM_PASSWORD=$(openssl rand -base64 12)
+      useradd -m -s /bin/bash "$NEW_USERNAME"
+      echo "$NEW_USERNAME:$RANDOM_PASSWORD" | chpasswd
+      echo "User created with password: $RANDOM_PASSWORD"
+    fi
     
     # Set up SSH key if provided
     if [[ -n "$SSH_KEY_CONTENT" ]]; then
@@ -117,10 +158,24 @@ else
         chmod 600 /home/$NEW_USERNAME/.ssh/authorized_keys
         chown -R $NEW_USERNAME:$NEW_USERNAME /home/$NEW_USERNAME/.ssh
     fi
+
+    # Ensure internet connectivity on Scaleway
+    echo "Checking internet connectivity..."
+    if ! ping -c 1 -W 5 8.8.8.8 &>/dev/null; then
+        echo "Network connectivity issue detected. Trying to fix..."
+        # Check and fix basic networking
+    fi
     
-    # Install Julia
+    # Install Julia using the local installer copy
     echo "Installing Julia..."
-    su - $NEW_USERNAME -c "curl -fsSL https://install.julialang.org | sh"
+    # Copy the installer to the user's home directory
+    cp /tmp/julia_installer.sh /home/$NEW_USERNAME/julia_installer.sh
+    chown $NEW_USERNAME:$NEW_USERNAME /home/$NEW_USERNAME/julia_installer.sh
+    chmod +x /home/$NEW_USERNAME/julia_installer.sh
+    # Run the installer as the user
+    su - $NEW_USERNAME -c "./julia_installer.sh -y"
+    # Clean up
+    rm -f /home/$NEW_USERNAME/julia_installer.sh
     
     # Add specified Julia version using juliaup
     echo "Adding Julia version $JULIA_VERSION..."
@@ -149,6 +204,24 @@ EOF
             echo "Warning: Could not find Julia executable. Using 'julia' in PATH."
             JULIA_PATH="julia"
         fi
+    fi
+
+    # Copy notebooks and examples to user's home directory
+    echo "Copying notebooks and examples to user's home directory..."
+    if [ -d "/tmp/notebooks" ]; then
+        cp -r /tmp/notebooks /home/$NEW_USERNAME/
+        chown -R $NEW_USERNAME:$NEW_USERNAME /home/$NEW_USERNAME/notebooks
+        echo "✓ Notebooks copied successfully."
+    else
+        echo "Warning: Notebooks directory not found on server."
+    fi
+    
+    if [ -d "/tmp/examples" ]; then
+        cp -r /tmp/examples /home/$NEW_USERNAME/
+        chown -R $NEW_USERNAME:$NEW_USERNAME /home/$NEW_USERNAME/examples
+        echo "✓ Examples copied successfully."
+    else
+        echo "Warning: Examples directory not found on server."
     fi
     
     # Create systemd service file
