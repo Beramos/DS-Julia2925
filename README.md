@@ -16,7 +16,7 @@ There are two ways to download the notebooks.
 
 There are multiple ways to install julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
 
-We recommend the `Juliaup` installation manager.
+We *strongly* recommend the `Juliaup` installation manager, it will make your life a lot easier.
 
 In the current version of the course we will be using the latest stable release `1.11.5`.
 
