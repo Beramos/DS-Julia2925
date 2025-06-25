@@ -909,7 +909,7 @@ An organic molecule entering the analyser will always follow the same degradatio
 6. A *CO-CO-CO* is also very unstable and will turn into *CO-CH₂-CO*.
 7. When *CH2* or *CH3* is the only thing that remains, it will change to *CH4*. *CH4* is a stable molecule that will not further degrade.
 
-The degradation patterns are repeated until a stable molecule is obtained. Stable is defined as a molecule that does not change over the duraction of a full cycle.
+The degradation patterns are repeated until a stable molecule is obtained. Stable is defined as a molecule that does not change over the duration of a full cycle.
 
 Let's take caproic acid for example,
 	![](https://i.imgur.com/xsb9tGR.png)
