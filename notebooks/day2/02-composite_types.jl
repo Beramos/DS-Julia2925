@@ -255,8 +255,8 @@ dungbomb_fund = money_ron + money_harry
 begin
 	struct Vandermonde{T,VT} <: AbstractMatrix{T}
 		α::VT
-		m::Int
-		Vandermonde(α::AbstractVector{T}, m) where {T} = missing
+		n::Int
+		Vandermonde(α::AbstractVector{T}, n) where {T} = missing
 	end
 
 	# take length of α as a default value of m
