@@ -413,7 +413,7 @@ md"""
 ## Parametric types
 
 Sometimes we want more flexibilility in defining types. Think of designing a new type of matrix. Here you would like to work them for all
-numeric datatypes, `Int`, `Int8`, `Float6`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
+numeric datatypes, `Int`, `Int8`, `Float64`, `Rational`, in addition to new datatypes that might not even be defined yet! To this end, we use
 *parametric types*, types that **depend** on another type.
 
 For example, consider a 2-dimensional coordinate:
