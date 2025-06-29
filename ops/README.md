@@ -6,6 +6,12 @@ Purpose:
 Automates the installation and configuration of a Julia environment (with Pluto.jl) on a remote Debian 12 server.
 It creates a user, installs Julia, sets up Pluto as a systemd service, and copies course notebooks and examples.
 
+This setup was tested with scaleway's `PRO2-XXS` machine with the following specs:
+- 2 *CPUs*
+- 8Gb *RAM*
+- 350Mbs *Bandwidth*
+- 10Gb *block storage* 
+
 **Usage:** ``` ./setup-remote.sh [OPTIONS] SERVER_ADDRESS [NEW_USERNAME] ```
 
 **Options:**
