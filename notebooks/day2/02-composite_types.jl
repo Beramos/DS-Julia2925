@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -35,8 +35,8 @@ abstract type Agent end
 
 # ╔═╡ b96a33b8-5d8c-11eb-01de-439f53cdc355
 mutable struct Prey <: Agent
-    id::Int
-    pos
+	id::Int
+	pos::NTuple{2, Float64}
 end
 
 # ╔═╡ cd0d8636-5d8c-11eb-19f9-4da4550d306f
@@ -51,7 +51,7 @@ deer.pos
 # ╔═╡ 01fe6f9a-5d8d-11eb-0519-03aefcd587bb
 mutable struct Predator <: Agent
     id::Int
-    pos
+    pos::NTuple{2, Float64}
     size::Float64
 end
 
