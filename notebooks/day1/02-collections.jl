@@ -87,7 +87,10 @@ any([true, false, true])
 # ╔═╡ 60f0eee2-4f23-4cd4-9fdd-0c69100b9662
 any(>(0), X)  # >(0) generates a function that check is something is greater than 0
 
-# ╔═╡ 17875f73-831a-4e06-8492-e172295da1da
+# ╔═╡ 89d96835-69b1-48e6-b536-a182b6e61427
+md"This last example is a bit more advanced, but `>(0)` actually returns a function which is then called on all elements of `X`."
+
+# ╔═╡ 3f6b60bb-8116-4f33-bce2-aa244fbdc246
 count(isodd, X)
 
 # ╔═╡ a81d1f22-4c1d-11eb-1b76-2929f30565bf
@@ -2203,7 +2206,8 @@ version = "17.4.0+2"
 # ╠═c5a6873a-a7c3-4ed5-8e3a-34cece9dc2d2
 # ╠═845df822-2d5b-47ab-ac46-9656d2a68d73
 # ╠═60f0eee2-4f23-4cd4-9fdd-0c69100b9662
-# ╠═17875f73-831a-4e06-8492-e172295da1da
+# ╟─89d96835-69b1-48e6-b536-a182b6e61427
+# ╠═3f6b60bb-8116-4f33-bce2-aa244fbdc246
 # ╟─a81d1f22-4c1d-11eb-1b76-2929f30565bf
 # ╟─bb79bf28-4c1d-11eb-35bf-379ac0cd16b6
 # ╠═eaf59a7e-4c1d-11eb-2db3-fd7f995db3e4
