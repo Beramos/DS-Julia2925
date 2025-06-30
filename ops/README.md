@@ -17,12 +17,12 @@ and these security policies,
 
 **inbound:**
 - default: drop all
-- accept port 80, 432 on 0.0.0.0/0
+- accept port 80, 432, 1234 on 0.0.0.0/0
 - accept port 22, on specified machines *(need to add manually)*
    
 **outbound:**
 - default: accept all
-- drop port 25, 465, 587, for 0.0.0.0/0 and ::/0
+- drop port 25, 465, 587, for 0.0.0.0/0 and ::/0x
 
 **Usage:** ``` ./setup-remote.sh [OPTIONS] SERVER_ADDRESS [NEW_USERNAME] ```
 
