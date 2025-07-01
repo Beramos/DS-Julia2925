@@ -534,6 +534,9 @@ Also, overload the function `+` to add two instances of `WizCur` and the `>` and
 The piggy bank with Ron's life savings contains 19 Sickles and 732 Knuts. Harry has 3 Galleons, 1 Sickle, and 7 Knuts pocket change. Who has the most money? How many do they have together?
 """
 
+# ╔═╡ 6c3ffe46-6112-4a3d-b882-9eb5e0a4bbbf
+md"If `isless` is defined, there is no need to define `isgreater` (Think about why this is the case!). Feel free to add this function as an exercise."
+
 # ╔═╡ 392228e2-617d-11eb-09a5-c9e5649356eb
 md"""
 > **Exercise: Vandermonde matrix**
@@ -1059,6 +1062,7 @@ version = "17.4.0+2"
 # ╠═5af60d90-5d94-11eb-2ee4-b7bfc2caf53b
 # ╠═5f7c75ac-5d94-11eb-137a-7914cd009821
 # ╠═678ca64a-5d94-11eb-2b85-0b706526e35b
+# ╟─6c3ffe46-6112-4a3d-b882-9eb5e0a4bbbf
 # ╠═8afbd434-5d94-11eb-366b-d3d719189ef7
 # ╠═9226b2d8-5d94-11eb-2bea-491eb7dc1da7
 # ╠═95146d46-5d94-11eb-22aa-c1a544e0d784
