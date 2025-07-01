@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -801,7 +801,7 @@ md"""
 [source](https://www.w3resource.com/python-exercises/basic/)
 
 If you are a reader of Greek mythology, then you are probably familiar with Narcissus. He was a hunter of exceptional beauty, and he died because he was unable to leave a pool after falling in love with his own reflection. That's why I keep myself away from pools these days (kidding).
-In mathematics, he has kins called narcissistic numbers - numbers that can't get enough of themselves. In particular, they are numbers that are the sum of their digits when raised to the power of the number of digits.
+In mathematics, he has kins called narcissistic numbers - numbers that can't get enough of themselves. In particular, they are numbers that are the sum of their own digits each raised to the power of the number of digits.
 
 
 For example, 371 is a narcissistic number; it has three digits, and if we cube each digits 3^3 + 7^3 + 1^3 the sum is 371. Other 3-digit narcissistic numbers are
