@@ -35,6 +35,12 @@ To represent a zombie outbreak as an SIR problem, you can adapt the SIR model to
    * Write a function `compute_velocity`, which updates the velocity of *zombies* and *susceptibles*.
    * For *zombies* the following steps should be included;
 
+     - Find the closest *susceptible*, the `nearby_agents`- function in `Agents.jl` can used to find agents close the the current agent.
+     - Compute the direction from the current *zombie* to that *susceptible.*
+     - Make sure to maintain the current speed of the *zombie* but change the direction towards the closest *susceptible* (the velocity of an agent can be updated by setting `agent.vel`)
+
+     → Now do the same for *susceptibles,* with the difference that they are running away from the *zombies.*
+
 4. Initialise a simulation with 1000 individuals: 9990 susceptible and ten infected individuals. [This example](https://juliadynamics.github.io/AgentsExampleZoo.jl/dev/examples/social_distancing/#Adding-Virus-spread-(SIR)) can show an interesting intialisation setting. Run a simulation to see if everything is working as expected.
    
 5. Model the spread of the zombie virus. When a zombie is close to a susceptible, there is a 60% chance of transmission (β), so that *susceptibles* can now become *zombies*.

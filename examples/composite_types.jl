@@ -36,7 +36,7 @@ its position when our simulation runs, we choose a mutable type.
 
 mutable struct Prey <: Agent
     id::Int
-    pos
+    pos::NTuple{2, Float64}
 end
 # notice the type annotation for `id`, which we choose to always reprsenent by an integer.
 # the position might be represented by (x,y) coordinates, or as a location ID, or a position on a grid. We don't know, so we leave it untyped.
@@ -56,7 +56,7 @@ deer.id, deer.pos
 
 mutable struct Predator <: Agent
     id::Int
-    pos
+    pos::NTuple{2, Float64}
     size::Float64
 end
 
