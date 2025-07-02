@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -61,11 +61,31 @@ Our simple rejection sampling algorithm that we will use is computationally very
 """
 
 # ╔═╡ f2485038-30dc-4137-88bb-f9394962ec9e
-fyi(md"If you get stuck at any moment in this notebook, you can find a completed version of it [right here](https://github.com/Beramos/DS-Julia2925/blob/master/src/flatland.jl).")
+md"""
+!!! warning "fyi"
+	If you get stuck at any moment in this notebook, you can find a completed version of it [right here](https://github.com/Beramos/DS-Julia2925/blob/master/examples/flatland.jl).
+"""
 
 # ╔═╡ 7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 md"""
 ## Assignments
+"""
+
+# ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
+md"""
+- add the correct *inner* constructor to your type (see below);
+- complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
+- complete `center` to return the center of mass of the shape;
+- complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
+- complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
+- complete `area`, this computes the area of your shape;
+- complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
+- complete the function `in`, to check whether a point is in your shape;
+- complete `intersect`, to check whether two shapes overlap;
+- complete `randplace!`, which randomly moves and rotates a shape within a box;
+- complete the rejection sampling algorithm and experiment with your shape(s).
+
+**Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
 
 # ╔═╡ f8b080fe-6309-11eb-17aa-fb098fc00b11
@@ -80,56 +100,6 @@ md"""
 |`Triangle` | ⭐️ ⭐️ ⭐️ ⭐️ |
 |`Quadrilateral` | ⭐️ ⭐️ ⭐️ ⭐️ ⭐️ |
 
-"""
-
-# ╔═╡ 3a961b6e-62f1-11eb-250b-13a3f6f17eaa
-begin 
-	checkbox(test::Bool)= test ? "✅" : "◯"
-	checkbox2(test::Bool)= test ? "✅" : ""
-	test1 = @safe !ismissing(myshape)
-	test2 = @safe !ismissing(myshape |> corners) && !ismissing(myshape|> ncorners)
-	test3 = @safe !ismissing(myshape |> center)
-	test4 = @safe !ismissing(myshape |> xycoords)
-	test5 = @safe !ismissing(myshape |> xlim) && !ismissing(myshape |> ylim) &&
-		!ismissing(myshape |> boundingbox)
-	test6 = @safe !ismissing(myshape |> area)
-	test7 = @safe !ismissing(move!(myshape |> deepcopy,(1.0,1.0))) &&
-				!ismissing(rotate!(myshape |> deepcopy,(1.0))) &&
-				!ismissing(scale!(myshape |> deepcopy,(1.0)))
-	test8 = @safe !ismissing(in((0.5, 0), myshape))
-	test9 = @safe !ismissing(intersect(myshape, myshape))
-	test10 = @safe !ismissing(randplace!(myshape, (0.0, 1.0), (0.0, 1.0)))
-	test11 = @safe rejection_sampling!([deepcopy(myshape) for i in 1:2], (0, 100), (0, 100)) |> !ismissing
- 
-end;
-
-# ╔═╡ 7545c788-62f0-11eb-3f6e-01deeaf990e0
-md"""
- $(checkbox(test1)) add the correct *inner* constructor to your type (see below);
-
-
- $(checkbox(test2)) complete `corners` and `ncorners`, which return the corners and the number of corners, respecitively;
-
-
- $(checkbox(test3)) complete `center` to return the center of mass of the shape;
- 
- $(checkbox(test4)) complete `xycoords`, which give two vectors with the x- and y-coordinates of the shape, used for plotting;
- 
- $(checkbox(test5)) complete `xlim` and `ylim` to give the range on the x- and y-axes of your shape, in addition to `boundingbox` to generate a bounding box of your shape;
- 
- $(checkbox(test6)) complete `area`, this computes the area of your shape;
- 
- $(checkbox(test7)) complete `move!`, `rotate!` and `scale!` to transform your shape **in place** (note: `AbstractRectangle`s cannot be rotated, they are always aligned to the axes);
- 
- $(checkbox(test8)) complete the function `in`, to check whether a point is in your shape;
- 
- $(checkbox(test9)) complete `intersect`, to check whether two shapes overlap;
- 
- $(checkbox(test10)) complete `randplace!`, which randomly moves and rotates a shape within a box;
- 
- $(checkbox(test11)) complete the rejection sampling algorithm and experiment with your shape(s).
- 
-**Note:** You will need to create specific methods for different types. It's your job to split the template for the functions in several methods and use dispatch.
 """
 
 # ╔═╡ d65b61ba-6242-11eb-030d-b18a7518731b
@@ -151,6 +121,14 @@ They have a `l`ength and `w`idth attribute, in addition to an `x` and `y` for th
 
 # ╔═╡ f4b05730-6242-11eb-0e24-51d4c60dc451
 abstract type AbstractRectangle <: Shape end
+
+# ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
+md"""
+!!! info "The Rectangle"
+    So we have defined a composite Rectangle type with a few fields but the inner constructor is missing. This inner constructor should to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0. 
+
+    Multiple dispatch allows us to define multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes.
+"""
 
 # ╔═╡ fe413efe-6242-11eb-3c38-13b9d996bc90
 begin
@@ -174,31 +152,6 @@ begin
 	end
 end
 
-# ╔═╡ 30c89806-6331-11eb-0610-d3545e7aeba4
-begin
-   test_rect = @safe Rectangle((1.0, 1.0)) !== missing
-
-	
-	
-   q_rect_con = Question(;
-			description=md"""
-			So we have defined a composite Rectangle type with a few fields but the inner constructor is missing. This inner constructor should to instantiate a Rectangle with center (`x`,`y`) and a default length and width of 1.0.   
-		
-			Multiple dispatch allows us to define multiple constructors for different scenario's. So we have defined an additional constructor where the extremum coordinates are provided (`xmin`, `xmin`), (`ymin`, `ymax`), assuming that the rectangle is always aligned with the axes.
-			""")
-	
-   q_rect_con = QuestionBlock(;
-	title=md"**Rectangle ⭐️** $(checkbox2(test_rect)) ",
-	questions = [q_rect_con],
-	hints=[
-		hint(md"Remember, `new()`?")
-	]
-	)
-end
-
-# ╔═╡ 4d4285e8-6334-11eb-0d76-136cc5f645cd
-
-
 # ╔═╡ 12ddaece-6243-11eb-1e9d-2be312d2e22d
 md"Squares are a special case of rectangle."
 
@@ -212,24 +165,6 @@ mutable struct Square <: AbstractRectangle
     end
 end
 
-# ╔═╡ abc99468-6333-11eb-1a9d-e50f8e56e468
-begin
-   test_sq = @safe Square((1.0, 1.0)) !== missing
-
-   q_sq_con = Question(;
-			description=md"""
-			Can you complete the inner constructor for the square type?
-			""")
-	
-   qb_sq_con = QuestionBlock(;
-	title=md"**Square ⭐️** $(checkbox2(test_sq)) ",
-	questions = [q_sq_con]
-	)
-end
-
-# ╔═╡ 501f9828-6334-11eb-0f2a-ebaa1d5b0f46
-
-
 # ╔═╡ 23ea0a46-6243-11eb-145a-b38e34969cfd
 md"This small function to get `l` and `w` will allow you to treat `Square` and `Rectangle` the same!"
 
@@ -237,24 +172,6 @@ md"This small function to get `l` and `w` will allow you to treat `Square` and `
 begin
 	lw(shape::Rectangle) = shape.l, shape.w
 	lw(shape::Square) = shape.l, shape.l
-end
-
-# ╔═╡ 94ec5382-6335-11eb-100c-15d70f27e703
-
-
-# ╔═╡ 5dcdba4e-6335-11eb-19d2-2d10ae81fa39
-begin
-   test_circle = @safe Circle((1.0, 1.0)) !== missing
-
-   q_circle_con = Question(;
-			description=md"""
-`Circle`'s are pretty straightforward, having a center and a radius.
-			""")
-	
-   qb_circle_con = QuestionBlock(;
-	title=md"**Circles ⭐️⭐️** $(checkbox2(test_circle)) ",
-	questions = [q_circle_con]
-	)
 end
 
 # ╔═╡ 3d67d61a-6243-11eb-1f83-49032ad146da
@@ -267,27 +184,14 @@ mutable struct Circle <: Shape
     end
 end
 
-# ╔═╡ 4ce7abea-6335-11eb-1657-a3ee8986d55e
-
-
 # ╔═╡ 6d06ddfc-6334-11eb-2995-81333ac5e1cd
-begin
-   test_poly = @safe RegularPolygon((1.0, 1.0), 5) !== missing
+md"""
+!!! info "Regular Polygons"
+    Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
+    The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave.
 
-   q_poly_con = Question(;
-			description=md"""
-Regular polygons have a center (`x`, `y`), a radius `R` (distance center to one of the corners) and an angle `θ` how it is tilted.
-The order of the polygon is part of its parametric type, so we give the compiler some hints on how it will behave.
-
-Can you complete the inner constructor for the polygon type? This is a little more challenging since it is a **parametric composite type** where `N` is the number of corners.
-			""")
-	
-   qb_poly_con = QuestionBlock(;
-	title=md"**Regular polygons ⭐️⭐️⭐️** $(checkbox2(test_poly)) ",
-	questions = [q_poly_con],
-	hints=[hint(md"`new{n}(...)`")]
-	)
-end
+    Can you complete the inner constructor for the polygon type? This is a little more challenging since it is a **parametric composite type** where `N` is the number of corners.
+"""
 
 # ╔═╡ 33757f2c-6243-11eb-11c2-ab5bbd90aa6b
 mutable struct RegularPolygon{N} <: Shape 
@@ -300,9 +204,6 @@ mutable struct RegularPolygon{N} <: Shape
         return missing # replace this with the correct statement
     end
 end
-
-# ╔═╡ bbbe4c9a-6335-11eb-1dc7-55ddf17887f4
-
 
 # ╔═╡ 4234b198-6243-11eb-2cfa-6102bfd9b896
 md"Triangles will be described by their three points. Its center will be computed when needed."
@@ -387,70 +288,6 @@ md"""
 Some very basic functions to get or generate the corners and centers of your shapes. The corners are returned as a list of tuples, e.g. `[(x1, y1), (x2, y2), ...]`.
 """
 
-# ╔═╡ 62e7e05e-62fe-11eb-1611-61274c5498cc
-begin 	
-	q_cc1 = Question(
-			description = md"""
-			**The number of corners**
-			
-			```julia
-			ncorners(shape::myShape)
-			```
-			that returns the number of corners.
-		
-
-			"""
-		)
-	
-	q_cc2 = Question(
-		description = md"""
-		**The corners**
-
-		```julia
-		corners(shape::myShape)
-		```
-		that returns the coordinates of the corners.
-
-		"""
-	)
-	
-	q_cc3 = Question(
-		description = md"""
-		**The center**
-
-		```julia
-		center(shape::myShape)
-		```
-		that returns the center.
-
-		"""
-	)
-	
-	q_cc4 = Question(
-		description = md"""
-		**The outline**
-
-		```julia
-		xycoords(shape::Shape)
-		```
-		xycoords returns two vectors of the outline: xcoords and ycoords, for `Circle`, you can specify the number of points to take (50 by default). For a lot of shapes this is just another representation of the corners.
-
-		"""
-	)
-	
-	qb_cc = QuestionBlock(;
-		title=md"**Assignment: corners and center**",
-		description = md"""
-
-	Complete the following functions for your shape ($myshapeType)
-
-		""",
-		questions = [q_cc1, q_cc2, q_cc3, q_cc4]
-	)
-	
-	#validate(qb_cc, tracker)
-end
-
 # ╔═╡ a005992e-6243-11eb-3e29-61c19c6e5c7c
 begin
 	ncorners(::Circle) = 0  # this one is for free!
@@ -495,18 +332,10 @@ md"""
 md"![](https://i.imgur.com/G7worze.png)"
 
 # ╔═╡ aa186788-63c3-11eb-1bd1-d138d586e8b6
-begin
-   q_bound = Question(;
-			description=md"""
-The fuctions below is supposed to yield the outer limits of the x and y axes of your shape. Can you complete the methods with a oneliner?
-""")
-	
-   qb_bound = QuestionBlock(;
-	title=md"**Assignment: bounding box ⭐️⭐️**",
-	questions = [q_bound],
-	hints=[hint(md"The function `extrema` could be useful here...")]
-	)
-end
+md"""
+!!! info "Oneliners"
+    The functions below is supposed to yield the outer limits of the x and y axes of your shape. Can you complete the methods with a oneliner?
+"""
 
 # ╔═╡ a89bdba6-6244-11eb-0b83-c1c64e4de17d
 begin
@@ -529,23 +358,8 @@ md"""
 ## Area
 """
 
-# ╔═╡ 94cbef4e-6348-11eb-030f-d7a9debdd305
-begin
-   q_area = Question(;
-			description=md"""
-
-Next, let us compute the area of our shapes.
-			""")
-	
-   qb_area = QuestionBlock(;
-	title=md"**Assignment: Area ⭐️** $(checkbox2(test_circle)) ",
-	questions = [q_area],
-	hints= [
-		hint(md"The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}$$."),
-		hint(md"A regular polygon consists of a couple of isosceles triangles.")	
-		]
-	)
-end
+# ╔═╡ 22fba013-bec2-4b54-a364-e9c7b0705d03
+@bind areahintcheck MultiCheckBox(["show hint 1", "show hint 2"])
 
 # ╔═╡ ebf4a45a-6244-11eb-0965-197f536f8e87
 begin
@@ -564,23 +378,16 @@ md"""
 md"![](https://i.imgur.com/nUlpTDA.png)"
 
 # ╔═╡ 285930b8-63c7-11eb-372b-edc4a4ed0d0a
-begin
-   q_mrs = Question(;
-			description=md"""
-
-Next, let us define some translation, rotation and scaling operations on the shapes.
+md"""
+!!! info
+	Next, let us define some translation, rotation and scaling operations on the shapes.
 		
-Important: the functions work *in-place*, meaning that the modify your object (that is why use use `mutable` structures).
+	Important: the functions work *in-place*, meaning that the modify your object (that is why use use `mutable` structures).
 
-For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
+	For `Circle` and `AbstractRectangle` types, `rotate!` leaves them unchanged.
 
-**Note**: rotations are in radials, so between $0$ and $2\pi$.
-			""")
-	
-   qb_mrs = QuestionBlock(;
-	title=md"**Assignment: I like to move it ⭐️⭐️⭐️**",
-	questions = [q_mrs])
-end
+	**Note**: rotations are in radials, so between $0$ and $2\pi$.
+"""
 
 # ╔═╡ 83c6d25c-6246-11eb-1a24-57e20f5e7262
 begin
@@ -606,9 +413,6 @@ begin
 		return shape
 	end
 end
-
-# ╔═╡ 2d7a63cc-64db-11eb-0a4c-bb7771af8b14
-
 
 # ╔═╡ d08ab6d0-6246-11eb-08a8-152f9802cdfc
 md"""
@@ -668,21 +472,13 @@ should return a Boolean whether the point is in the shape.
 """
 
 # ╔═╡ 6851ebb2-6339-11eb-2ab7-39e07c4e3154
-begin
-   q_in = Question(;
-			description=md"""
-			Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.""")
-	
-   qb_in = QuestionBlock(;
-	title=md"**Is point in shape? ⭐️⭐️⭐️**",
-	questions = [q_in],
-	hints=[
-		hint(md"It has something to do with the center..."),
-		hint(md"... but also with the edges"),
-		hint(md"Given that a point is outside a shape, it is always **outside** all edges.")
-	]
-	)
-end
+md"""
+!!! info
+	Complete the function `in(q, shape::Shape)` that checks whether a points falls inside a shape. The function `same_side((a, b), p, q)` is provided to check whether two points are on the same side of a line. This should prove very useful to complete this task.
+"""
+
+# ╔═╡ 28514ab6-ccf4-4ba9-9de7-0a3ea8896d7a
+@bind inandintersectionhintcheck MultiCheckBox(["show hint 1", "show hint 2", "show hint 3"])
 
 # ╔═╡ e565d548-6247-11eb-2824-7521d4fa6b2b
 begin
@@ -690,6 +486,32 @@ begin
 		# compute something
 		return missing
 	end
+end
+
+# ╔═╡ 5f71ff9b-6816-470e-9ccb-90c7fdc1c6d4
+if "show hint 1" in areahintcheck
+	md"hint 1: The area of a triangle can be computed as $${\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}$$."
+end
+
+# ╔═╡ 6b7f9fad-efde-4c34-99fb-9c30d072f500
+if "show hint 2" in areahintcheck
+	md"hint2: A regular polygon consists of a couple of isosceles triangles."
+end
+
+# ╔═╡ 7502213c-c29c-4087-b6dd-2b2f9d78f300
+if "show hint 1" in inandintersectionhintcheck
+	md"It has something to do with the center..."
+end
+
+
+# ╔═╡ 1d65cd5a-ea44-42d4-82d2-2b4da6939179
+if "show hint 2" in inandintersectionhintcheck
+	md"... but also with the edges"
+end
+
+# ╔═╡ 596ffe9d-a1ae-45c6-91a1-582045b631ef
+if "show hint 3" in inandintersectionhintcheck
+	md"Given that a point is outside a shape, it is always **outside** all edges."
 end
 
 # ╔═╡ 150f1dae-6248-11eb-276f-9bbf7eba58fd
@@ -723,69 +545,35 @@ end
 
 
 # ╔═╡ f3ea648e-633b-11eb-3444-317a4eb5b8ea
-begin
-   q_circle = Question(;
-			description=md"""
+md"""
+!!! info
+	Similarly, we want to check whether two shapes overlap (partially):
 
-**Two circles intersecting ⭐️**
-```julia
-	Base.intersect(shape1::Circle, shape2::Circle)
-```
-
-""")
+	```julia
+	intersect(shape1, shape2)
+	```
 	
-   q_recrec = Question(;
-		description=md"""
-
-**Rectangle intersecting another rectangle ⭐️**
-```julia
-	Base.intersect(shape1::AbstractRectangle, shape2::AbstractRectangle)
-```
-
-""")
+	Complete the function `intersect(shape1, shape2)` that checks whether there is a partial overlap (intersection) between two shapes
 	
-   q_triatria = Question(;
-		description=md"""
+	The efficiency and the process of checking intersection is very different for each shape and each combination of two shapes. Complete **at least one** of the following combinations.
+"""
 
-**Two triangles intersecting (efficient) ⭐️⭐️⭐️⭐️⭐️**
-```julia
-	Base.intersect(shape1::Triangle, shape2::Triangle)
-```
+# ╔═╡ b7bf9857-ddc3-411a-88bd-79a5576697fc
+@bind inandintersectionhintcheck2 MultiCheckBox(["show hint 1", "show hint 2", "show hint 3"])
 
-""")
-	
-   q_general = Question(;
-		description=md"""
+# ╔═╡ a041e7cd-8cf4-4888-8efc-7487b7540754
+if "show hint 1" in inandintersectionhintcheck2
+	md"Checking overlapping bounding boxes is very efficient"
+end
 
-**Any two shapes intersecting (naive) ⭐️⭐️⭐️**
-```julia
-	Base.intersect(shape1::T, shape2::T) where {T<:Shape}
-```
+# ╔═╡ 7fd14a81-43b0-49b3-bc70-16cc0460fbbe
+if "show hint 2" in inandintersectionhintcheck2
+	md"For most shapes: overlapping bounding boxes is a required, but not a sufficient condition for overlap"
+end
 
-""")
-	
-	
-	
-   qb_inter = QuestionBlock(;
-	title=md"**Intersection between shapes?**",
-	description=md"""
-Similarly, we want to check whether two shapes overlap (partially):
-
-```julia
-intersect(shape1, shape2)
-```
-
-Complete the function `intersect(shape1, shape2)` that checks whether there is a partial overlap (intersection) between two shapes
-
-The efficiency and the process of checking intersection is very different for each shape and each combination of two shapes. Complete **at least one** of the following combinations.""",
-	questions = [q_circle, q_recrec, q_triatria, q_general],
-	hints=[
-		hint(md"Checking overlapping bounding boxes is very efficient"),
-		hint(md"For most shapes: overlapping bounding boxes is a required, but not a sufficient condition for overlap"),
-		hint(md"[Very good hint](https://i.imgur.com/TpIStMK.png)")
-		
-		]
-	)
+# ╔═╡ 2bfd6c63-6aa9-4a52-b91f-9e21f813fd59
+if "show hint 3" in inandintersectionhintcheck2
+	md"[Very good hint](https://i.imgur.com/TpIStMK.png)"
 end
 
 # ╔═╡ 5368c46e-633e-11eb-0d98-b1ccb37cc7f8
@@ -854,19 +642,10 @@ Finally, `randplace!` takes a shape, rotates it randomly and moves it randomly w
 """
 
 # ╔═╡ 97c8cd32-6340-11eb-1d6d-b7d364c0c987
-begin
-   q_rand = Question(;
-			description=md"""
-			Complete the function `randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)` that places a shape at a random location withing a given bounding box. Can you define it in such a way that it also gives a random rotation to the shape?""")
-	
-   qb_rand = QuestionBlock(;
-	title=md"**Assignment: random placement⭐️⭐️⭐️**",
-	questions = [q_rand],
-	hints=[
-
-	]
-	)
-end
+md"""
+!!! info
+	Complete the function `randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)` that places a shape at a random location withing a given bounding box. Can you define it in such a way that it also gives a random rotation to the shape?
+"""
 
 # ╔═╡ 8d73b66c-624e-11eb-0a52-2309ef897b1c
 function randplace!(shape::Shape, (xmin, xmax), (ymin, ymax); rotate=true)
@@ -2121,27 +1900,19 @@ version = "1.8.1+0"
 # ╟─7189b1ee-62ef-11eb-121a-8d7bb3df52c3
 # ╟─7545c788-62f0-11eb-3f6e-01deeaf990e0
 # ╟─f8b080fe-6309-11eb-17aa-fb098fc00b11
-# ╟─3a961b6e-62f1-11eb-250b-13a3f6f17eaa
 # ╟─d65b61ba-6242-11eb-030d-b18a7518731b
 # ╠═e3f846c8-6242-11eb-0d12-ed9f7e534db8
 # ╟─e7e43620-6242-11eb-1e2e-65874fe8e293
 # ╠═f4b05730-6242-11eb-0e24-51d4c60dc451
-# ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
 # ╟─30c89806-6331-11eb-0610-d3545e7aeba4
-# ╟─4d4285e8-6334-11eb-0d76-136cc5f645cd
+# ╠═fe413efe-6242-11eb-3c38-13b9d996bc90
 # ╟─12ddaece-6243-11eb-1e9d-2be312d2e22d
 # ╠═16666cac-6243-11eb-0e0f-dd0d0ec53926
-# ╟─abc99468-6333-11eb-1a9d-e50f8e56e468
-# ╟─501f9828-6334-11eb-0f2a-ebaa1d5b0f46
 # ╟─23ea0a46-6243-11eb-145a-b38e34969cfd
 # ╠═1b129bf4-6243-11eb-1fa2-d7bd5563a1b4
-# ╟─94ec5382-6335-11eb-100c-15d70f27e703
-# ╟─5dcdba4e-6335-11eb-19d2-2d10ae81fa39
 # ╠═3d67d61a-6243-11eb-1f83-49032ad146da
-# ╟─4ce7abea-6335-11eb-1657-a3ee8986d55e
 # ╟─6d06ddfc-6334-11eb-2995-81333ac5e1cd
 # ╠═33757f2c-6243-11eb-11c2-ab5bbd90aa6b
-# ╟─bbbe4c9a-6335-11eb-1dc7-55ddf17887f4
 # ╟─4234b198-6243-11eb-2cfa-6102bfd9b896
 # ╠═473d9b5c-6243-11eb-363d-23108e81eb93
 # ╟─ce3393a8-6335-11eb-06e9-af93a3794902
@@ -2159,7 +1930,6 @@ version = "1.8.1+0"
 # ╟─7c80d608-6243-11eb-38ba-f97f7476b245
 # ╟─58eb84be-63c3-11eb-09f5-6d16973c7aa7
 # ╟─57dee25a-63c3-11eb-0c7a-bfb1ac79bc7b
-# ╟─62e7e05e-62fe-11eb-1611-61274c5498cc
 # ╠═a005992e-6243-11eb-3e29-61c19c6e5c7c
 # ╠═ac423fa8-6243-11eb-1385-a395d208c42d
 # ╠═ddf0ac38-6243-11eb-3a1d-cd39d70b2ee0
@@ -2173,7 +1943,9 @@ version = "1.8.1+0"
 # ╟─bd706964-6244-11eb-1d9d-2b60e53cdce1
 # ╠═b91e1e62-6244-11eb-1045-0770fa92e040
 # ╟─d60f8ca4-6244-11eb-2055-4551e4c10906
-# ╟─94cbef4e-6348-11eb-030f-d7a9debdd305
+# ╟─22fba013-bec2-4b54-a364-e9c7b0705d03
+# ╟─5f71ff9b-6816-470e-9ccb-90c7fdc1c6d4
+# ╟─6b7f9fad-efde-4c34-99fb-9c30d072f500
 # ╠═ebf4a45a-6244-11eb-0965-197f536f8e87
 # ╟─230dd290-6303-11eb-0f55-311ef2b9541e
 # ╟─36cc0492-6246-11eb-38dd-4f42fb7066dc
@@ -2182,7 +1954,6 @@ version = "1.8.1+0"
 # ╠═83c6d25c-6246-11eb-1a24-57e20f5e7262
 # ╠═a1b2a4f8-6246-11eb-00ea-8f6042c72f4e
 # ╠═b907e8fc-6246-11eb-0beb-bb44930d033c
-# ╟─2d7a63cc-64db-11eb-0a4c-bb7771af8b14
 # ╟─d08ab6d0-6246-11eb-08a8-152f9802cdfc
 # ╠═dfc779ee-6246-11eb-240b-4dc7a7d95641
 # ╠═e30d10d2-6246-11eb-1d59-332b5916712e
@@ -2195,12 +1966,20 @@ version = "1.8.1+0"
 # ╟─01d899e6-6305-11eb-017b-27bb2c104ef5
 # ╟─221e09a2-6247-11eb-12a8-a13c0a2f96e7
 # ╟─6851ebb2-6339-11eb-2ab7-39e07c4e3154
+# ╟─28514ab6-ccf4-4ba9-9de7-0a3ea8896d7a
+# ╟─7502213c-c29c-4087-b6dd-2b2f9d78f300
+# ╟─1d65cd5a-ea44-42d4-82d2-2b4da6939179
+# ╟─596ffe9d-a1ae-45c6-91a1-582045b631ef
 # ╠═e565d548-6247-11eb-2824-7521d4fa6b2b
 # ╠═150f1dae-6248-11eb-276f-9bbf7eba58fd
 # ╟─b8ed26f2-633b-11eb-380e-9379b0f4697f
 # ╠═f4873fce-6249-11eb-0140-871354ca5430
 # ╟─22f63a5e-633a-11eb-27c7-27fcabc7bc6f
 # ╟─f3ea648e-633b-11eb-3444-317a4eb5b8ea
+# ╟─b7bf9857-ddc3-411a-88bd-79a5576697fc
+# ╟─a041e7cd-8cf4-4888-8efc-7487b7540754
+# ╟─7fd14a81-43b0-49b3-bc70-16cc0460fbbe
+# ╟─2bfd6c63-6aa9-4a52-b91f-9e21f813fd59
 # ╠═5368c46e-633e-11eb-0d98-b1ccb37cc7f8
 # ╟─e6efb632-6338-11eb-2e22-eb0b1ff577c4
 # ╠═0381fbba-6248-11eb-3e80-b37137438531
