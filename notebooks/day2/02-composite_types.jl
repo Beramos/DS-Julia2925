@@ -616,38 +616,8 @@ mass(c::Compound) = missing
 # ╔═╡ d7b423b3-3263-46ab-9d8a-f27487256e98
 Base.:+(c1::Compound, c2::Compound) = missing
 
-# ╔═╡ 605779e6-5d8e-11eb-3e08-c7420ef76aba
-norm(p::Point{T} where {T<:Number}) = sqrt(p.x^2 + p.y^2)
-
-# ╔═╡ 6646eb5c-5d8e-11eb-1e01-f3011c4230de
-norm(p)
-
-# ╔═╡ 6960f8d2-5d8e-11eb-0215-2de7b54e3081
-norm(p_int)  # dispatch creates a method for this type
-
-# ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
-dungbomb_fund = money_ron + money_harry
-
 # ╔═╡ ed203f72-5eb4-49a3-8b06-fa587524ac20
 Base.:*(n::Int, c::Compound) = missing
-
-# ╔═╡ a9502b64-5d90-11eb-144c-3d7ce0949e67
-Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
-
-# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
-@time sum(S)
-
-# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
-@time sum(S)
-
-# ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
-S * v  # works, but slow
-
-# ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
-@time S * v  # fast (linear time in v)
-
-# ╔═╡ d7c5071e-9253-4f24-b7a3-cf86d993568c
-mazout = 3glucose + 4ethanol 
 
 # ╔═╡ 4675ce98-a696-4e60-bb7a-6e8d88013bae
 "Compute number of H2O and CO2 molecules after full combustion
@@ -663,9 +633,9 @@ end
 
 # ╔═╡ 4246fe26-41e7-4d92-80e1-e0bb363d729b
 md"""
-### Colors theory
+### Color theory
 
-We have worked with the package Colors.jl. Let us try to reproduce some of the functionality.
+We have worked with the package Colors.jl. Let us try to reproduce some of the functionality. Complete the constructors of RGB for integer values, the constructor of HSV and a method to convert RGB to HSV. You can use the provided helper function.
 """
 
 # ╔═╡ 6c2caee8-c06f-4062-b2a5-74dacf2b4753
@@ -693,6 +663,51 @@ end
 # ╔═╡ 50fab216-b286-4d7e-a8f7-5ecba1c0129d
 col = RGB(0.2, 0.8, 0.7)
 
+# ╔═╡ c1868d8a-3609-4416-92e2-321bea910af6
+RGB(245, 148, 33)
+
+# ╔═╡ a9d894fa-7038-40e8-9792-0dd81549b115
+# adding colors
+Base.:+(c1::RGB, c2::RGB) = missing
+
+# ╔═╡ 605779e6-5d8e-11eb-3e08-c7420ef76aba
+norm(p::Point{T} where {T<:Number}) = sqrt(p.x^2 + p.y^2)
+
+# ╔═╡ 6646eb5c-5d8e-11eb-1e01-f3011c4230de
+norm(p)
+
+# ╔═╡ 6960f8d2-5d8e-11eb-0215-2de7b54e3081
+norm(p_int)  # dispatch creates a method for this type
+
+# ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
+dungbomb_fund = money_ron + money_harry
+
+# ╔═╡ bb316e0c-088a-4d84-a654-5c37d24131dc
+# scalar scaling
+Base.:*(a::Real, c::RGB) = missing
+
+# ╔═╡ a9502b64-5d90-11eb-144c-3d7ce0949e67
+Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
+
+# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
+@time sum(S)
+
+# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
+@time sum(S)
+
+# ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
+S * v  # works, but slow
+
+# ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
+@time S * v  # fast (linear time in v)
+
+# ╔═╡ d7c5071e-9253-4f24-b7a3-cf86d993568c
+mazout = 3glucose + 4ethanol 
+
+# ╔═╡ 84109211-b93c-4ef9-8ed6-22b9c53b4837
+# averaging colors
+0.5RGB(245, 148, 33) + 0.5RGB(123, 67, 90)
+
 # ╔═╡ 09486ab7-bfd6-4a27-93b2-a84530e15044
 # A struct to represent HSV color components
 struct HSV <: MyColor
@@ -703,8 +718,8 @@ struct HSV <: MyColor
     # Inner constructor to clamp values
     function HSV(h::Real, s::Real, v::Real)
         # Hue wraps around 360
-        h_clamped = mod(h, 360.0)
-        new(h_clamped, clamp(s, 0.0, 1.0), clamp(v, 0.0, 1.0))
+       	# s and v in [0, 1]
+		return missing
     end
 end
 
@@ -743,7 +758,7 @@ function rgb_to_hsv(R, G, B)
 end
 
 # ╔═╡ 29595686-2ca4-4e37-a05d-7dfd2a37d736
-convert(::Type{HSV}, color::RGB) = HSV(rgb_to_hsv(color.r, color.g, color.b)...)
+convert(::Type{HSV}, color::RGB) = missing
 
 # ╔═╡ c27fb2bb-47df-449d-b1e0-3f05224ab710
 convert(HSV, col)
@@ -758,6 +773,8 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question Vandermonde | $(@bind answ_q2 CheckBox()) |
 | Question Vandermonde determinant | $(@bind answ_q3 CheckBox()) |
 | Question Chemical romance | $(@bind answ_q4 CheckBox()) |
+| Question Color theory | $(@bind answ_q5 CheckBox()) |
+
 
 """
 
@@ -887,6 +904,49 @@ function combust(compound::Compound)
 	nCO2 = compound.C
 	return (H20=nH2O, CO2=nCO2)
 end
+```
+"""
+end
+
+# ╔═╡ ffafc788-0752-4bb7-a4ad-9d38a55b35c3
+if answ_q5 
+md"""
+```julia
+# A simple struct to represent RGB color components
+struct RGB <: MyColor
+	r::Float64
+	g::Float64
+	b::Float64
+
+	# Inner constructor to ensure values are clamped to [0.0, 1.0]
+	function RGB(r::Real, g::Real, b::Real)
+		new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
+	end
+end
+
+# make a constructor for when the values are given in [0, 255]
+RGB(r::Integer, g::Integer, b::Integer) = RGB(r/255, g/255, b/255)
+
+# adding colors
+Base.:+(c1::RGB, c2::RGB) = RGB(c1.r+c2.r, c1.g+c2.g, c1.g+c2.g)
+
+# scalar scaling
+Base.:*(a::Real, c::RGB) = RGB(a*c.r, a*c.g, a*c.g)
+	
+struct HSV <: MyColor
+    h::Float64 # Hue in degrees [0, 360)
+    s::Float64 # Saturation [0, 1]
+    v::Float64 # Value/Brightness [0, 1]
+
+    # Inner constructor to clamp values
+    function HSV(h::Real, s::Real, v::Real)
+        # Hue wraps around 360
+        h_clamped = mod(h, 360.0)
+        new(h_clamped, clamp(s, 0.0, 1.0), clamp(v, 0.0, 1.0))
+    end
+end
+
+convert(::Type{HSV}, color::RGB) = HSV(rgb_to_hsv(color.r, color.g, color.b)...)
 ```
 """
 end
@@ -1328,14 +1388,19 @@ version = "17.4.0+2"
 # ╠═4675ce98-a696-4e60-bb7a-6e8d88013bae
 # ╠═b4cac403-2e81-4641-a2a6-2578d18c4ed0
 # ╟─33a9a0b4-bd92-4a22-b454-89d780237977
-# ╠═4246fe26-41e7-4d92-80e1-e0bb363d729b
+# ╟─4246fe26-41e7-4d92-80e1-e0bb363d729b
 # ╠═6c2caee8-c06f-4062-b2a5-74dacf2b4753
 # ╠═61e3ef45-5192-404f-8f53-8b66ab95c44b
 # ╠═50fab216-b286-4d7e-a8f7-5ecba1c0129d
+# ╠═c1868d8a-3609-4416-92e2-321bea910af6
+# ╠═a9d894fa-7038-40e8-9792-0dd81549b115
+# ╠═bb316e0c-088a-4d84-a654-5c37d24131dc
+# ╠═84109211-b93c-4ef9-8ed6-22b9c53b4837
 # ╠═09486ab7-bfd6-4a27-93b2-a84530e15044
 # ╠═5cfa04a7-9bc2-47a1-901e-faef07508390
 # ╠═29595686-2ca4-4e37-a05d-7dfd2a37d736
 # ╠═c27fb2bb-47df-449d-b1e0-3f05224ab710
-# ╠═0267b920-9a1f-472f-9d21-5609fb877325
+# ╟─ffafc788-0752-4bb7-a4ad-9d38a55b35c3
+# ╟─0267b920-9a1f-472f-9d21-5609fb877325
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
