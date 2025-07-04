@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -467,6 +467,12 @@ md"Converting a color to grayscale is also easy."
 
 # ╔═╡ c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
 Gray(daanbeardred)
+
+# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
+md"Colors can also be represented in other ways, such as this hexadecimal format:"
+
+# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
+hex(daanbeardred)
 
 # ╔═╡ c41f1cb6-5a8e-11eb-326c-db30e518a702
 md"An image is a matrix of colors, nothing more!"
@@ -1307,12 +1313,6 @@ if answ_q11 == true
 	"""
 end
 
-# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
-md"Colors can also be represented in other ways, such as this hexadecimal format:"
-
-# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
-hex(daanbeardred)
-
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -1690,17 +1690,11 @@ git-tree-sha1 = "43ba3d3c82c18d88471cfd2924931658838c9d8f"
 uuid = "61579ee1-b43e-5ca0-a5da-69d92c66a64b"
 version = "9.55.0+4"
 
-[[deps.Ghostscript_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "43ba3d3c82c18d88471cfd2924931658838c9d8f"
-uuid = "61579ee1-b43e-5ca0-a5da-69d92c66a64b"
-version = "9.55.0+4"
-
 [[deps.Glib_jll]]
-deps = ["Artifacts", "Gettext_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Libiconv_jll", "Libmount_jll", "PCRE2_jll", "Zlib_jll"]
-git-tree-sha1 = "fee60557e4f19d0fe5cd169211fdda80e494f4e8"
+deps = ["Artifacts", "GettextRuntime_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Libiconv_jll", "Libmount_jll", "PCRE2_jll", "Zlib_jll"]
+git-tree-sha1 = "35fbd0cefb04a516104b8e183ce0df11b70a3f1a"
 uuid = "7746bdde-850d-59dc-9ae8-88ece973131d"
-version = "2.84.0+0"
+version = "2.84.3+0"
 
 [[deps.Graphics]]
 deps = ["Colors", "LinearAlgebra", "NaNMath"]
