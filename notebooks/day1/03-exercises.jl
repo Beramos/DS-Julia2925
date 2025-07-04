@@ -1128,11 +1128,10 @@ if answ_q2 == true
 		m = length(w) ÷ 2
 		y = zeros(n)
 
-		fill!(y, 0.0)
 		for (i, xj) in enumerate(x)
-		for (j, wj) in enumerate(w)
-		  k = j - m - 1
-		  l = clamp(i - k, 1, n)
+			for (j, wj) in enumerate(w)
+		  		k = j - m - 1
+		  		l = clamp(i - k, 1, n)
 				y[i] += w[j] * x[l]
 			end
 		end
