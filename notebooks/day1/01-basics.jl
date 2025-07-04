@@ -851,7 +851,7 @@ for any value of $n$ greater than 2.
 
 1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, *"Holy smokes, Fermat was wrong!"* Otherwise, the program should print and return, *"No, that doesn’t work."*
 2. Write a function that, when no input arguments are provided, four random positive integers are assigned to $a$, $b$, $c$ and $n$, and use `checkfermat` to check whether they violate Fermat’s theorem.
-3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?
+3. Can you write the code so that the functions in 2.1 and 2.2 have the same name?
 
 Hints:
 - check the functions `rand` and `abs`.
