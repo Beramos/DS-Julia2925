@@ -759,19 +759,19 @@ md"Multiple dispatch is a concept where the behaviour of a function can be speci
 
 # ╔═╡ cacb7254-4f2f-11eb-1daa-1bc04678835c
 begin 
-	translate(xy::Array) = xy .+ [1 3]
-	translate(s::String) = Markdown.parse("[Ctrl + click here](https://translate.google.com/?sl=en&tl=nl&text=$(s)&op=translate)")
-	translate(anything::Any) = "I'm lost in translation..."
+	mytranslate(xy::Array) = xy .+ [1 3]
+	mytranslate(s::String) = Markdown.parse("[Ctrl + click here](https://translate.google.com/?sl=en&tl=nl&text=$(s)&op=translate)")
+	mytranslate(anything::Any) = "I'm lost in translation..."
 end
 
 # ╔═╡ cc48bc9a-4f2f-11eb-134c-71bd8a944943
-translate(1.0)
+mytranslate(1.0)
 
 # ╔═╡ d9f28c04-4f2f-11eb-0255-1965fb8f07b5
-translate([0.0 0.0])
+mytranslate([0.0 0.0])
 
 # ╔═╡ dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
-translate("Hi how are you?")
+mytranslate("Hi how are you?")
 
 # ╔═╡ de48a3f6-4f2f-11eb-314b-493546c37a21
  md"A great deal of time will be spend on Julia's type system in day 2. So do not worry if this still feels vague. Just **remember** that all objects have a type and the behaviour of a function can vary depending on the type of the input arguments."
