@@ -468,12 +468,6 @@ md"Converting a color to grayscale is also easy."
 # ╔═╡ c3e02c4a-5a8e-11eb-2c2e-b5117c5310a3
 Gray(daanbeardred)
 
-# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
-md"Colors can also be represented in other ways, such as this hexadecimal format:"
-
-# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
-hex(daanbeardred)
-
 # ╔═╡ c41f1cb6-5a8e-11eb-326c-db30e518a702
 md"An image is a matrix of colors, nothing more!"
 
@@ -1100,7 +1094,7 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question | Show solution |
 |-----|:---------:|
 | Question Means | $(@bind answ_q1 CheckBox()) |
-| Question 1-Dimensional covolutional | $(@bind answ_q2 CheckBox()) |
+| Question 1-Dimensional convolutional | $(@bind answ_q2 CheckBox()) |
 | Question Common weight vectors | $(@bind answ_q3 CheckBox()) |
 | Question Protein sliding image | $(@bind answ_q4 CheckBox()) |
 | Question Decimate image | $(@bind answ_q5 CheckBox()) |
@@ -1312,6 +1306,12 @@ if answ_q11 == true
 	```
 	"""
 end
+
+# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
+md"Colors can also be represented in other ways, such as this hexadecimal format:"
+
+# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
+hex(daanbeardred)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -3188,8 +3188,8 @@ version = "1.8.1+0"
 # ╟─333d2a1a-5f4c-11eb-188a-bb221700e8a0
 # ╠═caefe5ac-5f4d-11eb-2591-67b5515e1bd4
 # ╠═46449848-64e3-11eb-0bf4-c9211b41c68d
-# ╟─670d4db7-924b-4c44-9729-8677a9b757c8
-# ╟─37cb5545-38cc-49f5-aff7-913eb0d08cbc
+# ╠═670d4db7-924b-4c44-9729-8677a9b757c8
+# ╠═37cb5545-38cc-49f5-aff7-913eb0d08cbc
 # ╠═7fb698a3-aaad-4a36-ae73-a05602d790af
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
