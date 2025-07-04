@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -1094,7 +1094,7 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question | Show solution |
 |-----|:---------:|
 | Question Means | $(@bind answ_q1 CheckBox()) |
-| Question 1-Dimensional covolutional | $(@bind answ_q2 CheckBox()) |
+| Question 1-Dimensional convolutional | $(@bind answ_q2 CheckBox()) |
 | Question Common weight vectors | $(@bind answ_q3 CheckBox()) |
 | Question Protein sliding image | $(@bind answ_q4 CheckBox()) |
 | Question Decimate image | $(@bind answ_q5 CheckBox()) |
@@ -1128,11 +1128,10 @@ if answ_q2 == true
 		m = length(w) ÷ 2
 		y = zeros(n)
 
-		fill!(y, 0.0)
 		for (i, xj) in enumerate(x)
-		for (j, wj) in enumerate(w)
-		  k = j - m - 1
-		  l = clamp(i - k, 1, n)
+			for (j, wj) in enumerate(w)
+		  		k = j - m - 1
+		  		l = clamp(i - k, 1, n)
 				y[i] += w[j] * x[l]
 			end
 		end
@@ -1691,17 +1690,11 @@ git-tree-sha1 = "43ba3d3c82c18d88471cfd2924931658838c9d8f"
 uuid = "61579ee1-b43e-5ca0-a5da-69d92c66a64b"
 version = "9.55.0+4"
 
-[[deps.Ghostscript_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "43ba3d3c82c18d88471cfd2924931658838c9d8f"
-uuid = "61579ee1-b43e-5ca0-a5da-69d92c66a64b"
-version = "9.55.0+4"
-
 [[deps.Glib_jll]]
-deps = ["Artifacts", "Gettext_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Libiconv_jll", "Libmount_jll", "PCRE2_jll", "Zlib_jll"]
-git-tree-sha1 = "fee60557e4f19d0fe5cd169211fdda80e494f4e8"
+deps = ["Artifacts", "GettextRuntime_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Libiconv_jll", "Libmount_jll", "PCRE2_jll", "Zlib_jll"]
+git-tree-sha1 = "35fbd0cefb04a516104b8e183ce0df11b70a3f1a"
 uuid = "7746bdde-850d-59dc-9ae8-88ece973131d"
-version = "2.84.0+0"
+version = "2.84.3+0"
 
 [[deps.Graphics]]
 deps = ["Colors", "LinearAlgebra", "NaNMath"]
@@ -3195,8 +3188,8 @@ version = "1.8.1+0"
 # ╟─333d2a1a-5f4c-11eb-188a-bb221700e8a0
 # ╠═caefe5ac-5f4d-11eb-2591-67b5515e1bd4
 # ╠═46449848-64e3-11eb-0bf4-c9211b41c68d
-# ╟─670d4db7-924b-4c44-9729-8677a9b757c8
-# ╟─37cb5545-38cc-49f5-aff7-913eb0d08cbc
+# ╠═670d4db7-924b-4c44-9729-8677a9b757c8
+# ╠═37cb5545-38cc-49f5-aff7-913eb0d08cbc
 # ╠═7fb698a3-aaad-4a36-ae73-a05602d790af
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
