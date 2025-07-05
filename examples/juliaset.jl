@@ -10,7 +10,7 @@
 using Plots
 
 R = 50.0  # escape radius
-dx = 1e-4
+dx = 1e-3
 dy = dx
 
 c = -0.8 + 0.156im
