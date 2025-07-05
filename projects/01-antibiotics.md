@@ -72,6 +72,7 @@ Julia packages:
 - [Catalyst.jl](https://docs.sciml.ai/Catalyst/stable/introduction_to_catalyst/introduction_to_catalyst/): a modeling library for (bio)chemical reactions.
     - you might look at jump equations and stochastical chemical kinetics to account for the discrete nature of the bacteria
     - check the tab “Constraint Equations and Events” for event handling, i.e. dosing antibiotics at a set time
+    - Check out our Catalyst tutorial on the JuliaDS repo! (/notebooks/Modelling/)
 - Catalyst mainly uses DifferentialEquations.jl, you might check that out!
 - For optimizing the dosis, you can use [Optimization.jl](https://github.com/SciML/Optimization.jl) or try a couple of thousand random scenarios.
 - [SciMLSensitivity](https://docs.sciml.ai/SciMLSensitivity/stable/) can be used for a sensitivity analysis
