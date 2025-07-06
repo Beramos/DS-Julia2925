@@ -20,7 +20,7 @@ student = (name = "Jim Janssen", email = "Jim.Janssen@UGent.be");
 
 # ╔═╡ 36e51b02-63df-11eb-34a5-39e6e0650541
 begin
-	download("https://gist.githubusercontent.com/DaanVanHauwermeiren/2b02f275eef08643acfbf8fa9e9e4097/raw/e4e68d69d9c54a9b33a319d7b56dc8daf83fea5b/data.txt", "map.txt")
+	download("https://gist.githubusercontent.com/DaanVanHauwermeiren/ccfb8388da280308646b086eb793bb23/raw/d7c3ee35e2fcda299f3ddc44e26e2789286b63ef/data.txt", "map.txt")
 	
 	function parse_input(input)
 		lines = split(input, "\n")
