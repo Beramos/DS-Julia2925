@@ -173,17 +173,7 @@ collect(Squares(6))
 #Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
 
 # ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
-sum(Squares(18093))  # much faster now!
-
-# ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
-@elapsed sum(Squares(18093))
-
-# ╔═╡ 49f1d98c-5d91-11eb-1657-f320e9fcdc0e
-#Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
-
-# ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
-sum(Squares(18093))  # much faster now!
-
+sum(Squares(18093))
 
 # ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
 @elapsed sum(Squares(18093))
@@ -1331,7 +1321,6 @@ version = "17.4.0+2"
 # ╠═da6cc5b8-5d90-11eb-07ff-db8bdb504054
 # ╠═e3759d4c-5d90-11eb-0bea-bb4247623ec2
 # ╠═07998440-5d91-11eb-1a65-8de428eac89c
-# ╠═59fe435a-6bfb-4b3c-9f56-3aeb258aacfc
 # ╠═e11b0b10-6621-11eb-0bdb-f3719cc92a20
 # ╟─0b8980aa-5d91-11eb-385b-71568ec0e325
 # ╠═192d9fd4-5d91-11eb-1cb9-c706aad03480
@@ -1389,8 +1378,8 @@ version = "17.4.0+2"
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
 # ╠═a0df19b8-3e4e-4dd3-81c2-86ebaca421ee
 # ╟─1c373bba-eeb6-4673-8b18-0d68b524e536
-# ╠═d402593c-9544-4f75-93d9-d644ab303257
-# ╠═d599974b-fd6f-4414-aac0-18dbf2e5b717
+# ╟─d402593c-9544-4f75-93d9-d644ab303257
+# ╟─d599974b-fd6f-4414-aac0-18dbf2e5b717
 # ╠═0e07052b-057f-4cd1-a11e-199774431dcf
 # ╠═eb7957f4-9aa5-4f1e-97e7-20887bf661b0
 # ╠═510ea8ca-151e-436d-b3a8-6d234359e04a
