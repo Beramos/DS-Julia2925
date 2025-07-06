@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -178,23 +178,21 @@ If you are confused by the last statement, read the next section.
 # ╔═╡ 66343826-6012-11eb-109c-17c7a582cbc8
 
 
-# ╔═╡ 34ca6158-4e75-11eb-3d51-330952c9b3dd
-md"We can check the entire subtree of a type using the function `subtypetree`"
-
 # ╔═╡ 3d1db2de-6549-11eb-2649-2d96659813f6
-md"It does not need to be complicated, though."
+md"We can check the entire subtree of a type using the function `subtypetree` and is a beautiful example of recursion."
+
 
 # ╔═╡ 46eaafee-6549-11eb-2e36-c9e566d3f3ba
-function subtypetreesimple(roottype, level=1)
+function subtypetree(roottype, level=1)
 	level == 1 && println(roottype)
 	for s in subtypes(roottype)
 			println(" "^((level-1)*4) * string(s))
-			subtypetreesimple(s, level + 1)
+			subtypetree(s, level + 1)
 	end
 end
 
 # ╔═╡ 6cbd4874-6549-11eb-296e-af4a43d53223
-subtypetreesimple(Real)
+subtypetree(Real)
 
 # ╔═╡ 4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 md"""
@@ -498,6 +496,9 @@ end
 # ╔═╡ 0884f752-6018-11eb-2eb3-d1cd317dceb3
 md"You can see, it is a pretty flat hierarchy"
 
+# ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
+subtypetree(Mohs)  
+
 # ╔═╡ 443ecf72-6018-11eb-1a7a-e75e9596e4bd
 md"Next, let us define a function `mohs_scale` that dispatches on the different abstract types (minerals) and returns a hardness value"
 
@@ -514,6 +515,16 @@ begin
 	mohs_scale(::Type{Gypsum}) = 2
 	mohs_scale(::Type{Talc}) = 1
 end
+
+# ╔═╡ 8b20b98e-6c49-4215-9aa4-673a1cde6002
+md"""Note that the function definition does not have any input argument names, coming from e.g. python this might be confusing. But in julia, you could only be interested in the type signature of the input argument (for the sake of multiple dispatch) and not the value of the input argument itself. It is equivalent to writing 
+
+```julia
+mohs_scale(t::Type{Diamond}) = 10
+```
+
+but in this example the variable `t` is unused so you can leave it out.
+"""
 
 # ╔═╡ 70390e06-6018-11eb-3bd8-97ff84985261
 begin
@@ -538,31 +549,6 @@ md"To make this more user-friendly, one can add a method to the `<`-operator or 
 
 # ╔═╡ 6e429164-4e7f-11eb-1829-0582f1417815
 Base.isless(m1::Type{<:Mohs}, m2::Type{<:Mohs}) = mohs_scale(m1) < mohs_scale(m2)
-
-# ╔═╡ 972154f6-6536-11eb-08a8-e3fc98623177
-function subtypetree(roottype, level=1, last=false)
-	level == 1 && println(split(string(roottype),".")[end])
-	for (index, s) in enumerate(subtypes(roottype))
-	
-		if index < length(subtypes(roottype))
-			println(join(fill("│  ", level-1-1*last))* 
-				join(fill("   ", 1*last)) * "├──" * split(string(s),".")[end])
-
-			subtypetree(s, level + 1, false)
-		else
-			println(join(fill("│  ", level-1-1*last))* 
-				join(fill("   ", 1*last)) * "└──" * split(string(s),".")[end])
-			subtypetree(s, level + 1, true)
-		end
-
-	end
-end
-
-# ╔═╡ e50c3f36-653c-11eb-0eb4-cf44af78e44c
-subtypetree(Real)
-
-# ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
-subtypetree(Mohs)  
 
 # ╔═╡ fc0f2e92-6018-11eb-0b45-49fdec301609
 mohs_scale(💎) > mohs_scale(🔶)
@@ -1011,9 +997,6 @@ version = "17.4.0+2"
 # ╠═cb066442-4e74-11eb-35e7-ed38d4bd8bbf
 # ╠═ce3d5380-4e74-11eb-3d9d-5f34cbbae118
 # ╟─66343826-6012-11eb-109c-17c7a582cbc8
-# ╟─34ca6158-4e75-11eb-3d51-330952c9b3dd
-# ╠═972154f6-6536-11eb-08a8-e3fc98623177
-# ╠═e50c3f36-653c-11eb-0eb4-cf44af78e44c
 # ╟─3d1db2de-6549-11eb-2649-2d96659813f6
 # ╠═46eaafee-6549-11eb-2e36-c9e566d3f3ba
 # ╠═6cbd4874-6549-11eb-296e-af4a43d53223
@@ -1077,6 +1060,7 @@ version = "17.4.0+2"
 # ╠═24588124-6018-11eb-24d1-f9c7759f4c8f
 # ╟─443ecf72-6018-11eb-1a7a-e75e9596e4bd
 # ╠═1aea83a8-4e7f-11eb-2d06-c3e550c4e1b9
+# ╟─8b20b98e-6c49-4215-9aa4-673a1cde6002
 # ╠═70390e06-6018-11eb-3bd8-97ff84985261
 # ╠═9b4cad6e-6018-11eb-0e41-2fea9c9219ed
 # ╠═ab1c59c4-6018-11eb-1147-8d441c25aa0b
