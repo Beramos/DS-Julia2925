@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -252,14 +252,11 @@ begin
 
 	import Base.Iterators.enumerate
 	
-	# open the file
-	open("map.txt") do file
-		# if you have some programming experience, you can probably guess 
-		# what enumerate does.
-		# the eachline function speaks for itself: iterate over each line in the file!
-		for (idx, ln) in enumerate(eachline(file))
-			slope[idx] = CircularArray(ln)
-		end
+	# if you have some programming experience, you can probably guess 
+	# what enumerate does.
+	# the eachrow function speaks for itself: iterate over each row in the matrix!
+	for (idx, ln) in enumerate(eachrow(map))
+		slope[idx] = CircularArray(ln)
 	end
 end
 
@@ -632,7 +629,7 @@ version = "17.4.0+2"
 # ╟─5368424c-63dd-11eb-3a1b-05a61e266d2b
 # ╟─6c0f2d10-63dd-11eb-2c17-fddf9cd51bfe
 # ╟─e1259736-63df-11eb-0010-3f2fc5719596
-# ╟─36e51b02-63df-11eb-34a5-39e6e0650541
+# ╠═36e51b02-63df-11eb-34a5-39e6e0650541
 # ╠═e677ca7e-63df-11eb-186b-8d20826ec916
 # ╠═c34af248-63e3-11eb-2bfd-898ef2cfbea5
 # ╠═4b4bbeb8-63e2-11eb-0ea2-6de494f61dc1
