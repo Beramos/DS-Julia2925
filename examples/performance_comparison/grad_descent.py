@@ -4,7 +4,7 @@ def gradient_descent(P, q, x0,
             alpha=0.01, beta=0.8, maxiter=1000, eps=1e-5):
     x = np.copy(x0)
     nabla_f = lambda x : P.dot(x) + q
-    Dx = nabla_f(x)
+    Dx = -nabla_f(x)
     for iter in range(maxiter):
         x += alpha * Dx
         Dx = beta * Dx - (1-beta) * nabla_f(x)
