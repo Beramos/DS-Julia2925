@@ -161,10 +161,10 @@ sum(Squares(18093))
 @elapsed sum(Squares(18093))
 
 # ╔═╡ 192d9fd4-5d91-11eb-1cb9-c706aad03480
-Base.eltype(::Type{Squares}) = Int
+#Base.eltype(::Type{Squares}) = Int
 
 # ╔═╡ 1fa68c72-5d91-11eb-1102-c18460e92ee6
-Base.length(S::Squares) = S.count
+#Base.length(S::Squares) = S.count
 
 # ╔═╡ 2270e790-5d91-11eb-20e5-29905f232734
 collect(Squares(6))
@@ -174,6 +174,16 @@ collect(Squares(6))
 
 # ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
 sum(Squares(18093))  # much faster now!
+
+# ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
+@elapsed sum(Squares(18093))
+
+# ╔═╡ 49f1d98c-5d91-11eb-1657-f320e9fcdc0e
+#Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
+
+# ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
+sum(Squares(18093))  # much faster now!
+
 
 # ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
 @elapsed sum(Squares(18093))
@@ -225,13 +235,13 @@ struct WizCur
 end
 
 # ╔═╡ 48301af2-5d94-11eb-0019-7737667c9cea
-galleons(money::WizCur) = missing
+galleons(money::WizCur) = missing # complete me!
 
 # ╔═╡ 4ea80eda-5d94-11eb-3882-21a41d2d65f8
-sickles(money::WizCur) = missing
+sickles(money::WizCur) = missing # complete me!
 
 # ╔═╡ 5af60d90-5d94-11eb-2ee4-b7bfc2caf53b
-knuts(money::WizCur) = missing
+knuts(money::WizCur) = missing # complete me!
 
 # ╔═╡ 5f7c75ac-5d94-11eb-137a-7914cd009821
 #=
@@ -241,7 +251,7 @@ end
 =#
 
 # ╔═╡ 678ca64a-5d94-11eb-2b85-0b706526e35b
-Base.isless(m1::WizCur, m2::WizCur) = missing
+Base.isless(m1::WizCur, m2::WizCur) = missing # complete me!
 
 # ╔═╡ 27fcaede-5d90-11eb-1cea-91fcc4b6b0fe
 struct OrderedPair
@@ -263,26 +273,26 @@ OrderedPair(18, 23)
 OrderedPair(8, 2)
 
 # ╔═╡ 8afbd434-5d94-11eb-366b-d3d719189ef7
-Base.isgreater(m1::WizCur, m2::WizCur) = missing
+Base.isgreater(m1::WizCur, m2::WizCur) = missing # complete me!
 
 # ╔═╡ 9226b2d8-5d94-11eb-2bea-491eb7dc1da7
-Base.isequal(m1::WizCur, m2::WizCur) = missing
+Base.isequal(m1::WizCur, m2::WizCur) = missing # complete me!
 
 # ╔═╡ 95146d46-5d94-11eb-22aa-c1a544e0d784
-Base.:+(m1::WizCur, m2::WizCur) = missing
+Base.:+(m1::WizCur, m2::WizCur) = missing # complete me!
 
 # ╔═╡ 9eab40be-5d94-11eb-0c59-21f5824fb812
-money_ron = missing
+money_ron = missing # complete me!
 
 # ╔═╡ a137e0f8-5d94-11eb-2209-73acad549307
-money_harry = missing
+money_harry = missing # complete me!
 
 # ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
 begin
 	struct Vandermonde{T,VT} <: AbstractMatrix{T}
 		α::VT
-		n::Int
-		Vandermonde(α::AbstractVector{T}, n) where {T} = missing
+		m::Int
+		Vandermonde(α::AbstractVector{T}, m) where {T} = missing
 	end
 
 	# take length of α as a default value of m
@@ -466,6 +476,9 @@ We can extend Julia by making use of established interfaces, such as for iterato
 
 # ╔═╡ aca1c930-5d90-11eb-29d9-954e097bbe3b
 md"To make this an iterator, we just have to extend the `iterate` function of `Base`. This is what is needed for Julia to treat this as an iterator because all functions fall back to this."
+
+# ╔═╡ 984ae6c9-335f-4ed7-a320-12eb67f4060b
+md"👇 It is normal that some of the following cells throw an error, that is because the automatic determination of execution order seems to be wrong here. Just rerun with `<shift>` + `<enter>`"
 
 # ╔═╡ 0b8980aa-5d91-11eb-385b-71568ec0e325
 md"Let's give the compiler some additional information!"
@@ -1314,9 +1327,11 @@ version = "17.4.0+2"
 # ╠═a4a1cb18-5d90-11eb-08ee-8570368a056b
 # ╟─aca1c930-5d90-11eb-29d9-954e097bbe3b
 # ╠═a9502b64-5d90-11eb-144c-3d7ce0949e67
+# ╟─984ae6c9-335f-4ed7-a320-12eb67f4060b
 # ╠═da6cc5b8-5d90-11eb-07ff-db8bdb504054
 # ╠═e3759d4c-5d90-11eb-0bea-bb4247623ec2
 # ╠═07998440-5d91-11eb-1a65-8de428eac89c
+# ╠═59fe435a-6bfb-4b3c-9f56-3aeb258aacfc
 # ╠═e11b0b10-6621-11eb-0bdb-f3719cc92a20
 # ╟─0b8980aa-5d91-11eb-385b-71568ec0e325
 # ╠═192d9fd4-5d91-11eb-1cb9-c706aad03480

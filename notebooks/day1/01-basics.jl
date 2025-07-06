@@ -43,6 +43,58 @@ md"""
 First of all, welcome to the course, **$(student[:name])**! We hope you enjoy the ride.
 """ 
 
+# ╔═╡ e579d5f5-e9fa-4949-9000-7f383abde4f1
+md"""
+## 0. Welcome to Pluto
+
+We will do our exercises in the Pluto notebook environment. The Pluto notebooks are pure Julia alternatives to the Jupyter notebooks you might have worked with. They are fast and reactive and come equipped with their own package manager, making it easy to distribute them.
+
+Cells are immediately executed in order of their *dependencies*, so not in the order that they appear. This can be confusing at first.
+
+"""
+
+# ╔═╡ 34055ff7-7ab5-4f08-8551-4cb64b8b7931
+one = 2  # change me and everything is updated!
+
+# ╔═╡ 0a32ab1d-8a0e-40c0-8372-c0b6c5c9d431
+two = one / 2  # I depend on one, so I am executed second
+
+# ╔═╡ 266779f6-8735-429d-b9d8-1782252a4337
+three = two + one   # I am executed last
+
+# ╔═╡ 33e0b24e-3bfd-4cda-b1da-7d05c47d9cac
+md"To run a cell either press on the ▶ symbol or press `shift + ENTER`."
+
+
+# ╔═╡ 67bb736c-7c82-4bc3-a9b1-185c72b7a1b6
+# Hi there, you are not supposed to see me!
+
+# ╔═╡ 0a45a059-4ccf-436f-94ad-0afb7b8e869b
+md"Press on the little 👁️ left of the cell to toggle a hidden cell."
+
+# ╔═╡ 8d12f558-0f45-4380-b083-5dc9ba2239dd
+md"You can only have one statement per line and all your variables need to have unique names. You can split statements in two lines or wrap them in a `begin ... end` block."
+
+
+# ╔═╡ dc10b61c-20b2-4f5c-9c33-964e00fa218f
+a = 2
+a + 7
+
+# ╔═╡ 4d209dd9-083c-404c-9f9f-3709162b9656
+md"Pluto might seem strange at first, though its restrictions make it very flexible and allows to easily create interactivity!"
+
+
+# ╔═╡ 578d0fad-fb95-4729-9c7d-e4a23fab03c8
+md"period $(@bind period Slider(0.0:0.2:5, default=1, show_value=true))"
+
+
+# ╔═╡ d4982d9f-09f3-4767-89b4-545bd6b3d44a
+mycos = t->cos(period * t);
+
+
+# ╔═╡ 7cfadeed-ac22-4f46-81cd-cf72005e49b3
+plot(mycos, 0, 8, xlab="t", title="Cos($period * t)")
+
 # ╔═╡ 23d3c9cc-4abd-11eb-0cb0-21673effee6c
 md"""## 1. The basics
 *From zero to newbie.*
@@ -705,19 +757,19 @@ md"Multiple dispatch is a concept where the behaviour of a function can be speci
 
 # ╔═╡ cacb7254-4f2f-11eb-1daa-1bc04678835c
 begin 
-	translate(xy::Array) = xy .+ [1 3]
-	translate(s::String) = Markdown.parse("[Ctrl + click here](https://translate.google.com/?sl=en&tl=nl&text=$(s)&op=translate)")
-	translate(anything::Any) = "I'm lost in translation..."
+	mytranslate(xy::Array) = xy .+ [1 3]
+	mytranslate(s::String) = Markdown.parse("[Ctrl + click here](https://translate.google.com/?sl=en&tl=nl&text=$(s)&op=translate)")
+	mytranslate(anything::Any) = "I'm lost in translation..."
 end
 
 # ╔═╡ cc48bc9a-4f2f-11eb-134c-71bd8a944943
-translate(1.0)
+mytranslate(1.0)
 
 # ╔═╡ d9f28c04-4f2f-11eb-0255-1965fb8f07b5
-translate([0.0 0.0])
+mytranslate([0.0 0.0])
 
 # ╔═╡ dc1dbe90-4f2f-11eb-05ce-c1fe46ae14dd
-translate("Hi how are you?")
+mytranslate("Hi how are you?")
 
 # ╔═╡ de48a3f6-4f2f-11eb-314b-493546c37a21
  md"A great deal of time will be spend on the julia's time system in day 2. So do not worry if this still feels vague. Just **remember** that all objects have a type and the behaviour of a function can vary depending on the type of the input arguments."
@@ -849,7 +901,7 @@ for any value of $n$ greater than 2.
 
 1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, *"Holy smokes, Fermat was wrong!"* Otherwise, the program should print and return, *"No, that doesn’t work."*
 2. Write a function that takes four random positive integers for $a$, $b$, $c$ and $n$, and use `checkfermat` to check whether they violate Fermat’s theorem.
-3. Can you write the code so that the functions in 4.1 and 4.2 have the same name?
+3. Can you write the code so that the functions in 2.1 and 2.2 have the same name?
 
 Hints:
 - check the functions `rand` and `abs`.
@@ -2338,6 +2390,19 @@ version = "1.4.1+1"
 # ╠═9a1cca86-0fff-4f8a-a033-8cf6db337503
 # ╠═e97e5984-4ab9-11eb-3efb-9f54c6c307dd
 # ╟─fd21a9fa-4ab9-11eb-05e9-0d0963826b9f
+# ╟─e579d5f5-e9fa-4949-9000-7f383abde4f1
+# ╠═34055ff7-7ab5-4f08-8551-4cb64b8b7931
+# ╠═0a32ab1d-8a0e-40c0-8372-c0b6c5c9d431
+# ╠═266779f6-8735-429d-b9d8-1782252a4337
+# ╟─33e0b24e-3bfd-4cda-b1da-7d05c47d9cac
+# ╟─67bb736c-7c82-4bc3-a9b1-185c72b7a1b6
+# ╟─0a45a059-4ccf-436f-94ad-0afb7b8e869b
+# ╟─8d12f558-0f45-4380-b083-5dc9ba2239dd
+# ╠═dc10b61c-20b2-4f5c-9c33-964e00fa218f
+# ╟─4d209dd9-083c-404c-9f9f-3709162b9656
+# ╟─578d0fad-fb95-4729-9c7d-e4a23fab03c8
+# ╟─d4982d9f-09f3-4767-89b4-545bd6b3d44a
+# ╟─7cfadeed-ac22-4f46-81cd-cf72005e49b3
 # ╟─23d3c9cc-4abd-11eb-0cb0-21673effee6c
 # ╟─62c3b076-4ab7-11eb-0cf2-25cdf7d2540d
 # ╠═7bf5bdbe-4ab7-11eb-0d4b-c116e02cb9d9
