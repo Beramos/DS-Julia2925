@@ -157,9 +157,6 @@ end
 # ╔═╡ 07998440-5d91-11eb-1a65-8de428eac89c
 sum(Squares(18093))
 
-# ╔═╡ 59fe435a-6bfb-4b3c-9f56-3aeb258aacfc
-sum()
-
 # ╔═╡ e11b0b10-6621-11eb-0bdb-f3719cc92a20
 @elapsed sum(Squares(18093))
 
@@ -170,14 +167,13 @@ sum()
 #Base.length(S::Squares) = S.count
 
 # ╔═╡ 2270e790-5d91-11eb-20e5-29905f232734
-collect(Squares(4))
+collect(Squares(6))
 
 # ╔═╡ 49f1d98c-5d91-11eb-1657-f320e9fcdc0e
 #Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
 
 # ╔═╡ 4cb68744-5d91-11eb-2b3e-e7df55888c93
-sum(Squares(18093))  # much faster now!
-
+sum(Squares(18093))
 
 # ╔═╡ e99af5c0-6621-11eb-058b-45c3719930d0
 @elapsed sum(Squares(18093))
@@ -199,20 +195,29 @@ S = Strang(1000)  # holy cow! Looks just like a real matrix!
 # ╔═╡ 04dcda58-5d92-11eb-10ba-396947081338
 sum(S)  # works, but slow...
 
-# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
-@elapsed sum(S)
-
 # ╔═╡ 0f878dea-5d92-11eb-0000-b7484532ee70
 #Base.sum(S::Strang) = 2
 
 # ╔═╡ 11630c02-5d92-11eb-1746-4dabf327fbbe
 sum(S)
 
-# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
-@elapsed sum(S)
-
 # ╔═╡ 1e65cb9c-5d92-11eb-3526-332169917fd9
 v = randn(1000)
+
+# ╔═╡ 276e9af4-5d92-11eb-1399-993570859698
+#=
+function Base.:*(S::Strang, v::Vector)
+    n = length(v)
+    @assert size(S, 2) == n
+    x = similar(v)
+    for i in 1:n
+        x[i] = v[i]
+        i > 1 && (x[i] += v[i-1])
+        i < n && (x[i] += v[i+1])
+    end
+    return x
+end
+=#
 
 # ╔═╡ 3ae60e88-5d94-11eb-0c50-1d74ea104758
 struct WizCur
@@ -266,23 +271,11 @@ Base.isequal(m1::WizCur, m2::WizCur) = missing # complete me!
 # ╔═╡ 95146d46-5d94-11eb-22aa-c1a544e0d784
 Base.:+(m1::WizCur, m2::WizCur) = missing # complete me!
 
-# ╔═╡ 605779e6-5d8e-11eb-3e08-c7420ef76aba
-norm(p::Point{T} where {T<:Number}) = sqrt(p.x^2 + p.y^2)
-
-# ╔═╡ 6646eb5c-5d8e-11eb-1e01-f3011c4230de
-norm(p)
-
-# ╔═╡ 6960f8d2-5d8e-11eb-0215-2de7b54e3081
-norm(p_int)  # dispatch creates a method for this type
-
 # ╔═╡ 9eab40be-5d94-11eb-0c59-21f5824fb812
 money_ron = missing # complete me!
 
 # ╔═╡ a137e0f8-5d94-11eb-2209-73acad549307
 money_harry = missing # complete me!
-
-# ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
-dungbomb_fund = money_ron + money_harry
 
 # ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
 begin
@@ -301,28 +294,6 @@ Base.size(V::Vandermonde) = missing
 
 # ╔═╡ 39d6d5c4-5d8d-11eb-0e07-11d891ff87a3
 size(wolf)
-
-# ╔═╡ 276e9af4-5d92-11eb-1399-993570859698
-function Base.:*(S::Strang, v::Vector)
-    n = length(v)
-    @assert size(S, 2) == n
-    x = similar(v)
-    for i in 1:n
-        x[i] = v[i]
-        i > 1 && (x[i] += v[i-1])
-        i < n && (x[i] += v[i+1])
-    end
-    return x
-end
-
-# ╔═╡ a9502b64-5d90-11eb-144c-3d7ce0949e67
-Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
-
-# ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
-S * v  # works, but slow
-
-# ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
-S * v  # fast (linear time in v)
 
 # ╔═╡ c2ecfec8-5d93-11eb-2640-07bc07f3da98
 Base.getindex(V::Vandermonde, i, j) = missing
@@ -508,6 +479,9 @@ md"Now this works:"
 # ╔═╡ 2cbe2370-5d91-11eb-130a-5da52d1a62c8
 md"I remember there is a fancy formula to compute the sum of squared natural numbers. Uncomment it to activate!"
 
+# ╔═╡ fb87e8ff-9af5-4da2-baf0-f3ced9b2c128
+md"(OK, there is no difference, this is become the Julia compiler has become intelligent enough to compile away the for-loop.)"
+
 # ╔═╡ 579e3828-5d91-11eb-1d33-b94628d61fc0
 md"""
 
@@ -530,7 +504,7 @@ md"## Exercises"
 
 # ╔═╡ c98b4ded-9ca0-46b2-ba00-adf8566e41c3
 md"""
-> **Exercise: wizarding currency**
+### Wizarding currency
 			
 The British Wizarding World uses Galleons, Sickles, and Knuts as currency. There are 17 Sickles in a Galleon, and 29 Knuts in a Sickle, meaning there are 493 Knuts in a Galleon. We will make a structure `WizCur` to represent wizarding currency. This structure has three integer-valued fields: `galleons`, `sickles`, and `knuts`. The constructor should always create tidy representations, meaning that, for example, if the number of knuts is 29 or more, it just adds an appropriate number of sickles such that the number knuts is less than 29 (it's magical money). The same applies to the sickles, which can also never exceed 17.
 
@@ -546,9 +520,9 @@ md"If `isless` is defined, there is no need to define `isgreater` (Think about w
 
 # ╔═╡ 392228e2-617d-11eb-09a5-c9e5649356eb
 md"""
-> **Exercise: Vandermonde matrix**
+### Vandermonde matrix
 
-The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $m-1$.
+The [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix) can be obtained from a vector by taking the powers from 0 till $n-1$.
 
 $${\displaystyle V={\begin{bmatrix}1&\alpha _{1}&\alpha _{1}^{2}&\dots &\alpha _{1}^{n-1}\\1&\alpha _{2}&\alpha _{2}^{2}&\dots &\alpha _{2}^{n-1}\\1&\alpha _{3}&\alpha _{3}^{2}&\dots &\alpha _{3}^{n-1}\\\vdots &\vdots &\vdots &\ddots &\vdots \\1&\alpha _{m}&\alpha _{m}^{2}&\dots &\alpha _{m}^{n-1}\end{bmatrix}},}$$
 
@@ -570,7 +544,7 @@ V = Vandermonde(α, 4)
 md"""
 > **Exercise: determinant of a Vandermonde matrix**
 
-The determinant of a Vandermonde matrix is easy to compute:
+The determinant of a square Vandermonde matrix is easy to compute:
 
 $${\displaystyle \det(V)=\prod _{1\leq i<j\leq n}(\alpha_{j}-\alpha_{i}).}$$
 
@@ -585,6 +559,213 @@ import LinearAlgebra
 # ╔═╡ dc945902-5d93-11eb-1121-a7ae99c5862e
 LinearAlgebra.det(V::Vandermonde) = missing
 
+# ╔═╡ a0df19b8-3e4e-4dd3-81c2-86ebaca421ee
+#LinearAlgebra.det(collect(V))  # compare with dense matrix
+
+# ╔═╡ d402593c-9544-4f75-93d9-d644ab303257
+md"""
+### Chemical romance
+
+Let us build an interface to work with simple organic compounds (only containing Hydrogen, Carbon, and Oxygen). The structure takes a chemical formula as a string, e.g., `"C2H5OH"`, `"CH3CHOHCH3"` or `"C12H22O11"` and maintains the basic elements it contains.
+
+"""
+
+# ╔═╡ d599974b-fd6f-4414-aac0-18dbf2e5b717
+md"""
+**Assignments**:
+
+- Complete a constructor that returns the `Compound` using a formula, i.e., computing the correct number of `H`, `C`, and `O`.
+- Overload `Base.show` to show the simplified fomula, e.g. `CnHmOp`.
+- Complete `mass` that computes the [molecular mass](https://en.wikipedia.org/wiki/Molecular_mass) of the compound.
+- Overload `*` and `+` so stoichiometry is possible, for example `3ethanol + 2formic_acid` gives a new compound the correct number of `H`, `C` and `O`.
+- Complete `combust`, which returns the number of `H2O` and `CO2` molecules that are generated after complete combustion of the compound.
+"""
+
+# ╔═╡ 0e07052b-057f-4cd1-a11e-199774431dcf
+begin
+	struct Compound
+		H::Int
+		C::Int
+		O::Int
+	end
+
+	# keyword version
+	Compound(;H, C, O=0) = missing
+
+	function Compound(formula::String)
+		# Compute the number of elements from a string
+		# Mind brackets!
+		return missing
+	end
+
+
+end
+
+# ╔═╡ eb7957f4-9aa5-4f1e-97e7-20887bf661b0
+ethanol = Compound(C=2, H=6, O=1)
+
+# ╔═╡ 510ea8ca-151e-436d-b3a8-6d234359e04a
+Compound("C2H5OH")   # should be same
+
+# ╔═╡ 4f92b4f2-7428-4b79-94db-71fac136a1e3
+glucose = Compound("C6H12O6")
+
+# ╔═╡ 70c7ab45-9849-45aa-a7ba-5ec87ca3fd6a
+Base.show(io::IO, compound::Compound) = missing
+
+# ╔═╡ 4e90b8ae-2b97-44fc-810e-6f55adcb3c75
+mass(c::Compound) = missing
+
+# ╔═╡ d7b423b3-3263-46ab-9d8a-f27487256e98
+Base.:+(c1::Compound, c2::Compound) = missing
+
+# ╔═╡ ed203f72-5eb4-49a3-8b06-fa587524ac20
+Base.:*(n::Int, c::Compound) = missing
+
+# ╔═╡ 4675ce98-a696-4e60-bb7a-6e8d88013bae
+"Compute number of H2O and CO2 molecules after full combustion
+using oxygen"
+function combust(compound::Compound)
+	nH2O = missing
+	nCO2 = missing
+	return (H20=nH2O, CO2=nCO2)
+end
+
+# ╔═╡ b4cac403-2e81-4641-a2a6-2578d18c4ed0
+#combust(mazout)
+
+# ╔═╡ 4246fe26-41e7-4d92-80e1-e0bb363d729b
+md"""
+### Color theory
+
+We have worked with the package Colors.jl. Let us try to reproduce some of the functionality. Complete the constructors of RGB for integer values, the constructor of HSV and a method to convert RGB to HSV. You can use the provided helper function.
+"""
+
+# ╔═╡ 6c2caee8-c06f-4062-b2a5-74dacf2b4753
+abstract type MyColor end
+
+# ╔═╡ 61e3ef45-5192-404f-8f53-8b66ab95c44b
+begin
+
+	# A simple struct to represent RGB color components
+	struct RGB <: MyColor
+	    r::Float64
+	    g::Float64
+	    b::Float64
+
+	    # Inner constructor to ensure values are clamped to [0.0, 1.0]
+	    function RGB(r::Real, g::Real, b::Real)
+	        new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
+	    end
+	end
+
+	# make a constructor for when the values are given in [0, 255]
+	RGB(r::Integer, g::Integer, b::Integer) = missing
+end
+
+# ╔═╡ 50fab216-b286-4d7e-a8f7-5ecba1c0129d
+col = RGB(0.2, 0.8, 0.7)
+
+# ╔═╡ c1868d8a-3609-4416-92e2-321bea910af6
+RGB(245, 148, 33)
+
+# ╔═╡ a9d894fa-7038-40e8-9792-0dd81549b115
+# adding colors
+Base.:+(c1::RGB, c2::RGB) = missing
+
+# ╔═╡ 605779e6-5d8e-11eb-3e08-c7420ef76aba
+norm(p::Point{T} where {T<:Number}) = sqrt(p.x^2 + p.y^2)
+
+# ╔═╡ 6646eb5c-5d8e-11eb-1e01-f3011c4230de
+norm(p)
+
+# ╔═╡ 6960f8d2-5d8e-11eb-0215-2de7b54e3081
+norm(p_int)  # dispatch creates a method for this type
+
+# ╔═╡ a79ba114-5d94-11eb-16ae-9906c6cdf54f
+dungbomb_fund = money_ron + money_harry
+
+# ╔═╡ bb316e0c-088a-4d84-a654-5c37d24131dc
+# scalar scaling
+Base.:*(a::Real, c::RGB) = missing
+
+# ╔═╡ a9502b64-5d90-11eb-144c-3d7ce0949e67
+Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
+
+# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
+@time sum(S)
+
+# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
+@time sum(S)
+
+# ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
+S * v  # works, but slow
+
+# ╔═╡ 300a8428-5d92-11eb-188b-05d00df4f6a7
+@time S * v  # fast (linear time in v)
+
+# ╔═╡ d7c5071e-9253-4f24-b7a3-cf86d993568c
+mazout = 3glucose + 4ethanol 
+
+# ╔═╡ 84109211-b93c-4ef9-8ed6-22b9c53b4837
+# averaging colors
+0.5RGB(245, 148, 33) + 0.5RGB(123, 67, 90)
+
+# ╔═╡ 09486ab7-bfd6-4a27-93b2-a84530e15044
+# A struct to represent HSV color components
+struct HSV <: MyColor
+    h::Float64 # Hue in degrees [0, 360)
+    s::Float64 # Saturation [0, 1]
+    v::Float64 # Value/Brightness [0, 1]
+
+    # Inner constructor to clamp values
+    function HSV(h::Real, s::Real, v::Real)
+        # Hue wraps around 360
+       	# s and v in [0, 1]
+		return missing
+    end
+end
+
+# ╔═╡ 5cfa04a7-9bc2-47a1-901e-faef07508390
+"""
+    rgb_to_hsv(c_rgb::RGB)
+
+Converts an RGB color to an HSV color.
+RGB components are assumed to be in [0.0, 1.0].
+"""
+function rgb_to_hsv(R, G, B)
+
+    Cmax = max(R, G, B)
+    Cmin = min(R, G, B)
+    Δ = Cmax - Cmin
+
+    # Calculate Value (V)
+    V = Cmax
+
+    # Calculate Saturation (S)
+    S = Cmax == 0.0 ? 0.0 : Δ / Cmax
+
+    # Calculate Hue (H)
+    H = 0.0 # Default for gray/black/white
+
+    if Δ != 0.0
+        if Cmax == R
+            H = 60.0 * mod((G - B) / Δ, 6.0)
+        elseif Cmax == G
+            H = 60.0 * ((B - R) / Δ + 2.0)
+        else # Cmax == B
+            H = 60.0 * ((R - G) / Δ + 4.0)
+        end
+    end
+    return H, S, V
+end
+
+# ╔═╡ 29595686-2ca4-4e37-a05d-7dfd2a37d736
+convert(::Type{HSV}, color::RGB) = missing
+
+# ╔═╡ c27fb2bb-47df-449d-b1e0-3f05224ab710
+convert(HSV, col)
+
 # ╔═╡ 0267b920-9a1f-472f-9d21-5609fb877325
 md"""## Answers:
 If you would like to take a look at the answers, you can do so by checking the box of the question you would like to see. The function will be shown just below the question you want to look at.
@@ -594,6 +775,9 @@ If you would like to take a look at the answers, you can do so by checking the b
 | Question WizCur | $(@bind answ_q1 CheckBox()) |
 | Question Vandermonde | $(@bind answ_q2 CheckBox()) |
 | Question Vandermonde determinant | $(@bind answ_q3 CheckBox()) |
+| Question Chemical romance | $(@bind answ_q4 CheckBox()) |
+| Question Color theory | $(@bind answ_q5 CheckBox()) |
+
 
 """
 
@@ -666,6 +850,108 @@ if answ_q3 == true
 	((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod
 	```
 	"""
+end
+
+# ╔═╡ 33a9a0b4-bd92-4a22-b454-89d780237977
+if answ_q4
+md"""
+```julia
+struct Compound
+	H::Int
+	C::Int
+	O::Int
+end
+
+# keyword version
+Compound(;H, C, O=0) = Compound(H, C, O)
+
+function Compound(formula::String)
+	# Compute the number of elements from a string
+	# Mind brackets!
+	return missing
+end
+
+function Compound(formula::String)
+	# Compute the number of elements from a string
+	H = 0
+	C = 0
+	O = 0
+	# count C
+	for m in eachmatch(r"C(\d*)", formula)
+		n = isempty(m[1]) ? 1 : parse(Int, m[1])
+		C += n
+	end
+	# count H
+	for m in eachmatch(r"H(\d*)", formula)
+		n = isempty(m[1]) ? 1 : parse(Int, m[1])
+		H += n
+	end
+	# count O
+	for m in eachmatch(r"O(\d*)", formula)
+		n = isempty(m[1]) ? 1 : parse(Int, m[1])
+		O += n
+	end
+	return Compound(;C, H, O)
+end
+
+Base.show(io::IO, compound::Compound) = print(io, "C$(compound.C)H$(compound.H)O$(compound.O)")
+	
+mass(c::Compound) = 12.011c.C + 1.008c.H + 15.994c.O
+	
+Base.:+(c1::Compound, c2::Compound) = Compound(c1.H+c2.H, c1.C+c2.C, c1.O+c2.O)
+Base.:*(n::Int, c::Compound) = Compound(n*c.H, n*c.C, n*c.O)
+
+
+function combust(compound::Compound)
+	nH2O = compound.H // 2
+	nCO2 = compound.C
+	return (H20=nH2O, CO2=nCO2)
+end
+```
+"""
+end
+
+# ╔═╡ ffafc788-0752-4bb7-a4ad-9d38a55b35c3
+if answ_q5 
+md"""
+```julia
+# A simple struct to represent RGB color components
+struct RGB <: MyColor
+	r::Float64
+	g::Float64
+	b::Float64
+
+	# Inner constructor to ensure values are clamped to [0.0, 1.0]
+	function RGB(r::Real, g::Real, b::Real)
+		new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
+	end
+end
+
+# make a constructor for when the values are given in [0, 255]
+RGB(r::Integer, g::Integer, b::Integer) = RGB(r/255, g/255, b/255)
+
+# adding colors
+Base.:+(c1::RGB, c2::RGB) = RGB(c1.r+c2.r, c1.g+c2.g, c1.g+c2.g)
+
+# scalar scaling
+Base.:*(a::Real, c::RGB) = RGB(a*c.r, a*c.g, a*c.g)
+	
+struct HSV <: MyColor
+    h::Float64 # Hue in degrees [0, 360)
+    s::Float64 # Saturation [0, 1]
+    v::Float64 # Value/Brightness [0, 1]
+
+    # Inner constructor to clamp values
+    function HSV(h::Real, s::Real, v::Real)
+        # Hue wraps around 360
+        h_clamped = mod(h, 360.0)
+        new(h_clamped, clamp(s, 0.0, 1.0), clamp(v, 0.0, 1.0))
+    end
+end
+
+convert(::Type{HSV}, color::RGB) = HSV(rgb_to_hsv(color.r, color.g, color.b)...)
+```
+"""
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1035,7 +1321,6 @@ version = "17.4.0+2"
 # ╠═da6cc5b8-5d90-11eb-07ff-db8bdb504054
 # ╠═e3759d4c-5d90-11eb-0bea-bb4247623ec2
 # ╠═07998440-5d91-11eb-1a65-8de428eac89c
-# ╠═59fe435a-6bfb-4b3c-9f56-3aeb258aacfc
 # ╠═e11b0b10-6621-11eb-0bdb-f3719cc92a20
 # ╟─0b8980aa-5d91-11eb-385b-71568ec0e325
 # ╠═192d9fd4-5d91-11eb-1cb9-c706aad03480
@@ -1046,6 +1331,7 @@ version = "17.4.0+2"
 # ╠═49f1d98c-5d91-11eb-1657-f320e9fcdc0e
 # ╠═4cb68744-5d91-11eb-2b3e-e7df55888c93
 # ╠═e99af5c0-6621-11eb-058b-45c3719930d0
+# ╟─fb87e8ff-9af5-4da2-baf0-f3ced9b2c128
 # ╟─579e3828-5d91-11eb-1d33-b94628d61fc0
 # ╠═e9a99a00-5d91-11eb-2c50-8be452cab83f
 # ╠═ec62c35c-5d91-11eb-3773-b9385f312f7f
@@ -1090,7 +1376,35 @@ version = "17.4.0+2"
 # ╟─a9ad5b1d-1935-427b-b7f0-dc638b0e861b
 # ╠═d2a076ea-5d93-11eb-216e-f5c37d330b40
 # ╠═dc945902-5d93-11eb-1121-a7ae99c5862e
+# ╠═a0df19b8-3e4e-4dd3-81c2-86ebaca421ee
 # ╟─1c373bba-eeb6-4673-8b18-0d68b524e536
+# ╟─d402593c-9544-4f75-93d9-d644ab303257
+# ╟─d599974b-fd6f-4414-aac0-18dbf2e5b717
+# ╠═0e07052b-057f-4cd1-a11e-199774431dcf
+# ╠═eb7957f4-9aa5-4f1e-97e7-20887bf661b0
+# ╠═510ea8ca-151e-436d-b3a8-6d234359e04a
+# ╠═4f92b4f2-7428-4b79-94db-71fac136a1e3
+# ╠═70c7ab45-9849-45aa-a7ba-5ec87ca3fd6a
+# ╠═4e90b8ae-2b97-44fc-810e-6f55adcb3c75
+# ╠═d7b423b3-3263-46ab-9d8a-f27487256e98
+# ╠═ed203f72-5eb4-49a3-8b06-fa587524ac20
+# ╠═d7c5071e-9253-4f24-b7a3-cf86d993568c
+# ╠═4675ce98-a696-4e60-bb7a-6e8d88013bae
+# ╠═b4cac403-2e81-4641-a2a6-2578d18c4ed0
+# ╟─33a9a0b4-bd92-4a22-b454-89d780237977
+# ╟─4246fe26-41e7-4d92-80e1-e0bb363d729b
+# ╠═6c2caee8-c06f-4062-b2a5-74dacf2b4753
+# ╠═61e3ef45-5192-404f-8f53-8b66ab95c44b
+# ╠═50fab216-b286-4d7e-a8f7-5ecba1c0129d
+# ╠═c1868d8a-3609-4416-92e2-321bea910af6
+# ╠═a9d894fa-7038-40e8-9792-0dd81549b115
+# ╠═bb316e0c-088a-4d84-a654-5c37d24131dc
+# ╠═84109211-b93c-4ef9-8ed6-22b9c53b4837
+# ╠═09486ab7-bfd6-4a27-93b2-a84530e15044
+# ╠═5cfa04a7-9bc2-47a1-901e-faef07508390
+# ╠═29595686-2ca4-4e37-a05d-7dfd2a37d736
+# ╠═c27fb2bb-47df-449d-b1e0-3f05224ab710
+# ╟─ffafc788-0752-4bb7-a4ad-9d38a55b35c3
 # ╟─0267b920-9a1f-472f-9d21-5609fb877325
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
