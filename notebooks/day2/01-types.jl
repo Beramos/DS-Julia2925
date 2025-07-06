@@ -185,16 +185,16 @@ md"We can check the entire subtree of a type using the function `subtypetree`"
 md"It does not need to be complicated, though."
 
 # ╔═╡ 46eaafee-6549-11eb-2e36-c9e566d3f3ba
-function subtypetreesimple(roottype, level=1)
+function subtypetree(roottype, level=1)
 	level == 1 && println(roottype)
 	for s in subtypes(roottype)
 			println(" "^((level-1)*4) * string(s))
-			subtypetreesimple(s, level + 1)
+			subtypetree(s, level + 1)
 	end
 end
 
 # ╔═╡ 6cbd4874-6549-11eb-296e-af4a43d53223
-subtypetreesimple(Real)
+subtypetree(Real)
 
 # ╔═╡ 4a01487c-4e78-11eb-1302-d9c6ec4ed6ab
 md"""
