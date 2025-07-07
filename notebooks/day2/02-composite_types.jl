@@ -636,7 +636,7 @@ end
 
 # ╔═╡ 4246fe26-41e7-4d92-80e1-e0bb363d729b
 md"""
-### Color theory
+### Optional: Color theory
 
 We have worked with the package Colors.jl. Let us try to reproduce some of the functionality. Complete the constructors of RGB for integer values, the constructor of HSV and a method to convert RGB to HSV. You can use the provided helper function.
 """
@@ -668,6 +668,9 @@ col = RGB(0.2, 0.8, 0.7)
 
 # ╔═╡ c1868d8a-3609-4416-92e2-321bea910af6
 RGB(245, 148, 33)
+
+# ╔═╡ bd370224-c08b-4e8a-92e1-c5719188d2cb
+md"For adding colors, you can assume the color mixing is additive and separate channels can be added independently. The same can be assumed for scaling, all channels can be scaled independenctly."
 
 # ╔═╡ a9d894fa-7038-40e8-9792-0dd81549b115
 # adding colors
@@ -1397,6 +1400,7 @@ version = "17.4.0+2"
 # ╠═61e3ef45-5192-404f-8f53-8b66ab95c44b
 # ╠═50fab216-b286-4d7e-a8f7-5ecba1c0129d
 # ╠═c1868d8a-3609-4416-92e2-321bea910af6
+# ╟─bd370224-c08b-4e8a-92e1-c5719188d2cb
 # ╠═a9d894fa-7038-40e8-9792-0dd81549b115
 # ╠═bb316e0c-088a-4d84-a654-5c37d24131dc
 # ╠═84109211-b93c-4ef9-8ed6-22b9c53b4837
