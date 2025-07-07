@@ -14,6 +14,8 @@ There are two ways to download the notebooks.
 
 ### Installing Julia
 
+For *windows users*, if you have the choice to use windows subsystem for linux use it, it will make things easier.
+
 There are multiple ways to install julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
 
 We *strongly* recommend the `Juliaup` installation manager, it will make your life a lot easier.
@@ -52,6 +54,26 @@ Open the Julia REPL using any of the methods described in the previous section.
 4. In the slot "open a notebook" navigate to the notebook by typing the location of the notebooks on your computer (e.g. `C:/Users\jef\notebooks\day1\01-basics.jl` or `/home/jef/notebooks/day1/01-basics.jl` for Linux users). 
 
 This should open a browser window with the Pluto notebooks. The first time it can take a while (up to 10 minutes) since it is installing all the dependencies.
+
+## Tips & Common problems
+Pluto notebooks create and run the code in a separate environment, this sometimes creates an issue with the Plots library not being installed properly and crashing the notebooks importing this library (e.g. *01-basics.jl*). If this occurs the best fix is to already install `Plots` in the environment running the Pluto server and forcing Pluto to use that environment. 
+
+```julia
+import Pkg; 
+Pkg.activate("."); # if this line fails replace with Pkg.instantiate(); 
+Pkg.add("Plots"); 
+Pkg.add("Pluto");
+
+using Pluto; Pluto.run()
+```
+
+Open the notebook and before running the notebook add a new cell to load this environment,
+
+```julia
+import Pkg; Pkg.activate(".");
+```
+
+This should resolve problems with the Plots package not being installed.
 
 ## Contact
 UGent Doctoral School member and Julia questions? Send one of us an email!
