@@ -1,7 +1,3 @@
-"""
-Simple gradient descent in Julia as a performance check
-"""
-
 using LinearAlgebra
 
 function gradient_descent(P, q, x₀;
