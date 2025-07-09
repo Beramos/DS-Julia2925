@@ -45,7 +45,7 @@ Submission by: **_$(student.name)_**
 if shape_type == "circles"
 	md"Circles are given as a tuple of type `(x, y, R)` with (`x`, `y`) its centre and `R` the radius."
 elseif shape_type == "rectangles"
-	md"Rectangles are represented as (x, y, w, h) with (`x`, `y`) its centre and (`w`, `h`) the width and height."
+	md"Rectangles are represented as (x, y, w, h) with (`x`, `y`) its left bottom corner and (`w`, `h`) the width and height."
 elseif shape_type == "triangles"
 	md"Triangles are represented as `(x1, y1, x2, y2, x3 y3)`, the three coordinates of the corners."
 end
@@ -62,9 +62,50 @@ It took some iterations, but Daisy has provided you with a detailed sowing plan,
 *$(shape_type)*:
 """
 
+# ╔═╡ f179fb98-b72d-4418-806d-a2d7b327faea
+md"""
+
+The problem is that Daisy does not know how many seeds to buy. However, she is an experienced gardener and only needs to know an estimation of the surface area that needs sowing.
+
+### 0. Types
+
+You can use or adapt or modify the following type hierarchy. Make a constructor that can process that data provided for your shape type.
+"""
+
+# ╔═╡ c31a7ee5-7d14-47b4-a7be-4ee135b08740
+abstract type Shape end  # all shapes
+
+# ╔═╡ c0b42ddf-0b71-4c53-9953-59309169e301
+struct Circle <: Shape
+	x::Float64
+	y::Float64
+	r::Float64
+end
+
+# ╔═╡ ca62918c-8354-47f4-a5c3-38a45c34d441
+struct Rectangle <: Shape
+	x::Float64
+	y::Float64
+	w::Float64
+	h::Float64
+end
+
+# ╔═╡ 98707649-d561-4621-ab0a-0027cace98f4
+struct Triangle <: Shape
+	x1::Float64
+	y1::Float64
+	x2::Float64
+	y2::Float64
+	x3::Float64
+	y3::Float64
+end
+
+# ╔═╡ 4606e108-859e-439e-9838-9737379a1cbd
+
+
 # ╔═╡ 4826f7b8-0922-4a2d-abd4-426aa43c293a
 md"""
-The problem is that daisy does not know how many seeds to buy. However, she is an experienced gardener and only needs to know an estimation of the surface area that needs sowing.
+
 
 ### 1. Area
 > Make a function `area` to compute the area of your shape. Find the sum of all your shapes.
@@ -147,9 +188,9 @@ begin
 	n = 100
 	Rmax = 10
 
-	circles = [(x=100rand(), y=100rand(), R=Rmax * rand()) for _ in 1:n]
-	rectangles = [(x=100rand(), y=100rand(), w=5rand()+5, h=5rand()+5) for _ in 1:n]
-	triangles = [100rand(2) |> ((x, y),)->(x1=x+4randn(), y1=y+4randn(), x2=x+4randn(), y2=y+4randn(), x3=x+4randn(), y3=y+4randn()) for _ in 1:n]
+	circles_data = [(x=100rand(), y=100rand(), r=Rmax * rand()) for _ in 1:n]
+	rectangles_data = [(x=100rand(), y=100rand(), w=5rand()+5, h=5rand()+5) for _ in 1:n]
+	triangles_data = [100rand(2) |> ((x, y),)->(x1=x+4randn(), y1=y+4randn(), x2=x+4randn(), y2=y+4randn(), x3=x+4randn(), y3=y+4randn()) for _ in 1:n]
 end;
 
 # ╔═╡ b7e28115-8901-4972-b37f-9b5869735b50
@@ -183,13 +224,20 @@ $(hint(md"If you have defined a type, you make a [plotting recipe](https://docs.
 """
 
 # ╔═╡ d5c9526d-5dff-4fb2-8a2c-e96c0229f474
-shapes = shape_type=="circles" ? circles : (shape_type=="rectangles" ? rectangles : triangles);
+shapes = shape_type=="circles" ? circles_data : (shape_type=="rectangles" ? rectangles_data : triangles_data);
 
 # ╔═╡ 9c443e96-d40c-4c9d-a0b3-3390e18911df
 shapes
 
 # ╔═╡ de71232a-1498-4db1-8fc3-65a84a93551a
-first(shapes)
+s1 = first(shapes)
+
+# ╔═╡ aa197122-7e54-41f3-ad5a-221f71c20301
+# make a constructor for your method that takes in the shape_data
+s1 # -> shape
+
+# ╔═╡ 888b4f23-96b9-4492-b5cf-b959e1d57786
+TableOfContents()
 
 # ╔═╡ 73503bf0-5dc8-4cc5-a636-e6521ef3089e
 md"""
@@ -1364,12 +1412,19 @@ version = "1.8.1+0"
 # ╠═4e827046-8787-11ed-1763-99b10d56f7a6
 # ╠═347583c6-9ed6-42af-b760-733585dbb7a6
 # ╟─b7e28115-8901-4972-b37f-9b5869735b50
-# ╠═efb5380d-ab9d-4e7e-ad2b-d7beb3e28609
+# ╟─efb5380d-ab9d-4e7e-ad2b-d7beb3e28609
 # ╟─2ff01603-4322-4571-b172-20b9952ff4ff
 # ╟─7470865e-87e2-4e40-8cb5-e27b516ce976
 # ╟─9731ecc2-a3bf-47bc-8385-96147b0ddbd0
 # ╠═9c443e96-d40c-4c9d-a0b3-3390e18911df
 # ╠═de71232a-1498-4db1-8fc3-65a84a93551a
+# ╟─f179fb98-b72d-4418-806d-a2d7b327faea
+# ╠═c31a7ee5-7d14-47b4-a7be-4ee135b08740
+# ╠═c0b42ddf-0b71-4c53-9953-59309169e301
+# ╠═ca62918c-8354-47f4-a5c3-38a45c34d441
+# ╠═98707649-d561-4621-ab0a-0027cace98f4
+# ╠═aa197122-7e54-41f3-ad5a-221f71c20301
+# ╠═4606e108-859e-439e-9838-9737379a1cbd
 # ╟─4826f7b8-0922-4a2d-abd4-426aa43c293a
 # ╠═409d0d25-bae3-45ed-9ba1-477fcf928bce
 # ╠═a7fdf0f3-4810-4c9c-8fd5-e144b602d209
@@ -1392,6 +1447,7 @@ version = "1.8.1+0"
 # ╟─2a772d03-5972-4da5-8da8-adf7626db801
 # ╠═57f8656f-7c84-47cc-9da1-62c3e74c7769
 # ╠═d5c9526d-5dff-4fb2-8a2c-e96c0229f474
+# ╠═888b4f23-96b9-4492-b5cf-b959e1d57786
 # ╟─73503bf0-5dc8-4cc5-a636-e6521ef3089e
 # ╠═93becd08-699a-471e-a92c-dc134229a0ec
 # ╠═925689a1-1023-48c5-af07-e29b8ecb7b16
