@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -1028,7 +1028,7 @@ if answ_q1 == true
 	```Julia
 	function riemannsum(f, a, b; n=100)
 	  dx = (b - a) / n
-	  return sum(f.(a:dx:b)) * dx
+	  return sum(f.range(a,length=n,step=dx)) * dx
 	end
 	```
 	"""
