@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.10
+# v0.20.13
 
 using Markdown
 using InteractiveUtils
@@ -440,10 +440,10 @@ md"Many functions that compute something on a whole matrix can also work on the 
 sum(T)
 
 # ╔═╡ fd4c9d45-3099-4044-9177-650430b7f5f1
-sum(T, dims=1)  # over rows
+sum(T, dims=1)  # over columns
 
 # ╔═╡ 0ee08475-fa03-4e4f-9fcc-7b173387043a
-sum(T, dims=2)  # over columns
+sum(T, dims=2)  # over rows
 
 # ╔═╡ 61a1d179-783f-46e2-8180-352d1220e35f
 maximum(T, dims=1)
@@ -1028,7 +1028,7 @@ if answ_q1 == true
 	```Julia
 	function riemannsum(f, a, b; n=100)
 	  dx = (b - a) / n
-	  return sum(f.(a:dx:b)) * dx
+	  return sum(f.range(a,length=n,step=dx)) * dx
 	end
 	```
 	"""
