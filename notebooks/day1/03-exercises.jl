@@ -973,7 +973,7 @@ end
 X = simulate(x0_ca, UInt8(rule_number); nsteps=100)
 
 # ╔═╡ 9dbb9598-2bf6-11eb-2def-0f1ddd1e6b10
-ca_image(X) = cm.(X)
+ca_image = cm.(X)
 
 # ╔═╡ fb9a97d2-2bf5-11eb-1b92-ab884f0014a8
 
