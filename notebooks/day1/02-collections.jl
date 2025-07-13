@@ -1028,7 +1028,7 @@ if answ_q1 == true
 	```Julia
 	function riemannsum(f, a, b; n=100)
 	  dx = (b - a) / n
-	  return sum(f.range(a,length=n,step=dx)) * dx
+	  return sum(f,range(a,length=n,step=dx)) * dx
 	end
 	```
 	"""
