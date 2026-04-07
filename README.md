@@ -5,16 +5,16 @@ This page contains the Pluto notebooks accompanying the [Julia2925 doctoral scho
 ![Logo Flanders](/img/logo_flanders+richtingmorgen.png)
 
 ## Introduction
-This course gives an in-depth introduction to the Julia programming language. The first day will introduce the essential elements (variables, printing, plotting, looping, collections, etc.) of Julia programming along with a peek behind the curtains of the type system. On the second day, we will cover the type system comprehensively and discuss its relation to multiple dispatch and illustrate how this translates into extensible and user-friendly programs. We cover the subject matter interactively in notebooks. 
+This course gives an in-depth introduction to the Julia programming language. The first day will introduce the essential elements (variables, printing, plotting, looping, collections, etc.) of Julia programming, along with a peek behind the curtains of the type system. On the second day, we will cover the type system comprehensively and discuss its relation to multiple dispatch and illustrate how this translates into extensible and user-friendly programs. We cover the subject matter interactively in notebooks. 
 
 ## Getting started
 There are two ways to download the notebooks.
-1. If you are used to Github, you can clone this repository to your computer.
+1. If you are used to GitHub, you can clone this repository to your computer.
 2. Download the notebooks from [this link](https://beramos.github.io/DS-Julia2925/#course-content)
 
 ### Installing Julia
 
-There are multiple ways to install julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
+There are multiple ways to install Julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
 
 We *strongly* recommend the `Juliaup` installation manager, it will make your life a lot easier.
 
