@@ -1,5 +1,5 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays. 
-This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/122f756b-8a04-4713-9d6e-d8fc56eea628) hosted at Ghent University.
+This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/2220f502-7e96-4cdf-a8c2-6fe252cacc85) hosted at Ghent University.
 
 ![Logo Doctoral schools](/img/doctoralschoolsprofiel_hq_rgb_web.png)
 ![Logo Flanders](/img/logo_flanders+richtingmorgen.png)
@@ -20,7 +20,7 @@ There are multiple ways to install julia on your system: install via your packag
 
 We *strongly* recommend the `Juliaup` installation manager, it will make your life a lot easier.
 
-In the current version of the course we will be using the latest stable release `1.11.5`.
+In the current version of the course we will be using the latest stable release `1.12.6`.
 
 #### using the binaries
 
@@ -31,8 +31,8 @@ In the current version of the course we will be using the latest stable release 
 
 1. Follow the [installation instructions](https://github.com/JuliaLang/juliaup#installation) for your specific platform.
 2. Check out the [using Juliaup](https://github.com/JuliaLang/juliaup?tab=readme-ov-file#using-juliaup) details for how to launch Juliaup and execute some commands for your specific system.
-3. Install version `1.11.5`: `juliaup add 1.11.5`
-4. Make this version the default version: `juliaup default 1.11.5`.
+3. Install version `1.12.6`: `juliaup add 1.12.6`
+4. Make this version the default version: `juliaup default 1.12.6`.
 
 ### Starting Julia
 For *windows* users:
