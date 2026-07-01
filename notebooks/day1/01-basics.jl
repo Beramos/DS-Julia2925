@@ -213,7 +213,7 @@ md"""> Unsure what the LaTeX name for a symbol is or how to type an emoiji? Just
 # type \alpha  and <TAB>
 
 # ╔═╡ e2c5b558-4ab7-11eb-09be-b354fc56cc6e
-md"Operators are overrated for multiplication, [but aware of some gothas, when in doubt: be verbose](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#man-numeric-literal-coefficients)."
+md"Operators are overrated for multiplication, [but aware of some gotchas, when in doubt: be verbose](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#man-numeric-literal-coefficients)."
 
 # ╔═╡ ec754104-4ab7-11eb-2a44-557e4304dd43
 5x         # This works
