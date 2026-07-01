@@ -581,7 +581,7 @@ sort(rocks)
 md"""
 ## Case study 2: rock-paper-scissors
 
-![Fire, water, grass!](https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Rock-paper-scissors.svg/1200px-Rock-paper-scissors.svg.png)
+![Fire, water, grass!](https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Rock-paper-scissors.svg/500px-Rock-paper-scissors.svg.png)
 
 We can easily implement the rock-paper-scissors rules using types.
 """
@@ -630,7 +630,7 @@ Can you extend the previous code so that it works with lizard an Spock?
 		
 ![](https://i.imgur.com/jbmAYKI.png)
 
-adapted from: [source](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwordpress.morningside.edu%2Fcdl001%2Ffiles%2F2010%2F09%2FRockPaperScissorsLizardSpock.jpg&f=1&nofb=1)
+adapted from: [source](https://en.wikipedia.org/wiki/Rock_paper_scissors_lizard_Spock)
 """
 
 # ╔═╡ 269b934c-601b-11eb-00ad-5fec0e2c37e1
