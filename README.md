@@ -1,5 +1,5 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays. 
-This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/122f756b-8a04-4713-9d6e-d8fc56eea628) hosted at Ghent University.
+This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/2220f502-7e96-4cdf-a8c2-6fe252cacc85) hosted at Ghent University.
 
 ![Logo Doctoral schools](/img/doctoralschoolsprofiel_hq_rgb_web.png)
 ![Logo Flanders](/img/logo_flanders+richtingmorgen.png)
