@@ -211,9 +211,9 @@ function Base.:*(S::Strang, v::Vector)
     @assert size(S, 2) == n
     x = similar(v)
     for i in 1:n
-        x[i] = v[i]
-        i > 1 && (x[i] += v[i-1])
-        i < n && (x[i] += v[i+1])
+        x[i] = 2v[i]
+        i > 1 && (x[i] -= v[i-1])
+        i < n && (x[i] -= v[i+1])
     end
     return x
 end
