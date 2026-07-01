@@ -1055,7 +1055,7 @@ begin
 	
 	A simple barcode is data represented by varying the widths and spacings of parallel lines. However this is just an array of binary values that correspondent to an integer number.
 	
-	![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/220px-UPC-A-036000291452.svg.png)
+	![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/500px-UPC-A-036000291452.svg.png)
 	
 	The laser scanner reads the barcode and converts the binary number to an integer which is the product code, a pretty simple and robust system.
 	

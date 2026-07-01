@@ -43,7 +43,7 @@ Suggested extensions:
 
 ## 4. Resources
 
-For this project, we heavily encourage you to use the [MLJ](https://alan-turing-institute.github.io/MLJ.jl/stable/#Data) package. Second, we also encourage the use of DrWatson.jl to forge some good habits regarding code structure and reproducibility of data science projects.
+For this project, we heavily encourage you to use the [MLJ](https://juliaai.github.io/MLJ.jl/stable/) package. Second, we also encourage the use of DrWatson.jl to forge some good habits regarding code structure and reproducibility of data science projects.
 
 1. In case that you do not want to use your own data set, we recommend one of the following Julia packages:
 - [MLDatasets.jl](https://juliaml.github.io/MLDatasets.jl/stable/)
@@ -55,7 +55,7 @@ For this project, we heavily encourage you to use the [MLJ](https://alan-turing-
     
     Another option is to go the synthetic route. This might be interesting if you already have a specific model in mind that you want to use and you want to assess the effect of the dimensionality and noise on your performance. 
     
-- [Synthetic data from MLJ](https://alan-turing-institute.github.io/MLJ.jl/stable/generating_synthetic_data/)
+- [Synthetic data from MLJ](https://juliaai.github.io/MLJ.jl/stable/generating_synthetic_data/)
 2. For visualisation you can use the Plots.jl package (make your own Plotrecipe if you are feeling fancy), consider if some dimensionality reduction or manifold learning would be interesting for your chosen data set
 3. Hint:
 
@@ -67,5 +67,5 @@ models(matching(X, y))
 ```
 
 4. If you are keen to try out neural networks: we recommend using the [Flux](https://fluxml.ai/) ecosystem of packages. 
-5. Consider using the MLJ [pipelines](https://alan-turing-institute.github.io/MLJ.jl/dev/linear_pipelines/) and [target transformers](https://alan-turing-institute.github.io/MLJ.jl/dev/target_transformations/) for reproducible results!
+5. Consider using the MLJ [pipelines](https://juliaai.github.io/MLJ.jl/dev/linear_pipelines/) and [target transformers](https://juliaai.github.io/MLJ.jl/dev/target_transformations/) for reproducible results!
 6. Model interpretation will depend on the chosen model, for an all-round solution you can look into [Shapley values](https://christophm.github.io/interpretable-ml-book/shapley.html).
