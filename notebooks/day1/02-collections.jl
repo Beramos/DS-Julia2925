@@ -902,7 +902,7 @@ check_password("password")
 check_password("Passw0rd!")
 
 # ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
-md"## 6. Extra exercises"
+md"## 6. Optional exercises"
 
 # ╔═╡ 5c8f024f-87a3-444f-8f09-5d179a04a1cb
 md"""

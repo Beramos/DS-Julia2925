@@ -934,7 +934,7 @@ n = $(@bind n NumberField(1:100000000))
 checkfermat(a,b,c,n)
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
-md"""### 9. Extra exercises"""
+md"""### 9. Optional exercises"""
 
 # ╔═╡ 5f6b3a73-9979-4fdd-b0d0-be43419c6547
 md"""
