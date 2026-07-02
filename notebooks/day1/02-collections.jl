@@ -284,10 +284,10 @@ md"We can also use logic to specify which elements to include."
 md"Arrays behave like a stack. So pushing, appending and popping are valid operations. Elements can be added to the back of the array, (*Pushing and appending*)"
 
 # ╔═╡ f1b481f4-4c22-11eb-39b7-39ffdd5bbccc
-push!(names, "Eddie") # add a single element
+push!(["Ed", "Edd"], "Eddie") # add a single element
 
 # ╔═╡ f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
-append!(names, ["Sam", "Gerard"]) # add an array
+append!(["Sonny"], ["Sam", "Gerard"]) # add an array
 
 # ╔═╡ fcbeda22-4c22-11eb-2d35-a356b98bbc46
 md""" "Eddie" was appended as the final element of the Array along with "Sam" and "Gerard". Remember, a "!" is used to indicate an in-place function. `pop()` is used to return and remove the final element of an array"""
@@ -295,17 +295,20 @@ md""" "Eddie" was appended as the final element of the Array along with "Sam" an
 # ╔═╡ 3516a722-4c23-11eb-3ee7-fb8d582c8ce0
 md"Removing the last element or first element (*popping*)"
 
+# ╔═╡ 4ca289fc-6529-4de3-95a7-8ed53e569b23
+ll = ["first", "second", "third"]
+
 # ╔═╡ 08bb725e-4c23-11eb-3338-03370f49dd11
-pop!(names)
+pop!(ll)
 
 # ╔═╡ 0cfc84ca-4c23-11eb-124b-5397430fd203
-names
+ll
 
 # ╔═╡ 4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
-popfirst!(names)
+popfirst!(ll)
 
 # ╔═╡ 562b751e-4c23-11eb-2b8f-73f710bf3520
-names
+ll
 
 # ╔═╡ 5ed7284a-4c23-11eb-1451-0ff763f52bc7
 md"## 2. Matrices"
@@ -2216,6 +2219,7 @@ version = "17.6.1+0"
 # ╠═f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
 # ╟─fcbeda22-4c22-11eb-2d35-a356b98bbc46
 # ╟─3516a722-4c23-11eb-3ee7-fb8d582c8ce0
+# ╠═4ca289fc-6529-4de3-95a7-8ed53e569b23
 # ╠═08bb725e-4c23-11eb-3338-03370f49dd11
 # ╠═0cfc84ca-4c23-11eb-124b-5397430fd203
 # ╠═4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
