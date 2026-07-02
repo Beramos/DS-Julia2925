@@ -1307,12 +1307,6 @@ if answ_q11 == true
 	"""
 end
 
-# ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
-md"Colors can also be represented in other ways, such as this hexadecimal format:"
-
-# ╔═╡ 7fb698a3-aaad-4a36-ae73-a05602d790af
-hex(daanbeardred)
-
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -3148,7 +3142,5 @@ version = "1.9.2+0"
 # ╠═caefe5ac-5f4d-11eb-2591-67b5515e1bd4
 # ╠═46449848-64e3-11eb-0bf4-c9211b41c68d
 # ╠═670d4db7-924b-4c44-9729-8677a9b757c8
-# ╠═37cb5545-38cc-49f5-aff7-913eb0d08cbc
-# ╠═7fb698a3-aaad-4a36-ae73-a05602d790af
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
