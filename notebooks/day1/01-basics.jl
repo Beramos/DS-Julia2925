@@ -906,7 +906,7 @@ for any value of $n$ greater than 2.
 
 1. Write a function named `checkfermat` that takes four parameters ($a$, $b$, $c$ and $n$) and checks to see if Fermat’s theorem holds. If $n$ is greater than 2 and $a^n + b^n == c^n$ the program should print, *"Holy smokes, Fermat was wrong!"* Otherwise, the program should print and return, *"No, that doesn’t work."*
 2. Write a function that takes four random positive integers for $a$, $b$, $c$ and $n$, and use `checkfermat` to check whether they violate Fermat’s theorem.
-3. Can you write the code so that the functions in 2.1 and 2.2 have the same name?
+3. Can you write the code so that both functions from steps 1 and 2 share the same name (using multiple dispatch)?
 
 Hints:
 - check the functions `rand` and `abs`.
@@ -934,7 +934,7 @@ n = $(@bind n NumberField(1:100000000))
 checkfermat(a,b,c,n)
 
 # ╔═╡ f077c390-57fe-11eb-1ad9-31110b3dac39
-md"""### 9. Extra exercises"""
+md"""### 9. Optional exercises"""
 
 # ╔═╡ 5f6b3a73-9979-4fdd-b0d0-be43419c6547
 md"""

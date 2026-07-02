@@ -25,6 +25,9 @@ using Colors: RGB
 # ╔═╡ 486457d8-4f37-11eb-306c-57d650508136
 using Images
 
+# ╔═╡ c2a57a9d-4fd4-471f-beab-7bd3804b1602
+using LinearAlgebra: UniformScaling, I
+
 # ╔═╡ 7308bc54-e6cd-11ea-0eab-83f7535edf25
 # edit the code below to set your name and UGent username
 
@@ -281,10 +284,10 @@ md"We can also use logic to specify which elements to include."
 md"Arrays behave like a stack. So pushing, appending and popping are valid operations. Elements can be added to the back of the array, (*Pushing and appending*)"
 
 # ╔═╡ f1b481f4-4c22-11eb-39b7-39ffdd5bbccc
-push!(names, "Eddie") # add a single element
+push!(["Ed", "Edd"], "Eddie") # add a single element
 
 # ╔═╡ f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
-append!(names, ["Sam", "Gerard"]) # add an array
+append!(["Sonny"], ["Sam", "Gerard"]) # add an array
 
 # ╔═╡ fcbeda22-4c22-11eb-2d35-a356b98bbc46
 md""" "Eddie" was appended as the final element of the Array along with "Sam" and "Gerard". Remember, a "!" is used to indicate an in-place function. `pop()` is used to return and remove the final element of an array"""
@@ -292,17 +295,20 @@ md""" "Eddie" was appended as the final element of the Array along with "Sam" an
 # ╔═╡ 3516a722-4c23-11eb-3ee7-fb8d582c8ce0
 md"Removing the last element or first element (*popping*)"
 
+# ╔═╡ 4ca289fc-6529-4de3-95a7-8ed53e569b23
+ll = ["first", "second", "third"]
+
 # ╔═╡ 08bb725e-4c23-11eb-3338-03370f49dd11
-pop!(names)
+pop!(ll)
 
 # ╔═╡ 0cfc84ca-4c23-11eb-124b-5397430fd203
-names
+ll
 
 # ╔═╡ 4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
-popfirst!(names)
+popfirst!(ll)
 
 # ╔═╡ 562b751e-4c23-11eb-2b8f-73f710bf3520
-names
+ll
 
 # ╔═╡ 5ed7284a-4c23-11eb-1451-0ff763f52bc7
 md"## 2. Matrices"
@@ -363,19 +369,19 @@ Arrays can be constructed and also concatenated using the following functions,
 """
 
 # ╔═╡ 54b81ed8-4c4a-11eb-1d47-99d5823f2ab1
-I = [0 1 1; 2 3 5; 8 13 21; 34 55 89]
+M = [0 1 1; 2 3 5; 8 13 21; 34 55 89]
 
 # ╔═╡ 56fd77e2-4c4a-11eb-1ab1-4793cd9b220c
 W = rand(4,3)
 
 # ╔═╡ 56ff198a-4c4a-11eb-1604-8f08c9cf868c
-cat(I, W, dims=2)                # concatenation along a specified dimension
+cat(M, W, dims=2)                # concatenation along a specified dimension
 
 # ╔═╡ 57226e44-4c4a-11eb-26fd-fbd6f993bb72
-cat(I, W, dims=1) == vcat(I, W) == [I; W]   # vertical concatenation
+cat(M, W, dims=1) == vcat(M, W) == [M; W]   # vertical concatenation
 
 # ╔═╡ 57327ab4-4c4a-11eb-219f-f70dd02f170c
-cat(I, W, dims=2) == hcat(I, W) == [I W]   # horizontal concatenation
+cat(M, W, dims=2) == hcat(M, W) == [M W]   # horizontal concatenation
 
 # ╔═╡ 969bc7a0-4c4a-11eb-3db6-892f68020468
 md"Note that `;` is an operator to use `vcat`, e.g."
@@ -902,7 +908,7 @@ check_password("password")
 check_password("Passw0rd!")
 
 # ╔═╡ 04aff640-58bb-11eb-1bb6-69ad9fc32314
-md"## 6. Extra exercises"
+md"## 6. Optional exercises"
 
 # ╔═╡ 5c8f024f-87a3-444f-8f09-5d179a04a1cb
 md"""
@@ -1133,6 +1139,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
@@ -1147,7 +1154,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.11"
 manifest_format = "2.0"
-project_hash = "b6465cfbf4aceff5fc584bc0acb5c16ff27b9f6d"
+project_hash = "9c685f432d5e3b0ce40dc579a167c0ca95fe4ea3"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -2212,6 +2219,7 @@ version = "17.6.1+0"
 # ╠═f61fc4b0-4c22-11eb-30b3-154ed1aa43bd
 # ╟─fcbeda22-4c22-11eb-2d35-a356b98bbc46
 # ╟─3516a722-4c23-11eb-3ee7-fb8d582c8ce0
+# ╠═4ca289fc-6529-4de3-95a7-8ed53e569b23
 # ╠═08bb725e-4c23-11eb-3338-03370f49dd11
 # ╠═0cfc84ca-4c23-11eb-124b-5397430fd203
 # ╠═4fbecdfe-4c23-11eb-0da7-5945a49c3a2a
@@ -2396,6 +2404,7 @@ version = "17.6.1+0"
 # ╠═75d14674-58ba-11eb-3868-172fc00a0eb8
 # ╟─cf2b6aa4-b0e8-471a-95fc-646bbddb989a
 # ╟─8c5da051-f397-4613-97aa-2d673e03ea7b
+# ╠═c2a57a9d-4fd4-471f-beab-7bd3804b1602
 # ╠═9f1a2834-4d0f-11eb-3c3e-b7ff55f65dd3
 # ╠═85fb018e-4c1d-11eb-2519-a5abe100748e
 # ╟─65a45d44-7942-4808-bed0-0369077c5edb
