@@ -106,7 +106,7 @@ $$
 \sum_{i} x_{ij} = d_j \;\;\forall j .
 $$
  
-This is exactly the structure of the **dessert problem** from [this blog post](https://michielstock.github.io/posts/2017/2017-11-5-OptimalTransport): a number of desserts must be divided among teaching staff according to their preferences. The preference matrix becomes a cost matrix (flip the sign), the amount each person eats and the amount available of each dessert become the demand and supply marginals, and the optimal assignment is the transport plan.
+This is exactly the structure of the **dessert problem** from [this blog post](https://michielstock.github.io/blog/posts/2017/2017-11-5-OptimalTransport/): a number of desserts must be divided among teaching staff according to their preferences. The preference matrix becomes a cost matrix (flip the sign), the amount each person eats and the amount available of each dessert become the demand and supply marginals, and the optimal assignment is the transport plan.
  
 ## 3. Assignments
  
