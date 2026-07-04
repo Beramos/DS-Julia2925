@@ -17,7 +17,8 @@ macro bind(def, element)
 end
 
 # ╔═╡ cf4e10a8-4862-11eb-05fd-c1a09cbb1bcd
-using PlutoUI, Plots; TableOfContents()
+using PlutoUI, Plots;
+TableOfContents()
 
 # ╔═╡ ba2c4c6b-d1bc-47cc-a13e-db2e5bab414d
 using Colors
@@ -28,7 +29,7 @@ using Images
 # ╔═╡ 786b3780-58ec-11eb-0dfd-41f5af6f6a39
 # edit the code below to set your name and UGent username
 
-student = (name = "Jan Janssen", email = "Jan.Janssen@UGent.be");
+student = (name="Jan Janssen", email="Jan.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -43,26 +44,26 @@ Submission by: **_$(student.name)_**
 
 # ╔═╡ d46c00c9-f65c-4cf4-a6b7-e9eb1c000460
 begin
-	hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]));
-	fyi(text) = Markdown.MD(
-		Markdown.Admonition("info",
-			"Additional info",
-			[fyi_css,
-				text
-			]
-		)
-	)
-	md"""
-	# Project 1: images and cellular automata
-	
-	We wrap up day 1 by exploring convolutions and similar operations on 1-D and 2-D (or even n-D!) matrices. Departing from some basic building blocks we will cover signal processing, image processing and cellular automata!
-	
-	**Learning goals:**
-	- code reuse;
-	- efficient use of collections and unitRanges;
-	- control flow in julia;
-	
-	"""
+    hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]));
+    fyi(text) = Markdown.MD(
+        Markdown.Admonition("info",
+            "Additional info",
+            [fyi_css,
+                text
+            ]
+        )
+    )
+    md"""
+     # Project 1: images and cellular automata
+
+     We wrap up day 1 by exploring convolutions and similar operations on 1-D and 2-D (or even n-D!) matrices. Departing from some basic building blocks we will cover signal processing, image processing and cellular automata!
+
+     **Learning goals:**
+     - code reuse;
+     - efficient use of collections and unitRanges;
+     - control flow in julia;
+
+     """
 end
 
 # ╔═╡ e1147d4e-2bee-11eb-0150-d7af1f51f842
@@ -93,7 +94,7 @@ md"""
 
 # ╔═╡ f272855c-3c9e-11eb-1919-6b7301b15699
 function mean(x)
-	return missing
+    return missing
 end
 
 # ╔═╡ 66a20628-4834-11eb-01a2-27cc2b1ec7be
@@ -104,16 +105,16 @@ mean(x)
 
 # ╔═╡ 788b7f25-a2b6-4b97-99d5-3ecf01473c3d
 md"""
-		So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the measurement error for each point. In this case, it is sensible to give a weigth inversely proportional to the measurement error. 
-		
-		In general, the weighted mean is computed as:
-		
-		$$\sum_{i=1}^n w_ix_i\,,$$
+  So, for this regular mean, we give an equal weight to every element: every $x_i$ is equally important in determining the mean. In some cases, however, we know that some positions are more important than others in determining the mean. For example, we might know the measurement error for each point. In this case, it is sensible to give a weigth inversely proportional to the measurement error. 
 
-		were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they add up to 1.
+  In general, the weighted mean is computed as:
 
-		Implement the weighted mean. Do it in a one-liner.
-		"""
+  $$\sum_{i=1}^n w_ix_i\,,$$
+
+  were, $w_i$ are the weights of data point $x_i$. In order for the weighted mean to make sense, we assume that all these weights are non-zero and that they add up to 1.
+
+  Implement the weighted mean. Do it in a one-liner.
+  """
 
 # ╔═╡ 9f54a75d-adb6-486b-8e11-775813ecaa1c
 md"""
@@ -172,21 +173,21 @@ md"""
 
 # ╔═╡ bc67a0a6-d5f1-4404-9406-acb05857361d
 hint(
-	md"""
-	Did you take into account the boundary conditions? The function `clamp` can help you with that.
-	"""
+    md"""
+     Did you take into account the boundary conditions? The function `clamp` can help you with that.
+     """
 )
 
 # ╔═╡ a1f75f4c-2bde-11eb-37e7-2dc342c7032a
 function convolve_1d(x::Vector, w::Vector)
-	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
-	@assert length(w) < length(x) "length of `w` should be smaller than `x`"
-	n = missing
-	m = missing
-	y = zeros(size(x)) # initialize the output
+    @assert length(w) % 2 == 1 "length of `w` has to be odd!"
+    @assert length(w) < length(x) "length of `w` should be smaller than `x`"
+    n = missing
+    m = missing
+    y = zeros(size(x)) # initialize the output
 
-	# ... complete
-	return y
+    # ... complete
+    return y
 end
 
 # ╔═╡ 7945ed1c-598c-11eb-17da-af9a36c6a68c
@@ -195,13 +196,13 @@ Let's try this out on an example, consider a noisy signal,
 """
 
 # ╔═╡ 546beebe-598d-11eb-1717-c9687801e647
-noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) +  σ * rand();
+noisy_signal(tᵢ; σ=10) = 5tᵢ + 5sin(tᵢ) + σ * rand();
 
 # ╔═╡ f39d88f6-5994-11eb-041c-012af6d3bae6
 md"We use the convolution function we defined to construct a moving_average function,"
 
 # ╔═╡ f94e2e6c-598e-11eb-041a-0b6a068e464c
-moving_average(y, w) = convolve_1d(y, ones(w).*1/w);
+moving_average(y, w) = convolve_1d(y, ones(w) .* 1/w);
 
 # ╔═╡ 4e45e43e-598f-11eb-0a0a-2fa636748f7c
 @bind wₑ Slider(1:2:43, default=3)
@@ -210,17 +211,17 @@ moving_average(y, w) = convolve_1d(y, ones(w).*1/w);
 md"Number of weights (w) : $wₑ"
 
 # ╔═╡ 8e53f108-598d-11eb-127f-ddd5be0ec899
-begin 
-	t = 0:0.01:10
-	signal = noisy_signal.(t) 
-	plot(t, signal, label="Noisy", ylabel="Signal (-)", xlabel="time(s)")
-	plot!(t, moving_average(signal, wₑ), label="Filtered", lw = 2)
+begin
+    t = 0:0.01:10
+    signal = noisy_signal.(t)
+    plot(t, signal, label="Noisy", ylabel="Signal (-)", xlabel="time(s)")
+    plot!(t, moving_average(signal, wₑ), label="Filtered", lw=2)
 end
 
 # ╔═╡ eec85f98-ae75-451e-b8bf-89271c8f4950
 md"""
-	> Explore this filtering technique by changing the number of weights. Try to understand how the `moving_average` function behaves.
-	"""
+ > Explore this filtering technique by changing the number of weights. Try to understand how the `moving_average` function behaves.
+ """
 
 # ╔═╡ 99a7e070-5995-11eb-0c53-51fc82db2e93
 
@@ -244,18 +245,18 @@ m₁ = 3
 
 # ╔═╡ 7c12bcf6-4863-11eb-0994-fb7d763c0d47
 function uniform_weights(m)
-	# complete and replace [0.0]
-	return [0.0]
+    # complete and replace [0.0]
+    return [0.0]
 end
 
 # ╔═╡ 64bf7f3a-58f0-11eb-1782-0d33a2b615e0
-begin 
-	Wu = uniform_weights(m₁)
-	fs = (600, 280)
-	
-	pl31 = scatter(1:length(Wu), Wu; label="", xlabel="weights", size=fs,
-	background_color="#F8F8F8", ms = 6)
-	title!("Your result:")
+begin
+    Wu = uniform_weights(m₁)
+    fs = (600, 280)
+
+    pl31 = scatter(1:length(Wu), Wu; label="", xlabel="weights", size=fs,
+        background_color="#F8F8F8", ms=6)
+    title!("Your result:")
 end
 
 # ╔═╡ e0188352-3771-4249-9bf1-f9c7f39ee3c8
@@ -268,20 +269,20 @@ md"""
 
 # ╔═╡ 294140a4-2bf0-11eb-22f5-858969a4640d
 function triangle_weights(m)
-	w = zeros(2m+1)
-	# complete and replace [0.0]
-	return [0.0]
-end	
+    w = zeros(2m+1)
+    # complete and replace [0.0]
+    return [0.0]
+end
 
 # ╔═╡ 91c7e17b-28a5-44ed-8c92-ee8a36d71a69
 begin
-	try
-		global Wt = triangle_weights(m₁)
-	catch e 	
-	end
-	pl33 = scatter(1:length(Wt), Wt; label="", ylims=[0, 1.5maximum(Wt)], xlabel="weights", size=fs,
-	background_color="#F8F8F8", ms = 6)
-	title!("Your result:")
+    try
+        global Wt = triangle_weights(m₁)
+    catch e
+    end
+    pl33 = scatter(1:length(Wt), Wt; label="", ylims=[0, 1.5maximum(Wt)], xlabel="weights", size=fs,
+        background_color="#F8F8F8", ms=6)
+    title!("Your result:")
 end
 
 
@@ -291,19 +292,19 @@ md"""
 
 # ╔═╡ d8c7baac-49be-11eb-3afc-0fedae12f74f
 function gaussian_weights(m; σ=4)
-	# complete and replace [0.0]
-	return [0.0]
+    # complete and replace [0.0]
+    return [0.0]
 end
 
 # ╔═╡ 2b8cbdc9-4c6d-44c9-8dae-47487a01f577
 begin
-	try
-		global Wg = gaussian_weights(m₁)
-		pl34 = scatter(1:length(Wg), Wg; label="", xlabel="weights", size=fs,
-		background_color="#F8F8F8", ms = 6)
-		title!("Your result:")
-	catch e 
-	end
+    try
+        global Wg = gaussian_weights(m₁)
+        pl34 = scatter(1:length(Wg), Wg; label="", xlabel="weights", size=fs,
+            background_color="#F8F8F8", ms=6)
+        title!("Your result:")
+    catch e
+    end
 end
 
 
@@ -334,74 +335,74 @@ The three z-scales for each of the amino acids is given in dictionaries below.
 # ╔═╡ 87610484-3ca1-11eb-0e74-8574e946dd9f
 # quantifies lipophilicity
 zscales1 = Dict(
-  'E' => 3.11,
-  'C' => 0.84,
-  'D' => 3.98,
-  'A' => 0.24,
-  'R' => 3.52,
-  'G' => 2.05,
-  'N' => 3.05,
-  'F' => -4.22,
-  'M' => -2.85,
-  'K' => 2.29,
-  'P' => -1.66,
-  'Q' => 1.75,
-  'I' => -3.89,
-  'H' => 2.47,
-  'W' => -4.36,
-  'S' => 2.39,
-  'T' => 0.75,
-  'L' => -4.28,
-  'Y' => -2.54,
-  'V' => -2.59,)
+    'E' => 3.11,
+    'C' => 0.84,
+    'D' => 3.98,
+    'A' => 0.24,
+    'R' => 3.52,
+    'G' => 2.05,
+    'N' => 3.05,
+    'F' => -4.22,
+    'M' => -2.85,
+    'K' => 2.29,
+    'P' => -1.66,
+    'Q' => 1.75,
+    'I' => -3.89,
+    'H' => 2.47,
+    'W' => -4.36,
+    'S' => 2.39,
+    'T' => 0.75,
+    'L' => -4.28,
+    'Y' => -2.54,
+    'V' => -2.59,)
 
 # ╔═╡ 9c82d5ea-3ca1-11eb-3575-f1893df8f129
 # quantifies steric properties (Steric bulk/Polarizability)
 zscales2 = Dict(
-	'E' => 0.26,
-  'C' => -1.67,
-  'D' => 0.93,
-  'A' => -2.32,
-  'R' => 2.5,
-  'G' => -4.06,
-  'N' => 1.62,
-  'F' => 1.94,
-  'M' => -0.22,
-  'K' => 0.89,
-  'P' => 0.27,
-  'Q' => 0.5,
-  'I' => -1.73,
-  'H' => 1.95,
-  'W' => 3.94,
-  'S' => -1.07,
-  'T' => -2.18,
-  'L' => -1.3,
-  'Y' => 2.44,
-  'V' => -2.64,)
+    'E' => 0.26,
+    'C' => -1.67,
+    'D' => 0.93,
+    'A' => -2.32,
+    'R' => 2.5,
+    'G' => -4.06,
+    'N' => 1.62,
+    'F' => 1.94,
+    'M' => -0.22,
+    'K' => 0.89,
+    'P' => 0.27,
+    'Q' => 0.5,
+    'I' => -1.73,
+    'H' => 1.95,
+    'W' => 3.94,
+    'S' => -1.07,
+    'T' => -2.18,
+    'L' => -1.3,
+    'Y' => 2.44,
+    'V' => -2.64,)
 
 # ╔═╡ a4ccb496-3ca1-11eb-0e7a-87620596eec1
 # quantifies electronic properties such as polarity and charge
 zscales3 = Dict(
-	'E' => -0.11,
-  'C' => 3.71,
-  'D' => 1.93,
-  'A' => 0.6,
-  'R' => -3.5,
-  'G' => 0.36,
-  'N' => 1.04,
-  'F' => 1.06,
-  'M' => 0.47,
-  'K' => -2.49,
-  'P' => 1.84,
-  'Q' => -1.44,
-  'I' => -1.71,
-  'H' => 0.26,
-  'W' => 0.59,
-  'S' => 1.15,
-  'T' => -1.12,
-  'L' => -1.49,
-  'Y' => 0.43,
-  'V' => -1.54,)
+    'E' => -0.11,
+    'C' => 3.71,
+    'D' => 1.93,
+    'A' => 0.6,
+    'R' => -3.5,
+    'G' => 0.36,
+    'N' => 1.04,
+    'F' => 1.06,
+    'M' => 0.47,
+    'K' => -2.49,
+    'P' => 1.84,
+    'Q' => -1.44,
+    'I' => -1.71,
+    'H' => 0.26,
+    'W' => 0.59,
+    'S' => 1.15,
+    'T' => -1.12,
+    'L' => -1.49,
+    'Y' => 0.43,
+    'V' => -1.54,)
 
 # ╔═╡ 9f62891c-49c2-11eb-3bc8-47f5d2e008cc
 md"""
@@ -435,7 +436,7 @@ hint(md"Try to increase the window size for clearer results.")
 
 # ╔═╡ c23ff59c-3ca1-11eb-1a31-2dd522b9d239
 function protein_sliding_window(sequence, m, zscales)
-	return missing
+    return missing
 end
 
 # ╔═╡ 17e7750e-49c4-11eb-2106-65d47b16308c
@@ -473,8 +474,8 @@ md"An image is a matrix of colors, nothing more!"
 
 # ╔═╡ c44eb368-5a8e-11eb-26cd-d9ba694ac760
 mini_image = [RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1);
-				RGB(0.2, 0.8, 0.9) RGB(0.8, 0.2, 0.2) RGB(0.2, 0.8, 0.9);
-				RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1)]
+    RGB(0.2, 0.8, 0.9) RGB(0.8, 0.2, 0.2) RGB(0.2, 0.8, 0.9);
+    RGB(0.8, 0.6, 0.1) RGB(0.2, 0.8, 0.9) RGB(0.8, 0.6, 0.1)]
 
 # ╔═╡ c4541a1a-5a8e-11eb-3b09-c3adb3794723
 mini_image[2, 2]
@@ -490,17 +491,17 @@ Gray.(mini_image)
 
 # ╔═╡ c4dc60a0-5a8e-11eb-3070-3705948c7c93
 function redimage(image)
-	return RGB.(red.(image), 0, 0)
+    return RGB.(red.(image), 0, 0)
 end
 
 # ╔═╡ c4e02064-5a8e-11eb-29eb-1d9cc2769121
 function greenimage(image)
-	return RGB.(0, green.(image), 0)
+    return RGB.(0, green.(image), 0)
 end
 
 # ╔═╡ c512c06e-5a8e-11eb-0f57-250b65d242c3
 function blueimage(image)
-	return RGB.(0, 0, blue.(image))
+    return RGB.(0, 0, blue.(image))
 end
 
 # ╔═╡ c52bc23a-5a8e-11eb-0e9a-0554ed5c632e
@@ -584,10 +585,10 @@ md"""
 
 # ╔═╡ d1851bbe-5a91-11eb-3ae4-fddeff381c1b
 function convolve_2d(M::Matrix, K::Matrix)
-	out = similar(M)
-	n_rows, n_cols = size(M)
-	#...
-	return missing
+    out = similar(M)
+    n_rows, n_cols = size(M)
+    #...
+    return missing
 end
 
 # ╔═╡ 7d4c40d6-2aa3-4246-8554-bef080109f19
@@ -606,7 +607,7 @@ md"""
 
 # ╔═╡ f5574a90-5a90-11eb-3100-dd98e3375390
 function gaussian_kernel(m; σ=4)
-	return missing
+    return missing
 end
 
 # ╔═╡ 2286d0a6-1413-4b30-8436-712e0ddf6767
@@ -637,7 +638,7 @@ hint(md"""
 md"""
 > **Exercise:**
 >	
-> The 2D-convolution can not be directly used on images since images are matrixes of triplets of values. Write a function `convolve_image(M, K)` that performs a convolution on an images and use the previously implemented `convolve_2d(M::Matrix, K::Matrix)` function. Previously, it was demonstrated how to extract the idividual colour channels from an images. A convolution of an image is nothing more than a convolution performed on these channels, separately. To avoid inaccuracies you should convert each channel (Red, Green, Blue) to a `Float32` before convolutions.
+> The 2D-convolution can not be directly used on images since images are matrixes of triplets of values. Write a function `convolve_image(M, K)` that performs a convolution on an images and use the previously implemented `convolve_2d(M::Matrix, K::Matrix)` function. Previously, it was demonstrated how to extract the individual colour channels from an images. A convolution of an image is nothing more than a convolution performed on these channels, separately. To avoid inaccuracies you should convert each channel (Red, Green, Blue) to a `Float32` before convolutions.
 >
 > Just like we did in 1D, we can define a convolution on matrices and images:
 >
@@ -661,7 +662,7 @@ You can easily convert an argument of a function by piping it into a type:
 
 # ╔═╡ ca0748ee-5e2e-11eb-0199-45a98c0645f2
 function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
-	return missing
+    return missing
 end
 
 # ╔═╡ 1e97c530-5a8f-11eb-14b0-47e7e944cba1
@@ -675,73 +676,73 @@ end
 
 # ╔═╡ 62916ec1-0784-4c69-b41f-918db1037703
 begin
-	function gaussian_kernel_sol(m; σ=4)
-  		K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
-		  K ./= sum(K)
-		  return K
-	end
-	
-	function convolve_2d_sol(M::Matrix, K::Matrix)
-		out = similar(M)
-		n_rows, n_cols = size(M)
-		fill!(out, 0.0)
-		m = div(size(K, 1), 2) 
-		for i in 1:n_rows
-			for j in 1:n_cols
-				for k in -m:m
-					for l in -m:m
-						out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
-					end
-				end
-			end
-		end
-		return out
-	end
+    function gaussian_kernel_sol(m; σ=4)
+        K = [exp(-(x^2 + y^2) / 2σ^2) for x in (-m):m, y in (-m):m]
+        K ./= sum(K)
+        return K
+    end
 
-	function convolve_image_sol(M::Matrix{<:AbstractRGB}, K::Matrix)
-		Mred = convolve_2d_sol(red.(M) .|> Float32, K)
-		Mgreen = convolve_2d_sol(green.(M) .|> Float32, K)
-		Mblue = convolve_2d_sol(blue.(M) .|> Float32, K)
-		return RGB.(Mred, Mgreen, Mblue)
-	end
+    function convolve_2d_sol(M::Matrix, K::Matrix)
+        out = similar(M)
+        n_rows, n_cols = size(M)
+        fill!(out, 0.0)
+        m = div(size(K, 1), 2)
+        for i in 1:n_rows
+            for j in 1:n_cols
+                for k in (-m):m
+                    for l in (-m):m
+                        out[i, j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1, l+m+1]
+                    end
+                end
+            end
+        end
+        return out
+    end
 
-	decimate_sol(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
-	
-md"""
-> **Optional question: testing some cool kernels**
->
-> Kernels emphasise certain features in images and often they have a directionality. `K_x` and `K_y` are known as [Sobol filters](https://en.wikipedia.org/wiki/Sobel_operator) and form the basis of edge detection. Which is just a combination of `K₂` (x-direction) and `K₃` (y-direction),
-> 
-> $$G = \sqrt{G_x^2 + G_y^2}\, ,$$
-> 
-> which is the square-root of the sum of the squared convolution with the `K_x` kernel and the `K_y` kernel. Implement edge detection and test it on the our bird. >
->
-> Different kernels can do different things. Test and implement the following kernels,
-> What do you think the following kernels do?
->
-> ```julia
-> K₁ = [0 -1 0;   # test on blurry bird and original bird
-> 	  -1 5 -1;
-> 	   0 -1 0]
->	
-> K_x = [1 0 -1;  # on a grayscale image
-> 	   2 0 -2;
-> 	   1 0 -1]
-> 		
-> K_y = [1 2 1;  # on a grayscale image
->        0 0 0;
-> 	   -1 -2 -1]
-> 		
-> K₄ = [-2 -1 0;  
->        -1 1 1;
-> 	   0 1 2]
-> ```
-"""
+    function convolve_image_sol(M::Matrix{<:AbstractRGB}, K::Matrix)
+        Mred = convolve_2d_sol(red.(M) .|> Float32, K)
+        Mgreen = convolve_2d_sol(green.(M) .|> Float32, K)
+        Mblue = convolve_2d_sol(blue.(M) .|> Float32, K)
+        return RGB.(Mred, Mgreen, Mblue)
+    end
+
+    decimate_sol(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
+
+    md"""
+    > **Optional question: testing some cool kernels**
+    >
+    > Kernels emphasise certain features in images and often they have a directionality. `K_x` and `K_y` are known as [Sobol filters](https://en.wikipedia.org/wiki/Sobel_operator) and form the basis of edge detection. Which is just a combination of `K₂` (x-direction) and `K₃` (y-direction),
+    > 
+    > $$G = \sqrt{G_x^2 + G_y^2}\, ,$$
+    > 
+    > which is the square-root of the sum of the squared convolution with the `K_x` kernel and the `K_y` kernel. Implement edge detection and test it on the our bird. >
+    >
+    > Different kernels can do different things. Test and implement the following kernels,
+    > What do you think the following kernels do?
+    >
+    > ```julia
+    > K₁ = [0 -1 0;   # test on blurry bird and original bird
+    > 	  -1 5 -1;
+    > 	   0 -1 0]
+    >	
+    > K_x = [1 0 -1;  # on a grayscale image
+    > 	   2 0 -2;
+    > 	   1 0 -1]
+    > 		
+    > K_y = [1 2 1;  # on a grayscale image
+    >        0 0 0;
+    > 	   -1 -2 -1]
+    > 		
+    > K₄ = [-2 -1 0;  
+    >        -1 1 1;
+    > 	   0 1 2]
+    > ```
+    """
 end
 
 # ╔═╡ 52a87820-5e35-11eb-0392-85957277f21a
 function edge_detection(M)
-	return missing
+    return missing
 end
 
 # ╔═╡ 51c4d953-1892-4654-975b-9fc6f3e3114b
@@ -801,7 +802,7 @@ md"The challenge with bitstrings is that the separate bits cannot be efficiently
 
 
 # ╔═╡ b31f6e4e-b796-4b6a-9248-8f0c465b7cb5
- md"""
+md"""
 > **Optional question (hard)**
 >
 > Can you think of a way to get the transitioned state given a rule  and a position of a bit in the bitstring? Complete the function `getbinarydigit(rule, i)`.
@@ -813,9 +814,9 @@ hint(md"The solution is hidden in the next hint.")
 
 # ╔═╡ ef80843e-20c7-4908-9d51-ce031da39aa4
 hint(md""" 
-	```julia
-	getbinarydigit(rule, i) = isodd(rule >> i)
-	```""")
+ ```julia
+ getbinarydigit(rule, i) = isodd(rule >> i)
+ ```""")
 
 # ╔═╡ 55309481-589d-4c77-9b14-ef6aebe2670a
 hint(md"Don't worry if you don't get fully understand the oneliner, it is bitstring manipulation and is not usually part of a scientific programming curriculum.")
@@ -857,11 +858,11 @@ getbinarydigit(rule, 4true+2true+1true+1)
 
 # ╔═╡ d2e5787c-59d2-11eb-1bbd-d79672ab8f1b
 begin
-	function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
-		return missing
-	end
-	
-	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = missing
+    function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
+        return missing
+    end
+
+    nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = missing
 end
 
 # ╔═╡ 38e6a67c-49fa-11eb-287f-91a836f5752c
@@ -883,11 +884,11 @@ md"Click on the small triangle to view the transitions."
 
 # ╔═╡ 4776ccca-482f-11eb-1194-398046ab944a
 Dict(
-	(l=l, s=s, r=r) => nextstate(l, s, r, rule)
-	for l in [true, false]
-	for s in [true, false]
-	for r in [true, false]
-)					
+    (l=l, s=s, r=r) => nextstate(l, s, r, rule_number)
+    for l in [true, false]
+    for s in [true, false]
+    for r in [true, false]
+)
 
 # ╔═╡ 1afb9a16-5d8a-11eb-1ed5-875084953542
 md"We made use of a simple function `cm` to map the states to a gray scale. Feel free to modify this function so that two colors are used for `true`/`false`."
@@ -900,11 +901,11 @@ cm(b::Missing) = missing;  # safe version when not complete!
 
 # ╔═╡ 5f97da58-2bf4-11eb-26de-8fc5f19f02d2
 Dict(
-	cm.([l, s, r]) => [cm(nextstate(l, s, r, rule_number))]
-	for l in [true, false]
-	for s in [true, false]
-	for r in [true, false]
-				)									
+    cm.([l, s, r]) => [cm(nextstate(l, s, r, rule_number))]
+    for l in [true, false]
+    for s in [true, false]
+    for r in [true, false]
+)
 
 # ╔═╡ c4f3732c-b646-4f97-b095-1c400955be86
 md"""
@@ -920,11 +921,11 @@ md"""
 """
 
 # ╔═╡ 43222f49-766a-48ba-b55e-0409082243bb
-hint(md"""`similar(x)` is a useful function to initialise a new matrix of the same type and dimensions of the array `x`	""")	
+hint(md"""`similar(x)` is a useful function to initialise a new matrix of the same type and dimensions of the array `x`	""")
 
 # ╔═╡ 924461c0-2bf3-11eb-2390-71bad2541463
 function update1dca!(xnew, x, rule::Integer)
-	return missing
+    return missing
 end
 
 # ╔═╡ 21440956-2bf5-11eb-0860-11127d727282
@@ -954,7 +955,7 @@ md"""
 hint(md"""`similar(x)` is a useful function to initialise a new matrix of the same type and dimensions of the array `x`	""")
 
 # ╔═╡ 416a1d78-4582-4511-9879-5302fc7c1171
-hint(md"""`Gray(x)` returns the gray component of a color. Try,  `Gray(0)`, `Gray(1)`""")	
+hint(md"""`Gray(x)` returns the gray component of a color. Try,  `Gray(0)`, `Gray(1)`""")
 
 # ╔═╡ 756ef0e0-2bf5-11eb-107c-8d1c65eacc45
 """
@@ -964,7 +965,7 @@ Simulate `nsteps` time steps according to `rule` with `X0` as the initial condit
 Returns a matrix X, where the rows are the state vectors at different time steps.
 """
 function simulate(x0, rule::UInt8; nsteps=100)
-	n = length(x0)
+    n = length(x0)
     X = zeros(Bool, nsteps+1, n)
     return missing
 end
@@ -982,110 +983,110 @@ ca_image = cm.(X)
 
 
 # ╔═╡ 333d2a1a-5f4c-11eb-188a-bb221700e8a0
-function show_barcode(bitArr) 
-	bar(bitArr, color=:Black, ylims=(0.1,0.5), label="", axis = nothing, border=:none,  bar_width=1,  size=(400,300))
+function show_barcode(bitArr)
+    bar(bitArr, color=:Black, ylims=(0.1, 0.5), label="", axis=nothing, border=:none, bar_width=1, size=(400, 300))
 end
 
 # ╔═╡ da058da2-e762-4909-8857-169a012890b5
-begin 
-	### Get index of bitstring
-	getbinarydigit_sol(rule, i) = isodd(rule >> i)
-	
-	### Next state
-	nextstate_sol(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate_sol(l, s, r, UInt8(rule))
-			
-	function nextstate_sol(l::Bool, s::Bool, r::Bool, rule::UInt8)
-	  return getbinarydigit_sol(rule, 4l+2s+1r)
-	end
-	
-	### Update 1 step of CA
-	function update1dca_sol!(xnew, x, rule::Integer)
-		n = length(x)
-		xnew[1] = nextstate_sol(x[end], x[1], x[2], rule)
-		xnew[end] = nextstate_sol(x[end-1], x[end], x[1], rule)
-		for i in 2:n-1
-			xnew[i] = nextstate_sol(x[i-1], x[i], x[i+1], rule)
-		end
-		return xnew
-	end
-	
-	update1dca_sol(x, rule::Integer) = update1dca_sol!(similar(x), x, rule)
-	
-	
-	### simulating the CA
-	"""
-	    simulate(x0, rule; nsteps=100)
-	
-	Simulate `nsteps` time steps according to `rule` with `X0` as the initial condition.
-	Returns a matrix X, where the rows are the state vectors at different time steps.
-	"""
-	function simulate_sol(x0, rule::UInt8; nsteps=100)
-		n = length(x0)
-	    X = zeros(Bool, nsteps+1, n)
-		X[1,:] = x0
-		for t in 1:nsteps
-			x = @view X[t,:]
-			xnew = @view X[t+1,:]
-			update1dca_sol!(xnew, x, rule)
-		end
-	    return X
-	end
+begin
+    ### Get index of bitstring
+    getbinarydigit_sol(rule, i) = isodd(rule >> i)
 
-	
-	rule_ex9 = 171
-	initInt_ex9 = 3680689260
-	initBs_exp9 = bitstring(initInt_ex9)
-	bitArr_ex9 = simulate_sol([el == '0' for el in reverse(initBs_exp9)[1:32]], UInt8(rule_ex9); nsteps=50)[end,:]
-	
-	pl_ex9 = show_barcode(bitArr_ex9)
-	
-	
+    ### Next state
+    nextstate_sol(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate_sol(l, s, r, UInt8(rule))
 
-	rule2_ex9 = 42
-	init_Int2_ex9 = 3681110060
-	milk_barcode = bitstring(init_Int2_ex9)
-	
-	bitArr = simulate_sol([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2_ex9); nsteps=50)[end,:]
-	
-	pl2_ex9 = show_barcode(bitArr)
+    function nextstate_sol(l::Bool, s::Bool, r::Bool, rule::UInt8)
+        return getbinarydigit_sol(rule, 4l+2s+1r)
+    end
 
-	
-	md"""
-	**Optional question:** Barcode bonanza
-	
-	A simple barcode is data represented by varying the widths and spacings of parallel lines. However this is just an array of binary values that correspondent to an integer number.
-	
-	![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/220px-UPC-A-036000291452.svg.png)
-	
-	The laser scanner reads the barcode and converts the binary number to an integer which is the product code, a pretty simple and robust system.
-	
-	A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is a little convoluted,		
-		
-	The number corresponding to a barcode is the **rule number** followed by the *initial 32-bit array encoded as an integer* (initial condition). The barcode is generated by taking the rule number and evolving the initial condition for 50 iterations.
-	
-	As an example this barcode corresponds to the number: 
-	**$(rule_ex9)** *3128863161*
-	
-	$(pl_ex9)
-	
-	
-	Which is *3128863161* converted to a bitstring as initial array iterated for 50 iterations using rule: $(rule_ex9)
+    ### Update 1 step of CA
+    function update1dca_sol!(xnew, x, rule::Integer)
+        n = length(x)
+        xnew[1] = nextstate_sol(x[end], x[1], x[2], rule)
+        xnew[end] = nextstate_sol(x[end-1], x[end], x[1], rule)
+        for i in 2:(n-1)
+            xnew[i] = nextstate_sol(x[i-1], x[i], x[i+1], rule)
+        end
+        return xnew
+    end
 
-	After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Luckily, the employees used the same initial bitstring for all products (*3681110060*).
-		
-	Can you find the product code for this box of milk **XXX** *3128863161*?
-	
-	$(pl2_ex9)
-	
-	The binary form of the barcode is provided below.
-	"""
+    update1dca_sol(x, rule::Integer) = update1dca_sol!(similar(x), x, rule)
+
+
+    ### simulating the CA
+    """
+    	    simulate(x0, rule; nsteps=100)
+    	
+    	Simulate `nsteps` time steps according to `rule` with `X0` as the initial condition.
+    	Returns a matrix X, where the rows are the state vectors at different time steps.
+    	"""
+    function simulate_sol(x0, rule::UInt8; nsteps=100)
+        n = length(x0)
+        X = zeros(Bool, nsteps+1, n)
+        X[1, :] = x0
+        for t in 1:nsteps
+            x = @view X[t, :]
+            xnew = @view X[t+1, :]
+            update1dca_sol!(xnew, x, rule)
+        end
+        return X
+    end
+
+
+    rule_ex9 = 171
+    initInt_ex9 = 3680689260
+    initBs_exp9 = bitstring(initInt_ex9)
+    bitArr_ex9 = simulate_sol([el == '0' for el in reverse(initBs_exp9)[1:32]], UInt8(rule_ex9); nsteps=50)[end, :]
+
+    pl_ex9 = show_barcode(bitArr_ex9)
+
+
+
+    rule2_ex9 = 42
+    init_Int2_ex9 = 3681110060
+    milk_barcode = bitstring(init_Int2_ex9)
+
+    bitArr = simulate_sol([el == '0' for el in reverse(milk_barcode)[1:32]], UInt8(rule2_ex9); nsteps=50)[end, :]
+
+    pl2_ex9 = show_barcode(bitArr)
+
+
+    md"""
+     **Optional question:** Barcode bonanza
+
+     A simple barcode is data represented by varying the widths and spacings of parallel lines. However this is just an array of binary values that correspondent to an integer number.
+
+     ![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/220px-UPC-A-036000291452.svg.png)
+
+     The laser scanner reads the barcode and converts the binary number to an integer which is the product code, a pretty simple and robust system.
+
+     A local supermarket completely misread the protocol and accidentally use a cellular automata to convert the binary number into an integer. Their protocol is a little convoluted,		
+     	
+     The number corresponding to a barcode is the **rule number** followed by the *initial 32-bit array encoded as an integer* (initial condition). The barcode is generated by taking the rule number and evolving the initial condition for 50 iterations.
+
+     As an example this barcode corresponds to the number: 
+     **$(rule_ex9)** *3128863161*
+
+     $(pl_ex9)
+
+
+     Which is *3128863161* converted to a bitstring as initial array iterated for 50 iterations using rule: $(rule_ex9)
+
+     After generating tons of new barcodes, the employees stumble upon a problem. While it is easy to generate the barcodes given the product codes, it it not trivial to convert a barcode to a product number. Luckily, the employees used the same initial bitstring for all products (*3681110060*).
+     	
+     Can you find the product code for this box of milk **XXX** *3128863161*?
+
+     $(pl2_ex9)
+
+     The binary form of the barcode is provided below.
+     """
 end
 
 # ╔═╡ caefe5ac-5f4d-11eb-2591-67b5515e1bd4
 product_code_milk = missing
 
 # ╔═╡ 46449848-64e3-11eb-0bf4-c9211b41c68d
-barcode_milk =  Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0];
+barcode_milk = Bool[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0];
 
 # ╔═╡ 670d4db7-924b-4c44-9729-8677a9b757c8
 md"""## Answers:
@@ -1108,203 +1109,203 @@ If you would like to take a look at the answers, you can do so by checking the b
 
 # ╔═╡ 9fa895b2-b327-4789-8aab-6259ca85c7cd
 if answ_q1 == true
-	md"""
-	```julia
-		mean(x) = sum(x)/length(x)
+    md"""
+     ```julia
+     	mean(x) = sum(x)/length(x)
 
-		weighted_mean(x, w) = sum(w.*x)
-	```
-	"""
+     	weighted_mean(x, w) = sum(w.*x)
+     ```
+     """
 end
 
 # ╔═╡ 99272f4e-b873-4f70-88e6-10bdbca069fe
 if answ_q2 == true
-	md"""
-	```julia
-	function convolve_1d(x::Vector, w::Vector)
-		@assert length(w) % 2 == 1 "length of `w` has to be odd!"
-		@assert length(w) < length(x) "length of `w` should be smaller than `x`"
-		n = length(x)
-		m = length(w) ÷ 2
-		y = zeros(n)
+    md"""
+     ```julia
+     function convolve_1d(x::Vector, w::Vector)
+     	@assert length(w) % 2 == 1 "length of `w` has to be odd!"
+     	@assert length(w) < length(x) "length of `w` should be smaller than `x`"
+     	n = length(x)
+     	m = length(w) ÷ 2
+     	y = zeros(n)
 
-		for (i, xj) in enumerate(x)
-			for (j, wj) in enumerate(w)
-		  		k = j - m - 1
-		  		l = clamp(i - k, 1, n)
-				y[i] += w[j] * x[l]
-			end
-		end
-		return y
-	end
-	```
-	"""
+     	for (i, xj) in enumerate(x)
+     		for (j, wj) in enumerate(w)
+     	  		k = j - m - 1
+     	  		l = clamp(i - k, 1, n)
+     			y[i] += w[j] * x[l]
+     		end
+     	end
+     	return y
+     end
+     ```
+     """
 end
 
 # ╔═╡ b2d992ab-66da-4f8f-a313-6a828b62b70d
 if answ_q3 == true
-	md"""
-	**Solutions:**
-	```julia
-	function uniform_weights(m)
-		return ones(2m+1) / (2m+1)
-	end
+    md"""
+     **Solutions:**
+     ```julia
+     function uniform_weights(m)
+     	return ones(2m+1) / (2m+1)
+     end
 
-	function triangle_weights(m)
-		w = zeros(2m+1)
-		for i in 1:(m+1)
-			w[i] = i
-			w[end-i+1] = i
-		end
-		w ./= sum(w)
-		return w
-	end	
+     function triangle_weights(m)
+     	w = zeros(2m+1)
+     	for i in 1:(m+1)
+     		w[i] = i
+     		w[end-i+1] = i
+     	end
+     	w ./= sum(w)
+     	return w
+     end	
 
-	function gaussian_weights(m; σ=4)
-		w = exp.(-(-m:m).^2 / 2σ^2)
-		return w ./ sum(w)
-	end
-	```
-	"""
+     function gaussian_weights(m; σ=4)
+     	w = exp.(-(-m:m).^2 / 2σ^2)
+     	return w ./ sum(w)
+     end
+     ```
+     """
 end
 
 # ╔═╡ 085a24fb-f71d-4edb-ba8c-a3f1047c60c2
 if answ_q4 == true
-	md"""
-	```julia
-	function protein_sliding_window(sequence, m, zscales)
-		n = length(sequence)
-		y = zeros(n)
-		for i in (m+1):(n-m)
-			for k in -m:m
-				y[i] += zscales[sequence[i+k]]
-			end
-		end
-		return y / (2m + 1)
-	end
-	```
-	"""
+    md"""
+     ```julia
+     function protein_sliding_window(sequence, m, zscales)
+     	n = length(sequence)
+     	y = zeros(n)
+     	for i in (m+1):(n-m)
+     		for k in -m:m
+     			y[i] += zscales[sequence[i+k]]
+     		end
+     	end
+     	return y / (2m + 1)
+     end
+     ```
+     """
 end
 
 # ╔═╡ 37d3969f-a3e6-4d59-8ead-177d149bbbf7
 if answ_q5 == true
-	md"""
-	```julia
-	decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
-	```
-	"""
+    md"""
+     ```julia
+     decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
+     ```
+     """
 end
 
 # ╔═╡ e090373d-1e9e-45f6-bd26-bdcd9ddf4a3a
 if answ_q6 == true
-	md"""
-	**Solutions:**
-	```julia
-	function convolve_2d(M::Matrix, K::Matrix)
-		out = similar(M)
-		n_rows, n_cols = size(M)
-		fill!(out, 0.0)
-		m = div(size(K, 1), 2) 
-		for i in 1:n_rows
-			for j in 1:n_cols
-				for k in -m:m
-					for l in -m:m
-						out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
-					end
-				end
-			end
-		end
-		return out
-	end
+    md"""
+     **Solutions:**
+     ```julia
+     function convolve_2d(M::Matrix, K::Matrix)
+     	out = similar(M)
+     	n_rows, n_cols = size(M)
+     	fill!(out, 0.0)
+     	m = div(size(K, 1), 2) 
+     	for i in 1:n_rows
+     		for j in 1:n_cols
+     			for k in -m:m
+     				for l in -m:m
+     					out[i,j] += M[clamp(i+k, 1, n_rows), clamp(j+l, 1, n_cols)] * K[k+m+1,l+m+1]
+     				end
+     			end
+     		end
+     	end
+     	return out
+     end
 
-	function gaussian_kernel(m; σ=4)
-	  K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
-	  K ./= sum(K)
-	  return K
-	end
+     function gaussian_kernel(m; σ=4)
+       K = [exp(-(x^2 + y^2) / 2σ^2) for x in -m:m, y in -m:m]
+       K ./= sum(K)
+       return K
+     end
 
-	function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
-		Mred = convolve_2d(red.(M) .|> Float32, K)
-		Mgreen = convolve_2d(green.(M) .|> Float32, K)
-		Mblue = convolve_2d(blue.(M) .|> Float32, K)
-		return RGB.(Mred, Mgreen, Mblue)
-	end
-	```
-	"""
+     function convolve_image(M::Matrix{<:AbstractRGB}, K::Matrix)
+     	Mred = convolve_2d(red.(M) .|> Float32, K)
+     	Mgreen = convolve_2d(green.(M) .|> Float32, K)
+     	Mblue = convolve_2d(blue.(M) .|> Float32, K)
+     	return RGB.(Mred, Mgreen, Mblue)
+     end
+     ```
+     """
 end
 
 # ╔═╡ 99cf56dc-aeb3-4f8e-ae52-5b9f639f800e
 if answ_q7 == true
-	md"""
-	```julia
-	Gx = [1 0 -1; 2 0 -2; 1 0 -1]
-	Gy = [1 2 1; 0 0 0; -1 -2 -1]
-	function edge_detection(M)
-		M = M .|> Gray .|> Float64
-		return sqrt.(convolve_2d(M, Gx).^2 + convolve_2d(M, Gy).^2) .|> Gray
-	end
-	```
-	"""
+    md"""
+     ```julia
+     Gx = [1 0 -1; 2 0 -2; 1 0 -1]
+     Gy = [1 2 1; 0 0 0; -1 -2 -1]
+     function edge_detection(M)
+     	M = M .|> Gray .|> Float64
+     	return sqrt.(convolve_2d(M, Gx).^2 + convolve_2d(M, Gy).^2) .|> Gray
+     end
+     ```
+     """
 end
 
 # ╔═╡ 5e84dd4a-fabe-452c-a274-663b1ba94f5a
 if answ_q8 == true
-	md"""
-	```julia
-	getbinarydigit(rule, i) = isodd(rule >> i)
-	```
-	"""
+    md"""
+     ```julia
+     getbinarydigit(rule, i) = isodd(rule >> i)
+     ```
+     """
 end
 
 # ╔═╡ f9b59b28-c635-4474-bc12-f9ce45a047fd
 if answ_q9 == true
-	md"""
-	```julia
-	nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
-		
-	function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
-	  return getbinarydigit(rule, 4l+2s+1r)
-	end
-	```
-	"""
+    md"""
+     ```julia
+     nextstate(l::Bool, s::Bool, r::Bool, rule::Int) = nextstate(l, s, r, UInt8(rule))
+     	
+     function nextstate(l::Bool, s::Bool, r::Bool, rule::UInt8)
+       return getbinarydigit(rule, 4l+2s+1r)
+     end
+     ```
+     """
 end
 
 # ╔═╡ c9fac3a6-e3ad-4f0e-bc71-a36a593094f7
 if answ_q10 == true
-	md"""
-	```julia
-	function update1dca!(xnew, x, rule::Integer)
-		n = length(x)
-		xnew[1] = nextstate(x[end], x[1], x[2], rule)
-		xnew[end] = nextstate(x[end-1], x[end], x[1], rule)
-		for i in 2:n-1
-			xnew[i] = nextstate(x[i-1], x[i], x[i+1], rule)
-		end
-		return xnew
-	end
+    md"""
+     ```julia
+     function update1dca!(xnew, x, rule::Integer)
+     	n = length(x)
+     	xnew[1] = nextstate(x[end], x[1], x[2], rule)
+     	xnew[end] = nextstate(x[end-1], x[end], x[1], rule)
+     	for i in 2:n-1
+     		xnew[i] = nextstate(x[i-1], x[i], x[i+1], rule)
+     	end
+     	return xnew
+     end
 
-	update1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
-	```
-	"""
+     update1dca(x, rule::Integer) = update1dca!(similar(x), x, rule)
+     ```
+     """
 end
 
 # ╔═╡ bde632e9-3aa4-4a9e-a736-f41ad057b231
 if answ_q11 == true
-	md"""
-	```julia
-	function simulate(x0, rule::UInt8; nsteps=100)
-		n = length(x0)
-		X = zeros(Bool, nsteps+1, n)
-		X[1,:] = x0
-		for t in 1:nsteps
-			x = @view X[t,:]
-			xnew = @view X[t+1,:]
-			update1dca!(xnew, x, rule)
-		end
-		return X
-	end
-	```
-	"""
+    md"""
+     ```julia
+     function simulate(x0, rule::UInt8; nsteps=100)
+     	n = length(x0)
+     	X = zeros(Bool, nsteps+1, n)
+     	X[1,:] = x0
+     	for t in 1:nsteps
+     		x = @view X[t,:]
+     		xnew = @view X[t+1,:]
+     		update1dca!(xnew, x, rule)
+     	end
+     	return X
+     end
+     ```
+     """
 end
 
 # ╔═╡ 37cb5545-38cc-49f5-aff7-913eb0d08cbc
