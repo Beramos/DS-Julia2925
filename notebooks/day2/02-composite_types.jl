@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.13
+# v1.0.1
 
 using Markdown
 using InteractiveUtils
@@ -22,7 +22,7 @@ using PlutoUI; TableOfContents()
 # ╔═╡ 372d3cf2-6173-11eb-356e-23c959c3fd89
 # edit the code below to set your name and UGent username
 
-student = (name = "Sam Janssen", email = "Sam.Janssen@UGent.be");
+student = (name="Sam Janssen", email="Sam.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -35,8 +35,8 @@ abstract type Agent end
 
 # ╔═╡ b96a33b8-5d8c-11eb-01de-439f53cdc355
 mutable struct Prey <: Agent
-	id::Int
-	pos::NTuple{2, Float64}
+    id::Int
+    pos::NTuple{2,Float64}
 end
 
 # ╔═╡ cd0d8636-5d8c-11eb-19f9-4da4550d306f
@@ -51,7 +51,7 @@ deer.pos
 # ╔═╡ 01fe6f9a-5d8d-11eb-0519-03aefcd587bb
 mutable struct Predator <: Agent
     id::Int
-    pos::NTuple{2, Float64}
+    pos::NTuple{2,Float64}
     size::Float64
 end
 
@@ -69,9 +69,9 @@ Base.size(agent::Predator) = agent.size
 
 # ╔═╡ 50f17586-5d8d-11eb-0eec-579467b787d0
 begin
-	interact(agent1::Agent, agent2::Agent) = nothing
-	interact(agent1::Predator, agent2::Prey) = "eat"
-	interact(agent1::Prey, agent2::Predator) = "run"
+    interact(agent1::Agent, agent2::Agent) = nothing
+    interact(agent1::Predator, agent2::Prey) = "eat"
+    interact(agent1::Prey, agent2::Predator) = "run"
 end
 
 # ╔═╡ 5c141870-654b-11eb-26f3-4b58b0b2e25d
@@ -100,12 +100,12 @@ rand(fauna)
 
 # ╔═╡ cf6dea8c-5d8d-11eb-3f54-4d947305f5e5
 begin
-	struct Point{T}
-		x::T
-		y::T
-	end
-	
-# PASTE YOUR CONSTRUCTORS HERE!
+    struct Point{T}
+        x::T
+        y::T
+    end
+
+    # PASTE YOUR CONSTRUCTORS HERE!
 end
 
 # ╔═╡ d84355d4-5d8d-11eb-2c2c-21daf0364c21
@@ -187,7 +187,7 @@ end
 Base.size(S::Strang) = (S.n, S.n)
 
 # ╔═╡ efb0b460-5d91-11eb-2534-496df689dc60
-Base.getindex(S::Strang, i, j) = i==j ? 2 : (abs(i - j) == 1 ?  -1 : 0)
+Base.getindex(S::Strang, i, j) = i==j ? 2 : (abs(i - j) == 1 ? -1 : 0)
 
 # ╔═╡ f3c3114c-5d91-11eb-1d37-6d97ea6d267f
 S = Strang(1000)  # holy cow! Looks just like a real matrix!
@@ -195,11 +195,17 @@ S = Strang(1000)  # holy cow! Looks just like a real matrix!
 # ╔═╡ 04dcda58-5d92-11eb-10ba-396947081338
 sum(S)  # works, but slow...
 
+# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
+@time sum(S)
+
 # ╔═╡ 0f878dea-5d92-11eb-0000-b7484532ee70
 #Base.sum(S::Strang) = 2
 
 # ╔═╡ 11630c02-5d92-11eb-1746-4dabf327fbbe
 sum(S)
+
+# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
+@time sum(S)
 
 # ╔═╡ 1e65cb9c-5d92-11eb-3526-332169917fd9
 v = randn(1000)
@@ -221,7 +227,7 @@ end
 
 # ╔═╡ 3ae60e88-5d94-11eb-0c50-1d74ea104758
 struct WizCur
-	missing # complete me!
+    missing # complete me!
 end
 
 # ╔═╡ 48301af2-5d94-11eb-0019-7737667c9cea
@@ -245,15 +251,15 @@ Base.isless(m1::WizCur, m2::WizCur) = missing # complete me!
 
 # ╔═╡ 27fcaede-5d90-11eb-1cea-91fcc4b6b0fe
 struct OrderedPair
-  x
-  y
-  function OrderedPair(x, y)
-    if x < y
-      new(x, y)
-    else
-      new(y, x)
+    x
+    y
+    function OrderedPair(x, y)
+        if x < y
+            new(x, y)
+        else
+            new(y, x)
+        end
     end
-  end
 end
 
 # ╔═╡ 2a224fde-5d90-11eb-1c46-3fd248350914
@@ -279,14 +285,14 @@ money_harry = missing # complete me!
 
 # ╔═╡ d448a2e0-5d92-11eb-18a6-9ff817992154
 begin
-	struct Vandermonde{T,VT} <: AbstractMatrix{T}
-		α::VT
-		m::Int
-		Vandermonde(α::AbstractVector{T}, m) where {T} = missing
-	end
+    struct Vandermonde{T,VT} <: AbstractMatrix{T}
+        α::VT
+        m::Int
+        Vandermonde(α::AbstractVector{T}, m) where {T} = missing
+    end
 
-	# take length of α as a default value of m
-	Vandermonde(α::Vector{<:Number}) = missing
+    # take length of α as a default value of m
+    Vandermonde(α::Vector{<:Number}) = missing
 end
 
 # ╔═╡ bd91a60e-5d93-11eb-09d4-830ca69439bf
@@ -305,10 +311,10 @@ Submission by: **_$(student.name)_**
 
 # ╔═╡ eb0428ac-5d8c-11eb-09a3-2b3cfc77f3f4
 begin
-	
-	md"""
-	Submission by: **_$(student.name)_**
-	"""
+
+    md"""
+     Submission by: **_$(student.name)_**
+     """
 end
 
 # ╔═╡ 70be3952-5d8c-11eb-1509-b3f7077d57e0
@@ -535,7 +541,7 @@ Complete the implementation to store and process this matrix.
 α = [1, 2, 3, 4]
 
 # ╔═╡ d107c75e-5d93-11eb-0e6f-097b1291e460
-V = Vandermonde(α, 4)
+V = Vandermonde(α)
 
 # ╔═╡ 7f02b0a0-617f-11eb-1263-91423840def3
 
@@ -583,20 +589,20 @@ md"""
 
 # ╔═╡ 0e07052b-057f-4cd1-a11e-199774431dcf
 begin
-	struct Compound
-		H::Int
-		C::Int
-		O::Int
-	end
+    struct Compound
+        H::Int
+        C::Int
+        O::Int
+    end
 
-	# keyword version
-	Compound(;H, C, O=0) = missing
+    # keyword version
+    Compound(; H, C, O=0) = missing
 
-	function Compound(formula::String)
-		# Compute the number of elements from a string
-		# Mind brackets!
-		return missing
-	end
+    function Compound(formula::String)
+        # Compute the number of elements from a string
+        # Mind brackets!
+        return missing
+    end
 
 
 end
@@ -626,9 +632,9 @@ Base.:*(n::Int, c::Compound) = missing
 "Compute number of H2O and CO2 molecules after full combustion
 using oxygen"
 function combust(compound::Compound)
-	nH2O = missing
-	nCO2 = missing
-	return (H20=nH2O, CO2=nCO2)
+    nH2O = missing
+    nCO2 = missing
+    return (H20=nH2O, CO2=nCO2)
 end
 
 # ╔═╡ b4cac403-2e81-4641-a2a6-2578d18c4ed0
@@ -647,20 +653,20 @@ abstract type MyColor end
 # ╔═╡ 61e3ef45-5192-404f-8f53-8b66ab95c44b
 begin
 
-	# A simple struct to represent RGB color components
-	struct RGB <: MyColor
-	    r::Float64
-	    g::Float64
-	    b::Float64
+    # A simple struct to represent RGB color components
+    struct RGB <: MyColor
+        r::Float64
+        g::Float64
+        b::Float64
 
-	    # Inner constructor to ensure values are clamped to [0.0, 1.0]
-	    function RGB(r::Real, g::Real, b::Real)
-	        new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
-	    end
-	end
+        # Inner constructor to ensure values are clamped to [0.0, 1.0]
+        function RGB(r::Real, g::Real, b::Real)
+            new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
+        end
+    end
 
-	# make a constructor for when the values are given in [0, 255]
-	RGB(r::Integer, g::Integer, b::Integer) = missing
+    # make a constructor for when the values are given in [0, 255]
+    RGB(r::Integer, g::Integer, b::Integer) = missing
 end
 
 # ╔═╡ 50fab216-b286-4d7e-a8f7-5ecba1c0129d
@@ -692,12 +698,6 @@ Base.:*(a::Real, c::RGB) = missing
 # ╔═╡ a9502b64-5d90-11eb-144c-3d7ce0949e67
 Base.iterate(S::Squares, state=1) = state > S.count ? nothing : (state*state, state+1)
 
-# ╔═╡ fbdb2958-6621-11eb-3cb6-a9bdeea3bdb7
-@time sum(S)
-
-# ╔═╡ 046ce4f8-6622-11eb-3c4f-7b6bf21fb77b
-@time sum(S)
-
 # ╔═╡ 201f59ee-5d92-11eb-33ae-51904d249dd4
 S * v  # works, but slow
 
@@ -705,7 +705,7 @@ S * v  # works, but slow
 @time S * v  # fast (linear time in v)
 
 # ╔═╡ d7c5071e-9253-4f24-b7a3-cf86d993568c
-mazout = 3glucose + 4ethanol 
+mazout = 3glucose + 4ethanol
 
 # ╔═╡ 84109211-b93c-4ef9-8ed6-22b9c53b4837
 # averaging colors
@@ -721,8 +721,8 @@ struct HSV <: MyColor
     # Inner constructor to clamp values
     function HSV(h::Real, s::Real, v::Real)
         # Hue wraps around 360
-       	# s and v in [0, 1]
-		return missing
+        # s and v in [0, 1]
+        return missing
     end
 end
 
@@ -783,175 +783,169 @@ If you would like to take a look at the answers, you can do so by checking the b
 
 # ╔═╡ fcf5c7e6-b745-44af-b731-cd3d44f848b9
 if answ_q1 == true
-	md"""
-	```Julia
-	struct WizCur
-	  galleons::Int
-	  sickles::Int
-	  knuts::Int
-	  function WizCur(galleons::Int, sickles::Int, knuts::Int)
-		  sickles += knuts ÷ 29
-		  knuts %= 29
-		  galleons += sickles ÷ 17
-		  sickles %= 17
-		  return new(galleons, sickles, knuts)
-	  end
-	end
+    md"""
+     ```Julia
+     struct WizCur
+       galleons::Int
+       sickles::Int
+       knuts::Int
+       function WizCur(galleons::Int, sickles::Int, knuts::Int)
+     	  sickles += knuts ÷ 29
+     	  knuts %= 29
+     	  galleons += sickles ÷ 17
+     	  sickles %= 17
+     	  return new(galleons, sickles, knuts)
+       end
+     end
 
-	galleons(money::WizCur) = money.galleons
-	sickles(money::WizCur) = money.sickles
-	knuts(money::WizCur) = money.knuts
+     galleons(money::WizCur) = money.galleons
+     sickles(money::WizCur) = money.sickles
+     knuts(money::WizCur) = money.knuts
 
-	moneyinknuts(money::WizCur) = 29*17galleons(money) + 29sickles(money) + knuts(money)
+     moneyinknuts(money::WizCur) = 29*17galleons(money) + 29sickles(money) + knuts(money)
 
-	function Base.show(io::IO, money::WizCur)
-	  print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
-	end
+     function Base.show(io::IO, money::WizCur)
+       print(io, "$(galleons(money))G, $(sickles(money))S, $(knuts(money))K")
+     end
 
-	Base.isless(m1::WizCur, m2::WizCur) = moneyinknuts(m1) < moneyinknuts(m2) 
-	Base.isgreater(m1::WizCur, m2::WizCur) = moneyinknuts(m1) > moneyinknuts(m2) 
-	Base.isequal(m1::WizCur, m2::WizCur) = moneyinknuts(m1) == moneyinknuts(m2)
+     Base.isless(m1::WizCur, m2::WizCur) = moneyinknuts(m1) < moneyinknuts(m2) 
+     Base.isgreater(m1::WizCur, m2::WizCur) = moneyinknuts(m1) > moneyinknuts(m2) 
+     Base.isequal(m1::WizCur, m2::WizCur) = moneyinknuts(m1) == moneyinknuts(m2)
 
-	Base.:+(m1::WizCur, m2::WizCur) = WizCur(galleons(m1)+galleons(m2),
-											  sickles(m1)+sickles(m2),
-											  knuts(m1)+knuts(m2))
+     Base.:+(m1::WizCur, m2::WizCur) = WizCur(galleons(m1)+galleons(m2),
+     										  sickles(m1)+sickles(m2),
+     										  knuts(m1)+knuts(m2))
 
-	money_ron = WizCur(0, 19, 732)
-	money_harry = WizCur(3, 1, 7)
+     money_ron = WizCur(0, 19, 732)
+     money_harry = WizCur(3, 1, 7)
 
-	dungbomb_fund = money_ron + money_harry
-	```
-	"""
+     dungbomb_fund = money_ron + money_harry
+     ```
+     """
 end
 
 # ╔═╡ f4fc59ac-e0e2-483a-9e07-6664090cb299
 if answ_q2 == true
-	md"""
-	```Julia
-	struct Vandermonde{T,VT} <: AbstractMatrix{T}
-	  α::VT
-	  m::Int
-	  Vandermonde(α::AbstractVector{T}, m) where {T} = new{T,typeof(α)}(α,m)
-	end
+    md"""
+     ```Julia
+     struct Vandermonde{T,VT} <: AbstractMatrix{T}
+       α::VT
+       m::Int
+       Vandermonde(α::AbstractVector{T}, m) where {T} = new{T,typeof(α)}(α,m)
+     end
 
-	Vandermonde(α::Vector{<:Number}) = Vandermonde(α, length(α))
+     Vandermonde(α::Vector{<:Number}) = Vandermonde(α, length(α))
 
-	Base.size(V::Vandermonde) = (length(V.α), V.m)
-	Base.getindex(V::Vandermonde, i, j) = V.α[i]^(j-1)
-	```
-	"""
+     Base.size(V::Vandermonde) = (length(V.α), V.m)
+     Base.getindex(V::Vandermonde, i, j) = V.α[i]^(j-1)
+     ```
+     """
 end
 
 # ╔═╡ 1c373bba-eeb6-4673-8b18-0d68b524e536
 if answ_q3 == true
-	md"""
-	```julia
-	determinant(V::Vandermonde) = 
-	((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod
-	```
-	"""
+    md"""
+     ```julia
+     determinant(V::Vandermonde) = 
+     ((xi-xj) for (i,xi) in enumerate(V.α), (j, xj) in enumerate(V.α) if i < j) |> prod
+     ```
+     """
 end
 
 # ╔═╡ 33a9a0b4-bd92-4a22-b454-89d780237977
 if answ_q4
-md"""
-```julia
-struct Compound
-	H::Int
-	C::Int
-	O::Int
-end
+    md"""
+    ```julia
+    struct Compound
+    	H::Int
+    	C::Int
+    	O::Int
+    end
 
-# keyword version
-Compound(;H, C, O=0) = Compound(H, C, O)
+    # keyword version
+    Compound(;H, C, O=0) = Compound(H, C, O)
 
-function Compound(formula::String)
-	# Compute the number of elements from a string
-	# Mind brackets!
-	return missing
-end
+    function Compound(formula::String)
+    	# Compute the number of elements from a string
+    	H = 0
+    	C = 0
+    	O = 0
+    	# count C
+    	for m in eachmatch(r"C(\d*)", formula)
+    		n = isempty(m[1]) ? 1 : parse(Int, m[1])
+    		C += n
+    	end
+    	# count H
+    	for m in eachmatch(r"H(\d*)", formula)
+    		n = isempty(m[1]) ? 1 : parse(Int, m[1])
+    		H += n
+    	end
+    	# count O
+    	for m in eachmatch(r"O(\d*)", formula)
+    		n = isempty(m[1]) ? 1 : parse(Int, m[1])
+    		O += n
+    	end
+    	return Compound(;C, H, O)
+    end
 
-function Compound(formula::String)
-	# Compute the number of elements from a string
-	H = 0
-	C = 0
-	O = 0
-	# count C
-	for m in eachmatch(r"C(\d*)", formula)
-		n = isempty(m[1]) ? 1 : parse(Int, m[1])
-		C += n
-	end
-	# count H
-	for m in eachmatch(r"H(\d*)", formula)
-		n = isempty(m[1]) ? 1 : parse(Int, m[1])
-		H += n
-	end
-	# count O
-	for m in eachmatch(r"O(\d*)", formula)
-		n = isempty(m[1]) ? 1 : parse(Int, m[1])
-		O += n
-	end
-	return Compound(;C, H, O)
-end
-
-Base.show(io::IO, compound::Compound) = print(io, "C$(compound.C)H$(compound.H)O$(compound.O)")
-	
-mass(c::Compound) = 12.011c.C + 1.008c.H + 15.994c.O
-	
-Base.:+(c1::Compound, c2::Compound) = Compound(c1.H+c2.H, c1.C+c2.C, c1.O+c2.O)
-Base.:*(n::Int, c::Compound) = Compound(n*c.H, n*c.C, n*c.O)
+    Base.show(io::IO, compound::Compound) = print(io, "C$(compound.C)H$(compound.H)O$(compound.O)")
+    	
+    mass(c::Compound) = 12.011c.C + 1.008c.H + 15.994c.O
+    	
+    Base.:+(c1::Compound, c2::Compound) = Compound(c1.H+c2.H, c1.C+c2.C, c1.O+c2.O)
+    Base.:*(n::Int, c::Compound) = Compound(n*c.H, n*c.C, n*c.O)
 
 
-function combust(compound::Compound)
-	nH2O = compound.H // 2
-	nCO2 = compound.C
-	return (H20=nH2O, CO2=nCO2)
-end
-```
-"""
+    function combust(compound::Compound)
+    	nH2O = compound.H // 2
+    	nCO2 = compound.C
+    	return (H20=nH2O, CO2=nCO2)
+    end
+    ```
+    """
 end
 
 # ╔═╡ ffafc788-0752-4bb7-a4ad-9d38a55b35c3
-if answ_q5 
-md"""
-```julia
-# A simple struct to represent RGB color components
-struct RGB <: MyColor
-	r::Float64
-	g::Float64
-	b::Float64
+if answ_q5
+    md"""
+    ```julia
+    # A simple struct to represent RGB color components
+    struct RGB <: MyColor
+    	r::Float64
+    	g::Float64
+    	b::Float64
 
-	# Inner constructor to ensure values are clamped to [0.0, 1.0]
-	function RGB(r::Real, g::Real, b::Real)
-		new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
-	end
-end
-
-# make a constructor for when the values are given in [0, 255]
-RGB(r::Integer, g::Integer, b::Integer) = RGB(r/255, g/255, b/255)
-
-# adding colors
-Base.:+(c1::RGB, c2::RGB) = RGB(c1.r+c2.r, c1.g+c2.g, c1.g+c2.g)
-
-# scalar scaling
-Base.:*(a::Real, c::RGB) = RGB(a*c.r, a*c.g, a*c.g)
-	
-struct HSV <: MyColor
-    h::Float64 # Hue in degrees [0, 360)
-    s::Float64 # Saturation [0, 1]
-    v::Float64 # Value/Brightness [0, 1]
-
-    # Inner constructor to clamp values
-    function HSV(h::Real, s::Real, v::Real)
-        # Hue wraps around 360
-        h_clamped = mod(h, 360.0)
-        new(h_clamped, clamp(s, 0.0, 1.0), clamp(v, 0.0, 1.0))
+    	# Inner constructor to ensure values are clamped to [0.0, 1.0]
+    	function RGB(r::Real, g::Real, b::Real)
+    		new(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0))
+    	end
     end
-end
 
-convert(::Type{HSV}, color::RGB) = HSV(rgb_to_hsv(color.r, color.g, color.b)...)
-```
-"""
+    # make a constructor for when the values are given in [0, 255]
+    RGB(r::Integer, g::Integer, b::Integer) = RGB(r/255, g/255, b/255)
+
+    # adding colors
+    Base.:+(c1::RGB, c2::RGB) = RGB(c1.r+c2.r, c1.g+c2.g, c1.g+c2.g)
+
+    # scalar scaling
+    Base.:*(a::Real, c::RGB) = RGB(a*c.r, a*c.g, a*c.g)
+    	
+    struct HSV <: MyColor
+        h::Float64 # Hue in degrees [0, 360)
+        s::Float64 # Saturation [0, 1]
+        v::Float64 # Value/Brightness [0, 1]
+
+        # Inner constructor to clamp values
+        function HSV(h::Real, s::Real, v::Real)
+            # Hue wraps around 360
+            h_clamped = mod(h, 360.0)
+            new(h_clamped, clamp(s, 0.0, 1.0), clamp(v, 0.0, 1.0))
+        end
+    end
+
+    convert(::Type{HSV}, color::RGB) = HSV(rgb_to_hsv(color.r, color.g, color.b)...)
+    ```
+    """
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -961,16 +955,16 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
-PlutoUI = "~0.7.55"
+PlutoUI = "~0.7.63"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.5"
+julia_version = "1.10.11"
 manifest_format = "2.0"
-project_hash = "e358466155272fd49d35add62d34b7cfbd35c574"
+project_hash = "2a36c2c89b3a1562b80690c3711c737bfa07b0c1"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -980,15 +974,13 @@ version = "1.3.2"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
-version = "1.1.2"
+version = "1.1.1"
 
 [[deps.Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
-version = "1.11.0"
 
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
-version = "1.11.0"
 
 [[deps.ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
@@ -1004,7 +996,6 @@ version = "1.1.1+0"
 [[deps.Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
-version = "1.11.0"
 
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
@@ -1013,7 +1004,6 @@ version = "1.6.0"
 
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
-version = "1.11.0"
 
 [[deps.FixedPointNumbers]]
 deps = ["Statistics"]
@@ -1042,7 +1032,6 @@ version = "0.2.5"
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
-version = "1.11.0"
 
 [[deps.JSON]]
 deps = ["Dates", "Mmap", "Parsers", "Unicode"]
@@ -1058,17 +1047,16 @@ version = "0.6.4"
 [[deps.LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "8.6.0+0"
+version = "8.4.0+0"
 
 [[deps.LibGit2]]
 deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
-version = "1.11.0"
 
 [[deps.LibGit2_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
 uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
-version = "1.7.2+0"
+version = "1.6.4+0"
 
 [[deps.LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
@@ -1077,16 +1065,13 @@ version = "1.11.0+1"
 
 [[deps.Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
-version = "1.11.0"
 
 [[deps.LinearAlgebra]]
 deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-version = "1.11.0"
 
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
-version = "1.11.0"
 
 [[deps.MIMEs]]
 git-tree-sha1 = "c64d943587f7187e751162b3b84445bbbd79f691"
@@ -1096,20 +1081,18 @@ version = "1.1.0"
 [[deps.Markdown]]
 deps = ["Base64"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
-version = "1.11.0"
 
 [[deps.MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.6+0"
+version = "2.28.1010+0"
 
 [[deps.Mmap]]
 uuid = "a63ad114-7e13-5084-954f-fe012c677804"
-version = "1.11.0"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2023.12.12"
+version = "2025.12.2"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -1118,7 +1101,7 @@ version = "1.2.0"
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.27+1"
+version = "0.3.23+5"
 
 [[deps.Parsers]]
 deps = ["Dates", "PrecompileTools", "UUIDs"]
@@ -1127,15 +1110,9 @@ uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
 version = "2.8.3"
 
 [[deps.Pkg]]
-deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "Random", "SHA", "TOML", "Tar", "UUIDs", "p7zip_jll"]
+deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.11.0"
-
-    [deps.Pkg.extensions]
-    REPLExt = "REPL"
-
-    [deps.Pkg.weakdeps]
-    REPL = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
+version = "1.10.0"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
@@ -1158,12 +1135,14 @@ version = "1.4.3"
 [[deps.Printf]]
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-version = "1.11.0"
+
+[[deps.REPL]]
+deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
+uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.Random]]
 deps = ["SHA"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
-version = "1.11.0"
 
 [[deps.Reexport]]
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
@@ -1176,19 +1155,24 @@ version = "0.7.0"
 
 [[deps.Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
-version = "1.11.0"
+
+[[deps.Sockets]]
+uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
+
+[[deps.SparseArrays]]
+deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
+uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+version = "1.10.0"
 
 [[deps.Statistics]]
-deps = ["LinearAlgebra"]
-git-tree-sha1 = "ae3bb1eb3bba077cd276bc5cfc337cc65c3075c0"
+deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-version = "1.11.1"
+version = "1.10.0"
 
-    [deps.Statistics.extensions]
-    SparseArraysExt = ["SparseArrays"]
-
-    [deps.Statistics.weakdeps]
-    SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+[[deps.SuiteSparse_jll]]
+deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
+uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
+version = "7.2.1+1"
 
 [[deps.TOML]]
 deps = ["Dates"]
@@ -1203,7 +1187,6 @@ version = "1.10.0"
 [[deps.Test]]
 deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-version = "1.11.0"
 
 [[deps.Tricks]]
 git-tree-sha1 = "6cae795a5a9313bbb4f60683f7263318fc7d1505"
@@ -1218,11 +1201,9 @@ version = "1.5.2"
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
-version = "1.11.0"
 
 [[deps.Unicode]]
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
-version = "1.11.0"
 
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
@@ -1237,12 +1218,12 @@ version = "5.11.0+0"
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.59.0+0"
+version = "1.52.0+1"
 
 [[deps.p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+2"
+version = "17.6.1+0"
 """
 
 # ╔═╡ Cell order:
