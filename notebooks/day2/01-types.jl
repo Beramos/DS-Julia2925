@@ -50,10 +50,12 @@ The type of objects can be assessed using the function `typeof`. For collections
 """
 
 # ╔═╡ c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
-a = 42;
-s = "mice";
-n = 0.9;
-A = [1 2; 3 4];
+begin
+	a = 42
+	s = "mice"
+	n = 0.9
+	A = [1 2; 3 4]
+end;
 
 # ╔═╡ bd994d64-600e-11eb-1ab3-ed6317b7c211
 md"""
@@ -153,11 +155,9 @@ Int <: Number
 
 Int <: AbstractFloat
 
-Integer isa Int
+Integer <: Int
 
 ```
-
-If you are confused by the last statement, read the next section.
 """
 
 # ╔═╡ b31fe65a-4e74-11eb-0414-35f2be687c7f
@@ -180,6 +180,27 @@ If you are confused by the last statement, read the next section.
 
 # ╔═╡ 66343826-6012-11eb-109c-17c7a582cbc8
 
+
+# ╔═╡ 178b82b9-0ef8-4972-8e66-22c349cf0723
+Markdown.MD(
+        Markdown.Admonition("info",
+            "Note",
+            [md"""`isa` can be used to check if the instance of a variable is a (sub)type of certain type.
+             
+             ```julia
+             a=2
+             a isa Number 
+             ``` 
+             makes sense while
+             
+             ```julia
+             Int isa Number # you should use Int <: Number
+             ```
+
+             does not make sense.
+             """]
+        )
+)
 
 # ╔═╡ 3d1db2de-6549-11eb-2649-2d96659813f6
 md"We can check the entire subtree of a type using the function `subtypetree` and is a beautiful example of recursion."
@@ -686,7 +707,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
-PlutoUI = "~0.7.63"
+PlutoUI = "~0.7.83"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -695,7 +716,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.11"
 manifest_format = "2.0"
-project_hash = "dd0baa1a1c3bc4731ec1336cdc6eba39b3801fe3"
+project_hash = "1be208215d3439ec9e5f6cef16697441f848f99e"
 
 [[deps.AbstractPlutoDingetjes]]
 git-tree-sha1 = "6c3913f4e9bdf6ba3c08041a446fb1332716cbc2"
@@ -769,12 +790,6 @@ version = "1.0.0"
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
-[[deps.JSON]]
-deps = ["Dates", "Mmap", "Parsers", "Unicode"]
-git-tree-sha1 = "31e996f0a15c7b280ba9f76636b3ff9e2ae58c9a"
-uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
-version = "0.21.4"
-
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
@@ -784,15 +799,6 @@ version = "0.6.4"
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
 version = "8.4.0+0"
-
-[[deps.LibGit2]]
-deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
-uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
-
-[[deps.LibGit2_jll]]
-deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
-uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
-version = "1.6.4+0"
 
 [[deps.LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
@@ -823,9 +829,6 @@ deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
 version = "2.28.1010+0"
 
-[[deps.Mmap]]
-uuid = "a63ad114-7e13-5084-954f-fe012c677804"
-
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 version = "2025.12.2"
@@ -839,17 +842,6 @@ deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
 version = "0.3.23+5"
 
-[[deps.Parsers]]
-deps = ["Dates", "PrecompileTools", "UUIDs"]
-git-tree-sha1 = "7d2f8f21da5db6a806faf7b9b292296da42b2810"
-uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.8.3"
-
-[[deps.Pkg]]
-deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
-uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.10.0"
-
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "Downloads", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
 git-tree-sha1 = "e189d0623e7ce9c37389bac17e80aac3b0302e75"
@@ -859,10 +851,6 @@ version = "0.7.83"
 [[deps.Printf]]
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-
-[[deps.REPL]]
-deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
-uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.Random]]
 deps = ["SHA"]
@@ -880,9 +868,6 @@ version = "0.7.0"
 [[deps.Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
-[[deps.Sockets]]
-uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
-
 [[deps.SparseArrays]]
 deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
@@ -891,21 +876,6 @@ version = "1.10.0"
 [[deps.Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-version = "1.10.0"
-
-[[deps.SuiteSparse_jll]]
-deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
-uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
-version = "7.2.1+1"
-
-[[deps.TOML]]
-deps = ["Dates"]
-uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-version = "1.0.3"
-
-[[deps.Tar]]
-deps = ["ArgTools", "SHA"]
-uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 version = "1.10.0"
 
 [[deps.SuiteSparse_jll]]
@@ -948,11 +918,6 @@ version = "5.11.0+0"
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
 version = "1.52.0+1"
-
-[[deps.p7zip_jll]]
-deps = ["Artifacts", "Libdl"]
-uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.6.1+0"
 """
 
 # ╔═╡ Cell order:
@@ -979,7 +944,7 @@ version = "17.6.1+0"
 # ╠═ec2ab2be-4e73-11eb-1a22-010439761432
 # ╠═efa205b4-4e73-11eb-1647-e9dcab5f7b7a
 # ╠═f3b5a778-4e73-11eb-1d3c-11ae19713eca
-# ╟─a0cecb24-4e74-11eb-3634-cd8dd628e9ec
+# ╠═a0cecb24-4e74-11eb-3634-cd8dd628e9ec
 # ╟─c232463e-233b-449a-befd-306c7d7100d5
 # ╠═b31fe65a-4e74-11eb-0414-35f2be687c7f
 # ╠═c2ac0c48-4e74-11eb-10b0-91ad620fefcd
@@ -988,6 +953,7 @@ version = "17.6.1+0"
 # ╠═cb066442-4e74-11eb-35e7-ed38d4bd8bbf
 # ╠═ce3d5380-4e74-11eb-3d9d-5f34cbbae118
 # ╟─66343826-6012-11eb-109c-17c7a582cbc8
+# ╟─178b82b9-0ef8-4972-8e66-22c349cf0723
 # ╟─3d1db2de-6549-11eb-2649-2d96659813f6
 # ╠═46eaafee-6549-11eb-2e36-c9e566d3f3ba
 # ╠═6cbd4874-6549-11eb-296e-af4a43d53223
