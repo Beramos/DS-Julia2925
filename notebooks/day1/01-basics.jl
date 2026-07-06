@@ -1182,6 +1182,18 @@ if answ_q7
 	"""
 end
 
+# ╔═╡ 3ee7c045-b846-45b1-81b1-e55d1816d3b6
+if answ_q7
+	md""" 
+	```julia
+	function checkfermat()
+	   args_rand = rand(Int, 4)
+	   checkfermat(args_rand...)
+	end
+	```
+	"""
+end
+
 # ╔═╡ c8151b58-735c-4f16-b410-0c5c88818e6d
 if answ_q8
 	md""" 
@@ -2607,6 +2619,7 @@ version = "1.13.0+0"
 # ╟─da5537b5-88e7-4377-90c6-abbc7eaf6495
 # ╠═b4118bfa-5af8-11eb-0aca-cddef8e191ee
 # ╟─db78af32-b822-49dd-b085-6f51ba6b623f
+# ╟─3ee7c045-b846-45b1-81b1-e55d1816d3b6
 # ╟─f077c390-57fe-11eb-1ad9-31110b3dac39
 # ╟─5f6b3a73-9979-4fdd-b0d0-be43419c6547
 # ╠═87871f34-4ad1-11eb-3903-93e3f63ea14a
