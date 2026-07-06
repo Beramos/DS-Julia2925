@@ -1187,7 +1187,7 @@ if answ_q7
 	md""" 
 	```julia
 	function checkfermat()
-	   args_rand = rand(Int,(1,4))
+	   args_rand = rand(Int, 4)
 	   checkfermat(args_rand...)
 	end
 	```
