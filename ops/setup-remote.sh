@@ -2,7 +2,7 @@
 set -e
 
 # Default values
-JULIA_VERSION="1.12.6"
+JULIA_VERSION="1.10.11"
 SSH_KEY_PATH=""
 DEFAULT_USERNAME="user"
 TEMP_DIR="$(mktemp -d)"
