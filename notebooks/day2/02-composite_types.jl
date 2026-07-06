@@ -505,6 +505,11 @@ md"Luckily there is a trick to computing the product of a tridiagonal matrix and
 # ╔═╡ 711a5574-a7c5-43c6-a8a2-4830361f0071
 md"As you can see in the above function, next to using `a ? b : c` for condensing control flow there is also another option. When we use `a && b`, b will only be evaluated and returned when a is `true`. So you can put any expression you like after the `&&`!"
 
+# ╔═╡ 37305018-bf0f-456e-8331-566bd3a3f589
+md"### Optional reading suggestion: extending Julia interfaces
+
+If you want some more information on how you can extend custom type so that a lot of the functionality `works out of the box`: we suggest this [page in the Julia manual](https://docs.julialang.org/en/v1/manual/interfaces/)"
+
 # ╔═╡ cf146bf4-6177-11eb-1eaa-c35efde57b3e
 md"## Exercises"
 
@@ -1303,7 +1308,7 @@ version = "17.6.1+0"
 # ╠═e3759d4c-5d90-11eb-0bea-bb4247623ec2
 # ╠═07998440-5d91-11eb-1a65-8de428eac89c
 # ╠═e11b0b10-6621-11eb-0bdb-f3719cc92a20
-# ╟─0b8980aa-5d91-11eb-385b-71568ec0e325
+# ╠═0b8980aa-5d91-11eb-385b-71568ec0e325
 # ╠═192d9fd4-5d91-11eb-1cb9-c706aad03480
 # ╠═1fa68c72-5d91-11eb-1102-c18460e92ee6
 # ╟─26a70358-5d91-11eb-0241-699b5dc4783f
@@ -1330,6 +1335,7 @@ version = "17.6.1+0"
 # ╠═276e9af4-5d92-11eb-1399-993570859698
 # ╠═300a8428-5d92-11eb-188b-05d00df4f6a7
 # ╟─711a5574-a7c5-43c6-a8a2-4830361f0071
+# ╟─37305018-bf0f-456e-8331-566bd3a3f589
 # ╟─cf146bf4-6177-11eb-1eaa-c35efde57b3e
 # ╟─c98b4ded-9ca0-46b2-ba00-adf8566e41c3
 # ╠═3ae60e88-5d94-11eb-0c50-1d74ea104758

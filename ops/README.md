@@ -30,12 +30,12 @@ and these security policies,
 
 -h, --help Show help message
 -k, --ssh-key PATH Path to public SSH key to add to the new user (optional)
--v, --julia-version VER Julia version to install (default: 1.11.5)
+-v, --julia-version VER Julia version to install (default: 1.12.6)
 **Arguments:**
 
 SERVER_ADDRESS Address of the server to connect to (required)
 NEW_USERNAME Username to create (default: user)
-Example: ``` ./setup-remote.sh -k ~/.ssh/id_rsa.pub -v 1.11.5 example.com juliauser ./setup-remote.sh example.com ```
+Example: ``` ./setup-remote.sh -k ~/.ssh/id_rsa.pub -v 1.12.6 example.com juliauser ./setup-remote.sh example.com ```
 
 **What it does:**
 

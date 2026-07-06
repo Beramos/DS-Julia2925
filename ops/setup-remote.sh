@@ -2,7 +2,7 @@
 set -e
 
 # Default values
-JULIA_VERSION="1.11.5"
+JULIA_VERSION="1.12.6"
 SSH_KEY_PATH=""
 DEFAULT_USERNAME="user"
 TEMP_DIR="$(mktemp -d)"
@@ -30,7 +30,7 @@ show_help() {
     echo "  NEW_USERNAME               Username to create (default: $DEFAULT_USERNAME)"
     echo ""
     echo "Example:"
-    echo "  $0 -k ~/.ssh/id_rsa.pub -v 1.11.5 example.com newuser"
+    echo "  $0 -k ~/.ssh/id_rsa.pub -v 1.12.6 example.com newuser"
     echo "  $0 example.com             # Creates default user '$DEFAULT_USERNAME'"
 }
 

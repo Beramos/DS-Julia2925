@@ -1,5 +1,5 @@
 # Julia2925: learn a fast and intuitive programming language in two workdays. 
-This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/122f756b-8a04-4713-9d6e-d8fc56eea628) hosted at Ghent University.
+This page contains the Pluto notebooks accompanying the [Julia2925 doctoral schools](https://event.ugent.be/registration/event/2220f502-7e96-4cdf-a8c2-6fe252cacc85) hosted at Ghent University.
 
 ![Logo Doctoral schools](/img/doctoralschoolsprofiel_hq_rgb_web.png)
 ![Logo Flanders](/img/logo_flanders+richtingmorgen.png)
@@ -14,11 +14,13 @@ There are two ways to download the notebooks.
 
 ### Installing Julia
 
-There are multiple ways to install Julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
+For *windows users*, if you have the choice to use windows subsystem for linux use it, it will make things easier.
+
+There are multiple ways to install julia on your system: install via your package manager, download the binaries, or use the `Juliaup` installation manager.
 
 We *strongly* recommend the `Juliaup` installation manager, it will make your life a lot easier.
 
-In the current version of the course we will be using the latest stable release `1.11.5`.
+In the current version of the course we will be using the Long-term Support Release `1.10.11`.
 
 #### using the binaries
 
@@ -29,8 +31,8 @@ In the current version of the course we will be using the latest stable release 
 
 1. Follow the [installation instructions](https://github.com/JuliaLang/juliaup#installation) for your specific platform.
 2. Check out the [using Juliaup](https://github.com/JuliaLang/juliaup?tab=readme-ov-file#using-juliaup) details for how to launch Juliaup and execute some commands for your specific system.
-3. Install version `1.11.5`: `juliaup add 1.11.5`
-4. Make this version the default version: `juliaup default 1.11.5`.
+3. Install version lts version `1.10.11`: `juliaup add lts`
+4. Make this version the default version: `juliaup default lts`.
 
 ### Starting Julia
 For *windows* users:
@@ -52,6 +54,26 @@ Open the Julia REPL using any of the methods described in the previous section.
 4. In the slot "open a notebook" navigate to the notebook by typing the location of the notebooks on your computer (e.g. `C:/Users\jef\notebooks\day1\01-basics.jl` or `/home/jef/notebooks/day1/01-basics.jl` for Linux users). 
 
 This should open a browser window with the Pluto notebooks. The first time it can take a while (up to 10 minutes) since it is installing all the dependencies.
+
+## Tips & Common problems
+Pluto notebooks create and run the code in a separate environment, this sometimes creates an issue with the Plots library not being installed properly and crashing the notebooks importing this library (e.g. *01-basics.jl*). If this occurs the best fix is to already install `Plots` in the environment running the Pluto server and forcing Pluto to use that environment. 
+
+```julia
+import Pkg; 
+Pkg.activate("."); # if this line fails replace with Pkg.instantiate(); 
+Pkg.add("Plots"); 
+Pkg.add("Pluto");
+
+using Pluto; Pluto.run()
+```
+
+Open the notebook and before running the notebook add a new cell to load this environment,
+
+```julia
+import Pkg; Pkg.activate(".");
+```
+
+This should resolve problems with the Plots package not being installed.
 
 ## Contact
 UGent Doctoral School member and Julia questions? Send one of us an email!
