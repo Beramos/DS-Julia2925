@@ -25,7 +25,7 @@ using Plots, RecipesBase
 # ╔═╡ 347583c6-9ed6-42af-b760-733585dbb7a6
 # edit the code below to set your name and UGent username
 
-student = (name = "Jimmy Janssen", email = "Jimmy.Janssen@UGent.be");
+student = (name="Jimmy Janssen", email="Jimmy.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -43,11 +43,11 @@ Submission by: **_$(student.name)_**
 
 # ╔═╡ 2ff01603-4322-4571-b172-20b9952ff4ff
 if shape_type == "circles"
-	md"Circles are given as a tuple of type `(x, y, R)` with (`x`, `y`) its centre and `R` the radius."
+    md"Circles are given as a tuple of type `(x, y, R)` with (`x`, `y`) its centre and `R` the radius."
 elseif shape_type == "rectangles"
 	md"Rectangles are represented as (x, y, w, h) with (`x`, `y`) its left bottom corner and (`w`, `h`) the width and height."
 elseif shape_type == "triangles"
-	md"Triangles are represented as `(x1, y1, x2, y2, x3 y3)`, the three coordinates of the corners."
+    md"Triangles are represented as `(x1, y1, x2, y2, x3 y3)`, the three coordinates of the corners."
 end
 
 # ╔═╡ 7470865e-87e2-4e40-8cb5-e27b516ce976
@@ -183,10 +183,10 @@ md"## Data generation ⚙️"
 
 # ╔═╡ 57f8656f-7c84-47cc-9da1-62c3e74c7769
 begin
-	Random.seed!(12)
+    Random.seed!(12)
 
-	n = 100
-	Rmax = 10
+    n = 100
+    Rmax = 10
 
 	circles_data = [(x=100rand(), y=100rand(), r=Rmax * rand()) for _ in 1:n]
 	rectangles_data = [(x=100rand(), y=100rand(), w=5rand()+5, h=5rand()+5) for _ in 1:n]
@@ -195,19 +195,19 @@ end;
 
 # ╔═╡ b7e28115-8901-4972-b37f-9b5869735b50
 begin
-	hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]));
-	
-	md"""
-	# Project 2: Fluky fields 🌱
-	
-	As a new year's resolution, Daisy would like to [soften her driveway](https://omgeving.vlaanderen.be/nl/vlaanderen-breekt-uit-homepagina) and grow a fantastical front garden. As a founding member of the [anti-lawn movement](https://www.homesandgardens.com/gardens/what-is-the-anti-lawn-movement), Daisy is not a fan of perfectly mown lawns and wants to try something new, *fluky fields*! The idea is so simple yet genius, generate some random geometric shapes and sow accordingly. 
-	
-	![Dall-E's interpretation of the fluky fields](https://i.imgur.com/IHtBv9e.png)
-	
-	In this synthesis exercise, you will help Daisy manage her fields. The $n fields are of peculiar shapes: they are all in the shape of $(shape_type)! These little fields are part of a big piece of land that extends from 0 to 100 in both the x- and y-direction.
-	
-	> **Note:** you can choose the flavour of this exercise by picking the shapes of the fields, `circles` and `rectangles` are pretty easy, while `triangles` will put your geometry skills to the test!
-	"""
+    hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]));
+
+    md"""
+     # Project 2: Fluky fields 🌱
+
+     As a new year's resolution, Daisy would like to [soften her driveway](https://omgeving.vlaanderen.be/nl/vlaanderen-breekt-uit-homepagina) and grow a fantastical front garden. As a founding member of the [anti-lawn movement](https://www.homesandgardens.com/gardens/what-is-the-anti-lawn-movement), Daisy is not a fan of perfectly mown lawns and wants to try something new, *fluky fields*! The idea is so simple yet genius, generate some random geometric shapes and sow accordingly. 
+
+     ![Dall-E's interpretation of the fluky fields](https://i.imgur.com/IHtBv9e.png)
+
+     In this synthesis exercise, you will help Daisy manage her fields. The $n fields are of peculiar shapes: they are all in the shape of $(shape_type)! These little fields are part of a big piece of land that extends from 0 to 100 in both the x- and y-direction.
+
+     > **Note:** you can choose the flavour of this exercise by picking the shapes of the fields, `circles` and `rectangles` are pretty easy, while `triangles` will put your geometry skills to the test!
+     """
 end
 
 # ╔═╡ 8b19a9e4-5701-4e45-85a6-8e9d3b93563f

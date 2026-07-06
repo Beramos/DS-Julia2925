@@ -795,15 +795,21 @@ md"""
 
 Integrating for dummies. Compute the Riemann sum **without** making use of a for-loop.
 
-Riemann approximates the integration of a function in the interval [a, b],
-		
-$$\int_a^b f(x)\, dx \approx \sum_{i=1}^n f(x_i) \,\Delta x$$
+The Riemann sum approximates the integral of a function $f$ over the interval $[a, b]$,
 
-which is the sum of the function $f(x)$ evaluated over an array of x-values in the interval [a,b] multiplied by the $\Delta x$ which is,
-		
-$$\Delta x = \cfrac{(b-a)}{n}$$
+$$\int_a^b f(x)\, dx \approx \sum_{i=1}^n f(x_i)\, \Delta x\,,$$
 
-Complete the function `riemannsum(f, a, b; n=100)` where the arguments are the function to integrate (f) the boundaries of the interval a, b and the number of bins with a default value of 100, n.
+by summing $f$ evaluated at $n$ equally-spaced points and multiplying by the bin width
+
+$$\Delta x = \cfrac{b-a}{n}\,.$$
+
+The sample points are the $n$ **left edges** of the bins,
+
+$$x_i = a + (i-1)\,\Delta x \qquad \text{for } i = 1, \dots, n\,,$$
+
+so the array runs $a,\ a+\Delta x,\ \dots,\ b-\Delta x$. Note it has exactly $n$ elements and does **not** include the right endpoint $b$ — including it would give $n+1$ points and over-count the sum.
+
+Complete the function `riemannsum(f, a, b; n=100)`, where the arguments are the function to integrate `f`, the interval boundaries `a` and `b`, and the number of bins `n` (default 100).
 """
 
 # ╔═╡ ee9069e2-63a7-11eb-12b9-97ae270506f4

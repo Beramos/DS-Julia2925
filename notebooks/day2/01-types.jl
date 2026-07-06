@@ -22,7 +22,7 @@ using PlutoUI; TableOfContents()
 # ╔═╡ e9576706-600e-11eb-1e10-e3bac02a254e
 # edit the code below to set your name and UGent username
 
-student = (name = "Hanne Janssen", email = "Hanne.Janssen@UGent.be");
+student = (name="Hanne Janssen", email="Hanne.Janssen@UGent.be");
 
 # press the ▶ button in the bottom right of this cell to run your edits
 # or use Shift+Enter
@@ -50,7 +50,10 @@ The type of objects can be assessed using the function `typeof`. For collections
 """
 
 # ╔═╡ c0bfdf9e-4e73-11eb-3962-0b3c5d5424d7
-a = 42; s = "mice"; n = 0.9; A = [1 2; 3 4];
+a = 42;
+s = "mice";
+n = 0.9;
+A = [1 2; 3 4];
 
 # ╔═╡ bd994d64-600e-11eb-1ab3-ed6317b7c211
 md"""
@@ -184,11 +187,11 @@ md"We can check the entire subtree of a type using the function `subtypetree` an
 
 # ╔═╡ 46eaafee-6549-11eb-2e36-c9e566d3f3ba
 function subtypetree(roottype, level=1)
-	level == 1 && println(roottype)
-	for s in subtypes(roottype)
-			println(" "^((level-1)*4) * string(s))
-			subtypetree(s, level + 1)
-	end
+    level == 1 && println(roottype)
+    for s in subtypes(roottype)
+        println(" "^((level-1)*4) * string(s))
+        subtypetree(s, level + 1)
+    end
 end
 
 # ╔═╡ 6cbd4874-6549-11eb-296e-af4a43d53223
@@ -276,17 +279,17 @@ When a function is run for the first time with a particular combination of input
 
 # ╔═╡ 63166056-6014-11eb-09c4-e5a44d37095f
 md"""
-		Run the following examples in the terminal using `@time`.
-		
-		```julia
-		@time mynewfun(1)  # returns an integer
+  Run the following examples in the terminal using `@time`.
 
-		@time mynewfun(1.0)  # returns a Float64
+  ```julia
+  @time mynewfun(1)  # returns an integer
 
-		@time mynewfun(A)
+  @time mynewfun(1.0)  # returns a Float64
 
-		```
-		"""
+  @time mynewfun(A)
+
+  ```
+  """
 
 # ╔═╡ 2dff8c88-4e75-11eb-050b-7152e82ac10d
 mynewfun(x) = x^2 .+ x
@@ -311,9 +314,9 @@ methods(sum)
 
 # ╔═╡ 9ed7cb5a-6014-11eb-0ae8-eba8d77867a2
 md"""
-		
-		check how many methods there are associated with the humble multiplication operator `*`. Just for your info, you might want to print this one to the terminal.
-		"""
+
+  check how many methods there are associated with the humble multiplication operator `*`. Just for your info, you might want to print this one to the terminal.
+  """
 
 # ╔═╡ b18d0532-4e76-11eb-2e8a-2bee580533cc
 
@@ -326,24 +329,24 @@ md"The arguments a function can take can be restricted using the `::`-operator. 
 
 # ╔═╡ 002fdec6-6015-11eb-0e89-c7d020826cf9
 md"""
-		
-		Can you explain the reasoning behind the following code? How does it process numbers? What does it do with strings?"
-			
-		```julia
-		methods(twice)
-		twice(10) # Int	
-		twice(10.0)  # Float64, also a Number but not an Int	
-		twice("A griffin! ")  # strings mean something else		
-		
-		```
-		
-		
-		"""
+
+  Can you explain the reasoning behind the following code? How does it process numbers? What does it do with strings?"
+  	
+  ```julia
+  methods(twice)
+  twice(10) # Int	
+  twice(10.0)  # Float64, also a Number but not an Int	
+  twice("A griffin! ")  # strings mean something else		
+
+  ```
+
+
+  """
 
 # ╔═╡ db1bb4c8-4e76-11eb-2756-3f6ce778acc0
 begin
-	twice(x::Number) = 2x;
-	twice(x::AbstractString) = x * x;
+    twice(x::Number) = 2x;
+    twice(x::AbstractString) = x * x;
 end
 
 # ╔═╡ ff755bf8-4e76-11eb-205f-d52529ae50ed
@@ -364,45 +367,45 @@ So, if we would define a function `twice(x::Float64)`, it would be chosen to pro
 
 # ╔═╡ e1a88a70-4e76-11eb-2486-e1d2f4211792
 begin
-	f(x, y) = "No life forms present";
-	f(x::T, y::T) where {T} = x * y;  # short for {T <: Any}
-	f(x::Integer, y::Real) = 2x + y;
-	f(x::Int, y::Int) = 2x + 2y;
-	f(x::Integer, y::Float64) = x + 2y;
-	f(x::Float64, y::Real) = x - y;
-	f(x::Float64, y::Float64) = 2x - y;
+    f(x, y) = "No life forms present";
+    f(x::T, y::T) where {T} = x * y;  # short for {T <: Any}
+    f(x::Integer, y::Real) = 2x + y;
+    f(x::Int, y::Int) = 2x + 2y;
+    f(x::Integer, y::Float64) = x + 2y;
+    f(x::Float64, y::Real) = x - y;
+    f(x::Float64, y::Float64) = 2x - y;
 end
 
 # ╔═╡ 622b8382-6015-11eb-17fb-3352c73a0d10
 md"""
-		
-		Predict the outcome of the following statements.
-			
-		```julia
-		f(1, 2.0)
 
-		f(1.0, 2)
+  Predict the outcome of the following statements.
+  	
+  ```julia
+  f(1, 2.0)
 
-		f(Int8(1), Int8(2))
+  f(1.0, 2)
 
-		f(1.0, 2.0)
+  f(Int8(1), Int8(2))
 
-		f("one", 2)
+  f(1.0, 2.0)
 
-		f("one", "two")
+  f("one", 2)
 
-		f(1, Float32(2.0))
+  f("one", "two")
 
-		f(1, 2)
+  f(1, Float32(2.0))
 
-		f([1 1; 1 1], [2.0 2.0; 2.0 2.0])
+  f(1, 2)
 
-		f([1 1; 1 1], [2 2; 2 2])	
+  f([1 1; 1 1], [2.0 2.0; 2.0 2.0])
 
-		```
-		
-		
-		"""
+  f([1 1; 1 1], [2 2; 2 2])	
+
+  ```
+
+
+  """
 
 # ╔═╡ 76fe9fc4-4e77-11eb-3bc7-2dfbdff8dfc8
 
@@ -478,42 +481,42 @@ md"First we define the abstract type tree structure,"
 
 # ╔═╡ b487a776-4e7e-11eb-291b-e900e6e1a2f6
 begin
-	abstract type Mohs end
-	
-	
-	abstract type Diamond <: Mohs end
-	abstract type Corundum <: Mohs end
-	abstract type Topaz <: Mohs end
-	abstract type Quartz <: Mohs end
-	abstract type Orthoclase <: Mohs end
-	abstract type Apatite <: Mohs end
-	abstract type Fluorite <: Mohs end
-	abstract type Calcite <: Mohs end
-	abstract type Gypsum <: Mohs end
-	abstract type Talc <: Mohs end
+    abstract type Mohs end
+
+
+    abstract type Diamond <: Mohs end
+    abstract type Corundum <: Mohs end
+    abstract type Topaz <: Mohs end
+    abstract type Quartz <: Mohs end
+    abstract type Orthoclase <: Mohs end
+    abstract type Apatite <: Mohs end
+    abstract type Fluorite <: Mohs end
+    abstract type Calcite <: Mohs end
+    abstract type Gypsum <: Mohs end
+    abstract type Talc <: Mohs end
 end
 
 # ╔═╡ 0884f752-6018-11eb-2eb3-d1cd317dceb3
 md"You can see, it is a pretty flat hierarchy"
 
 # ╔═╡ 24588124-6018-11eb-24d1-f9c7759f4c8f
-subtypetree(Mohs)  
+subtypetree(Mohs)
 
 # ╔═╡ 443ecf72-6018-11eb-1a7a-e75e9596e4bd
 md"Next, let us define a function `mohs_scale` that dispatches on the different abstract types (minerals) and returns a hardness value"
 
 # ╔═╡ 1aea83a8-4e7f-11eb-2d06-c3e550c4e1b9
 begin
-	mohs_scale(::Type{Diamond}) = 10
-	mohs_scale(::Type{Corundum}) = 9
-	mohs_scale(::Type{Topaz}) = 8
-	mohs_scale(::Type{Quartz}) = 7
-	mohs_scale(::Type{Orthoclase}) = 6
-	mohs_scale(::Type{Apatite}) = 5
-	mohs_scale(::Type{Fluorite}) = 4
-	mohs_scale(::Type{Calcite}) = 3
-	mohs_scale(::Type{Gypsum}) = 2
-	mohs_scale(::Type{Talc}) = 1
+    mohs_scale(::Type{Diamond}) = 10
+    mohs_scale(::Type{Corundum}) = 9
+    mohs_scale(::Type{Topaz}) = 8
+    mohs_scale(::Type{Quartz}) = 7
+    mohs_scale(::Type{Orthoclase}) = 6
+    mohs_scale(::Type{Apatite}) = 5
+    mohs_scale(::Type{Fluorite}) = 4
+    mohs_scale(::Type{Calcite}) = 3
+    mohs_scale(::Type{Gypsum}) = 2
+    mohs_scale(::Type{Talc}) = 1
 end
 
 # ╔═╡ 8b20b98e-6c49-4215-9aa4-673a1cde6002
@@ -528,8 +531,8 @@ but in this example the variable `t` is unused so you can leave it out.
 
 # ╔═╡ 70390e06-6018-11eb-3bd8-97ff84985261
 begin
-	💎 = Diamond
-	🔶 = Topaz
+    💎 = Diamond
+    🔶 = Topaz
 end;
 
 # ╔═╡ 9b4cad6e-6018-11eb-0e41-2fea9c9219ed
@@ -588,12 +591,12 @@ We can easily implement the rock-paper-scissors rules using types.
 
 # ╔═╡ 99c4f3c8-4e7c-11eb-3d4a-33ba8d495eb2
 begin
-	abstract type Hand end
-	
-	
-	abstract type Rock <: Hand end
-	abstract type Paper <: Hand end
-	abstract type Scissors <: Hand end
+    abstract type Hand end
+
+
+    abstract type Rock <: Hand end
+    abstract type Paper <: Hand end
+    abstract type Scissors <: Hand end
 end
 
 # ╔═╡ cba6d4cc-5b03-11eb-265d-3f08117b0e8d
@@ -601,13 +604,13 @@ md"Now we implement a function to play one hand against an opponent's hand."
 
 # ╔═╡ d913cd92-4e7c-11eb-11e1-3d7539af7fed
 begin
-	play(h1::Type{Paper}, h2::Type{Rock}) = 1
-	play(h1::Type{Rock}, h2::Type{Scissors}) = 1
-	play(h1::Type{Scissors}, h2::Type{Paper}) = 1
-	
-	# this captures both when same inputs are given and
-	# when the first person looses
-	play(h1::Type{<:Hand}, h2::Type{<:Hand}) = h1 == h2 ? 0 : -1
+    play(h1::Type{Paper}, h2::Type{Rock}) = 1
+    play(h1::Type{Rock}, h2::Type{Scissors}) = 1
+    play(h1::Type{Scissors}, h2::Type{Paper}) = 1
+
+    # this captures both when same inputs are given and
+    # when the first person looses
+    play(h1::Type{<:Hand}, h2::Type{<:Hand}) = h1 == h2 ? 0 : -1
 end
 
 # ╔═╡ 4f107d88-4e7d-11eb-3e49-f54ecf5163da
@@ -649,29 +652,32 @@ If you would like to take a look at the answers, you can do so by checking the b
 
 # ╔═╡ 9a33c306-653c-11eb-3373-01e90d12b246
 if answ_q1 == true
-	md"""
-	```Julia
-	sumofbunchofnumbers(bunchofnumbers) = parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
-	```
-	"""
+    md"""
+     ```Julia
+     sumofbunchofnumbers(bunchofnumbers) = parse.(Float64, split(rstrip(bunchofnumbers), ", ")) |> sum
+     ```
+     """
 end
 
 # ╔═╡ 3cf6dffd-d91e-465a-94bb-0ffe6b5152aa
 if answ_q2 == true
-	md"""
-	```Julia
-	abstract type Lizard <: Hand end
-	abstract type Spock <: Hand end
-	
-	play(h1::Type{Paper}, h2::Type{Spock}) = 1
-	play(h1::Type{Rock}, h2::Type{Lizard}) = 1
-	play(h1::Type{Lizard}, h2::Type{Paper}) = 1
-	play(h1::Type{Lizard}, h2::Type{Spock}) = 1
-	play(h1::Type{Spock}, h2::Type{Scissors}) = 1
-	play(h1::Type{Spock}, h2::Type{Rock}) = 1
-	play(h1::Type{Scissors}, h2::Type{Lizard}) = 1
-	```
-	"""
+    md"""
+     ```Julia
+     abstract type Lizard <: Hand end
+     abstract type Spock <: Hand end
+
+     play(h1::Type{Paper}, h2::Type{Rock}) = 1
+     play(h1::Type{Paper}, h2::Type{Spock}) = 1
+     play(h1::Type{Rock}, h2::Type{Scissors}) = 1
+     play(h1::Type{Rock}, h2::Type{Lizard}) = 1
+     play(h1::Type{Scissors}, h2::Type{Paper}) = 1
+     play(h1::Type{Scissors}, h2::Type{Lizard}) = 1
+     play(h1::Type{Lizard}, h2::Type{Spock}) = 1
+     play(h1::Type{Lizard}, h2::Type{Paper}) = 1
+     play(h1::Type{Spock}, h2::Type{Scissors}) = 1
+     play(h1::Type{Spock}, h2::Type{Rock}) = 1
+     ```
+     """
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -692,10 +698,9 @@ manifest_format = "2.0"
 project_hash = "dd0baa1a1c3bc4731ec1336cdc6eba39b3801fe3"
 
 [[deps.AbstractPlutoDingetjes]]
-deps = ["Pkg"]
-git-tree-sha1 = "6e1d2a35f2f90a4bc7c2ed98079b2ba09c35b83a"
+git-tree-sha1 = "6c3913f4e9bdf6ba3c08041a446fb1332716cbc2"
 uuid = "6e696c72-6542-2067-7265-42206c756150"
-version = "1.3.2"
+version = "1.4.0"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -709,9 +714,15 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
 [[deps.ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
-git-tree-sha1 = "b10d0b65641d57b8b4d5e234446582de5047050d"
+git-tree-sha1 = "67e11ee83a43eb71ddc950302c53bf33f0690dfe"
 uuid = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
-version = "0.11.5"
+version = "0.12.1"
+
+    [deps.ColorTypes.extensions]
+    StyledStringsExt = "StyledStrings"
+
+    [deps.ColorTypes.weakdeps]
+    StyledStrings = "f489334b-da3d-4c2e-b8f0-e476e12c162b"
 
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -731,10 +742,10 @@ version = "1.6.0"
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[deps.FixedPointNumbers]]
-deps = ["Statistics"]
-git-tree-sha1 = "05882d6995ae5c12bb5f36dd2ed3f61c98cbb172"
+deps = ["Random", "Statistics"]
+git-tree-sha1 = "59af96b98217c6ef4ae0dfe065ac7c20831d1a84"
 uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
-version = "0.8.5"
+version = "0.8.6"
 
 [[deps.Hyperscript]]
 deps = ["Test"]
@@ -744,15 +755,15 @@ version = "0.0.5"
 
 [[deps.HypertextLiteral]]
 deps = ["Tricks"]
-git-tree-sha1 = "7134810b1afce04bbc1045ca1985fbe81ce17653"
+git-tree-sha1 = "d1a86724f81bcd184a38fd284ce183ec067d71a0"
 uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
-version = "0.9.5"
+version = "1.0.0"
 
 [[deps.IOCapture]]
 deps = ["Logging", "Random"]
-git-tree-sha1 = "b6d6bfdd7ce25b0f9b2f6b3dd56b2673a66c8770"
+git-tree-sha1 = "0ee181ec08df7d7c911901ea38baf16f755114dc"
 uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
-version = "0.2.5"
+version = "1.0.0"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -840,22 +851,10 @@ uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 version = "1.10.0"
 
 [[deps.PlutoUI]]
-deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
-git-tree-sha1 = "3876f0ab0390136ae0b5e3f064a109b87fa1e56e"
+deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "Downloads", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
+git-tree-sha1 = "e189d0623e7ce9c37389bac17e80aac3b0302e75"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-version = "0.7.63"
-
-[[deps.PrecompileTools]]
-deps = ["Preferences"]
-git-tree-sha1 = "5aa36f7049a63a1528fe8f7c3f2113413ffd4e1f"
-uuid = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
-version = "1.2.1"
-
-[[deps.Preferences]]
-deps = ["TOML"]
-git-tree-sha1 = "9306f6085165d270f7e3db02af26a400d580f5c6"
-uuid = "21216c6a-2e73-6563-6e65-726566657250"
-version = "1.4.3"
+version = "0.7.83"
 
 [[deps.Printf]]
 deps = ["Unicode"]
@@ -909,19 +908,24 @@ deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 version = "1.10.0"
 
+[[deps.SuiteSparse_jll]]
+deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
+uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
+version = "7.2.1+1"
+
 [[deps.Test]]
 deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[deps.Tricks]]
-git-tree-sha1 = "6cae795a5a9313bbb4f60683f7263318fc7d1505"
+git-tree-sha1 = "311349fd1c93a31f783f977a71e8b062a57d4101"
 uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
-version = "0.1.10"
+version = "0.1.13"
 
 [[deps.URIs]]
-git-tree-sha1 = "cbbebadbcc76c5ca1cc4b4f3b0614b3e603b5000"
+git-tree-sha1 = "bef26fb046d031353ef97a82e3fdb6afe7f21b1a"
 uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
-version = "1.5.2"
+version = "1.6.1"
 
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]
