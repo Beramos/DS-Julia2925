@@ -1156,7 +1156,7 @@ if answ_q3 == true
      		w[i] = i
      		w[end-i+1] = i
      	end
-     	w ./= sum(w)
+     	w ./= sum(w) # equals w = w./sum(w)
      	return w
      end	
 
@@ -1240,7 +1240,8 @@ if answ_q7 == true
      Gx = [1 0 -1; 2 0 -2; 1 0 -1]
      Gy = [1 2 1; 0 0 0; -1 -2 -1]
      function edge_detection(M)
-     	M = M .|> Gray .|> Float64
+     	M = M .|> Gray .|> Float64 # say hi to the pipeline operator 👋
+         # equalent to M = Float64.(Gray.(M))
      	return sqrt.(convolve_2d(M, Gx).^2 + convolve_2d(M, Gy).^2) .|> Gray
      end
      ```
