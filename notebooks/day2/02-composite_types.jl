@@ -141,6 +141,9 @@ Point(1, 2.0)
 # ╔═╡ ecc14f96-5d8f-11eb-2b18-cb23fad26b6e
 Point(1.2)
 
+# ╔═╡ daa74765-375d-4677-bfbe-e30a6f9bf864
+
+
 # ╔═╡ a4a1cb18-5d90-11eb-08ee-8570368a056b
 struct Squares
     count::Int
@@ -487,6 +490,47 @@ md"I remember there is a fancy formula to compute the sum of squared natural num
 
 # ╔═╡ fb87e8ff-9af5-4da2-baf0-f3ced9b2c128
 md"(OK, there is no difference, this is become the Julia compiler has become intelligent enough to compile away the for-loop.)"
+
+# ╔═╡ 7e9f77c0-4f0a-46ac-9e16-333902097805
+md"""
+
+## Outer vs. Inner constructors
+
+**Outer constructors** are plain functions with the type's name that just call the default constructor (or another constructor) after doing some argument massaging. Use them when:
+
+- You want convenience methods/different argument signatures (e.g. building a `Point` from a tuple, or defaulting some fields)
+- No invariant enforcement is needed — you're just adding flexibility on top of the default constructor
+- You want dispatch on argument types to pick different construction logic
+
+```julia
+struct Point{T}
+    x::T
+    y::T
+end
+
+Point(x) = Point(x, x)  # outer constructor, convenience
+```
+
+**Inner constructors** are defined inside the `struct` block. Use them when you need to:
+
+- **Enforce invariants** at construction time (validation) — since defining any inner constructor disables the default one, you force all construction through your checks
+- **Control type parameters**, e.g. compute/constrain `T` before calling `new`
+- Do something with `new` that isn't just "assign fields directly" (e.g. self-referential structures, circular refs)
+
+```julia
+struct Interval{T<:Real}
+    lo::T
+    hi::T
+    function Interval{T}(lo, hi) where T
+        lo <= hi || error("lo must be <= hi")
+        new(lo, hi)
+    end
+end
+```
+
+**Rule of thumb**: if you need to guarantee something about the fields is always true (validation, normalization, type constraints), use an inner constructor — it's the only place `new` is available and the only way to suppress the default constructor. If you're just adding convenient ways to call construction without changing what's ultimately stored, use outer constructors — keep the struct body itself minimal and put ergonomics outside.
+
+"""
 
 # ╔═╡ 579e3828-5d91-11eb-1d33-b94628d61fc0
 md"""
@@ -1299,6 +1343,7 @@ version = "17.6.1+0"
 # ╠═2a224fde-5d90-11eb-1c46-3fd248350914
 # ╠═2c937298-5d90-11eb-06e6-ab70b9d3701e
 # ╟─2efe030e-5d90-11eb-38ae-092222d3a8d4
+# ╠═daa74765-375d-4677-bfbe-e30a6f9bf864
 # ╟─46df4eb0-5d90-11eb-1fdf-f34a7bcb7191
 # ╠═a4a1cb18-5d90-11eb-08ee-8570368a056b
 # ╟─aca1c930-5d90-11eb-29d9-954e097bbe3b
@@ -1318,7 +1363,8 @@ version = "17.6.1+0"
 # ╠═4cb68744-5d91-11eb-2b3e-e7df55888c93
 # ╠═e99af5c0-6621-11eb-058b-45c3719930d0
 # ╟─fb87e8ff-9af5-4da2-baf0-f3ced9b2c128
-# ╟─579e3828-5d91-11eb-1d33-b94628d61fc0
+# ╟─7e9f77c0-4f0a-46ac-9e16-333902097805
+# ╠═579e3828-5d91-11eb-1d33-b94628d61fc0
 # ╠═e9a99a00-5d91-11eb-2c50-8be452cab83f
 # ╠═ec62c35c-5d91-11eb-3773-b9385f312f7f
 # ╠═efb0b460-5d91-11eb-2534-496df689dc60
