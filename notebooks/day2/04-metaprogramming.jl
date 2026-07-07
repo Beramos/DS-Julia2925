@@ -253,6 +253,23 @@ We can see that the `"Mr. Bond"` literal has been interpolated into the expressi
 # ╔═╡ 536addec-5e61-11eb-1a9d-d7f2c190d6c2
 @macroexpand @sayhello("Mr. Bond")
 
+# ╔═╡ a2bfc639-bbc8-4e34-ba92-df62689457fd
+md"You might have noticed the use of `$`, this is called variable interpolation. You need it ot inject the value of argument when this macro is build in. To exemplify"
+
+# ╔═╡ 4d6bb5c2-c72e-4ac4-a3d2-6294b94976d8
+macro sayhello2(name)
+	return :( println("Hello, ", name) )
+end
+
+# ╔═╡ 696992e6-3a8d-4cc7-b97f-476283fa73c5
+name = "Stubborn Dictator"
+
+# ╔═╡ a4c47eb9-8b98-48b6-afb8-ef43d575d600
+@sayhello2("Frida")
+
+# ╔═╡ df6307bf-011a-4e61-8349-766694b21b94
+@macroexpand @sayhello2("Mr. Bond")
+
 # ╔═╡ d1730db6-eb2d-4233-b0a0-bdd84afef88f
 md"""
 !!! note 
@@ -282,11 +299,11 @@ end
 # ╔═╡ f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
 md"""Note that the computation of `message` is compiled away if we expand the macro!"""
 
-# ╔═╡ 01feeca0-5e63-11eb-11a0-1b66a92127d1
-ex_twostep = @macroexpand @twostep :(1, 2, 3)
+# ╔═╡ 0a0eb593-c71a-4cb7-bd6a-5f1a8ce72910
+@twostep "Ed", "Edd", "Eddy"
 
-# ╔═╡ f1969888-5e65-11eb-18a3-879d2f87b447
-dump(ex_twostep)
+# ╔═╡ 01feeca0-5e63-11eb-11a0-1b66a92127d1
+@macroexpand @twostep "Ed", "Edd", "Eddy"
 
 # ╔═╡ da275ff1-b3d9-4a91-b03a-914878555418
 md"If you need another example, check out the code below that is generated using the `@elapsed` macro: a functionality that lets you time an expression by injecting `time_ns()` before and after the expression.
@@ -373,11 +390,20 @@ it is printed in the message body instead of the failing expression. You can ins
 of a macro expansion with `@macroexpand`.
 """
 
+# ╔═╡ bee1a0e6-7afd-41c8-80e7-a5b16a817cae
+a="apple"; b="pear";
+
 # ╔═╡ 4750ce04-5e68-11eb-237e-3fed9eb1f4c5
 @macroexpand @assert a == b
 
+# ╔═╡ 503d39d7-badd-4d5a-a8a0-11e1579dd934
+@assert a == b
+
 # ╔═╡ 4dce26dc-5e68-11eb-1ff7-8974f93e3cb8
-@macroexpand @assert a==b "a should equal b!"
+@macroexpand @assert a == b "You should have known..."
+
+# ╔═╡ dce1f607-58ab-4629-9e58-b476e8543150
+@assert a==b "You should have known..."
 
 # ╔═╡ 43a19ace-5e6b-11eb-005b-b7d2d9a46878
 md"""
@@ -396,7 +422,7 @@ end
 
 # ╔═╡ 5edf55e2-5e6b-11eb-383e-5965ae694c4c
 macro m(x,y)
-   	"Two arguments"
+   	"Two aaarghuments 🏴"
 end
 
 # ╔═╡ 3dc3aa10-5e6c-11eb-3338-7777b8cb97a5
@@ -566,18 +592,6 @@ since the regular expression is compiled, which takes time, and the `Regex` obje
 
 # ╔═╡ cb0907b5-a8d9-4954-85cc-2040887f5e3c
 md"**Other examples of useful macros:**"
-
-# ╔═╡ 5ba5d6b6-5fc5-11eb-256b-73a954a5db68
-md"Integers and floating point numbers with arbitrary precision. This macro exists because promoting a floating point number to a `BigFloat` will keep the approximation error of `Float64`."
-
-# ╔═╡ a47ab60e-5fc5-11eb-368a-d76fc6ee640d
-big"0.1"
-
-# ╔═╡ a99546c2-5fc5-11eb-0902-71cb283543c8
-@big_str "0.1"
-
-# ╔═╡ af2c7d4e-5fc5-11eb-30d4-a367d2c0db23
-big(0.1)
 
 # ╔═╡ 4a335466-5fc6-11eb-2273-312fd3928616
 md"There exists a lot more unique string literals than we have shown here, such as html strings, ip address literals, etc."
@@ -1926,7 +1940,7 @@ version = "1.8.1+0"
 # ╟─6e3beaf8-5e54-11eb-154b-95f5887efcb0
 # ╠═7de376a8-5e54-11eb-0356-9b74225b671e
 # ╟─825b45a6-5e54-11eb-27e6-f3cca8a2f67e
-# ╟─8b23cac8-5e54-11eb-2424-5972ea3d2e21
+# ╠═8b23cac8-5e54-11eb-2424-5972ea3d2e21
 # ╟─8ecd49ba-5e54-11eb-24b6-a328043b7a07
 # ╠═985a57f2-5e54-11eb-1f2f-bf23014c6171
 # ╟─d66ea502-5e54-11eb-2694-4766a05aed38
@@ -1958,12 +1972,17 @@ version = "1.8.1+0"
 # ╠═0c787198-61a0-11eb-1e30-fbcb5a624076
 # ╟─4a732eb8-5e60-11eb-197b-0729d0f1be15
 # ╠═536addec-5e61-11eb-1a9d-d7f2c190d6c2
+# ╟─a2bfc639-bbc8-4e34-ba92-df62689457fd
+# ╠═4d6bb5c2-c72e-4ac4-a3d2-6294b94976d8
+# ╠═696992e6-3a8d-4cc7-b97f-476283fa73c5
+# ╠═a4c47eb9-8b98-48b6-afb8-ef43d575d600
+# ╠═df6307bf-011a-4e61-8349-766694b21b94
 # ╟─d1730db6-eb2d-4233-b0a0-bdd84afef88f
 # ╟─855412b2-5e61-11eb-3aba-bb862489414e
 # ╠═cabb3cdc-5e62-11eb-2479-bb8337c05292
 # ╟─f33f0cfe-5f52-11eb-30e0-93c4b899aaa7
+# ╠═0a0eb593-c71a-4cb7-bd6a-5f1a8ce72910
 # ╠═01feeca0-5e63-11eb-11a0-1b66a92127d1
-# ╠═f1969888-5e65-11eb-18a3-879d2f87b447
 # ╟─da275ff1-b3d9-4a91-b03a-914878555418
 # ╠═876ea56f-d426-4908-a832-96ccbd83d950
 # ╟─0613f620-5e66-11eb-08d9-01dd3a403321
@@ -1978,8 +1997,11 @@ version = "1.8.1+0"
 # ╟─fb772ef4-5e67-11eb-218e-330ba087bcc8
 # ╠═2df2baa8-5e68-11eb-2f28-9968b7ecbcd5
 # ╟─376fe8e4-5e68-11eb-1d7d-c9b1945b133f
+# ╠═bee1a0e6-7afd-41c8-80e7-a5b16a817cae
 # ╠═4750ce04-5e68-11eb-237e-3fed9eb1f4c5
+# ╠═503d39d7-badd-4d5a-a8a0-11e1579dd934
 # ╠═4dce26dc-5e68-11eb-1ff7-8974f93e3cb8
+# ╠═dce1f607-58ab-4629-9e58-b476e8543150
 # ╟─43a19ace-5e6b-11eb-005b-b7d2d9a46878
 # ╠═508167c4-5e6b-11eb-2587-b967b79cf74c
 # ╠═59f86d98-5e6b-11eb-3259-7312501b70bf
@@ -2015,12 +2037,8 @@ version = "1.8.1+0"
 # ╟─48a68105-9a30-4dd1-9f7b-eebf1c19c856
 # ╟─f20221ca-82d1-4973-9f68-e46638c929f7
 # ╟─cb0907b5-a8d9-4954-85cc-2040887f5e3c
-# ╟─5ba5d6b6-5fc5-11eb-256b-73a954a5db68
-# ╠═a47ab60e-5fc5-11eb-368a-d76fc6ee640d
-# ╠═a99546c2-5fc5-11eb-0902-71cb283543c8
-# ╠═af2c7d4e-5fc5-11eb-30d4-a367d2c0db23
 # ╟─4a335466-5fc6-11eb-2273-312fd3928616
-# ╟─17f771dc-5fc6-11eb-3b83-ed51f87194e0
+# ╠═17f771dc-5fc6-11eb-3b83-ed51f87194e0
 # ╠═24806108-5fdc-11eb-2f19-bb09f836f893
 # ╠═92836b48-5fc6-11eb-19b6-1d7a5c310052
 # ╟─f26e65a8-5fc6-11eb-3cd7-3f40c12a6abb
